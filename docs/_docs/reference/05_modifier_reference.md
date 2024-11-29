@@ -79,3 +79,25 @@ Multiplies the input with the given Vector3. Useful to  control things like inpu
 Treats the input vector as a mouse position difference in pixels (e.g. from the _Mouse_ input) and converts it into a range from `(0,0)` to `(1,1)` relative to the current window size. Useful to get resolution-independent mouse differences. This modifier has no settings.
 
 
+## Map Range
+This modifier maps the input value through an input and output range and optionally clamps the output. Can be used to scale and translate at the same time.  (For example, mapping a `0` to `1` range to a `-1` to `1` range.) It has the following settings:
+
+| Setting       | Description                                               |
+|---------------|-----------------------------------------------------------|
+| _Apply clamp_ | Whether the output should be clamped to the output range. |
+| _Input min_   | The input minimum.                                        |
+| _Input max_   | The input maximum.                                        |
+| _Output min_  | The output minimum.                                       |
+| _Output max_  | The output maximum.                                       |
+
+
+## Curve
+This modifier applies a separate curve to each input axis.  Input values are assumed to fall in the range of `0` to `1`. It has the following settings:
+
+| Setting   | Description                       |
+|-----------|-----------------------------------|
+| _Curve x_ | The curve to apply to the X axis. |
+| _Curve y_ | The curve to apply to the Y axis. |
+| _Curve z_ | The curve to apply to the Z axis. |
+
+
