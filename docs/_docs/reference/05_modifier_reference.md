@@ -29,6 +29,18 @@ This is a filtering modifier that checks whether 2D input points into one of 8 d
 ## Canvas coordinates
 This modifier converts a 2D mouse position (from the the _Mouse Position_ input) into 2D world coordinates (canvas coordinates) for the currently active viewport. This modifier takes into account the current scaling mode and any changes (zoom, offset) applied by a Camera2D in the currently active viewport. Use this to quickly find out "where in my 2D world did the player just click". This modifier has no settings.
 
+
+## Curve
+This modifier applies a separate curve to each input axis.  Input values are assumed to fall in the range of `0` to `1`. You can use the _Map Range_ modifier to convert your value into this range, if needed. It has the following settings:
+
+| Setting | Description                      |
+|---------|----------------------------------|
+| _Curve_ | The curve to apply.              |
+| _X_     | Apply the modifier to the X axis |
+| _Y_     | Apply the modifier to the Y axis |
+| _Z_     | Apply the modifier to the Z axis |
+
+
 ## Deadzone
 This modifier applies a deadzone to 1D, 2D or 3D axis input. You can specify a minimum and maximum value. Every input outside the minimum and maximum will be clamped while all the values between the minimum and maximum will be scaled to a range between 0 and 1. This modifier has the following settings:
 
@@ -43,6 +55,21 @@ This modifier rearranges the x,y and z components of the current input value. Th
 | Setting | Description                        |
 |---------|------------------------------------|
 | _Order_ | The new order of the input vector. |
+
+
+## Map Range
+This modifier maps the input value through an input and output range and optionally clamps the output. Can be used to scale and translate at the same time.  (For example, mapping a `0` to `1` range to a `-1` to `1` range.) It has the following settings:
+
+| Setting       | Description                                               |
+|---------------|-----------------------------------------------------------|
+| _Apply clamp_ | Whether the output should be clamped to the output range. |
+| _Input min_   | The input minimum.                                        |
+| _Input max_   | The input maximum.                                        |
+| _Output min_  | The output minimum.                                       |
+| _Output max_  | The output maximum.                                       |
+| _X_           | Apply the modifier to the X axis                          |
+| _Y_           | Apply the modifier to the Y axis                          |
+| _Z_           | Apply the modifier to the Z axis                          |
 
 
 ## Negate
@@ -77,27 +104,3 @@ Multiplies the input with the given Vector3. Useful to  control things like inpu
 
 ## Window relative
 Treats the input vector as a mouse position difference in pixels (e.g. from the _Mouse_ input) and converts it into a range from `(0,0)` to `(1,1)` relative to the current window size. Useful to get resolution-independent mouse differences. This modifier has no settings.
-
-
-## Map Range
-This modifier maps the input value through an input and output range and optionally clamps the output. Can be used to scale and translate at the same time.  (For example, mapping a `0` to `1` range to a `-1` to `1` range.) It has the following settings:
-
-| Setting       | Description                                               |
-|---------------|-----------------------------------------------------------|
-| _Apply clamp_ | Whether the output should be clamped to the output range. |
-| _Input min_   | The input minimum.                                        |
-| _Input max_   | The input maximum.                                        |
-| _Output min_  | The output minimum.                                       |
-| _Output max_  | The output maximum.                                       |
-
-
-## Curve
-This modifier applies a separate curve to each input axis.  Input values are assumed to fall in the range of `0` to `1`. It has the following settings:
-
-| Setting   | Description                       |
-|-----------|-----------------------------------|
-| _Curve x_ | The curve to apply to the X axis. |
-| _Curve y_ | The curve to apply to the Y axis. |
-| _Curve z_ | The curve to apply to the Z axis. |
-
-

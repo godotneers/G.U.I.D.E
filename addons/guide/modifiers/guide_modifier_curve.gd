@@ -5,13 +5,16 @@ extends GUIDEModifier
 
 
 ## The curve to apply to the x axis
-@export var curve_x:Curve
+@export var curve:Curve
 
-## The curve to apply to the y axis
-@export var curve_y:Curve
+## Apply modifier to X axis
+@export var x:bool = true
 
-## The curve to apply to the z axis
-@export var curve_z:Curve
+## Apply modifier to Y axis
+@export var y:bool = true
+
+## Apply modifier to Z axis
+@export var z:bool = true
 
 
 ## Create default curve resource with a smoothstep, 0.0 - 1.0 input/output range
@@ -24,27 +27,26 @@ static func default_curve() -> Curve:
 
 
 # Initialize this resource with default curves
-func _init(_curve_x:Curve = null, _curve_y:Curve = null, _curve_z:Curve = null):
-	if _curve_x == null:
-		_curve_x = default_curve()
+func _init(_curve:Curve = null, _x:bool = true, _y:bool = false, _z:bool = false):
+	if _curve == null:
+		_curve = default_curve()
 
-	if _curve_y == null:
-		_curve_y = default_curve()
-
-	if _curve_z == null:
-		_curve_z = default_curve()
-
-	curve_x = _curve_x
-	curve_y = _curve_y
-	curve_z = _curve_z
+	curve = _curve
 
 
 func _modify_input(input:Vector3, delta:float, value_type:GUIDEAction.GUIDEActionValueType) -> Vector3:
-	var x:float = curve_x.sample(input.x) if curve_x != null else 0.0
-	var y:float = curve_y.sample(input.y) if curve_y != null else 0.0
-	var z:float = curve_z.sample(input.z) if curve_z != null else 0.0
+	# Curve should never be null
+	assert(curve != null, "No curve added to Curve modifier")
 
-	return Vector3(x, y, z)
+	var x_value:float = curve.sample(input.x)
+	var y_value:float = curve.sample(input.y)
+	var z_value:float = curve.sample(input.z)
+
+	return Vector3(
+		x_value if x else input.x,
+		y_value if y else input.y,
+		z_value if z else input.z
+	)
 
 
 func _editor_name() -> String:

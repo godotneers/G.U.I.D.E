@@ -4,7 +4,7 @@ class_name GUIDEModifierMapRange
 extends GUIDEModifier
 
 ## Should the output be clamped to the range?
-@export var apply_clamp:bool = false
+@export var apply_clamp:bool = true
 
 ## The minimum input value
 @export var input_min:float = 0.0
@@ -18,18 +18,32 @@ extends GUIDEModifier
 ## The maximum output value
 @export var output_max:float = 1.0
 
+## Apply modifier to X axis
+@export var x:bool = true
+
+## Apply modifier to Y axis
+@export var y:bool = true
+
+## Apply modifier to Z axis
+@export var z:bool = true
+
 
 func _modify_input(input:Vector3, delta:float, value_type:GUIDEAction.GUIDEActionValueType) -> Vector3:
-	var x:float = remap(input.x, input_min, input_max, output_min, output_max)
-	var y:float = remap(input.y, input_min, input_max, output_min, output_max)
-	var z:float = remap(input.z, input_min, input_max, output_min, output_max)
+	var x_value:float = remap(input.x, input_min, input_max, output_min, output_max)
+	var y_value:float = remap(input.y, input_min, input_max, output_min, output_max)
+	var z_value:float = remap(input.z, input_min, input_max, output_min, output_max)
 	
 	if apply_clamp:
-		x = clamp(x, output_min, output_max)
-		y = clamp(y, output_min, output_max)
-		z = clamp(z, output_min, output_max)
+		x_value = clamp(x_value, output_min, output_max)
+		y_value = clamp(y_value, output_min, output_max)
+		z_value = clamp(z_value, output_min, output_max)
 
-	return Vector3(x, y, z)
+	# Return vector with enabled axes set, others unchanged
+	return Vector3(
+		x_value if x else input.x,
+		y_value if y else input.y,
+		z_value if z else input.z,
+	)
 
 
 func _editor_name() -> String:
