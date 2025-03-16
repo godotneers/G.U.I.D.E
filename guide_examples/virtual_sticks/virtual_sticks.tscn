@@ -1,0 +1,68 @@
+[gd_scene load_steps=10 format=3 uid="uid://m2d5cmtuheb"]
+
+[ext_resource type="Script" path="res://addons/guide/ui/virtual_stick/guide_virtual_stick.gd" id="1_8y7sk"]
+[ext_resource type="Script" path="res://guide_examples/virtual_sticks/virtual_sticks.gd" id="1_naqqt"]
+[ext_resource type="PackedScene" uid="uid://dkr80d2pi0d41" path="res://addons/guide/debugger/guide_debugger.tscn" id="1_yjipb"]
+[ext_resource type="Resource" uid="uid://4bf73j4y33fd" path="res://guide_examples/virtual_sticks/mapping_contexts/mapping_context.tres" id="2_xu2j8"]
+[ext_resource type="Script" path="res://guide_examples/virtual_sticks/fancy_stick_renderer.gd" id="5_3bxv3"]
+[ext_resource type="Script" path="res://addons/guide/ui/virtual_stick/texture_renderer/guide_virtual_stick_texture_renderer.gd" id="5_ejjjy"]
+[ext_resource type="Shader" path="res://guide_examples/virtual_sticks/fancy_stick_renderer.gdshader" id="6_mpi1f"]
+[ext_resource type="Texture2D" uid="uid://c07v7ndnkcqr8" path="res://icon.svg" id="7_xkm4i"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bfhq4"]
+shader = ExtResource("6_mpi1f")
+shader_parameter/stick_offset = null
+shader_parameter/stick_color = Color(0.605187, 0.902141, 1, 1)
+
+[node name="VirtualSticks" type="Node2D"]
+script = ExtResource("1_naqqt")
+mapping_context = ExtResource("2_xu2j8")
+
+[node name="CanvasLayer2" type="CanvasLayer" parent="."]
+
+[node name="GuideDebugger" parent="CanvasLayer2" instance=ExtResource("1_yjipb")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="LeftStick" type="Container" parent="CanvasLayer"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 285.0
+offset_top = -236.0
+offset_right = 285.0
+offset_bottom = -236.0
+grow_vertical = 0
+mouse_filter = 2
+script = ExtResource("1_8y7sk")
+input_mode = 1
+
+[node name="FancyRenderer" type="Control" parent="CanvasLayer/LeftStick"]
+layout_mode = 2
+script = ExtResource("5_3bxv3")
+
+[node name="Stick" type="Sprite2D" parent="CanvasLayer/LeftStick/FancyRenderer"]
+material = SubResource("ShaderMaterial_bfhq4")
+texture = ExtResource("7_xkm4i")
+
+[node name="RightStick" type="Container" parent="CanvasLayer"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -296.0
+offset_top = -262.0
+offset_right = -296.0
+offset_bottom = -262.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+script = ExtResource("1_8y7sk")
+input_mode = 1
+position_mode = 1
+draw_debug = true
+
+[node name="GUIDEVirtualStickTextureRenderer" type="Control" parent="CanvasLayer/RightStick"]
+layout_mode = 2
+script = ExtResource("5_ejjjy")
