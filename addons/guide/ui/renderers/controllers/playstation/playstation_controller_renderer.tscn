@@ -22,7 +22,7 @@
 [ext_resource type="Texture2D" uid="uid://bw2h7xxdtp31i" path="res://addons/guide/ui/renderers/controllers/playstation/icons/PS5_Share.png" id="20_p3s2m"]
 
 [node name="ControllerRenderer" instance=ExtResource("1_bq6gh")]
-controller_name_matches = Array[String](["PlayStation", "PS3", "PS4", "PS5"])
+controller_name_matches = Array[String](["DualSense Wireless Controller", "PlayStation", "PS3", "PS4", "PS5"])
 a_button = ExtResource("2_oqi6t")
 b_button = ExtResource("3_m332j")
 x_button = ExtResource("4_dqhg4")
