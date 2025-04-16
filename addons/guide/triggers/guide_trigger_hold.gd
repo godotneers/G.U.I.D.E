@@ -1,11 +1,11 @@
 @tool
-## A trigger that activates when the input is held down for a certain amount of time.
+## A trigger that activates when the input has been held down for a certain amount of time.
 class_name GUIDETriggerHold
 extends GUIDETrigger
 
-## The time for how long the input must be held.
+## Continous actuation time required before triggering.
 @export var hold_treshold:float = 1.0
-## If true, the trigger will only fire once until the input is released. Otherwise the trigger will fire every frame.
+## If true the trigger will only fire once until the input is released. Otherwise the trigger will fire every frame.
 @export var is_one_shot:bool = false
 
 var _accumulated_time:float = 0
@@ -28,8 +28,7 @@ func _update_state(input:Vector3, delta:float, value_type:GUIDEAction.GUIDEActio
 			# if the hold threshold has not been reached, then the trigger is ongoing.
 			return GUIDETriggerState.ONGOING
 	else:
-		# if the input is not actuated, then the trigger is not triggered and we reset the accumulated time.
-		# and our one shot flag.
+		# if the input is not actuated, reset the accumulated time and one shot flag.
 		_accumulated_time = 0
 		_did_shoot = false
 		return GUIDETriggerState.NONE
@@ -39,5 +38,5 @@ func _editor_name() -> String:
 	return "Hold"
 
 func _editor_description() -> String:
-	return "Fires, once the input has remained actuated for hold_threshold seconds.\n" + \
-			"My fire once or repeatedly."
+	return "Fires once the input has remained actuated for hold_threshold seconds.\n" + \
+			"May fire once or repeatedly."
