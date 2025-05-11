@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cbabjmgh2nkv3"]
+
+[ext_resource type="Script" path="res://addons/guide/editor/action_slot_icon/action_value_type_icon.gd" id="1_sjj83"]
+
+[node name="ActionValueTypeIcon" type="TextureRect"]
+script = ExtResource("1_sjj83")

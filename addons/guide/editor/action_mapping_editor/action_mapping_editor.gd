@@ -11,6 +11,7 @@ signal duplicate_requested()
 @export var input_mapping_editor_scene:PackedScene
 @onready var _action_slot:ActionSlot = %ActionSlot
 @onready var _input_mappings:ArrayEdit = %InputMappings
+@onready var _action_slot_value_type_icon: ActionValueTypeIcon = %ActionValueTypeIcon
 
 const ClassScanner = preload("../class_scanner.gd")
 
@@ -33,22 +34,24 @@ func initialize(plugin:EditorPlugin, scanner:ClassScanner):
 	_plugin = plugin
 	_scanner = scanner
 	_undo_redo = _plugin.get_undo_redo()
-	
-	
+
 func edit(mapping:GUIDEActionMapping):
 	assert(_mapping == null)
 	_mapping = mapping
-	
+
 	_mapping.changed.connect(_update)
-	
+
 	_update()
-	
-	
+
+
 func _update():
 	_input_mappings.clear()
 
 	_action_slot.action = _mapping.action
-	
+
+	_on_action_value_changed()
+	_action_slot.action.changed.connect(_on_action_value_changed)
+
 	for i in _mapping.input_mappings.size():
 		var input_mapping = _mapping.input_mappings[i]
 		var input_mapping_editor = input_mapping_editor_scene.instantiate()
@@ -56,15 +59,18 @@ func _update():
 
 		input_mapping_editor.initialize(_plugin, _scanner)
 		input_mapping_editor.edit(input_mapping)
-	
+
 	_input_mappings.collapsed = _mapping.get_meta("_guide_input_mappings_collapsed", false)
-	
+
 func _on_action_changed():
 	_undo_redo.create_action("Change action")
 	_undo_redo.add_do_property(_mapping, "action", _action_slot.action)
 	_undo_redo.add_undo_property(_mapping, "action", _mapping.action)
 	_undo_redo.commit_action()
-	
+
+	_on_action_changed()
+	_action_slot.action.changed.connect(_on_action_value_changed)
+
 
 func _on_input_mappings_add_requested():
 	var values = _mapping.input_mappings.duplicate()
@@ -72,12 +78,12 @@ func _on_input_mappings_add_requested():
 	values.append(new_mapping)
 
 	_undo_redo.create_action("Add input mapping")
-	
+
 	_undo_redo.add_do_property(_mapping, "input_mappings", values)
 	_undo_redo.add_undo_property(_mapping, "input_mappings", _mapping.input_mappings)
 
 	_undo_redo.commit_action()
-	
+
 
 func _on_input_mapping_delete_requested(index:int):
 	var values = _mapping.input_mappings.duplicate()
@@ -112,27 +118,34 @@ func _on_input_mappings_clear_requested():
 	_undo_redo.add_undo_property(_mapping, "input_mappings", _mapping.input_mappings)
 
 	_undo_redo.commit_action()
-	
+
 func _on_input_mappings_duplicate_requested(index:int):
 	var values = _mapping.input_mappings.duplicate()
 	var copy:GUIDEInputMapping = values[index].duplicate()
 	copy.input = Utils.duplicate_if_inline(copy.input)
-	
+
 	for i in copy.modifiers.size():
 		copy.modifiers[i] = Utils.duplicate_if_inline(copy.modifiers[i])
-	
+
 	for i in copy.triggers.size():
 		copy.triggers[i] = Utils.duplicate_if_inline(copy.triggers[i])
-	
+
 	# insert copy after original
 	values.insert(index+1, copy)
-	
+
 	_undo_redo.create_action("Duplicate input mapping")
 	_undo_redo.add_do_property(_mapping, "input_mappings", values)
 	_undo_redo.add_undo_property(_mapping, "input_mappings", _mapping.input_mappings)
 
-	_undo_redo.commit_action()	
+	_undo_redo.commit_action()
 
-	
+
 func _on_input_mappings_collapse_state_changed(new_state:bool):
 	_mapping.set_meta("_guide_input_mappings_collapsed", new_state)
+
+# This is useful for when the action that is mapped changes it's internal state.
+#
+# Here we just want to refresh the texture being displayed but could be useful
+# for other functionality that relies on the action value itself changing
+func _on_action_value_changed():
+	_action_slot_value_type_icon.set_icon_for_value_type(_action_slot.action.action_value_type)

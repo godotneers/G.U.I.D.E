@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://361aipcef24h"]
+[gd_scene load_steps=6 format=3 uid="uid://361aipcef24h"]
 
 [ext_resource type="Script" path="res://addons/guide/editor/action_mapping_editor/action_mapping_editor.gd" id="1_2k0pi"]
 [ext_resource type="PackedScene" uid="uid://du4x7ng6ntuk4" path="res://addons/guide/editor/action_slot/action_slot.tscn" id="1_hguf2"]
 [ext_resource type="PackedScene" uid="uid://c323mdijdhktg" path="res://addons/guide/editor/input_mapping_editor/input_mapping_editor.tscn" id="2_a8nbp"]
+[ext_resource type="PackedScene" uid="uid://cbabjmgh2nkv3" path="res://addons/guide/editor/action_value_type_icon/action_value_type_icon.tscn" id="4_cblt5"]
 [ext_resource type="PackedScene" uid="uid://cly0ff32fvpb2" path="res://addons/guide/editor/array_edit/array_edit.tscn" id="4_ehr5j"]
 
 [node name="ActionMappingEditor" type="MarginContainer"]
@@ -24,6 +25,10 @@ size_flags_vertical = 0
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
+
+[node name="ActionValueTypeIcon" parent="HBoxContainer/HBoxContainer" instance=ExtResource("4_cblt5")]
+unique_name_in_owner = true
+layout_mode = 2
 
 [node name="ActionSlot" parent="HBoxContainer/HBoxContainer" instance=ExtResource("1_hguf2")]
 unique_name_in_owner = true
