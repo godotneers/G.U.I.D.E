@@ -35,6 +35,7 @@ func initialize(plugin:EditorPlugin, scanner:ClassScanner):
 	_scanner = scanner
 	_undo_redo = _plugin.get_undo_redo()
 
+
 func edit(mapping:GUIDEActionMapping):
 	assert(_mapping == null)
 	_mapping = mapping
@@ -68,7 +69,7 @@ func _on_action_changed():
 	_undo_redo.add_undo_property(_mapping, "action", _mapping.action)
 	_undo_redo.commit_action()
 
-	_on_action_changed()
+	_on_action_value_changed()
 	_action_slot.action.changed.connect(_on_action_value_changed)
 
 
