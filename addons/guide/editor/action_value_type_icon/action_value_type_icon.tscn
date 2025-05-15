@@ -1,8 +1,0 @@
-[gd_scene load_steps=3 format=3 uid="uid://cbabjmgh2nkv3"]
-
-[ext_resource type="Script" path="res://addons/guide/editor/action_value_type_icon/action_value_type_icon.gd" id="1_sjj83"]
-[ext_resource type="Texture2D" uid="uid://c3iwp5qwsod1m" path="res://addons/guide/editor/action_value_type_icon/action_value_type_bool.svg" id="1_x1nwa"]
-
-[node name="ActionValueTypeIcon" type="TextureRect"]
-texture = ExtResource("1_x1nwa")
-script = ExtResource("1_sjj83")

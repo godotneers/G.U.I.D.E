@@ -11,7 +11,6 @@ signal duplicate_requested()
 @export var input_mapping_editor_scene:PackedScene
 @onready var _action_slot:ActionSlot = %ActionSlot
 @onready var _input_mappings:ArrayEdit = %InputMappings
-@onready var _action_slot_value_type_icon: ActionValueTypeIcon = %ActionValueTypeIcon
 
 const ClassScanner = preload("../class_scanner.gd")
 
@@ -50,9 +49,6 @@ func _update():
 
 	_action_slot.action = _mapping.action
 
-	_on_action_value_changed()
-	_action_slot.action.changed.connect(_on_action_value_changed)
-
 	for i in _mapping.input_mappings.size():
 		var input_mapping = _mapping.input_mappings[i]
 		var input_mapping_editor = input_mapping_editor_scene.instantiate()
@@ -63,14 +59,12 @@ func _update():
 
 	_input_mappings.collapsed = _mapping.get_meta("_guide_input_mappings_collapsed", false)
 
+
 func _on_action_changed():
 	_undo_redo.create_action("Change action")
 	_undo_redo.add_do_property(_mapping, "action", _action_slot.action)
 	_undo_redo.add_undo_property(_mapping, "action", _mapping.action)
 	_undo_redo.commit_action()
-
-	_on_action_value_changed()
-	_action_slot.action.changed.connect(_on_action_value_changed)
 
 
 func _on_input_mappings_add_requested():
@@ -144,9 +138,3 @@ func _on_input_mappings_duplicate_requested(index:int):
 func _on_input_mappings_collapse_state_changed(new_state:bool):
 	_mapping.set_meta("_guide_input_mappings_collapsed", new_state)
 
-# This is useful for when the action that is mapped changes it's internal state.
-#
-# Here we just want to refresh the texture being displayed but could be useful
-# for other functionality that relies on the action value itself changing
-func _on_action_value_changed():
-	_action_slot_value_type_icon.set_icon_for_value_type(_action_slot.action.action_value_type)

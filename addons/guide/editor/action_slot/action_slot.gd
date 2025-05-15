@@ -1,7 +1,10 @@
 @tool
-extends LineEdit
+extends Control
 
 signal action_changed()
+
+@onready var _line_edit:LineEdit = %LineEdit
+@onready var _type_icon:TextureRect = %TypeIcon
 
 var index:int
 
@@ -23,31 +26,31 @@ var action:GUIDEAction:
 		
 func _refresh():
 	if not is_instance_valid(action):
-		text = "<none>"
-		tooltip_text = ""
+		_line_edit.text = "<none>"
+		_line_edit.tooltip_text = ""
+		_type_icon.texture = null
+		_type_icon.tooltip_text = ""
 	else:
-		text = action._editor_name()	
-		tooltip_text = action.resource_path
+		_line_edit.text = action._editor_name()	
+		_line_edit.tooltip_text = action.resource_path
+		## Update the icon to reflect the given value type.
+		match action.action_value_type:
+			GUIDEAction.GUIDEActionValueType.AXIS_1D:
+				_type_icon.texture = preload("action_value_type_axis1d.svg")
+				_type_icon.tooltip_text = "Axis1D"
+			GUIDEAction.GUIDEActionValueType.AXIS_2D:
+				_type_icon.texture = preload("action_value_type_axis2d.svg")
+				_type_icon.tooltip_text = "Axis2D"
+			GUIDEAction.GUIDEActionValueType.AXIS_3D:
+				_type_icon.texture = preload("action_value_type_axis3d.svg")
+				_type_icon.tooltip_text = "Axis3D"
+			_:
+				# fallback is bool
+				_type_icon.texture = preload("action_value_type_bool.svg")
+				_type_icon.tooltip_text = "Boolean"
 
-func _can_drop_data(at_position, data) -> bool:
-	if not data is Dictionary:
-		return false
-		
-	if data.has("files"):
-		for file in data["files"]:
-			if ResourceLoader.load(file) is GUIDEAction:
-				return true
-		
-	return false	
-	
-	
-func _drop_data(at_position, data) -> void:
-	
-	for file in data["files"]:
-		var item = ResourceLoader.load(file) 
-		if item is GUIDEAction:
-			action = item
-			action_changed.emit()
+
+
 
 func _gui_input(event):
 	if event is InputEventMouseButton:
@@ -55,3 +58,13 @@ func _gui_input(event):
 			if is_instance_valid(action):
 				EditorInterface.edit_resource(action)
 
+
+
+func _on_line_edit_action_dropped(new_action:GUIDEAction):
+	action = new_action
+	action_changed.emit()
+
+
+func _on_line_edit_focus_entered():
+	if is_instance_valid(action):
+		EditorInterface.edit_resource(action)
