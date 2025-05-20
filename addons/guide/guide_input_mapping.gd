@@ -112,7 +112,8 @@ func _initialize() -> void :
 		# prevents the mapping from triggering if the input is held while
 		# the mapping becomes active.
 		if trigger is GUIDETriggerPressed:
-			trigger._last_value = Vector3.ONE
+			if not trigger.triggerable_immediately:
+				trigger._last_value = Vector3.ONE
 		
 		# collect the hold threshold for hinting the UI about how long
 		# the input must be held down. This is only relevant for hold triggers

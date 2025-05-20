@@ -4,6 +4,10 @@
 class_name GUIDETriggerPressed
 extends GUIDETrigger
 
+## If [code]true[/code], the relevant [GUIDEAction] will be triggered if the [GUIDEMappingContext]
+## is made active while the relevant input mapping is actuated.[br]
+## If [code]false[/code], the relevant input mapping must be in an unactuated state before it will be triggered.
+@export var triggerable_immediately:bool = true
 
 func _update_state(input:Vector3, delta:float, value_type:GUIDEAction.GUIDEActionValueType) -> GUIDETriggerState:
 	if _is_actuated(input, value_type):
