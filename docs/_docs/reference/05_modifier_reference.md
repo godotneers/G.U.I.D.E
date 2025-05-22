@@ -35,6 +35,27 @@ input. It has the following setings:
 |-------------|-----------------------------------------------------|
 | _Direction_ | The direction for which the modifier should filter. |
 
+## Accumulator
+
+This modifier accumulates a value over time while the input is accuated and optionally clamps the output. For analog
+values, the rate of accumulation is dependent on the input value. For example, if the input value is `0.5`, the
+accumulator will increase at half the rate as if the input value was `1.0`. Input values are assumed to fall in the
+range of `0` to `1`. You can use the _Map Range_ modifier to convert your value into this range, if needed. It has the
+following settings:
+
+| Setting               | Description                                                                                                                                                                 |
+|-----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| _Apply clamp_         | Whether the output should be clamped to the output range. If the clamp is not applied, the value can exceed the End Value.                                                  |
+| _Start value_         | The initial value for the accumulator.                                                                                                                                      |
+| _End value_           | The end value for the accumulator.                                                                                                                                          |
+| _Time_                | The time in seconds that it takes to accumlate to the End Value.                                                                                                            |
+| _Decrease Multiplier_ | A multiplier for how quickly the accumulator decreases its value. For instance, a value of `2.0` will cause the accumulator to deplete at twice the rate that it increased. |
+| _Empty on Key Up_     | Whether or not to reset to the Start Value as soon as the input is released.                                                                                                |
+| _Reset at Limit_      | Whether or not to reset as soon as the End Value is reached.                                                                                                                |
+| _X_                   | Apply the modifier to the X axis                                                                                                                                            |
+| _Y_                   | Apply the modifier to the Y axis                                                                                                                                            |
+| _Z_                   | Apply the modifier to the Z axis                                                                                                                                            |
+
 ## Canvas coordinates
 
 This modifier converts a 2D pixel coordinate (from the _Mouse Position_, _Touch Position_ or _Touch Axis_ inputs) into
@@ -71,7 +92,7 @@ range between 0 and 1. This modifier has the following settings:
 
 ## Input swizzle
 
-This modifier rearranges the x,y and z components of the current input value. This is useful if you want to bind keys to
+This modifier rearranges the x, y, and z components of the current input value. This is useful if you want to bind keys to
 multiple axes or otherwise want to modify the input vector to do any operations on it. This modifier is often combined
 with the _Negate_ modifier. It has the following settings:
 
