@@ -162,6 +162,32 @@ func modifier_map_range(imin:float, imax:float, omin:float, omax:float, x:bool =
 	result.z = z
 	return result
 
+func modifier_accumulator(start_value:float = 0.0, \
+		end_value:float = 1.0, \
+		time:float = 1.0, \
+		decrease_multiplier:float = 1.0, \
+		decrease_condition:GUIDEModifierAccumulator.DecreaseCondition = GUIDEModifierAccumulator.DecreaseCondition.DECREASE_ON_RELEASE, \
+		ready_condition:GUIDEModifierAccumulator.ReadyCondition = GUIDEModifierAccumulator.ReadyCondition.ALWAYS, \
+		input_axis:GUIDEModifierAccumulator.InputAxis = GUIDEModifierAccumulator.InputAxis.X, \
+		x:GUIDEModifierAccumulator.AxisRole = GUIDEModifierAccumulator.AxisRole.VALUE, \
+		y:GUIDEModifierAccumulator.AxisRole = GUIDEModifierAccumulator.AxisRole.UNCHANGED, \
+		z:GUIDEModifierAccumulator.AxisRole = GUIDEModifierAccumulator.AxisRole.UNCHANGED, \
+		apply_clamp:bool = true
+		) -> GUIDEModifierAccumulator:
+	var result := GUIDEModifierAccumulator.new()
+	result.start_value = start_value
+	result.end_value = end_value
+	result.time = time
+	result.input_axis = input_axis
+	result.decrease_multiplier = decrease_multiplier
+	result.ready_condition = ready_condition
+	result.decrease_condition = decrease_condition
+	result.x = x
+	result.y = y
+	result.z = z
+	result.apply_clamp = apply_clamp
+	return result
+
 func trigger_down() -> GUIDETriggerDown:
 	return GUIDETriggerDown.new()
 	
@@ -372,5 +398,3 @@ func print_f(text:Variant = ""):
 
 func get_f() -> int:
 	return Engine.get_process_frames() - start_frame
-
-
