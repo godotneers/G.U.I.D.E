@@ -292,11 +292,11 @@ func _update_caches():
 				# and add it to the new mapping
 				processed_actions[action].input_mappings.append(new_input_mapping)
 
-				
-			# if any binding remains, add the mapping to the list of active
-			# action mappings
-			if not processed_actions[action].input_mappings.is_empty():
-				_active_action_mappings.append(processed_actions[action])
+	# if any binding remains, add the mapping to the list of active
+	# action mappings
+	for action in processed_actions:
+		if not processed_actions[action].input_mappings.is_empty():
+			_active_action_mappings.append(processed_actions[action])
 
 	# INVARIANT: all _active_action_mappings now have actions.
 
