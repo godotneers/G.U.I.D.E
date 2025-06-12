@@ -96,6 +96,15 @@ func enable_mapping_context(context:GUIDEMappingContext, disable_others:bool = f
 	_update_caches()
 	
 	
+## Enables multiple context simultaneously
+func enable_mapping_contexts(context:Dictionary[GUIDEMappingContext, int], disable_others:bool = false):
+	if disable_others:
+		_active_contexts.clear()
+	
+	_active_contexts.merge(context, true)
+	_update_caches()
+
+
 ## Disables the given mapping context.
 func disable_mapping_context(context:GUIDEMappingContext):
 	if not is_instance_valid(context):
@@ -210,7 +219,7 @@ func _update_caches():
 	
 	# The actions we already have processed. Same action may appear in different
 	# contexts, so if we find the same action twice, only the first instance wins.
-	var processed_actions:GUIDESet = GUIDESet.new()
+	var processed_actions:Dictionary[GUIDEAction, GUIDEActionMapping]
 	var consolidated_inputs:GUIDESet = GUIDESet.new()
 
 	for entry:Dictionary in sorted_contexts:
@@ -226,13 +235,11 @@ func _update_caches():
 				push_warning("Mapping at position %s in context %s has no action set. This mapping will be ignored." % [position, context.resource_path])
 				continue
 			
-			# If the action was already configured in a higher priority context,
-			# we'll skip it.
-			if processed_actions.has(action):
-				# skip
-				continue
-				
-			processed_actions.add(action)
+			# If this is the first time we're seeing this action,
+			# create a new action mapping for it.
+			if action not in processed_actions:
+				processed_actions[action] = GUIDEActionMapping.new()
+				processed_actions[action].action = action
 			
 			# We consolidate the inputs here, so we'll internally build a new
 			# action mapping that uses consolidated inputs rather than the
@@ -244,9 +251,6 @@ func _update_caches():
 			#   input and not have it affect further actions.
 			# - we make sure nobody shares triggers as they are stateful and
 			#   should not be shared.
-			
-			var effective_mapping  = GUIDEActionMapping.new()
-			effective_mapping.action = action
 
 			# now update the input mappings
 			for index in action_mapping.input_mappings.size():
@@ -286,13 +290,13 @@ func _update_caches():
 				new_input_mapping._initialize()
 				
 				# and add it to the new mapping
-				effective_mapping.input_mappings.append(new_input_mapping)
+				processed_actions[action].input_mappings.append(new_input_mapping)
 
-				
-			# if any binding remains, add the mapping to the list of active
-			# action mappings
-			if not effective_mapping.input_mappings.is_empty():
-				_active_action_mappings.append(effective_mapping)
+	# if any binding remains, add the mapping to the list of active
+	# action mappings
+	for action in processed_actions:
+		if not processed_actions[action].input_mappings.is_empty():
+			_active_action_mappings.append(processed_actions[action])
 
 	# INVARIANT: all _active_action_mappings now have actions.
 
