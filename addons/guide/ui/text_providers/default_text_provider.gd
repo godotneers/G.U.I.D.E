@@ -131,9 +131,9 @@ func get_text(input:GUIDEInput) -> String:
 	if input is GUIDEInputTouchAxis1D:
 		match input.axis:
 			GUIDEInputTouchAxis1D.GUIDEInputTouchAxis.X:
-				_format(tr("Touch Left/Right %s") % [input.finger_index  if input.finger_index >= 0 else "Average"])
+				return _format(tr("Touch Left/Right %s") % [input.finger_index  if input.finger_index >= 0 else "Average"])
 			GUIDEInputTouchAxis1D.GUIDEInputTouchAxis.Y:
-				_format(tr("Touch Up/Down %s") % [input.finger_index  if input.finger_index >= 0 else "Average"])
+				return _format(tr("Touch Up/Down %s") % [input.finger_index  if input.finger_index >= 0 else "Average"])
 	
 	if input is GUIDEInputTouchAxis2D:
 		return _format(tr("Touch Axis 2D %s") % [input.finger_index  if input.finger_index >= 0 else "Average"])
