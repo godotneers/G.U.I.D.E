@@ -29,7 +29,6 @@ This example demonstrates all the current features of the GUIDE hint system for 
 
 ### 5. Dynamic Layouts
 - Runtime layout switching
-- Animation between different patterns
 - Context-sensitive arrangements
 
 ## Builder Pattern Usage
