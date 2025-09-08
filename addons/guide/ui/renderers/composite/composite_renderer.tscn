@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bqxvw12h3lq4v"]
+
+[ext_resource type="Script" path="res://addons/guide/ui/renderers/composite/composite_renderer.gd" id="1_x8k3d"]
+
+[node name="CompositeRenderer" type="Control"]
+script = ExtResource("1_x8k3d")
