@@ -139,8 +139,7 @@ func _handle_composite_job(job: CompositeJob):
 	# Wait for render_with_hint to complete (it's async)
 	renderer.render_with_hint(job.hint, job.action_mapping, job.available_renderers)
 
-	# Give more time for composite rendering since it's async
-	await get_tree().process_frame
+	# Give adequate time for composite rendering since it's async
 	await get_tree().process_frame
 	await get_tree().process_frame
 	await get_tree().process_frame
@@ -152,30 +151,27 @@ func _handle_composite_job(job: CompositeJob):
 	if actual_size == Vector2.ZERO:
 		actual_size = Vector2(64, 64) # fallback
 
-	# Debug output to help diagnose issues
-	print("Composite renderer size: ", actual_size, " for height: ", job.height)
-
 	# Ensure we don't have invalid sizes
 	if actual_size.x <= 0 or actual_size.y <= 0:
 		push_warning("Invalid composite renderer size: ", actual_size)
 		actual_size = Vector2(64, 64)
 
-	# Prevent viewport from becoming too large
-	var max_viewport_size = Vector2(2048, 2048)
-	if actual_size.x > max_viewport_size.x or actual_size.y > max_viewport_size.y:
-		var scale_factor = min(max_viewport_size.x / actual_size.x, max_viewport_size.y / actual_size.y)
-		actual_size *= scale_factor
-		print("Scaled down composite renderer to: ", actual_size)
-
+	# Apply scaling to fit the requested height
 	var scale = float(job.height) / float(actual_size.y)
 	_root.scale = Vector2.ONE * scale
 	_sub_viewport.size = actual_size * scale
 
+	# Limit viewport size to prevent performance issues
+	var max_viewport_size = Vector2(2048, 2048)
+	if _sub_viewport.size.x > max_viewport_size.x or _sub_viewport.size.y > max_viewport_size.y:
+		var viewport_scale = min(max_viewport_size.x / _sub_viewport.size.x, max_viewport_size.y / _sub_viewport.size.y)
+		_sub_viewport.size *= viewport_scale
+		_root.scale *= viewport_scale
+		print("Scaled down viewport to prevent overflow: ", _sub_viewport.size)
+
 	_sub_viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 
-	# Give even more time for composite rendering to settle
-	await get_tree().process_frame
-	await get_tree().process_frame
+	# Give final frames for everything to settle
 	await get_tree().process_frame
 	await get_tree().process_frame
 

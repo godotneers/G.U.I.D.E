@@ -32,7 +32,7 @@ func _setup_basic_example():
 	var formatter = GUIDEInputFormatter.for_active_contexts(60)
 
 	# Basic cross layout - default for WASD/arrow keys (W AND UP ARROW SHOULD BE the FIRST INPUT if not use the configure_input for more control)
-	var basic_hint = GUIDELayoutHint.cross(35.0).with_spacing(100)
+	var basic_hint = GUIDELayoutHint.cross(35.0).with_spacing(100).with_global_offset(Vector2(0,30))
 	formatter.add_icon_hint(movement_action, basic_hint)
 
 	var icon_text = await formatter.action_as_richtext_async(movement_action)
@@ -40,7 +40,6 @@ func _setup_basic_example():
 	basic_example.bbcode_enabled = true
 
 func _setup_preset_examples():
-
 	var formatter = GUIDEInputFormatter.for_active_contexts(40)
 
 	# Showcase different preset layouts
@@ -81,7 +80,7 @@ func _setup_custom_example():
 
 	var formatter = GUIDEInputFormatter.for_active_contexts(60)
 
-	# Custom diamond arrangement with unique styling
+	# Custom diamond arrangement with unique styling and global offset
 	var custom_positions: Array[Vector2] = [
 		Vector2(0, -80), # Top
 		Vector2(90, 0), # Left
@@ -89,12 +88,13 @@ func _setup_custom_example():
 
 	var custom_hint = GUIDELayoutHint.custom(custom_positions) \
 		.with_input_config(0, 1.0, 0, Vector2.ZERO, Color.GOLD) \
-		.with_input_config(1, 1.0, 0, Vector2.ZERO, Color.GOLD)
+		.with_input_config(1, 1.0, 0, Vector2.ZERO, Color.GOLD) \
+		.with_global_offset(Vector2(10, -5)) # Offset entire composite
 
 	formatter.add_icon_hint(spell_action, custom_hint)
 
 	var icon_text = await formatter.action_as_richtext_async(spell_action)
-	custom_example.text = "Spell Casting: " + icon_text + " (Custom positions)"
+	custom_example.text = "Spell Casting: " + icon_text + " (Custom positions with global offset)"
 	custom_example.bbcode_enabled = true
 
 func _setup_animated_example():
@@ -123,17 +123,17 @@ func _update_animated_example():
 
 	match current_animation_frame:
 		0:
-			hint = GUIDELayoutHint.cross(100.0).with_global_tint(Color.CYAN)
+			hint = GUIDELayoutHint.cross(100.0).with_global_tint(Color.CYAN).with_global_offset(Vector2(0, 0))
 			description = "Cross Layout"
 		1:
-			hint = GUIDELayoutHint.horizontal(100.0).with_global_tint(Color.YELLOW)
-			description = "Horizontal Layout"
+			hint = GUIDELayoutHint.horizontal(100.0).with_global_tint(Color.YELLOW).with_global_offset(Vector2(5, -3))
+			description = "Horizontal Layout (offset)"
 		2:
-			hint = GUIDELayoutHint.circle(100.0).with_global_tint(Color.LIGHT_GREEN)
-			description = "Circle Layout"
+			hint = GUIDELayoutHint.circle(100.0).with_global_tint(Color.LIGHT_GREEN).with_global_offset(Vector2(-3, 2))
+			description = "Circle Layout (offset)"
 		3:
-			hint = GUIDELayoutHint.grid(2, 100.0).with_global_tint(Color.LIGHT_CORAL)
-			description = "Grid Layout"
+			hint = GUIDELayoutHint.grid(2, 100.0).with_global_tint(Color.LIGHT_CORAL).with_global_offset(Vector2(2, -2))
+			description = "Grid Layout (offset)"
 
 	formatter.add_icon_hint(movement_action, hint)
 	var icon_text = await formatter.action_as_richtext_async(movement_action)

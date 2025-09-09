@@ -267,6 +267,12 @@ func set_global_tint(color: Color) -> void:
 		global_config = GUIDEIconHint.IconDisplayConfig.new()
 	global_config.tint = color
 
+## Convenience method to set global offset for the entire composite icon
+func set_global_offset(offset: Vector2) -> void:
+	if global_config == null:
+		global_config = GUIDEIconHint.IconDisplayConfig.new()
+	global_config.global_offset = offset
+
 ## Convenience method to configure a specific input by index
 ## This affects only the individual icon, not the whole composite
 func configure_input(index: int, scale: float = 1.0, rotation_degrees: float = 0.0, offset: Vector2 = Vector2.ZERO, tint: Color = Color.WHITE) -> void:
@@ -328,6 +334,11 @@ func with_global_tint(color: Color) -> GUIDELayoutHint:
 ## Sets global rotation and returns self for chaining
 func with_global_rotation(degrees: float) -> GUIDELayoutHint:
 	set_global_rotation(degrees)
+	return self
+
+## Sets global offset and returns self for chaining
+func with_global_offset(offset: Vector2) -> GUIDELayoutHint:
+	set_global_offset(offset)
 	return self
 
 ## Configures a specific input and returns self for chaining

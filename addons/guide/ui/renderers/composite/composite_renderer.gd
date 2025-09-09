@@ -9,7 +9,6 @@ var _sub_renderers: Array[GUIDEIconRenderer] = []
 
 func _ready():
 	super._ready()
-	priority = -10 # Higher priority than individual renderers
 
 func supports(input: GUIDEInput) -> bool:
 	# This renderer doesn't support individual inputs directly
@@ -32,10 +31,10 @@ func render_with_hint(hint: GUIDEIconHint, action_mapping: GUIDEActionMapping, a
 	var min_pos = Vector2(INF, INF)
 	var max_pos = Vector2(-INF, -INF)
 	var sub_renderer_infos: Array = []
-	var typical_icon_size = Vector2(32, 32) # Default assumption
 
-	# Get global tint
+	# Get global tint and offset
 	var global_tint = _get_global_tint_from_hint()
+	var global_offset = _get_global_offset_from_hint()
 
 	# First pass: create all sub-renderers and collect size info
 	for icon_pos in layout:
@@ -57,15 +56,12 @@ func render_with_hint(hint: GUIDEIconHint, action_mapping: GUIDEActionMapping, a
 		if renderer_size == Vector2.ZERO:
 			renderer_size = sub_renderer.custom_minimum_size
 		if renderer_size == Vector2.ZERO:
-			renderer_size = typical_icon_size
-		else:
-			# Update our understanding of typical icon size
-			typical_icon_size = renderer_size
+			renderer_size = Vector2(32, 32) # Default fallback
 
 		# Apply visual configurations (per-input only)
 		_apply_visual_config(sub_renderer, icon_pos)
 
-		# Store info for second pass
+		# Store info for positioning
 		var info = {
 			"renderer": sub_renderer,
 			"position": icon_pos.position,
@@ -75,14 +71,7 @@ func render_with_hint(hint: GUIDEIconHint, action_mapping: GUIDEActionMapping, a
 		}
 		sub_renderer_infos.append(info)
 
-	# Validate spacing against icon sizes to prevent viewport overflow
-	if hint is GUIDELayoutHint:
-		var layout_hint = hint as GUIDELayoutHint
-		var max_safe_spacing = _calculate_max_safe_spacing(typical_icon_size, sub_renderer_infos.size())
-		if layout_hint.spacing > max_safe_spacing:
-			push_warning("Spacing ", layout_hint.spacing, " too large for icon size ", typical_icon_size, ". Max safe: ", max_safe_spacing)
-
-	# Second pass: calculate bounds properly
+	# Second pass: calculate bounds for proper sizing
 	for info in sub_renderer_infos:
 		var pos = info.position
 		var scaled_size = info.size * info.scale
@@ -93,25 +82,12 @@ func render_with_hint(hint: GUIDEIconHint, action_mapping: GUIDEActionMapping, a
 		max_pos.x = max(max_pos.x, pos.x + scaled_size.x)
 		max_pos.y = max(max_pos.y, pos.y + scaled_size.y)
 
-	# Calculate final size with safety limits
+	# Calculate final size
 	var final_size = max_pos - min_pos
 	if final_size.x <= 0 or final_size.y <= 0:
-		final_size = typical_icon_size
+		final_size = Vector2(64, 64) # Reasonable fallback
 
-	# Apply reasonable limits to prevent viewport issues
-	var max_total_size = Vector2(1500, 1500) # Reduced from 2048 for safety
-	final_size.x = min(final_size.x, max_total_size.x)
-	final_size.y = min(final_size.y, max_total_size.y)
-
-	# If size is still too large, scale down all positions
-	if final_size.x > max_total_size.x or final_size.y > max_total_size.y:
-		var scale_factor = min(max_total_size.x / final_size.x, max_total_size.y / final_size.y)
-		for info in sub_renderer_infos:
-			info.position *= scale_factor
-		final_size *= scale_factor
-		print("Scaled down composite layout by factor: ", scale_factor)
-
-	# Third pass: position renderers
+	# Third pass: position renderers relative to min_pos
 	var offset = Vector2(-min(min_pos.x, 0), -min(min_pos.y, 0))
 	for info in sub_renderer_infos:
 		var sub_renderer = info.renderer
@@ -123,15 +99,17 @@ func render_with_hint(hint: GUIDEIconHint, action_mapping: GUIDEActionMapping, a
 	if global_tint != Color.WHITE:
 		modulate = global_tint
 
+	# Apply global offset to the entire composite
+	if global_offset != Vector2.ZERO:
+		position += global_offset
+
 	# Adjust final size if we had to offset
 	if offset != Vector2.ZERO:
 		final_size += offset
 
-	# Set our size
+	# Set our size - let icon_maker handle any scaling needed
 	custom_minimum_size = final_size
 	size = final_size
-
-	print("Final composite size: ", final_size)
 
 func _apply_visual_config(sub_renderer: GUIDEIconRenderer, icon_pos: GUIDEIconHint.IconPosition) -> void:
 	# Apply tint
@@ -177,14 +155,12 @@ func render(input: GUIDEInput) -> void:
 	# This should not be called directly
 	push_warning("CompositeRenderer.render() called directly. Use render_with_hint() instead.")
 
-func _calculate_max_safe_spacing(icon_size: Vector2, icon_count: int) -> float:
-	# Calculate safe spacing based on icon size and count to prevent viewport overflow
-	var max_viewport_size = 1200.0 # Conservative limit
-	var estimated_layout_dimension = sqrt(icon_count) * 2 # Rough estimate of layout spread
-	var max_safe = (max_viewport_size - icon_size.x * estimated_layout_dimension) / estimated_layout_dimension
-	return max(16.0, min(max_safe, 200.0)) # Clamp between reasonable bounds
-
 func _get_global_tint_from_hint() -> Color:
 	if _current_hint != null and _current_hint.global_config != null:
 		return _current_hint.global_config.tint
 	return Color.WHITE
+
+func _get_global_offset_from_hint() -> Vector2:
+	if _current_hint != null and _current_hint.global_config != null:
+		return _current_hint.global_config.global_offset
+	return Vector2.ZERO

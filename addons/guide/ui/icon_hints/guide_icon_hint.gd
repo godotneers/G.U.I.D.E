@@ -74,6 +74,8 @@ class IconDisplayConfig:
 	@export var rotation: float = 0.0
 	## Position offset
 	@export var offset: Vector2 = Vector2.ZERO
+	## Global offset for the entire composite (only used in global_config)
+	@export var global_offset: Vector2 = Vector2.ZERO
 	## Tint color
 	@export var tint: Color = Color.WHITE
 	## Opacity (0.0 to 1.0)
@@ -85,6 +87,7 @@ class IconDisplayConfig:
 
 	func get_cache_key() -> String:
 		var key = str(scale) + ":" + str(rotation) + ":" + str(offset.x) + "," + str(offset.y)
+		key += ":" + str(global_offset.x) + "," + str(global_offset.y)
 		key += ":" + str(tint.r) + "," + str(tint.g) + "," + str(tint.b) + "," + str(tint.a)
 		key += ":" + str(opacity) + ":" + str(flip_h) + ":" + str(flip_v)
 		return key
