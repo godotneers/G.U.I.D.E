@@ -31,33 +31,37 @@ func _setup_basic_example():
 
 	var formatter = GUIDEInputFormatter.for_active_contexts(60)
 
-	# Basic cross layout - default for WASD/arrow keys (W AND UP ARROW SHOULD BE the FIRST INPUT if not use the configure_input for more control)
-	var basic_hint = GUIDELayoutHint.cross(35.0).with_spacing(100).with_global_offset(Vector2(0,30))
+	# Basic cross layout - show only first 4 inputs to avoid WASD + joystick conflicts
+	var basic_hint = GUIDELayoutHint.cross(35.0) \
+		.with_spacing(100) \
+		.with_global_offset(Vector2(0, 30)) \
+		 .with_max_inputs(4) # Limit to first 4 inputs
+
 	formatter.add_icon_hint(movement_action, basic_hint)
 
 	var icon_text = await formatter.action_as_richtext_async(movement_action)
-	basic_example.text = "Move with " + icon_text
+	basic_example.text = "Move with " + icon_text + " (First 4 inputs)"
 	basic_example.bbcode_enabled = true
 
 func _setup_preset_examples():
 	var formatter = GUIDEInputFormatter.for_active_contexts(40)
 
-	# Showcase different preset layouts
+	# Showcase different preset layouts with simple input selection
 	var examples = [
 		{
-			"hint": GUIDELayoutHint.compact_cross(),
+			"hint": GUIDELayoutHint.compact_cross().with_first_inputs(4),
 			"action": movement_action,
-			"label": "Compact Cross:"
+			"label": "Compact Cross (first 4):"
 		},
 		{
-			"hint": GUIDELayoutHint.horizontal(100),
+			"hint": GUIDELayoutHint.horizontal(100).with_inputs([0, 1]), # First 2 inputs only
 			"action": spell_action,
-			"label": "Spaced Horizontal:"
+			"label": "Horizontal (first 2):"
 		},
 		{
-			"hint": GUIDELayoutHint.grid_3x(),
+			"hint": GUIDELayoutHint.grid_3x().with_max_inputs(4),
 			"action": movement_action,
-			"label": "3-Column Grid:"
+			"label": "Grid (with max 4 inputs):"
 		},
 	]
 
@@ -123,16 +127,16 @@ func _update_animated_example():
 
 	match current_animation_frame:
 		0:
-			hint = GUIDELayoutHint.cross(100.0).with_global_tint(Color.CYAN).with_global_offset(Vector2(0, 0))
+			hint = GUIDELayoutHint.cross(100.0).with_global_tint(Color.CYAN).with_global_offset(Vector2(0, 0)).with_max_inputs(4)
 			description = "Cross Layout"
 		1:
-			hint = GUIDELayoutHint.horizontal(100.0).with_global_tint(Color.YELLOW).with_global_offset(Vector2(5, -3))
+			hint = GUIDELayoutHint.horizontal(100.0).with_global_tint(Color.YELLOW).with_global_offset(Vector2(5, -3)).with_max_inputs(4)
 			description = "Horizontal Layout (offset)"
 		2:
-			hint = GUIDELayoutHint.circle(100.0).with_global_tint(Color.LIGHT_GREEN).with_global_offset(Vector2(-3, 2))
-			description = "Circle Layout (offset)"
+			hint = GUIDELayoutHint.new().with_input_indices([4])
+			description = "Input Pick index"
 		3:
-			hint = GUIDELayoutHint.grid(2, 100.0).with_global_tint(Color.LIGHT_CORAL).with_global_offset(Vector2(2, -2))
+			hint = GUIDELayoutHint.grid(2, 100.0).with_global_tint(Color.LIGHT_CORAL).with_global_offset(Vector2(2, -2)).with_max_inputs(4)
 			description = "Grid Layout (offset)"
 
 	formatter.add_icon_hint(movement_action, hint)
@@ -163,3 +167,19 @@ func create_accessibility_hint(action: GUIDEAction, high_contrast: bool, large_i
 		hint = hint.with_input_config(0, 1.5, 0, Vector2.ZERO, Color.YELLOW)
 
 	return hint
+
+
+## Example of input selection for different scenarios
+func create_input_specific_hint(action: GUIDEAction, scenario: String) -> GUIDEIconHint:
+	match scenario:
+		"wasd_only":
+			# Show only first 4 inputs (typically WASD)
+			return GUIDELayoutHint.cross(40.0).with_first_inputs(4)
+		"primary_secondary":
+			# Show only first 2 inputs
+			return GUIDELayoutHint.horizontal(40.0).with_inputs([0, 1])
+		"specific_keys":
+			# Show specific input indices
+			return GUIDELayoutHint.cross(40.0).with_inputs([0, 2, 4]) # 1st, 3rd, 5th inputs
+		_:
+			return GUIDELayoutHint.cross(40.0).with_max_inputs(4)

@@ -43,6 +43,12 @@ func get_layout(action_mapping: GUIDEActionMapping) -> Array:
 	if inputs.is_empty():
 		return layout
 
+	# Apply input selection
+	inputs = _select_inputs(inputs)
+
+	if inputs.is_empty():
+		return layout
+
 	# Sort inputs if requested
 	if sort_inputs_by_type:
 		inputs = _sort_inputs_by_type(inputs)
@@ -251,6 +257,9 @@ func can_apply_to(action_mapping: GUIDEActionMapping) -> bool:
 func _get_additional_cache_data() -> String:
 	var data = str(pattern) + ":" + str(spacing) + ":" + str(grid_columns) + ":" + str(circle_radius) + ":"
 	data += str(center_first_input) + ":" + str(sort_inputs_by_type) + ":"
+	data += str(max_inputs) + ":"
+	for index in input_indices:
+		data += str(index) + ","
 	for pos in custom_positions:
 		data += str(pos.x) + "," + str(pos.y) + ";"
 	return data
@@ -294,6 +303,11 @@ func configure_input(index: int, scale: float = 1.0, rotation_degrees: float = 0
 ## Sets the layout pattern and returns self for chaining
 func with_pattern(p: LayoutPattern) -> GUIDELayoutHint:
 	pattern = p
+	return self
+
+## Sets the maximum number of inputs to show and returns self for chaining
+func with_max_inputs(n: int) -> GUIDELayoutHint:
+	max_inputs = n
 	return self
 
 ## Sets the spacing and returns self for chaining
@@ -345,6 +359,25 @@ func with_global_offset(offset: Vector2) -> GUIDELayoutHint:
 func with_input_config(index: int, scale: float = 1.0, rotation_degrees: float = 0.0, offset: Vector2 = Vector2.ZERO, tint: Color = Color.WHITE) -> GUIDELayoutHint:
 	configure_input(index, scale, rotation_degrees, offset, tint)
 	return self
+
+## Sets specific input indices to include and returns self for chaining
+func with_input_indices(indices: Array[int]) -> GUIDELayoutHint:
+	input_indices = indices
+	return self
+
+## Sets first N inputs only and returns self for chaining
+func with_first_inputs(count: int) -> GUIDELayoutHint:
+	max_inputs = count
+	input_indices = []
+	return self
+
+## Convenience method: Show only the first input
+func with_first_input_only() -> GUIDELayoutHint:
+	return with_input_indices([0])
+
+## Convenience method: Show only specific inputs by index
+func with_inputs(indices: Array[int]) -> GUIDELayoutHint:
+	return with_input_indices(indices)
 
 ## Convenience method: Creates a horizontal layout with specified spacing
 static func horizontal(spacing: float = 32.0) -> GUIDELayoutHint:

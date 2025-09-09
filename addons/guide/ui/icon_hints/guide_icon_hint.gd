@@ -9,6 +9,12 @@ extends Resource
 ## Per-input configurations - maps input index to IconDisplayConfig
 @export var input_configs: Array[IconDisplayConfig] = []
 
+## Maximum number of inputs to include (-1 = no limit)
+@export var max_inputs: int = -1
+
+## Specific input indices to include (empty = include all, respecting max_inputs)
+@export var input_indices: Array[int] = []
+
 ## Returns a unique cache key for this hint configuration
 func get_cache_key() -> String:
 	var key = get_script().resource_path + ":"
@@ -48,6 +54,27 @@ func _apply_config_to_position(position: IconPosition, input_index: int) -> void
 		position.opacity = config.opacity
 		position.flip_h = config.flip_h
 		position.flip_v = config.flip_v
+
+## Helper method to select inputs based on max_inputs and input_indices
+func _select_inputs(inputs: Array[GUIDEInput]) -> Array[GUIDEInput]:
+	var selected: Array[GUIDEInput] = []
+
+	if input_indices.is_empty():
+		# No specific indices - use all inputs up to max_inputs
+		var limit = max_inputs if max_inputs > 0 else inputs.size()
+		for i in range(min(inputs.size(), limit)):
+			selected.append(inputs[i])
+	else:
+		# Use specific indices
+		for index in input_indices:
+			if index >= 0 and index < inputs.size():
+				selected.append(inputs[index])
+
+		# Apply max_inputs limit if specified
+		if max_inputs > 0 and selected.size() > max_inputs:
+			selected = selected.slice(0, max_inputs)
+
+	return selected
 
 class IconPosition:
 	var input: GUIDEInput
