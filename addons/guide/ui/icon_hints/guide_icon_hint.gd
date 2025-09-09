@@ -103,6 +103,8 @@ class IconDisplayConfig:
 	@export var offset: Vector2 = Vector2.ZERO
 	## Global offset for the entire composite (only used in global_config)
 	@export var global_offset: Vector2 = Vector2.ZERO
+	## Global scale for the entire composite (only used in global_config)
+	@export var global_scale: float = 1.0
 	## Tint color
 	@export var tint: Color = Color.WHITE
 	## Opacity (0.0 to 1.0)
@@ -112,9 +114,18 @@ class IconDisplayConfig:
 	## Whether to flip vertically
 	@export var flip_v: bool = false
 
+	## Advanced styling options
+	@export var border_width: float = 0.0
+	@export var border_color: Color = Color.WHITE
+	@export var background_enabled: bool = false
+	@export var background_color: Color = Color(0, 0, 0, 0.3)
+	@export var background_radius: float = 8.0
+
 	func get_cache_key() -> String:
 		var key = str(scale) + ":" + str(rotation) + ":" + str(offset.x) + "," + str(offset.y)
-		key += ":" + str(global_offset.x) + "," + str(global_offset.y)
+		key += ":" + str(global_offset.x) + "," + str(global_offset.y) + ":" + str(global_scale)
 		key += ":" + str(tint.r) + "," + str(tint.g) + "," + str(tint.b) + "," + str(tint.a)
 		key += ":" + str(opacity) + ":" + str(flip_h) + ":" + str(flip_v)
+		key += ":" + str(border_width) + ":" + str(border_color.to_html())
+		key += ":" + str(background_enabled)
 		return key

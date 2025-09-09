@@ -15,7 +15,6 @@ extends Control
 
 var current_animation_frame = 0
 var animation_timer = 0.0
-
 func _ready():
 	# Set up basic examples
 	GUIDE.enable_mapping_context(mapping_context)
@@ -23,6 +22,7 @@ func _ready():
 	_setup_preset_examples()
 	_setup_custom_example()
 	_setup_animated_example()
+
 
 func _setup_basic_example():
 	if not movement_action:
@@ -44,24 +44,29 @@ func _setup_basic_example():
 	basic_example.bbcode_enabled = true
 
 func _setup_preset_examples():
-	var formatter = GUIDEInputFormatter.for_active_contexts(40)
+	var formatter = GUIDEInputFormatter.for_active_contexts(60)
 
-	# Showcase different preset layouts with simple input selection
+	# Showcase different preset layouts with advanced styling
 	var examples = [
 		{
-			"hint": GUIDELayoutHint.compact_cross().with_first_inputs(4),
+			"hint": GUIDELayoutHint.neon_cross().with_first_inputs(4).with_spacing(120),
 			"action": movement_action,
-			"label": "Compact Cross (first 4):"
+			"label": "Neon Cross Style (scaled up):"
 		},
 		{
-			"hint": GUIDELayoutHint.horizontal(100).with_inputs([0, 1]), # First 2 inputs only
+			"hint": GUIDELayoutHint.retro_horizontal(50) \
+				.with_inputs([0, 1]) \
+				.with_global_scale(0.5) \
+				.with_global_offset(Vector2(0, 20)),
 			"action": spell_action,
-			"label": "Horizontal (first 2):"
+			"label": "Retro Horizontal (scaled down):"
 		},
 		{
-			"hint": GUIDELayoutHint.grid_3x().with_max_inputs(4),
+			"hint": GUIDELayoutHint.gaming_grid(2, 120) \
+				.with_max_inputs(4) \
+				 .with_global_scale(1),
 			"action": movement_action,
-			"label": "Grid (with max 4 inputs):"
+			"label": "Gaming Grid:"
 		},
 	]
 
@@ -84,22 +89,39 @@ func _setup_custom_example():
 
 	var formatter = GUIDEInputFormatter.for_active_contexts(60)
 
-	# Custom diamond arrangement with unique styling and global offset
+	# Advanced custom styling example
 	var custom_positions: Array[Vector2] = [
-		Vector2(0, -80), # Top
-		Vector2(90, 0), # Left
+		Vector2(0, -100), # Top
+		Vector2(90, 0), # Right
 	]
 
 	var custom_hint = GUIDELayoutHint.custom(custom_positions) \
 		.with_input_config(0, 1.0, 0, Vector2.ZERO, Color.GOLD) \
-		.with_input_config(1, 1.0, 0, Vector2.ZERO, Color.GOLD) \
-		.with_global_offset(Vector2(10, -5)) # Offset entire composite
+		.with_input_border(0, 3.0, Color.RED) \
+		.with_input_config(1, 1.0, 0, Vector2.ZERO, Color.WHITE) \
+		.with_input_background(1, Color(0, 0.2, 0.4, 0.7), 12.0) \
+		.with_input_border(1, 2.0, Color.BLUE) \
+		.with_global_scale(1.2) \
+		.with_global_offset(Vector2(-10, 0))
 
 	formatter.add_icon_hint(spell_action, custom_hint)
 
 	var icon_text = await formatter.action_as_richtext_async(spell_action)
-	custom_example.text = "Spell Casting: " + icon_text + " (Custom positions with global offset)"
+	custom_example.text = "Advanced Styling: " + icon_text + " (Custom effects with global scale 1.2x)"
 	custom_example.bbcode_enabled = true
+
+## Example of creating hints for different controller types
+func create_controller_specific_hint(action: GUIDEAction) -> GUIDEIconHint:
+	# This would typically check the active input device
+	var active_device = "keyboard" # Placeholder
+
+	match active_device:
+		"xbox_controller":
+			return GUIDELayoutHint.diamond(40.0).with_global_tint(Color.GREEN)
+		"playstation_controller":
+			return GUIDELayoutHint.diamond(40.0).with_global_tint(Color.BLUE)
+		_:
+			return GUIDELayoutHint.cross()
 
 func _setup_animated_example():
 	if not movement_action:
@@ -143,23 +165,11 @@ func _update_animated_example():
 	var icon_text = await formatter.action_as_richtext_async(movement_action)
 	animated_example.text = "Dynamic: " + icon_text + " (" + description + ")"
 
-## Example of creating hints for different controller types
-func create_controller_specific_hint(action: GUIDEAction) -> GUIDEIconHint:
-	# This would typically check the active input device
-	var active_device = "keyboard" # Placeholder
-
-	match active_device:
-		"xbox_controller":
-			return GUIDELayoutHint.diamond(40.0).with_global_tint(Color.GREEN)
-		"playstation_controller":
-			return GUIDELayoutHint.diamond(40.0).with_global_tint(Color.BLUE)
-		_:
-			return GUIDELayoutHint.cross()
-
 ## Example of accessibility-focused hints
 func create_accessibility_hint(action: GUIDEAction, high_contrast: bool, large_icons: bool) -> GUIDEIconHint:
 	var spacing = 50.0 if large_icons else 32.0
-	var hint = GUIDELayoutHint.cross(spacing)
+	var scale = 1.8 if large_icons else 1.0 # Now 1.8 makes it 1.8x larger
+	var hint = GUIDELayoutHint.cross(spacing).with_global_scale(scale)
 
 	if high_contrast:
 		hint = hint.with_global_tint(Color.WHITE)
@@ -167,7 +177,6 @@ func create_accessibility_hint(action: GUIDEAction, high_contrast: bool, large_i
 		hint = hint.with_input_config(0, 1.5, 0, Vector2.ZERO, Color.YELLOW)
 
 	return hint
-
 
 ## Example of input selection for different scenarios
 func create_input_specific_hint(action: GUIDEAction, scenario: String) -> GUIDEIconHint:
@@ -183,3 +192,28 @@ func create_input_specific_hint(action: GUIDEAction, scenario: String) -> GUIDEI
 			return GUIDELayoutHint.cross(40.0).with_inputs([0, 2, 4]) # 1st, 3rd, 5th inputs
 		_:
 			return GUIDELayoutHint.cross(40.0).with_max_inputs(4)
+
+## Example of creating highly stylized hints for different moods/themes
+func create_themed_hint(action: GUIDEAction, theme: String) -> GUIDEIconHint:
+	match theme:
+		"cyberpunk":
+			return GUIDELayoutHint.cross(40.0) \
+				.with_global_tint(Color.CYAN) \
+				.with_all_inputs_border(2.0, Color.YELLOW)
+
+		"medieval":
+			return GUIDELayoutHint.cross(45.0) \
+				.with_global_tint(Color(0.8, 0.7, 0.4)) \
+				.with_all_inputs_background(Color(0.3, 0.2, 0.1, 0.8), 8.0) \
+				.with_all_inputs_border(2.0, Color(0.6, 0.5, 0.3))
+
+		"space":
+			return GUIDELayoutHint.circle(50.0) \
+				.with_global_tint(Color(0.7, 0.9, 1.0))
+
+		"horror":
+			return GUIDELayoutHint.cross(40.0) \
+				.with_global_tint(Color.DARK_RED)
+
+		_:
+			return GUIDELayoutHint.cross(40.0).with_preset_style("minimal")

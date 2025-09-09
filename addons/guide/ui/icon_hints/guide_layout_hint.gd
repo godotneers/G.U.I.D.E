@@ -282,6 +282,12 @@ func set_global_offset(offset: Vector2) -> void:
 		global_config = GUIDEIconHint.IconDisplayConfig.new()
 	global_config.global_offset = offset
 
+## Convenience method to set global scale for the entire composite icon
+func set_global_scale(scale_multiplier: float) -> void:
+	if global_config == null:
+		global_config = GUIDEIconHint.IconDisplayConfig.new()
+	global_config.global_scale = clamp(scale_multiplier, 0.1, 5.0)
+
 ## Convenience method to configure a specific input by index
 ## This affects only the individual icon, not the whole composite
 func configure_input(index: int, scale: float = 1.0, rotation_degrees: float = 0.0, offset: Vector2 = Vector2.ZERO, tint: Color = Color.WHITE) -> void:
@@ -353,6 +359,11 @@ func with_global_rotation(degrees: float) -> GUIDELayoutHint:
 ## Sets global offset and returns self for chaining
 func with_global_offset(offset: Vector2) -> GUIDELayoutHint:
 	set_global_offset(offset)
+	return self
+
+## Sets global scale and returns self for chaining
+func with_global_scale(scale_multiplier: float) -> GUIDELayoutHint:
+	set_global_scale(scale_multiplier)
 	return self
 
 ## Configures a specific input and returns self for chaining
@@ -435,8 +446,107 @@ static func grid_4x() -> GUIDELayoutHint:
 
 ## Creates a small circle arrangement
 static func small_circle() -> GUIDELayoutHint:
-	return circle(100.0)
+	return circle(40.0)
 
 ## Creates a large circle arrangement
 static func large_circle() -> GUIDELayoutHint:
 	return circle(80.0)
+
+## Advanced styling methods for individual inputs
+
+## Adds border to a specific input
+func with_input_border(index: int, width: float, color: Color = Color.WHITE) -> GUIDELayoutHint:
+	_ensure_input_config(index)
+	input_configs[index].border_width = width
+	input_configs[index].border_color = color
+	return self
+
+## Adds background to a specific input
+func with_input_background(index: int, color: Color = Color(0, 0, 0, 0.3), radius: float = 8.0) -> GUIDELayoutHint:
+	_ensure_input_config(index)
+	input_configs[index].background_enabled = true
+	input_configs[index].background_color = color
+	input_configs[index].background_radius = radius
+	return self
+
+## Convenience method to apply a preset style to all inputs
+func with_preset_style(style_name: String) -> GUIDELayoutHint:
+	match style_name:
+		"neon":
+			return _apply_neon_style()
+		"retro":
+			return _apply_retro_style()
+		"minimal":
+			return _apply_minimal_style()
+		"gaming":
+			return _apply_gaming_style()
+		"elegant":
+			return _apply_elegant_style()
+		_:
+			push_warning("Unknown preset style: " + style_name)
+			return self
+
+## Applies effects to all inputs in the layout
+func with_all_inputs_border(width: float, color: Color = Color.WHITE) -> GUIDELayoutHint:
+	for i in range(max(4, input_configs.size())):
+		with_input_border(i, width, color)
+	return self
+
+func with_all_inputs_background(color: Color = Color(0, 0, 0, 0.3), radius: float = 8.0) -> GUIDELayoutHint:
+	for i in range(input_configs.size()):
+		with_input_background(i, color, radius)
+	return self
+
+## Helper method to ensure input config exists
+func _ensure_input_config(index: int) -> void:
+	while input_configs.size() <= index:
+		input_configs.append(null)
+
+	if input_configs[index] == null:
+		input_configs[index] = GUIDEIconHint.IconDisplayConfig.new()
+
+## Preset style implementations
+func _apply_neon_style() -> GUIDELayoutHint:
+	return with_global_tint(Color.CYAN) \
+			.with_global_scale(1.2) \
+			.with_all_inputs_border(2.0, Color.RED)
+
+func _apply_retro_style() -> GUIDELayoutHint:
+	return with_global_tint(Color.ORANGE) \
+			.with_global_scale(1.1) \
+			.with_all_inputs_background(Color(0.2, 0.1, 0.0, 0.8), 4.0) \
+			.with_all_inputs_border(1.0, Color.YELLOW)
+
+func _apply_minimal_style() -> GUIDELayoutHint:
+	return with_global_tint(Color(0.9, 0.9, 0.9)) \
+			.with_global_scale(0.9) \
+			.with_all_inputs_background(Color(0, 0, 0, 0.1), 12.0)
+
+func _apply_gaming_style() -> GUIDELayoutHint:
+	return with_global_tint(Color.LIME_GREEN) \
+			.with_global_scale(1.3) \
+			.with_all_inputs_border(3.0, Color.GREEN)
+
+func _apply_elegant_style() -> GUIDELayoutHint:
+	return with_global_tint(Color(0.95, 0.95, 1.0)) \
+			.with_global_scale(1.1) \
+			.with_all_inputs_background(Color(0.1, 0.1, 0.2, 0.6), 16.0) \
+			.with_all_inputs_border(1.0, Color(0.8, 0.8, 1.0))
+
+## New preset methods with built-in styling
+
+## Creates a neon-styled cross layout
+static func neon_cross(spacing: float = 32.0) -> GUIDELayoutHint:
+	return cross(spacing).with_preset_style("neon")
+
+## Creates a retro-styled horizontal layout
+static func retro_horizontal(spacing: float = 32.0) -> GUIDELayoutHint:
+	return horizontal(spacing).with_preset_style("retro")
+
+## Creates a gaming-styled grid
+static func gaming_grid(columns: int = 2, spacing: float = 32.0) -> GUIDELayoutHint:
+	return grid(columns, spacing).with_preset_style("gaming")
+
+## Creates an elegant circle layout
+static func elegant_circle(radius: float = 64.0) -> GUIDELayoutHint:
+	return circle(radius).with_preset_style("elegant")
