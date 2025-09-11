@@ -115,11 +115,22 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 6
 
-[node name="AcceptDetectionButton" type="Button" parent="MarginContainer/MarginContainer/HBoxContainer/MarginContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/MarginContainer/HBoxContainer/MarginContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="AcceptDetectionButton" type="Button" parent="MarginContainer/MarginContainer/HBoxContainer/MarginContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Accept"
+
+[node name="CancelDetectionButton" type="Button" parent="MarginContainer/MarginContainer/HBoxContainer/MarginContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Cancle"
 
 [node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
@@ -207,7 +218,8 @@ script = ExtResource("3_c6q6r")
 [connection signal="pressed" from="MarginContainer/MarginContainer/HBoxContainer/MarginContainer/MarginContainer/VBoxContainer/HBoxContainer/Detect1DButton" to="." method="_on_detect_1d_button_pressed"]
 [connection signal="pressed" from="MarginContainer/MarginContainer/HBoxContainer/MarginContainer/MarginContainer/VBoxContainer/HBoxContainer/Detect2DButton" to="." method="_on_detect_2d_button_pressed"]
 [connection signal="pressed" from="MarginContainer/MarginContainer/HBoxContainer/MarginContainer/MarginContainer/VBoxContainer/HBoxContainer/Detect3DButton" to="." method="_on_detect_3d_button_pressed"]
-[connection signal="pressed" from="MarginContainer/MarginContainer/HBoxContainer/MarginContainer/MarginContainer/VBoxContainer/AcceptDetectionButton" to="." method="_on_accept_detection_button_pressed"]
+[connection signal="pressed" from="MarginContainer/MarginContainer/HBoxContainer/MarginContainer/MarginContainer/VBoxContainer/HBoxContainer2/AcceptDetectionButton" to="." method="_on_accept_detection_button_pressed"]
+[connection signal="pressed" from="MarginContainer/MarginContainer/HBoxContainer/MarginContainer/MarginContainer/VBoxContainer/HBoxContainer2/CancelDetectionButton" to="." method="_end_detect_input"]
 [connection signal="pressed" from="MarginContainer/MarginContainer/HBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer/SelectBoolButton" to="." method="_on_select_bool_button_pressed"]
 [connection signal="pressed" from="MarginContainer/MarginContainer/HBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer/Select1DButton" to="." method="_on_select_1d_button_pressed"]
 [connection signal="pressed" from="MarginContainer/MarginContainer/HBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer/Select2DButton" to="." method="_on_select_2d_button_pressed"]

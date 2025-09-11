@@ -16,6 +16,7 @@ signal input_selected(input:GUIDEInput)
 @onready var _select_3d_button:Button = %Select3DButton
 @onready var _instructions_label:Label = %InstructionsLabel
 @onready var _accept_detection_button:Button = %AcceptDetectionButton
+@onready var _cancel_detection_button = %CancelDetectionButton
 @onready var _input_detector:GUIDEInputDetector = %InputDetector
 @onready var _detect_bool_button:Button = %DetectBoolButton
 @onready var _detect_1d_button:Button = %Detect1DButton
@@ -24,6 +25,7 @@ signal input_selected(input:GUIDEInput)
 
 var _scanner:ClassScanner
 var _last_detected_input:GUIDEInput
+var _detection_cancelled: bool = false
 
 	
 func initialize(scanner:ClassScanner):
@@ -39,6 +41,8 @@ func _setup_dialog():
 	_show_inputs_of_value_type(GUIDEAction.GUIDEActionValueType.BOOL)
 	_instructions_label.text = tr("Press one of the buttons above to detect an input.")
 	_accept_detection_button.visible = false
+	_cancel_detection_button.visible = false
+
 	
 
 func _on_close_requested():
@@ -106,10 +110,15 @@ func _on_input_detector_detection_started():
 
 
 func _on_input_detector_input_detected(input:GUIDEInput):
+	if input == null or _detection_cancelled:
+		_detection_cancelled = false
+		return
+
 	_instructions_label.visible = false
 	_input_display.visible = true
 	_input_display.input = input
 	_accept_detection_button.visible = true
+	_cancel_detection_button.visible = false
 	_last_detected_input = input
 
 
@@ -118,9 +127,14 @@ func _begin_detect_input(type:GUIDEAction.GUIDEActionValueType):
 	_instructions_label.visible = true
 	_instructions_label.text = tr("Get ready...")
 	_accept_detection_button.visible = false
+	_cancel_detection_button.visible = true
 	_input_display.visible = false
 	_input_detector.detect(type)
 	
+func _end_detect_input():
+	_input_detector.abort_detection()
+	_detection_cancelled = true
+	_instructions_label.text = tr("Press one of the buttons above to detect an input.")
 
 func _on_detect_bool_button_pressed():
 	_detect_bool_button.release_focus()

@@ -224,9 +224,6 @@ func _input(event:InputEvent) -> void:
 	# feed the event into the state
 	_input_state._input(event)
 
-	# while detecting, we're the only ones consuming input and we eat this input
-	# to not accidentally trigger built-in Godot mappings (e.g. UI stuff)
-	get_viewport().set_input_as_handled()
 	# but we still feed it into GUIDE's global state so this state stays 
 	# up to date. This should have no effect because we disabled all mapping
 	# contexts.
@@ -257,7 +254,12 @@ func _input(event:InputEvent) -> void:
 				_try_detect_axis_2d(event)
 			GUIDEAction.GUIDEActionValueType.AXIS_3D:
 				_try_detect_axis_3d(event)
-
+		# Rather then always eating the event, we only eat it if we actually
+		# detected something. This way other input handling (e.g. UI) can still
+		# call_deferred is used here to allow UI elements to also process the event
+		# before we mark it as handled.
+		# it weird i know, but it works.  
+		get_viewport().set_input_as_handled.call_deferred()
 
 func _matches_device_types(event:InputEvent) -> bool:
 	if _device_types.is_empty():
