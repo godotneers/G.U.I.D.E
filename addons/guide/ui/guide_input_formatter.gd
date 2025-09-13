@@ -208,6 +208,30 @@ func _materialized_as_richtext_async(input:MaterializedInput) -> String:
 		
 	return separator.join(parts)
 		
+## Formats the action input as a Texture2D. This function
+## is async as icons may need to be rendered in the background which can take a few frames, so 
+## you will need to await on it.
+func action_as_texture_async(action:GUIDEAction) -> Texture2D:
+	print(_materialize_action_input(action))
+	return await _materialized_as_texture_async(_materialize_action_input(action))
+
+## Renders materialized input as texture.
+func _materialized_as_texture_async(input:MaterializedInput) -> Texture2D:
+	_ensure_readiness()
+	if input is MaterializedSimpleInput:
+		var icon:Texture2D = null
+		for renderer in _icon_renderers:
+			if renderer.supports(input.input):
+				icon = await _icon_maker.make_icon(input.input, renderer, _icon_size)
+				# first renderer wins
+				break
+		if icon == null:
+			push_warning("No renderer found for input ", input)
+			return null
+
+		return icon
+
+	return await _materialized_as_texture_async(input.parts[0])
 
 func _separator_for_input(input:MaterializedInput) -> String:
 	if input is MaterializedMixedInput:
