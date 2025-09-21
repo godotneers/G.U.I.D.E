@@ -10,6 +10,15 @@ class_name GUIDEInputState
 ## https://github.com/godotengine/godot/blob/80a3d205f1ad22e779a64921fb56d62b893881ae/core/input/input.cpp#L1821
 const ANY_JOY_DEVICE_ID: int = -1
 
+## We assign a virtual device ID for the virtual joystick inputs.
+## Virtual joystick device IDs will be negative, starting with -2 and going down from there.
+## This relies on the fact that Godot's device IDs for joysticks are always >= 0.
+const VIRTUAL_JOY_DEVICE_ID_OFFSET: int = -2
+
+## The set of currently connected virtual joy devices. Key is the device id,
+## value is the number of virtual sticks connected with this device id.
+var _virtual_joy_devices:Dictionary = {}
+
 ## Signalled, when the keyboard state has changed.
 signal keyboard_state_changed()
 ## Signalled, when the mouse motion state has changed.
@@ -62,6 +71,57 @@ func _init():
 	_clear()
 
 
+## Connects a new virtual joystick and returns its device id.
+## The returned device id will be negative, starting with -2 and going down from there.
+## Since virtual sticks are UI components and not real hardware, we need to give the
+## UI elements the chance to tell to which virtual stick they belong. For this
+## we introduce the stick_index. Any UI element tell which virtual stick it belongs to
+## by providing the same stick_index.
+func connect_virtual_stick(stick_index:int) -> int:
+	# we treat an invalid stick index as a stick index of 0 but print an error
+	# to let the user know something is wrong
+	if stick_index < 0:
+		push_error("Invalid stick index " + str(stick_index) + " for virtual stick. Must be >= 0.")
+		stick_index = 0	
+
+	var device_id:int = VIRTUAL_JOY_DEVICE_ID_OFFSET - stick_index
+	if _virtual_joy_devices.has(device_id):
+		# just record the additional connection and return the existing device id
+		_virtual_joy_devices[device_id] += 1
+		return device_id
+	
+	# new device
+	_virtual_joy_devices[device_id] = 1
+	
+	_refresh_joy_device_ids(0, 0)
+	
+	return device_id
+	
+	
+## Disconnects the virtual joystick with the given device id.
+## If no such device is connected, nothing happens.
+func disconnect_virtual_stick(device_id:int) -> void:
+	if not _virtual_joy_devices.has(device_id):
+		return
+		
+	var count:int = _virtual_joy_devices[device_id]
+	if count > 1:
+		# just reduce the connection count, but don't remove the device yet
+		_virtual_joy_devices[device_id] -= 1
+		return
+		
+	# last connection went away, so we can remove the device	
+	_virtual_joy_devices.erase(device_id)
+	_joy_index_to_device_id.erase(device_id)
+	
+	if _joy_buttons.has(device_id):
+		_joy_buttons.erase(device_id)
+		joy_button_state_changed.emit()
+		
+	if _joy_axes.has(device_id):
+		_joy_axes.erase(device_id)
+		joy_axis_state_changed.emit()
+
 # Used by the automated tests to make sure we don't have any leftovers from the 
 # last test.
 func _clear():
@@ -77,6 +137,8 @@ func _clear():
 	# ensure we have an entry for the virtual "any device id"
 	_joy_buttons[ANY_JOY_DEVICE_ID] = {}
 	_joy_axes[ANY_JOY_DEVICE_ID] = {}
+	
+	# pending states are created on demand, so we don't need to clear them here
 
 
 # Called when any joy device is connected or disconnected. This will refresh the joy device ids and clear out any	
@@ -84,10 +146,20 @@ func _clear():
 func _refresh_joy_device_ids(_ignore1, _ignore2):
 	# refresh the joy device ids
 	_joy_index_to_device_id.clear()
+	# get the real joys from the input system
 	var connected_joys:Array[int] = Input.get_connected_joypads()
+	# append the currently connected virtual joys
+	
+	connected_joys.append_array(_virtual_joy_devices.keys())
 	for i in connected_joys.size():
 		var device_id:int = connected_joys[i]
-		_joy_index_to_device_id[i] = device_id
+		if device_id > 0:
+			# godot's joys
+			_joy_index_to_device_id[i] = device_id
+		else:
+			# virtual joys
+			_joy_index_to_device_id[device_id] = device_id
+			
 		# ensure we have an inner dictionary for the device id
 		# by setting this here, we don't need to check for the device id
 		# on every input event

@@ -3,8 +3,8 @@ class_name GUIDEVirtualStickTextureRenderer
 extends GUIDEVirtualStickRenderer
 
 enum ShowMode {
-	ALWAYS,
-	ON_ACTUATE
+	ALWAYS = 0,
+	ON_ACTUATE = 1
 }
 
 ## When the sticks should be shown on screen.

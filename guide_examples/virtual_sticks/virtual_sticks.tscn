@@ -4,19 +4,30 @@
 [ext_resource type="Script" path="res://guide_examples/virtual_sticks/virtual_sticks.gd" id="1_naqqt"]
 [ext_resource type="PackedScene" uid="uid://dkr80d2pi0d41" path="res://addons/guide/debugger/guide_debugger.tscn" id="1_yjipb"]
 [ext_resource type="Resource" uid="uid://4bf73j4y33fd" path="res://guide_examples/virtual_sticks/mapping_contexts/mapping_context.tres" id="2_xu2j8"]
-[ext_resource type="Script" path="res://guide_examples/virtual_sticks/fancy_stick_renderer.gd" id="5_3bxv3"]
+[ext_resource type="PackedScene" uid="uid://dnsukbw60m8xf" path="res://guide_examples/virtual_sticks/ship/ship.tscn" id="3_scjee"]
+[ext_resource type="Resource" uid="uid://c36k5e3jjyp0w" path="res://guide_examples/virtual_sticks/mapping_contexts/move_ship.tres" id="4_1f0iq"]
 [ext_resource type="Script" path="res://addons/guide/ui/virtual_stick/texture_renderer/guide_virtual_stick_texture_renderer.gd" id="5_ejjjy"]
-[ext_resource type="Shader" path="res://guide_examples/virtual_sticks/fancy_stick_renderer.gdshader" id="6_mpi1f"]
-[ext_resource type="Texture2D" uid="uid://c07v7ndnkcqr8" path="res://icon.svg" id="7_xkm4i"]
+[ext_resource type="Resource" uid="uid://bjac08qt2mf2s" path="res://guide_examples/virtual_sticks/mapping_contexts/rotate_ship.tres" id="5_h0yu2"]
+[ext_resource type="PackedScene" uid="uid://vk1eogxf8v8b" path="res://guide_examples/virtual_sticks/custom_stick_renderer/custom_stick_renderer.tscn" id="9_pvxgq"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_bfhq4"]
-shader = ExtResource("6_mpi1f")
-shader_parameter/stick_offset = null
-shader_parameter/stick_color = Color(0.605187, 0.902141, 1, 1)
-
-[node name="VirtualSticks" type="Node2D"]
+[node name="VirtualSticks" type="Node"]
 script = ExtResource("1_naqqt")
 mapping_context = ExtResource("2_xu2j8")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.0305977, 3.65854e-05, 0.0974683, 1)
+
+[node name="Ship" parent="." instance=ExtResource("3_scjee")]
+position = Vector2(867, 425)
+rotation = -1.5708
+move_ship = ExtResource("4_1f0iq")
+rotate_ship = ExtResource("5_h0yu2")
 
 [node name="CanvasLayer2" type="CanvasLayer" parent="."]
 
@@ -36,14 +47,12 @@ grow_vertical = 0
 mouse_filter = 2
 script = ExtResource("1_8y7sk")
 input_mode = 1
+position_mode = 1
 
-[node name="FancyRenderer" type="Control" parent="CanvasLayer/LeftStick"]
+[node name="GUIDEVirtualStickTextureRenderer" type="Control" parent="CanvasLayer/LeftStick"]
 layout_mode = 2
-script = ExtResource("5_3bxv3")
-
-[node name="Stick" type="Sprite2D" parent="CanvasLayer/LeftStick/FancyRenderer"]
-material = SubResource("ShaderMaterial_bfhq4")
-texture = ExtResource("7_xkm4i")
+script = ExtResource("5_ejjjy")
+show_stick = 0
 
 [node name="RightStick" type="Container" parent="CanvasLayer"]
 anchors_preset = 3
@@ -51,18 +60,17 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -296.0
-offset_top = -262.0
-offset_right = -296.0
-offset_bottom = -262.0
+offset_left = -385.0
+offset_top = -205.0
+offset_right = -385.0
+offset_bottom = -205.0
 grow_horizontal = 0
 grow_vertical = 0
 mouse_filter = 2
 script = ExtResource("1_8y7sk")
+stick_radius = 120.0
+stick_position = 1
 input_mode = 1
-position_mode = 1
-draw_debug = true
 
-[node name="GUIDEVirtualStickTextureRenderer" type="Control" parent="CanvasLayer/RightStick"]
+[node name="CustomStickRenderer" parent="CanvasLayer/RightStick" instance=ExtResource("9_pvxgq")]
 layout_mode = 2
-script = ExtResource("5_ejjjy")

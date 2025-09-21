@@ -65,6 +65,10 @@ var _is_actuated: bool = false
 var _start_pos: Vector2
 var _current_pos: Vector2
 
+## The virtual joy id assigned to this stick.
+var _virtual_joy_id : int = 0
+
+
 var stick_relative_position:Vector2:
 	get: return _screen_to_world(_start_pos - _current_pos)
 
@@ -72,7 +76,9 @@ func _ready():
 	_start_pos = global_position
 	_current_pos = global_position
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_report_input()
+	if not Engine.is_editor_hint():
+		_virtual_joy_id = GUIDE._input_state.connect_virtual_stick(virtual_stick_index)
+		_report_input()
 
 
 func _input(event: InputEvent):
@@ -172,8 +178,8 @@ func _try_actuate(world_position: Vector2):
 
 
 func _move_towards(world_position: Vector2):
-	var direction = _start_pos.direction_to(world_position)
-	var distance = _start_pos.distance_to(world_position)
+	var direction:Vector2 = _start_pos.direction_to(world_position)
+	var distance:float = _start_pos.distance_to(world_position)
 	_current_pos = _start_pos + direction * min(distance, max_actuation_radius)
 	_report_input()
 
@@ -195,15 +201,23 @@ func _report_input():
 
 	match stick_position:
 		StickPosition.LEFT:
-			GUIDEInternalVirtualJoyRelay.submit_axis_change(virtual_stick_index, JOY_AXIS_LEFT_X, offset.x)
-			GUIDEInternalVirtualJoyRelay.submit_axis_change(virtual_stick_index, JOY_AXIS_LEFT_Y, offset.y)
+			_send_event(JOY_AXIS_LEFT_X, offset.x)
+			_send_event(JOY_AXIS_LEFT_Y, offset.y)
 		StickPosition.RIGHT:
-			GUIDEInternalVirtualJoyRelay.submit_axis_change(virtual_stick_index, JOY_AXIS_RIGHT_X, offset.x)
-			GUIDEInternalVirtualJoyRelay.submit_axis_change(virtual_stick_index, JOY_AXIS_RIGHT_Y, offset.y)
+			_send_event(JOY_AXIS_RIGHT_X, offset.x)
+			_send_event(JOY_AXIS_RIGHT_Y, offset.y)
 	if draw_debug:
 		queue_redraw()
 	
 	changed.emit()
+
+func _send_event(axis:int, value:float):
+	var event := InputEventJoypadMotion.new()	
+	event.axis = axis
+	event.axis_value = value
+	event.device = _virtual_joy_id
+	GUIDE.inject_input(event)
+	
 
 
 func _screen_to_world(input: Vector2) -> Vector2:
