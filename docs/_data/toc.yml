@@ -32,8 +32,12 @@
       url: "reference/modifiers"
     - title: "Trigger reference"
       url: "reference/triggers"
+    - title: "Hint Reference"
+      url: "reference/hints"
+
 - title: "Updates & Support"
   url: "updates-and-support"
+
   links:
     - title: "FAQ"
       url: "faq"
