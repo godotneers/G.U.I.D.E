@@ -3,6 +3,9 @@
 class_name GUIDEMappingContext
 extends Resource
 
+signal enabled
+signal disabled
+
 const GUIDESet = preload("guide_set.gd")
 
 ## The display name for this mapping context during action remapping 
