@@ -92,6 +92,7 @@ func enable_mapping_context(context:GUIDEMappingContext, disable_others:bool = f
 		_active_contexts.clear()	
 	
 	_active_contexts[context] = priority
+	context.enabled.emit()
 	_update_caches()
 	
 	
@@ -102,6 +103,7 @@ func disable_mapping_context(context:GUIDEMappingContext):
 		return
 
 	_active_contexts.erase(context)
+	context.disabled.emit()
 	_update_caches()
 
 
