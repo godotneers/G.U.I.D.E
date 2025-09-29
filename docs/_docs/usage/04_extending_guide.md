@@ -220,8 +220,129 @@ The default value is `EXPLICIT` so if your trigger should be explicit, you don't
 
 ## Creating custom icon renderers
 
-TODO
+Icon renderers turn inputs into small images that you can place inside UI text. They are used by the input formatter when you ask it to format an input or action as rich text.
+
+Rendering is handled for you. Internally, G.U.I.D.E instantiates a small GUI scene and takes a screenshot of it to produce a texture (see Icon Maker). You only need to provide the scene and a script that knows how to arrange the UI for a specific input.
+
+### How to create a custom renderer
+
+1. Create a new scene for your icon UI.
+   - Put simple UI nodes (Control, TextureRect, Label, etc.) that visually describe the input.
+   - The root node should be a control or container. The size of the root control defines the icon size. G.U.I.D.E will take a screenshot of your root control at its current size and then scales it down to what was requested.
+2. Attach a script to the scene root that extends `GUIDEIconRenderer`.
+3. Implement three methods:
+   - `supports(input: GUIDEInput) -> bool` — return true if this renderer can draw the given input.
+   - `render(input: GUIDEInput) -> void` — show/hide or configure your UI elements so the icon represents the input.
+   - `cache_key(input: GUIDEInput) -> String` — return a string that uniquely identifies the final look for this input. G.U.I.D.E uses this for disk caching.
+4. Optionally, set the `priority` export on your renderer. Lower values mean higher priority. Built‑in renderers use `0`, the built‑in fallback uses `100`.
+
+A minimal example (see also `addons/guide/ui/renderers/keyboard/key_renderer.gd` and `addons/guide/ui/renderers/controllers/controller_renderer.gd`):
+
+```gdscript
+@tool
+extends GUIDEIconRenderer
+
+@onready var _label: Label = %Label
+
+func supports(input: GUIDEInput) -> bool:
+    return input is GUIDEInputKey
+
+func render(input: GUIDEInput) -> void:
+    var key: Key = input.key
+    var display_key: Key = DisplayServer.keyboard_get_label_from_physical(key)
+    _label.text = OS.get_keycode_string(display_key).strip_edges()
+    size = Vector2.ZERO
+    call("queue_sort")
+
+func cache_key(input: GUIDEInput) -> String:
+    # Use a stable prefix unique to your renderer plus what differentiates inputs
+    return "my-key-renderer-v1" + input.to_string()
+```
+
+Tips:
+- Show or hide parts of the UI as needed in `render`. The controller renderer is a good example for toggling multiple elements.
+- Keep the `cache_key` stable across sessions for the same visual result so the on‑disk cache can be reused.
+
+### How renderers are selected
+
+When formatting an input as icons, G.U.I.D.E:
+- sorts all registered renderers by `priority` (smallest number first), then
+- asks them in order if they `supports` the input, and
+- uses the first renderer that returns `true`.
+
+This means you can override built‑in behavior by using a smaller priority.
+
+### Registering your renderer
+
+Create your renderer instance (usually by instantiating your scene) and register it once at startup:
+
+```gdscript
+var my_renderer_scene := preload("res://path/to/my_renderer.tscn")
+GUIDEInputFormatter.add_icon_renderer(my_renderer_scene.instantiate())
+```
+
+After registration, the renderer becomes part of the selection process described above. No further work is required - G.U.I.D.E will call your renderer when appropriate.
 
 ## Creating custom text providers
 
-TODO
+Text providers turn inputs into short, human‑readable labels. They are used when you format an input or action as plain text (`GUIDEInputFormatter.action_as_text` / `input_as_text`). Use them to control wording per device family, platform, or game style.
+
+Rendering is handled entirely by G.U.I.D.E. Your provider only decides what text to show for a specific input.
+
+### How to create a custom provider
+
+1. Create a new script that extends `GUIDETextProvider`.
+2. Implement two methods:
+   - `supports(input: GUIDEInput) -> bool` — return true if this provider can label the given input.
+   - `get_text(input: GUIDEInput) -> String` — return a concise label for that input. This is called only if `supports` returned true.
+3. Optionally, set the `priority` export on your provider. Lower numbers mean higher priority. The built‑in default text provider uses `0`. Specialized controller providers use negative priorities so they win over the default for matching devices. G.U.I.D.E will pick the provider with the smallest priority that supports the input.
+
+A minimal example that specializes keyboard labels:
+
+```gdscript
+@tool
+extends GUIDETextProvider
+
+func _init() -> void:
+    priority = -1  # has precedence over the default provider
+
+func supports(input: GUIDEInput) -> bool:
+    return input is GUIDEInputKey
+
+func get_text(input: GUIDEInput) -> String:
+    # Map certain keys to custom names, fall back to OS label
+    var key: Key = input.key
+    var display_key: Key = DisplayServer.keyboard_get_label_from_physical(key)
+    var label := OS.get_keycode_string(display_key).strip_edges()
+    if label == "Enter":
+        label = "Return"
+    return "[%s]" % label
+```
+
+Tips:
+- Keep labels short and consistent. Stick to vocabulary your players expect.
+- If you need device‑specific naming, derive a small helper like the built‑in `controllers/controller_text_provider.gd` and override only the button names.
+- Do not include modifier logic (Shift/Ctrl) inside `get_text` for key inputs. G.U.I.D.E calls the provider separately for each part of a chord or combo.
+
+### How providers are selected
+
+When formatting text, G.U.I.D.E:
+- sorts all registered text providers by `priority` (smallest number first), then
+- asks them in order if they `supports` the input, and
+- uses the first provider that returns `true`.
+
+This allows you to override the built‑in wording by using a smaller priority than the default provider.
+
+### Registering your provider
+
+Register your provider once at startup (e.g. in an autoload or your main scene):
+
+```gdscript
+# No need to keep a local instance. Providers are stored globally by the formatter.
+GUIDEInputFormatter.add_text_provider(MyCustomKeyTextProvider.new())
+```
+
+After registration, your provider participates in the selection process described above. See these references for concrete implementations:
+- `addons/guide/ui/text_providers/default_text_provider.gd` — generic fallback labels
+- `addons/guide/ui/text_providers/controllers/controller_text_provider.gd` — base for controller‑specific naming
+- Platform examples: `xbox_controller_text_provider.gd`, `playstation_controller_text_provider.gd`, `switch_controller_text_provider.gd`
