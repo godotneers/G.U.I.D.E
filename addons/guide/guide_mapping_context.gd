@@ -3,8 +3,11 @@
 class_name GUIDEMappingContext
 extends Resource
 
-signal enabled
-signal disabled
+## Emitted when this mapping context is enabled.
+signal enabled()
+
+## Emitted when this mapping context is disabled.
+signal disabled()
 
 const GUIDESet = preload("guide_set.gd")
 

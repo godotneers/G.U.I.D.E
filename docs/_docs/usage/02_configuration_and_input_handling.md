@@ -238,6 +238,23 @@ The `enable_mapping_context` function also has a second boolean parameter `disab
 GUIDE.enable_mapping_context(my_mapping_context, true)
 ```
 
+Mapping contexts also provide an `enabled` and `disabled` signal which can be used to get notified when a mapping context is enabled or disabled. This can be useful for triggering additional actions when a mapping context becomes active or inactive. For example we can show or hide certain UI elements depending on the currently active mapping context.
+
+```gdscript
+@export var my_mapping_context:GUIDEMappingContext
+
+func _ready():
+    my_mapping_context.enabled.connect(_on_mapping_context_enabled)
+    my_mapping_context.disabled.connect(_on_mapping_context_disabled)
+
+func _on_mapping_context_enabled():
+    # Show some UI elements
+    ...
+    
+func _on_mapping_context_disabled():
+    # Hide some UI elements
+    ...
+```
 
 ### Mapping context action priority
 
