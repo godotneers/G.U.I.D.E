@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Added
+- `GUIDEMappingContext` now has signals `enabled` and `disabled` which fire when the context is enabled or disabled. This can be useful to trigger some game logic when a context is activated or deactivated. A big thanks goes to [Jonathan Durbin](https://github.com/jonathan-durbin) for providing a PR for this ([#119](https://github.com/godotneers/G.U.I.D.E/pull/119)).
+
+
 ## [0.8.0] - 2025-09-29
 ### Added
 - Added magnitude modifier. This is useful to determine the strength of an input vector, e.g. to determine how far a joystick is pushed. 
