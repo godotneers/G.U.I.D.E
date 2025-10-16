@@ -61,3 +61,27 @@ func test_aborting_input_detection_works():
 	# then the input detector should emit a signal with null as the detected input
 	await assert_signal(_input_detector).is_emitted("input_detected", [null])
 	
+
+func test_input_detector_ensures_that_abort_input_is_released_before_detection():
+	monitor_signals(_input_detector)
+	_input_detector.abort_detection_on = [input_key(KEY_ESCAPE)]
+	var holder:Array = []
+	# when i start pressing the abort key
+	await key_down(KEY_ESCAPE)
+	
+	# and then run an input detection
+	var detect = func(): 
+		_input_detector.detect(GUIDEAction.GUIDEActionValueType.BOOL) 
+		holder.append(await _input_detector.input_detected)
+	
+	detect.call()
+	
+	# and then release the abort key
+	await key_up(KEY_ESCAPE)
+	
+	# and then send a normal escape
+	await tap_key(KEY_ESCAPE)
+	
+	# then the input detector should emit a signal with null as the detected input
+	assert_array(holder).has_size(1)
+	assert_object(holder[0]).is_null()

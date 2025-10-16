@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - `GUIDEMappingContext` now has signals `enabled` and `disabled` which fire when the context is enabled or disabled. This can be useful to trigger some game logic when a context is activated or deactivated. A big thanks goes to [Jonathan Durbin](https://github.com/jonathan-durbin) for providing a PR for this ([#119](https://github.com/godotneers/G.U.I.D.E/pull/119)).
 
+### Fixed
+- The input detector will now properly detect abort input even when this input was already pressed when starting the detection ([#123](https://github.com/godotneers/G.U.I.D.E/pull/119)).
+
 
 ## [0.8.0] - 2025-09-29
 ### Added
