@@ -1,9 +1,9 @@
-[gd_resource type="Resource" script_class="GUIDEAction" load_steps=2 format=3 uid="uid://cwtdxy3gy7kud"]
+[gd_resource type="Resource" script_class="GUIDEAction" load_steps=2 format=3 uid="uid://by0je753kdc4"]
 
-[ext_resource type="Script" path="res://addons/guide/guide_action.gd" id="1_jeypp"]
+[ext_resource type="Script" path="res://addons/guide/guide_action.gd" id="1_wkwt3"]
 
 [resource]
-script = ExtResource("1_jeypp")
+script = ExtResource("1_wkwt3")
 name = &""
 action_value_type = 0
 block_lower_priority_actions = true

@@ -28,7 +28,7 @@ func test_axis_1d_input_is_detected():
 	_input_detector.detect(GUIDEAction.GUIDEActionValueType.AXIS_1D)
 	
 	# and i move the mouse horizontally
-	await mouse_move(Vector2(20, 0))
+	await mouse_move_by(Vector2(20, 0))
 	
 	# then the input detector should emit a signal with the detected input
 	await assert_signal(_input_detector).is_emitted("input_detected", [GUIDEInputMatcher.new(input_mouse_axis_1d(GUIDEInputMouseAxis1D.GUIDEInputMouseAxis.X))])
@@ -42,7 +42,7 @@ func test_axis_2d_input_is_detected():
 	_input_detector.detect(GUIDEAction.GUIDEActionValueType.AXIS_2D)
 	
 	# and i move the mouse diagonally
-	await mouse_move(Vector2(20, 20))
+	await mouse_move_by(Vector2(20, 20))
 	
 	# then the input detector should emit a signal with the detected input
 	await assert_signal(_input_detector).is_emitted("input_detected", [GUIDEInputMatcher.new(input_mouse_axis_2d())])

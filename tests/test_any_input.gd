@@ -32,7 +32,7 @@ func test_any_input_works_for_mouse_movement():
 	monitor_signals(_action)
 	
 	# WHEN: i move the mouse
-	await mouse_move(Vector2(3,3))
+	await mouse_move_by(Vector2(3,3))
 
 	# THEN: the action is triggered
 	await assert_triggered(_action)
@@ -46,7 +46,7 @@ func test_any_input_adheres_to_mouse_minimum_distance():
 	GUIDE.enable_mapping_context(_context)
 	
 	# WHEN: i move the mouse just a small bit
-	await mouse_move(Vector2(3,3))
+	await mouse_move_by(Vector2(3,3))
 
 	# THEN: the action is not triggered
 	await assert_not_triggered(_action)

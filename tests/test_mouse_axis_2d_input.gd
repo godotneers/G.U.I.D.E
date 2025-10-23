@@ -16,7 +16,7 @@ func test_mouse_axis2d_input():
 	
 	# WHEN
 	# i move the mouse
-	await mouse_move(Vector2(-10, 20))
+	await mouse_move_by(Vector2(-10, 20))
 	
 	# THEN
 	# the action should be triggered

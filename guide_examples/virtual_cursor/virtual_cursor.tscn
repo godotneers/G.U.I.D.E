@@ -1,55 +1,47 @@
-[gd_scene load_steps=12 format=3 uid="uid://b1f0bnaomla7u"]
+[gd_scene load_steps=14 format=3 uid="uid://dmsa3rdgybqdd"]
 
-[ext_resource type="Script" path="res://guide_examples/virtual_cursor/virtual_cursor.gd" id="1_g0bre"]
-[ext_resource type="Resource" uid="uid://b4tn11iq7uvr7" path="res://guide_examples/virtual_cursor/mapping_contexts/virtual_cursor.tres" id="2_4xju7"]
-[ext_resource type="Texture2D" uid="uid://ntkhw87eedc0" path="res://guide_examples/virtual_cursor/pointer.svg" id="2_mxnae"]
-[ext_resource type="Script" path="res://guide_examples/virtual_cursor/pointer.gd" id="3_dw1p5"]
-[ext_resource type="PackedScene" uid="uid://ca51sup6v0qr1" path="res://guide_examples/virtual_cursor/pointable/pointable.tscn" id="3_uy61q"]
-[ext_resource type="Resource" uid="uid://bcumfh8j6k1ln" path="res://guide_examples/virtual_cursor/mapping_contexts/actions/cursor_2d.tres" id="5_tj3fv"]
-[ext_resource type="Resource" uid="uid://cwtdxy3gy7kud" path="res://guide_examples/virtual_cursor/mapping_contexts/actions/click.tres" id="6_1ffq2"]
-[ext_resource type="PackedScene" uid="uid://dkr80d2pi0d41" path="res://addons/guide/debugger/guide_debugger.tscn" id="6_hfxka"]
-[ext_resource type="Theme" uid="uid://dot0gi1yoqmrl" path="res://guide_examples/shared/ui_theme.tres" id="7_bh7yl"]
-[ext_resource type="Script" path="res://guide_examples/shared/instructions_label.gd" id="7_udsq5"]
+[ext_resource type="Script" path="res://guide_examples/virtual_cursor/virtual_cursor.gd" id="1_2rp0j"]
+[ext_resource type="Script" path="res://guide_examples/virtual_cursor/pointer.gd" id="2_h1nim"]
+[ext_resource type="Resource" uid="uid://dbo7gukmqll0o" path="res://guide_examples/virtual_cursor/mapping_contexts/keyboard_mappings.tres" id="2_tqdti"]
+[ext_resource type="Resource" uid="uid://c30c7ouhojk8x" path="res://guide_examples/virtual_cursor/mapping_contexts/controller_mappings.tres" id="3_xcoq2"]
+[ext_resource type="Resource" uid="uid://cy3gl7awoigq4" path="res://guide_examples/virtual_cursor/mapping_contexts/actions/switch_to_controller.tres" id="4_ofxlp"]
+[ext_resource type="Resource" uid="uid://bctchx4pq708u" path="res://guide_examples/virtual_cursor/mapping_contexts/actions/switch_to_keyboard.tres" id="5_pahhr"]
+[ext_resource type="Resource" uid="uid://bjmdf7hpcpg6r" path="res://guide_examples/virtual_cursor/mapping_contexts/actions/cursor_2d.tres" id="7_18ein"]
+[ext_resource type="PackedScene" uid="uid://c2rl058s7wq5r" path="res://guide_examples/virtual_cursor/pointable/pointable.tscn" id="7_rhw28"]
+[ext_resource type="PackedScene" uid="uid://dkr80d2pi0d41" path="res://addons/guide/debugger/guide_debugger.tscn" id="8_f1dtb"]
+[ext_resource type="Resource" uid="uid://by0je753kdc4" path="res://guide_examples/virtual_cursor/mapping_contexts/actions/click.tres" id="8_sx06i"]
+[ext_resource type="Theme" uid="uid://dot0gi1yoqmrl" path="res://guide_examples/shared/ui_theme.tres" id="9_ra860"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_7n6hb"]
+load_path = "res://.godot/imported/pointer.svg-2068835178847b731dd1d6754048fd27.ctex"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ltt1b"]
 radius = 32.95
 
 [node name="VirtualCursor" type="Node2D"]
-script = ExtResource("1_g0bre")
-mapping_context = ExtResource("2_4xju7")
+script = ExtResource("1_2rp0j")
+keyboard_and_mouse = ExtResource("2_tqdti")
+controller = ExtResource("3_xcoq2")
+switch_to_controller = ExtResource("4_ofxlp")
+switch_to_keyboard_and_mouse = ExtResource("5_pahhr")
 
-[node name="Pointable" parent="." instance=ExtResource("3_uy61q")]
-position = Vector2(358, 282)
+[node name="Pointable" parent="." instance=ExtResource("7_rhw28")]
+position = Vector2(300, 271)
 
-[node name="Pointable2" parent="." instance=ExtResource("3_uy61q")]
-position = Vector2(915, 209)
+[node name="Pointable2" parent="." instance=ExtResource("7_rhw28")]
+position = Vector2(1248, 311)
 
-[node name="Pointable3" parent="." instance=ExtResource("3_uy61q")]
-position = Vector2(1177, 621)
-
-[node name="Pointable4" parent="." instance=ExtResource("3_uy61q")]
-position = Vector2(338, 859)
-
-[node name="Pointable5" parent="." instance=ExtResource("3_uy61q")]
-position = Vector2(1476, 274)
-
-[node name="Pointable6" parent="." instance=ExtResource("3_uy61q")]
-position = Vector2(791, 808)
-
-[node name="Pointable7" parent="." instance=ExtResource("3_uy61q")]
-position = Vector2(605, 499)
-
-[node name="Pointable8" parent="." instance=ExtResource("3_uy61q")]
-position = Vector2(1515, 845)
+[node name="Pointable3" parent="." instance=ExtResource("7_rhw28")]
+position = Vector2(672, 835)
 
 [node name="Pointer" type="Area2D" parent="."]
 position = Vector2(813, 485)
-script = ExtResource("3_dw1p5")
-cursor_2d = ExtResource("5_tj3fv")
-click = ExtResource("6_1ffq2")
+script = ExtResource("2_h1nim")
+cursor_2d = ExtResource("7_18ein")
+click = ExtResource("8_sx06i")
 
 [node name="PointerVisual" type="Sprite2D" parent="Pointer"]
-texture = ExtResource("2_mxnae")
+texture = SubResource("CompressedTexture2D_7n6hb")
 centered = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Pointer"]
@@ -57,24 +49,23 @@ shape = SubResource("CircleShape2D_ltt1b")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="GuideDebugger" parent="CanvasLayer" instance=ExtResource("6_hfxka")]
-theme = ExtResource("7_bh7yl")
+[node name="GuideDebugger" parent="CanvasLayer" instance=ExtResource("8_f1dtb")]
+theme = ExtResource("9_ra860")
 
-[node name="UILayer" type="CanvasLayer" parent="."]
-
-[node name="RichTextLabel" type="RichTextLabel" parent="UILayer"]
-anchors_preset = 1
+[node name="Label" type="Label" parent="CanvasLayer"]
+custom_minimum_size = Vector2(500, 0)
+anchors_preset = 3
 anchor_left = 1.0
+anchor_top = 1.0
 anchor_right = 1.0
-offset_left = -104.0
-offset_top = 56.0
-offset_right = -64.0
-offset_bottom = 96.0
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -63.0
+offset_right = -60.0
+offset_bottom = -40.0
 grow_horizontal = 0
-theme = ExtResource("7_bh7yl")
-script = ExtResource("7_udsq5")
-instructions_text = "This shows how to use a controller stick to control a virtual cursor.
-
-%s to move the the cursor
-%s to \"click\""
-actions = Array[Resource("res://addons/guide/guide_action.gd")]([ExtResource("5_tj3fv"), ExtResource("6_1ffq2")])
+grow_vertical = 0
+theme_override_font_sizes/font_size = 21
+text = "This example shows how to use the Virtual Cursor modifier. You can move the cursor both with the mouse or with the gamepad. While the gamepad is used, the Virtual Cursor modifier is emulating the mouse position. "
+horizontal_alignment = 2
+autowrap_mode = 2

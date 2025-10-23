@@ -1,17 +1,17 @@
-[gd_scene load_steps=4 format=3 uid="uid://ca51sup6v0qr1"]
+[gd_scene load_steps=4 format=3 uid="uid://c2rl058s7wq5r"]
 
-[ext_resource type="Script" path="res://guide_examples/virtual_cursor/pointable/pointable.gd" id="1_ujxlw"]
-[ext_resource type="Texture2D" uid="uid://byjxtsekdl8t2" path="res://guide_examples/shared/godot_logo.svg" id="2_i12oa"]
+[ext_resource type="Script" path="res://guide_examples/virtual_cursor/pointable/pointable.gd" id="1_dmsp0"]
+[ext_resource type="Texture2D" uid="uid://byjxtsekdl8t2" path="res://guide_examples/shared/godot_logo.svg" id="2_eubij"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cccqq"]
 size = Vector2(128, 128)
 
 [node name="Pointable" type="Area2D"]
 monitoring = false
-script = ExtResource("1_ujxlw")
+script = ExtResource("1_dmsp0")
 
 [node name="GodotLogo" type="Sprite2D" parent="."]
-texture = ExtResource("2_i12oa")
+texture = ExtResource("2_eubij")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_cccqq")

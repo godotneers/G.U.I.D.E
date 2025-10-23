@@ -270,11 +270,17 @@ func tap_keys(keys:Array[Key]) -> void:
 	await keys_down(keys)
 	await keys_up(keys)
 	
-func mouse_move(delta:Vector2, wait:bool = true) -> void:
+func mouse_move_by(delta:Vector2, wait:bool = true) -> void:
 	var event := InputEventMouseMotion.new()
 	event.relative = delta
 	print_f("Mouse move %s" % delta)
 	Input.parse_input_event(event)
+	if wait:
+		await wait_f(2)
+		
+func mouse_move_to(position:Vector2, wait:bool = true) -> void:
+	print_f("Mouse move to %s" % position)
+	Input.warp_mouse(position)
 	if wait:
 		await wait_f(2)
 

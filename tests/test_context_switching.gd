@@ -64,3 +64,29 @@ func test_action_with_down_trigger_triggers_again_on_context_switch():
 	
 	# and should still do so
 	await assert_triggered(_action)
+
+	
+func test_action_with_different_inputs_retains_value_on_context_switch():
+	_action = action_2d("some_action")
+	
+	# we have 2 contexts with the same action, but different inputs (e.g. one keyboard, one gamepad)
+	var input1 : GUIDEInput = input_mouse_position()	
+	var input2 : GUIDEInput = input_joy_axis_2d(JOY_AXIS_LEFT_X, JOY_AXIS_LEFT_Y)
+	map(_context1, _action, input1)
+	map(_context2, _action, input2, [modifier_virtual_cursor()])
+	
+	GUIDE.enable_mapping_context(_context1)
+	
+	# wait 1 frame
+	await wait_f(1)
+	
+	assert_vector(_action.value_axis_2d).is_equal_approx(Vector2(get_viewport().get_mouse_position()), Vector2(0.01, 0.01))
+	
+	
+	# if we now switch the mapping contexts 
+	GUIDE.enable_mapping_context(_context2, true)
+	
+	# the value should now be the value of the virtual cursor 
+	# without waiting for a frame. 
+	assert_vector(_action.value_axis_2d).is_equal_approx(Vector2(get_viewport().get_visible_rect().size / 2.0), Vector2(0.01, 0.01))
+	

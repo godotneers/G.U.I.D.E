@@ -16,7 +16,7 @@ func test_mouse_axis1d_input_x():
 	
 	# WHEN
 	# i move the mouse
-	await mouse_move(Vector2(-10, 0))
+	await mouse_move_by(Vector2(-10, 0))
 	
 	# THEN
 	# the action should be triggered
@@ -30,7 +30,7 @@ func test_mouse_axis1d_input_y():
 	
 	# WHEN
 	# i move the mouse
-	await mouse_move(Vector2(0, 10))
+	await mouse_move_by(Vector2(0, 10))
 	
 	# THEN
 	# the action should be triggered
@@ -45,7 +45,7 @@ func test_mouse_axis1d_input_ignores_other_axis_x():
 
 	# WHEN
 	# i move the mouse
-	await mouse_move(Vector2(0, -10))
+	await mouse_move_by(Vector2(0, -10))
 
 	# THEN
 	# the action should not be triggered
@@ -59,7 +59,7 @@ func test_mouse_axis1d_input_ignores_other_axis_y():
 
 	# WHEN
 	# i move the mouse
-	await mouse_move(Vector2(10, 0))
+	await mouse_move_by(Vector2(10, 0))
 
 	# THEN
 	# the action should not be triggered
