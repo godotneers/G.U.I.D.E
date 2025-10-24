@@ -34,6 +34,7 @@ func action(name:String, value_type:GUIDEAction.GUIDEActionValueType) -> GUIDEAc
 	result.name = name
 	result.action_value_type = value_type
 	monitor_signals(result)
+	result.triggered.connect(print_f.bind("Action triggered: '%s'" % name))
 	return result
 
 
@@ -177,6 +178,11 @@ func trigger_down() -> GUIDETriggerDown:
 func trigger_pressed() -> GUIDETriggerPressed:
 	return GUIDETriggerPressed.new()
 	
+func trigger_chorded_action(action:GUIDEAction) -> GUIDETriggerChordedAction:
+	var result := GUIDETriggerChordedAction.new()		
+	result.action = action
+	return result
+		
 		
 @warning_ignore("shadowed_variable")
 func map(context:GUIDEMappingContext, action:GUIDEAction, input:GUIDEInput, \
@@ -312,7 +318,7 @@ func joy_axis(axis:JoyAxis, value:float, wait:bool = true) -> void:
 	input.axis = axis
 	input.axis_value = value
 	Input.parse_input_event(input)
-	print_f("Joy axis %s" % axis)
+	print_f("Joy axis %s: %s" % [axis, value])
 	if wait:
 		await wait_f(2)
 		
