@@ -1,0 +1,155 @@
+[gd_scene load_steps=8 format=3 uid="uid://bdk0kumrfdnd3"]
+
+[ext_resource type="Script" path="res://guide_examples/hint_showcase/hint_showcase_scene.gd" id="1_showcase"]
+[ext_resource type="Resource" uid="uid://bghmx5spl4sxp" path="res://guide_examples/hint_showcase/hint_mapping_context.tres" id="2_yuf2a"]
+[ext_resource type="Resource" uid="uid://cpgi11q8eyvi" path="res://guide_examples/hint_showcase/movment_action.tres" id="3_2s1sd"]
+[ext_resource type="Resource" uid="uid://dloqymbs2pj34" path="res://guide_examples/hint_showcase/spell_action.tres" id="4_2s1sd"]
+[ext_resource type="Resource" uid="uid://co1p6k6axamsi" path="res://guide_examples/hint_showcase/inv_action.tres" id="4_ls3nd"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_1"]
+font_size = 24
+
+[sub_resource type="LabelSettings" id="LabelSettings_2"]
+
+[node name="HintShowcase" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_showcase")
+mapping_context = ExtResource("2_yuf2a")
+movement_action = ExtResource("3_2s1sd")
+inventory_action = ExtResource("4_ls3nd")
+spell_action = ExtResource("4_2s1sd")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Title" type="Label" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "GUIDE Hint System Showcase"
+label_settings = SubResource("LabelSettings_1")
+
+[node name="HSeparator" type="HSeparator" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="BasicSection" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="BasicTitle" type="Label" parent="ScrollContainer/VBoxContainer/BasicSection"]
+layout_mode = 2
+text = "Basic Cross Layout"
+label_settings = SubResource("LabelSettings_2")
+
+[node name="BasicExample" type="RichTextLabel" parent="ScrollContainer/VBoxContainer/BasicSection"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+bbcode_enabled = true
+text = "Basic example will appear here..."
+fit_content = true
+
+[node name="HSeparator2" type="HSeparator" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="PresetSection" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="PresetTitle" type="Label" parent="ScrollContainer/VBoxContainer/PresetSection"]
+layout_mode = 2
+text = "Preset Layouts (Builder Pattern Examples)"
+label_settings = SubResource("LabelSettings_2")
+
+[node name="PresetExamples" type="VBoxContainer" parent="ScrollContainer/VBoxContainer/PresetSection"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HSeparator4" type="HSeparator" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="CustomSection" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="CustomTitle" type="Label" parent="ScrollContainer/VBoxContainer/CustomSection"]
+layout_mode = 2
+text = "Custom Layout (Manual positioning with styling)"
+label_settings = SubResource("LabelSettings_2")
+
+[node name="CustomExample" type="RichTextLabel" parent="ScrollContainer/VBoxContainer/CustomSection"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+bbcode_enabled = true
+text = "Custom example will appear here..."
+fit_content = true
+
+[node name="HSeparator5" type="HSeparator" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="AnimatedSection" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="AnimatedTitle" type="Label" parent="ScrollContainer/VBoxContainer/AnimatedSection"]
+layout_mode = 2
+text = "Dynamic Layouts (Changes every 2 seconds)"
+label_settings = SubResource("LabelSettings_2")
+
+[node name="AnimatedExample" type="RichTextLabel" parent="ScrollContainer/VBoxContainer/AnimatedSection"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+bbcode_enabled = true
+text = "Animated example will appear here..."
+fit_content = true
+
+[node name="HSeparator6" type="HSeparator" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="CodeExamples" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="CodeTitle" type="Label" parent="ScrollContainer/VBoxContainer/CodeExamples"]
+layout_mode = 2
+text = "Code Examples"
+label_settings = SubResource("LabelSettings_2")
+
+[node name="CodeExample1" type="CodeEdit" parent="ScrollContainer/VBoxContainer/CodeExamples"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+placeholder_text = "# Simple cross layout
+var hint = GUIDELayoutHint.cross(40.0)
+
+# Advanced styling with method chaining
+var styled_hint = GUIDELayoutHint.cross(50.0) \\
+    .with_global_tint(Color.CYAN) \\
+    .with_input_config(0, 1.5, 0, Vector2.ZERO, Color.WHITE) \\
+    .with_input_config(1, 0.8, 45, Vector2(10, -10), Color.YELLOW)
+
+# Add to formatter
+formatter.add_icon_hint(my_action, styled_hint)"
+editable = false
+
+[node name="CodeExample2" type="CodeEdit" parent="ScrollContainer/VBoxContainer/CodeExamples"]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+placeholder_text = "# Preset examples
+var compact = GUIDELayoutHint.compact_cross()
+var horizontal = GUIDELayoutHint.spaced_horizontal()
+var grid = GUIDELayoutHint.grid_3x()
+var circle = GUIDELayoutHint.large_circle()
+
+# Smart grid hints
+var smart = GUIDESmartGridHint.square_grid()"
+editable = false
