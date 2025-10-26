@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://m2d5cmtuheb"]
+[gd_scene load_steps=12 format=3 uid="uid://m2d5cmtuheb"]
 
 [ext_resource type="Script" path="res://addons/guide/ui/virtual_stick/guide_virtual_stick.gd" id="1_8y7sk"]
 [ext_resource type="Script" path="res://guide_examples/virtual_sticks/virtual_sticks.gd" id="1_naqqt"]
@@ -8,11 +8,9 @@
 [ext_resource type="Resource" uid="uid://c36k5e3jjyp0w" path="res://guide_examples/virtual_sticks/mapping_contexts/move_ship.tres" id="4_1f0iq"]
 [ext_resource type="Script" path="res://addons/guide/ui/virtual_stick/texture_renderer/guide_virtual_stick_texture_renderer.gd" id="5_ejjjy"]
 [ext_resource type="Resource" uid="uid://bjac08qt2mf2s" path="res://guide_examples/virtual_sticks/mapping_contexts/rotate_ship.tres" id="5_h0yu2"]
-[ext_resource type="Resource" path="res://guide_examples/virtual_sticks/mapping_contexts/fire_projectile.tres" id="6_j3ftr"]
 [ext_resource type="Script" path="res://guide_examples/virtual_sticks/custom_stick_renderer/custom_stick_renderer.gd" id="8_mux4w"]
 [ext_resource type="Script" path="res://addons/guide/ui/virtual_button/guide_virtual_button.gd" id="9_67dlh"]
 [ext_resource type="Script" path="res://addons/guide/ui/virtual_button/texture_renderer/guide_virtual_button_texture_renderer.gd" id="11_hg28x"]
-[ext_resource type="PackedScene" path="res://guide_examples/virtual_sticks/projectile/projectile.tscn" id="13_proj"]
 
 [node name="VirtualSticks" type="Node"]
 script = ExtResource("1_naqqt")
@@ -32,8 +30,6 @@ position = Vector2(867, 425)
 rotation = -1.5708
 move_ship = ExtResource("4_1f0iq")
 rotate_ship = ExtResource("5_h0yu2")
-fire_projectile = ExtResource("6_j3ftr")
-projectile_scene = ExtResource("13_proj")
 
 [node name="CanvasLayer2" type="CanvasLayer" parent="."]
 
@@ -58,7 +54,7 @@ position_mode = 1
 [node name="CustomStickRenderer" type="Control" parent="CanvasLayer/LeftStick"]
 layout_mode = 2
 script = ExtResource("8_mux4w")
-outline_thickness = 0.021
+outline_thickness = 0.03
 
 [node name="RightStick" type="Container" parent="CanvasLayer"]
 anchors_preset = 3
@@ -75,7 +71,8 @@ grow_vertical = 0
 mouse_filter = 2
 script = ExtResource("1_8y7sk")
 stick_position = 1
-input_mode = 2
+input_mode = 1
+draw_debug = true
 
 [node name="TextureStickRenderer" type="Control" parent="CanvasLayer/RightStick"]
 layout_mode = 2
@@ -95,9 +92,10 @@ grow_horizontal = 0
 grow_vertical = 0
 mouse_filter = 2
 script = ExtResource("9_67dlh")
-button_radius = 63.75
+button_radius = 77.935
 input_mode = 2
+draw_debug = true
 
-[node name="TextureButtonRenderer" type="Control" parent="CanvasLayer/GUIDEVirtualButton"]
+[node name="GUIDEVirtualButtonTextureRenderer" type="Control" parent="CanvasLayer/GUIDEVirtualButton"]
 layout_mode = 2
 script = ExtResource("11_hg28x")

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://611itm34j3gv"
-path="res://.godot/imported/overlay.png-93fc9984a7fb8009ca99dd6d880cc364.ctex"
+uid="uid://d2u5t2aypf0u"
+path="res://.godot/imported/laser.svg-904a6e365e093bfe37be0635a5f0e7dd.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://guide_examples/virtual_sticks/custom_stick_renderer/overlay.png"
-dest_files=["res://.godot/imported/overlay.png-93fc9984a7fb8009ca99dd6d880cc364.ctex"]
+source_file="res://guide_examples/virtual_sticks/projectile/laser.svg"
+dest_files=["res://.godot/imported/laser.svg-904a6e365e093bfe37be0635a5f0e7dd.ctex"]
 
 [params]
 
@@ -32,3 +32,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
+svg/scale=1.0
+editor/scale_with_editor_scale=false
+editor/convert_colors_with_editor_theme=false

@@ -1,8 +1,12 @@
 @tool
+## A virtual joystick.
 class_name GUIDEVirtualStick
 extends Container
 
 signal changed()
+## Called when the stick's configuration changes. Can be used to re-initialize
+## renderers.
+signal configuration_changed()
 
 enum InputMode {
 	## Only react to touch input.
@@ -31,35 +35,51 @@ enum StickPosition {
 	set(value):
 		interaction_zone_radius = value
 		queue_redraw()
+		configuration_changed.emit()
 
 ## Radius of the stick.
 @export var stick_radius: float = 100:
 	set(value):
 		stick_radius = value
 		queue_redraw()
+		configuration_changed.emit()
 
 ## Maximum radius that the stick can be moved.
 @export var max_actuation_radius: float = 100:
 	set(value):
 		max_actuation_radius = value
 		queue_redraw()
+		configuration_changed.emit()
 
 ## Whether this is left or right stick (used for mapping the inputs).
-@export var stick_position: StickPosition = StickPosition.LEFT
+@export var stick_position: StickPosition = StickPosition.LEFT:
+	set(value):
+		stick_position = value
+		configuration_changed.emit()
 
 ## Index of the virtual stick this should drive.
-@export_range(0, 5, 1, "or_greater") var virtual_stick_index: int = 0
+@export_range(0, 5, 1, "or_greater") var virtual_stick_index: int = 0:
+	set(value):
+		virtual_stick_index = value
+		configuration_changed.emit()
 
 ## The input mode to use.
-@export var input_mode: InputMode = InputMode.TOUCH
+@export var input_mode: InputMode = InputMode.TOUCH:
+	set(value):
+		input_mode = value
+		configuration_changed.emit()
 
 ## The position mode to use.
-@export var position_mode: PositionMode = PositionMode.FIXED
+@export var position_mode: PositionMode = PositionMode.FIXED:
+	set(value):
+		position_mode = value
+		configuration_changed.emit()
 
 @export var draw_debug: bool = false:
 	set(value):
 		draw_debug = value
 		queue_redraw()
+		configuration_changed.emit()
 
 var _is_actuated: bool = false
 var _start_pos: Vector2

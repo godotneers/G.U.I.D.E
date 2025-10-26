@@ -503,6 +503,11 @@ func get_finger_position(finger_index: int, finger_count: int) -> Vector2:
 
 	result /= float(finger_count)
 	return result
+	
+## Returns the positions of all fingers currently touching.
+## If no finger touches, returns an empty array.	
+func get_finger_positions() -> Array[Vector2]:
+	return _finger_positions.values()
 
 ## Returns true, if currently any finger is touching the screen.	
 func is_any_finger_down() -> bool:

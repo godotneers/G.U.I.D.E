@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="GUIDEMappingContext" load_steps=17 format=3 uid="uid://4bf73j4y33fd"]
+[gd_resource type="Resource" script_class="GUIDEMappingContext" load_steps=22 format=3 uid="uid://4bf73j4y33fd"]
 
 [ext_resource type="Resource" uid="uid://c36k5e3jjyp0w" path="res://guide_examples/virtual_sticks/mapping_contexts/move_ship.tres" id="1_e4vbv"]
 [ext_resource type="Script" path="res://addons/guide/inputs/guide_input_joy_axis_2d.gd" id="2_jhgj0"]
@@ -7,7 +7,9 @@
 [ext_resource type="Script" path="res://addons/guide/guide_action_mapping.gd" id="5_wprvf"]
 [ext_resource type="Resource" uid="uid://bjac08qt2mf2s" path="res://guide_examples/virtual_sticks/mapping_contexts/rotate_ship.tres" id="6_44qy6"]
 [ext_resource type="Script" path="res://addons/guide/inputs/guide_input_joy_axis_1d.gd" id="7_g4bxd"]
+[ext_resource type="Resource" path="res://guide_examples/virtual_sticks/mapping_contexts/fire_projectile.tres" id="8_fire"]
 [ext_resource type="Script" path="res://addons/guide/guide_mapping_context.gd" id="9_h4jvs"]
+[ext_resource type="Script" path="res://addons/guide/inputs/guide_input_joy_button.gd" id="10_btn"]
 
 [sub_resource type="Resource" id="Resource_o2lml"]
 script = ExtResource("2_jhgj0")
@@ -60,7 +62,27 @@ script = ExtResource("5_wprvf")
 action = ExtResource("6_44qy6")
 input_mappings = Array[ExtResource("4_lns13")]([SubResource("Resource_hgim7")])
 
+[sub_resource type="Resource" id="Resource_btn_inp"]
+script = ExtResource("10_btn")
+button = 0
+joy_index = -2
+
+[sub_resource type="Resource" id="Resource_btn_map"]
+script = ExtResource("4_lns13")
+override_action_settings = false
+is_remappable = false
+display_name = ""
+display_category = ""
+input = SubResource("Resource_btn_inp")
+modifiers = Array[Resource("res://addons/guide/modifiers/guide_modifier.gd")]([])
+triggers = Array[Resource("res://addons/guide/triggers/guide_trigger.gd")]([])
+
+[sub_resource type="Resource" id="Resource_fire_map"]
+script = ExtResource("5_wprvf")
+action = ExtResource("8_fire")
+input_mappings = Array[ExtResource("4_lns13")]([SubResource("Resource_btn_map")])
+
 [resource]
 script = ExtResource("9_h4jvs")
 display_name = ""
-mappings = Array[ExtResource("5_wprvf")]([SubResource("Resource_f6h3o"), SubResource("Resource_n0wg6")])
+mappings = Array[ExtResource("5_wprvf")]([SubResource("Resource_f6h3o"), SubResource("Resource_n0wg6"), SubResource("Resource_fire_map")])
