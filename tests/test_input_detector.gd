@@ -5,6 +5,9 @@ var _input_detector: GUIDEInputDetector
 func _setup():
 	_input_detector = auto_free(GUIDEInputDetector.new())
 	_input_detector.detection_countdown_seconds = 0
+	_input_detector.detection_started.connect(func(): print_f("Detection started."))
+	_input_detector.input_detected.connect(func(val): print_f("Input detected: %s" % val))
+	
 	add_child(_input_detector)
 	
 

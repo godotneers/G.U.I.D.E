@@ -75,7 +75,7 @@ func _init():
 ## The returned device id will be negative, starting with -2 and going down from there.
 ## Since virtual sticks are UI components and not real hardware, we need to give the
 ## UI elements the chance to tell to which virtual stick they belong. For this
-## we introduce the stick_index. Any UI element tell which virtual stick it belongs to
+## we introduce the stick_index. Any UI element tells which virtual stick it belongs to
 ## by providing the same stick_index.
 func connect_virtual_stick(stick_index:int) -> int:
 	# we treat an invalid stick index as a stick index of 0 but print an error
@@ -137,6 +137,12 @@ func _clear():
 	# ensure we have an entry for the virtual "any device id"
 	_joy_buttons[ANY_JOY_DEVICE_ID] = {}
 	_joy_axes[ANY_JOY_DEVICE_ID] = {}
+	
+	# also clear all virtual joy devices, these can be set up again by the next test
+	for device_id in _virtual_joy_devices.keys():
+		_joy_index_to_device_id.erase(device_id)
+	
+	_virtual_joy_devices.clear()
 	
 	# pending states are created on demand, so we don't need to clear them here
 
@@ -262,6 +268,7 @@ func _reset() -> void:
 
 ## Processes an input event and updates the state. 
 func _input(event: InputEvent) -> void:
+	# print("%s - %s" % [Engine.get_process_frames(), event])
 	# ----------------------- KEYBOARD -----------------------------
 	if event is InputEventKey:
 		var index: int = event.physical_keycode
@@ -426,6 +433,7 @@ func is_any_key_pressed() -> bool:
 ## Gets the mouse movement since the last frame.
 ## If no movement has been detected, returns Vector2.ZERO.
 func get_mouse_delta_since_last_frame() -> Vector2:
+	# print("%s DELTA %s" % [Engine.get_process_frames(), _mouse_movement])
 	return _mouse_movement
 
 ## Returns the current mouse position in the root viewport.
@@ -507,7 +515,9 @@ func get_finger_position(finger_index: int, finger_count: int) -> Vector2:
 ## Returns the positions of all fingers currently touching.
 ## If no finger touches, returns an empty array.	
 func get_finger_positions() -> Array[Vector2]:
-	return _finger_positions.values()
+	var result:Array[Vector2] = []
+	result.assign(_finger_positions.values())
+	return result
 
 ## Returns true, if currently any finger is touching the screen.	
 func is_any_finger_down() -> bool:

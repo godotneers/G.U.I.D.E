@@ -327,7 +327,9 @@ func _try_detect_bool(event:InputEvent) -> void:
 		
 		
 func _try_detect_axis_1d(event:InputEvent) -> void:
-	if event is InputEventMouseMotion:
+	# we sometimes get motion events where no relative movement happened, we are only
+	# interested in the ones where it does
+	if event is InputEventMouseMotion and event.relative.length_squared() > 0:
 		var result := GUIDEInputMouseAxis1D.new()
 		# Pick the direction in which the mouse was moved more.
 		if abs(event.relative.x) > abs(event.relative.y):

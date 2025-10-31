@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bhpkiauj6rd30"
-path="res://.godot/imported/actuated.svg-89b038631e96a91b592a01696ff60de9.ctex"
+path="res://.godot/imported/actuated.svg-437a9e6bbd2caf52c9ecba58b2821e8d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/guide/ui/virtual_button/texture_renderer/actuated.svg"
-dest_files=["res://.godot/imported/actuated.svg-89b038631e96a91b592a01696ff60de9.ctex"]
+source_file="res://addons/guide/ui/virtual_joy/virtual_button/texture_renderer/actuated.svg"
+dest_files=["res://.godot/imported/actuated.svg-437a9e6bbd2caf52c9ecba58b2821e8d.ctex"]
 
 [params]
 

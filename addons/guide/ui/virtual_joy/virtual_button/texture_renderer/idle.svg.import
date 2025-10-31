@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://sle777io03q"
-path="res://.godot/imported/idle.svg-bf1256606425b5677a90ea1e2b33283c.ctex"
+path="res://.godot/imported/idle.svg-e63206fd6ee8f8608bcc0c5937890380.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/guide/ui/virtual_button/texture_renderer/idle.svg"
-dest_files=["res://.godot/imported/idle.svg-bf1256606425b5677a90ea1e2b33283c.ctex"]
+source_file="res://addons/guide/ui/virtual_joy/virtual_button/texture_renderer/idle.svg"
+dest_files=["res://.godot/imported/idle.svg-e63206fd6ee8f8608bcc0c5937890380.ctex"]
 
 [params]
 

@@ -3,8 +3,10 @@ extends GdUnitTestSuite
 
 #------------------- Lifecycle ---------------------------------------------
 var start_frame:int = 0
+var runner:GdUnitSceneRunner
 
 func after_test():
+	print_f("Cleanup phase")
 	# Clear all mapping contexts after each test
 	# since this will modify the dictionary in GUIDE, we make a copy
 	var contexts:Array = GUIDE._active_contexts.keys()
@@ -13,11 +15,15 @@ func after_test():
 		
 	GUIDEInputFormatter.cleanup()
 
+
 func before_test():
-	start_frame = Engine.get_process_frames()
-	GUIDE._input_state._clear()
-	_setup()	
 	print("-----------------------------------")
+	start_frame = Engine.get_process_frames()
+	print_f("Setup phase")
+	runner = scene_runner(auto_free(Node.new()))
+	GUIDE._input_state._clear()
+	_setup()
+	print_f("Test phase")
 	
 func _setup():
 	pass
@@ -34,7 +40,6 @@ func action(name:String, value_type:GUIDEAction.GUIDEActionValueType) -> GUIDEAc
 	result.name = name
 	result.action_value_type = value_type
 	monitor_signals(result)
-	result.triggered.connect(print_f.bind("Action triggered: '%s'" % name))
 	return result
 
 
@@ -205,14 +210,15 @@ func map(context:GUIDEMappingContext, action:GUIDEAction, input:GUIDEInput, \
 	input_mapping.triggers = triggers
 	
 	action_mapping.input_mappings.append(input_mapping)
-		
-	
+
+
 #------------------ Input simulation ----------------------------------------
 
 func mouse_down(button:MouseButton, wait:bool =  true) -> void:
 	var input := InputEventMouseButton.new()
 	input.button_index = button
 	input.pressed= true
+	input.position = get_viewport().get_mouse_position()
 	Input.parse_input_event(input)
 	print_f("Mouse down %s" % button)
 	if wait:
@@ -223,6 +229,7 @@ func mouse_up(button:MouseButton, wait:bool =  true) -> void:
 	var input = InputEventMouseButton.new()
 	input.button_index = button
 	input.pressed= false
+	input.position = get_viewport().get_mouse_position()
 	Input.parse_input_event(input)
 	print_f("Mouse up %s" % button)
 	if wait:
@@ -233,6 +240,9 @@ func tap_mouse(button:MouseButton) -> void:
 	await mouse_down(button)
 	await mouse_up(button)		
 
+func tap_mouse_at(button:MouseButton, position:Vector2) -> void:
+	await mouse_move_to(position)
+	await tap_mouse(button)
 		
 func key_down(key:Key, wait:bool = true) -> void:
 	var input = InputEventKey.new()
@@ -276,17 +286,23 @@ func tap_keys(keys:Array[Key]) -> void:
 	await keys_down(keys)
 	await keys_up(keys)
 	
+	
 func mouse_move_by(delta:Vector2, wait:bool = true) -> void:
-	var event := InputEventMouseMotion.new()
-	event.relative = delta
-	print_f("Mouse move %s" % delta)
-	Input.parse_input_event(event)
+	var pos = get_viewport().get_mouse_position() + delta
+	
 	if wait:
-		await wait_f(2)
+		await mouse_move_to(pos, true)
+	else:
+		mouse_move_to(pos, false)
 		
+		
+		
+## Moves the mouse to the given position in world coordinates.		
 func mouse_move_to(position:Vector2, wait:bool = true) -> void:
-	print_f("Mouse move to %s" % position)
-	Input.warp_mouse(position)
+	print_f("Mouse move to %s (from %s)" % [position, runner.get_global_mouse_position()])
+	
+	runner.simulate_mouse_move(position)
+	
 	if wait:
 		await wait_f(2)
 
@@ -328,7 +344,7 @@ func finger_down(index:int, position:Vector2, wait:bool = true) -> void:
 	input.pressed = true
 	input.position = position
 	Input.parse_input_event(input)
-	print_f("Finger down %s" % index)
+	print_f("Finger down %s (%s)" % [index, position])
 	if wait:
 		await wait_f(2)
 		
@@ -341,39 +357,68 @@ func finger_up(index:int, wait:bool = true) -> void:
 	if wait:
 		await wait_f(2)
 		
+		
 func tap_finger(index:int, position:Vector2) -> void:
 	await finger_down(index, position)
 	await finger_up(index)
+	
 	
 func finger_move(index:int, to:Vector2, wait:bool = true) -> void:
 	var input := InputEventScreenDrag.new()
 	input.index = index
 	input.position = to
-	print_f("Finger move %s" % to)
+	print_f("Finger move %s (%s)" % [index, to])
 	Input.parse_input_event(input)
 	if wait:
 		await wait_f(2)
+	
+		
+func world_to_viewport(global_position:Vector2) -> Vector2:
+	var final_transform = get_viewport().get_final_transform()
+	return final_transform.basis_xform(global_position) + final_transform.origin
 
 #------------------ Custom asserts -------------------------------------------
 
+## Asserts that the given action has been triggered (emitted "triggered" signal).
 @warning_ignore("shadowed_variable")
 func assert_triggered(action:GUIDEAction):
 	await assert_signal(action) \
 		.append_failure_message("Action should be triggered but is not.") \
 		.is_emitted("triggered")
+
 	
+## Asserts that the given action is currently reporting as triggered.
+@warning_ignore("shadowed_variable")
+func assert_is_triggered(action:GUIDEAction):
+	assert_bool(action.is_triggered()) \
+		.append_failure_message("Action should be triggered but is not.") \
+		.is_true()
+
+
+## Asserts that the given action has NOT been triggered (did NOT emit "triggered" signal).	
 @warning_ignore("shadowed_variable")
 func assert_not_triggered(action:GUIDEAction):
 	await assert_signal(action) \
 		.append_failure_message("Action should not be triggered but is.") \
 		.is_not_emitted("triggered")
+		
 
+## Asserts that the given action is currently not reporting as triggered.
+func assert_is_not_triggered(action:GUIDEAction):
+	assert_bool(action.is_triggered()) \
+		.append_failure_message("Action should not be triggered but is.") \
+		.is_false()
+
+
+## Asserts that the given action has been completed (emitted "completed" signal).
 @warning_ignore("shadowed_variable")
 func assert_completed(action:GUIDEAction):
 	await assert_signal(action) \
 		.append_failure_message("Action should be triggered but is not.") \
 		.is_emitted("completed")
 	
+	
+## Asserts that the given action has NOT been completed (did NOT emit "completed" signal).	
 @warning_ignore("shadowed_variable")
 func assert_not_completed(action:GUIDEAction):
 	await assert_signal(action) \
@@ -381,14 +426,36 @@ func assert_not_completed(action:GUIDEAction):
 		.is_not_emitted("completed")
 
 
+## Asserts that the given action has the given axis 1D value.
+func assert_axis_1d(action:GUIDEAction, expected_value:float, deviation:float = 0.1):
+	assert_float(action.value_axis_1d) \
+		.append_failure_message("Action axis 1D value is not the expected value.") \
+		.is_equal_approx(expected_value, deviation) 
+		
+		
+## Asserts that the given action has the given axis 2D value.
+func assert_axis_2d(action:GUIDEAction, expected_value:Vector2, deviation:Vector2 = Vector2(1.0, 1.0)):
+	assert_vector(action.value_axis_2d) \
+		.append_failure_message("Action axis 2D value is not the expected value.") \
+		.is_equal_approx(expected_value, deviation)
+
+
 #------------------ Other stuff -------------------------------------------
+func reset_signal_watcher(emitter:Variant):
+	var collector := GdUnitThreadManager.get_current_context().get_signal_collector()
+	var _collected_signals := collector._collected_signals
+	if _collected_signals.has(emitter):
+		var signals_by_emitter :Dictionary = _collected_signals[emitter]
+		for signl in signals_by_emitter.keys():
+			_collected_signals[emitter][signl] = []
+
 @warning_ignore("shadowed_variable")
 func log_signals(action:GUIDEAction):
-	action.triggered.connect(print_f.bind("action triggered: '%s'" % action.name))
-	action.cancelled.connect(print_f.bind("action cancelled: '%s'" % action.name))
-	action.completed.connect(print_f.bind("action completed: '%s'" % action.name))
-	action.started.connect(print_f.bind("action started: '%s'" % action.name))
-	action.ongoing.connect(print_f.bind("action ongoing: '%s'" % action.name))
+	action.triggered.connect(func(): print_f("action triggered: '%s' (%s)" % [action.name, action._value]))
+	action.cancelled.connect(func(): print_f("action cancelled: '%s'" % action.name))
+	action.completed.connect(func(): print_f("action completed: '%s'" % action.name))
+	action.started.connect(func(): print_f("action started: '%s'" % action.name))
+	action.ongoing.connect(func(): print_f("action ongoing: '%s'" % action.name))
 
 func wait_f(frames:int):
 	var start = get_f()
@@ -404,7 +471,7 @@ func wait_seconds(seconds:float):
 	await get_tree().create_timer(seconds).timeout
 
 func print_f(text:Variant = ""):
-	print("[%s] %s" % [get_f(), text])
+	print("[%s (%s)] %s" % [get_f(), Engine.get_process_frames(), text])
 
 func get_f() -> int:
 	return Engine.get_process_frames() - start_frame

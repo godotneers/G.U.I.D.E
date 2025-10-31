@@ -68,6 +68,7 @@ func _notification(what:int) -> void:
 func _on_configuration_changed() -> void:
 	pass
 	
+	
 func _on_stick_changed() -> void:
 	var direction: Vector2 = Vector2.ZERO
 	# get the stick direction (if the stick is not in the start position)

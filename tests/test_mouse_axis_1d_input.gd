@@ -7,16 +7,22 @@ var _action:GUIDEAction
 func _setup():
 	_context = mapping_context()
 	_action = action_1d()
+	await mouse_move_to(Vector2(100, 100))
+	# give it 2 frames so the new mouse position is now treated as the
+	# origin
+	await wait_f(2)
+	
 
 func test_mouse_axis1d_input_x():
 	var input := input_mouse_axis_1d(GUIDEInputMouseAxis1D.GUIDEInputMouseAxis.X)
 	map(_context, _action, input)
 	
 	GUIDE.enable_mapping_context(_context)
+	reset_signal_watcher(_action)
 	
 	# WHEN
 	# i move the mouse
-	await mouse_move_by(Vector2(-10, 0))
+	await mouse_move_by(Vector2(10, 0))
 	
 	# THEN
 	# the action should be triggered
@@ -27,6 +33,7 @@ func test_mouse_axis1d_input_y():
 	map(_context, _action, input)
 	
 	GUIDE.enable_mapping_context(_context)
+	reset_signal_watcher(_action)
 	
 	# WHEN
 	# i move the mouse
@@ -42,10 +49,13 @@ func test_mouse_axis1d_input_ignores_other_axis_x():
 	map(_context, _action, input)
 
 	GUIDE.enable_mapping_context(_context)
+	# wait for any initial events to drop
+	await wait_f(5)
+	reset_signal_watcher(_action)
 
 	# WHEN
 	# i move the mouse
-	await mouse_move_by(Vector2(0, -10))
+	await mouse_move_by(Vector2(0, 10))
 
 	# THEN
 	# the action should not be triggered
@@ -54,13 +64,16 @@ func test_mouse_axis1d_input_ignores_other_axis_x():
 func test_mouse_axis1d_input_ignores_other_axis_y():
 	var input := input_mouse_axis_1d(GUIDEInputMouseAxis1D.GUIDEInputMouseAxis.Y)
 	map(_context, _action, input)
-
 	GUIDE.enable_mapping_context(_context)
+	# wait for any initial events to drop
+	await wait_f(5)
+	reset_signal_watcher(_action)
 
 	# WHEN
 	# i move the mouse
 	await mouse_move_by(Vector2(10, 0))
-
+	
 	# THEN
 	# the action should not be triggered
 	await assert_not_triggered(_action)	
+	

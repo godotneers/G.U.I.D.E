@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cj30wnqfj0wdg"
-path="res://.godot/imported/stick_outline.svg-e6791cf11f45eb99a51d9ea04e9c3d59.ctex"
+uid="uid://cc4fmyqmn643v"
+path="res://.godot/imported/stick.svg-94b9c8a0a27d1ad7d37a84348276b39b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/guide/ui/virtual_stick/texture_renderer/stick_outline.svg"
-dest_files=["res://.godot/imported/stick_outline.svg-e6791cf11f45eb99a51d9ea04e9c3d59.ctex"]
+source_file="res://addons/guide/ui/virtual_joy/virtual_stick/texture_renderer/stick.svg"
+dest_files=["res://.godot/imported/stick.svg-94b9c8a0a27d1ad7d37a84348276b39b.ctex"]
 
 [params]
 

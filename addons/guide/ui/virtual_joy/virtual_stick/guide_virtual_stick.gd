@@ -1,21 +1,9 @@
 @tool
 ## A virtual joystick.
 class_name GUIDEVirtualStick
-extends Container
+extends GUIDEVirtualJoyBase
 
-signal changed()
-## Called when the stick's configuration changes. Can be used to re-initialize
-## renderers.
-signal configuration_changed()
-
-enum InputMode {
-	## Only react to touch input.
-	TOUCH,
-	## Only react to mouse input.
-	MOUSE,
-	## React to both touch and mouse input.
-	MOUSE_AND_TOUCH
-}
+## Positioning mode for the virtual stick.
 enum PositionMode {
 	## The stick center stays at the designed position
 	FIXED,
@@ -25,8 +13,12 @@ enum PositionMode {
 	## when released.
 	RELATIVE
 }
+
+## Which stick this is.
 enum StickPosition {
+	## This represents the left stick.
 	LEFT,
+	## This represents the right stick.
 	RIGHT
 }
 
@@ -57,58 +49,31 @@ enum StickPosition {
 		stick_position = value
 		configuration_changed.emit()
 
-## Index of the virtual stick this should drive.
-@export_range(0, 5, 1, "or_greater") var virtual_stick_index: int = 0:
-	set(value):
-		virtual_stick_index = value
-		configuration_changed.emit()
-
-## The input mode to use.
-@export var input_mode: InputMode = InputMode.TOUCH:
-	set(value):
-		input_mode = value
-		configuration_changed.emit()
-
 ## The position mode to use.
 @export var position_mode: PositionMode = PositionMode.FIXED:
 	set(value):
 		position_mode = value
 		configuration_changed.emit()
 
-@export var draw_debug: bool = false:
-	set(value):
-		draw_debug = value
-		queue_redraw()
-		configuration_changed.emit()
-
-var _is_actuated: bool = false
 var _start_pos: Vector2
 var _current_pos: Vector2
 
-## The virtual joy id assigned to this stick.
-var _virtual_joy_id : int = 0
+## The index of the finger which is currently controlling this stick. Is -1 if no finger controls it.
+var _finger_index:int = -1
 
-
+## Stick position relative to the center of the stick in world coordinates.
 var stick_relative_position:Vector2:
 	get: return _screen_to_world(_start_pos - _current_pos)
 
-func _ready():
+func _ready() -> void:
 	_start_pos = global_position
 	_current_pos = global_position
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
-	if not Engine.is_editor_hint():
-		_virtual_joy_id = GUIDE._input_state.connect_virtual_stick(virtual_stick_index)
-		_report_input()
-
-
-func _input(event: InputEvent):
-	if event is InputEventMouse:
-		if input_mode == InputMode.MOUSE or input_mode == InputMode.MOUSE_AND_TOUCH:
-			_handle_mouse_input(event)
-
-	if event is InputEventScreenTouch or event is InputEventScreenDrag:
-		if input_mode == InputMode.MOUSE or input_mode == InputMode.MOUSE_AND_TOUCH:
-			_handle_touch_input(event)
+	if Engine.is_editor_hint():
+		return # no input processing in the editor
+		
+	_reconnect()
+	_report_input()
 
 
 func _handle_mouse_input(event: InputEventMouse) -> void:
@@ -150,19 +115,18 @@ func _handle_touch_input(event: InputEvent) -> void:
 			var pos := _screen_to_world(event.position)
 			_try_actuate(pos)
 			if _is_actuated:
+				_finger_index = event.index
 				get_viewport().set_input_as_handled()
 			return
-
 		return
 
 	# actuated
-	var pos := _screen_to_world(event.position)
-	# we can have multiple touches, so we only care about the one that is still over the joystick
-	# area
-	if pos.distance_to(_current_pos) > stick_radius:
-		return
+	if event.index != _finger_index:
+		return # we only react to events of the finger that actuated this stick
+		
 
 	if event is InputEventScreenDrag:
+		var pos := _screen_to_world(event.position)
 		_move_towards(pos)
 		get_viewport().set_input_as_handled()
 		return
@@ -171,9 +135,10 @@ func _handle_touch_input(event: InputEvent) -> void:
 	if not event.pressed:
 		_release()
 		get_viewport().set_input_as_handled()
+		_finger_index = -1
+		
 
-
-func _try_actuate(world_position: Vector2):
+func _try_actuate(world_position: Vector2) -> void:
 	match position_mode:
 		PositionMode.FIXED:
 			# in fixed mode, the starting position must be inside the joystick area
@@ -196,22 +161,22 @@ func _try_actuate(world_position: Vector2):
 			_is_actuated = true
 			_report_input()
 
-
-func _move_towards(world_position: Vector2):
+## Moves the joystick towards the given world position.
+func _move_towards(world_position: Vector2) -> void:
 	var direction:Vector2 = _start_pos.direction_to(world_position)
 	var distance:float = _start_pos.distance_to(world_position)
 	_current_pos = _start_pos + direction * min(distance, max_actuation_radius)
 	_report_input()
 
-
-func _release():
+## Releases the joystick.
+func _release() -> void:
 	_is_actuated = false
 	_start_pos = global_position
 	_current_pos = global_position
 	_report_input()
 
-
-func _report_input():
+## Reports the current input state to the input system.
+func _report_input() -> void:
 	var direction := Vector2.ZERO
 	if not _start_pos.is_equal_approx(_current_pos):
 		direction = _start_pos.direction_to(_current_pos)
@@ -230,7 +195,8 @@ func _report_input():
 		queue_redraw()
 	
 	changed.emit()
-
+	
+## Helper function to send input events to the input system.
 func _send_event(axis:int, value:float):
 	var event := InputEventJoypadMotion.new()	
 	event.axis = axis
@@ -239,12 +205,8 @@ func _send_event(axis:int, value:float):
 	GUIDE.inject_input(event)
 	
 
-
-func _screen_to_world(input: Vector2) -> Vector2:
-	return get_canvas_transform().affine_inverse() * input
-
-
-func _draw():
+## Draws the virtual stick and its interaction zone.
+func _draw() -> void:
 	if not draw_debug:
 		return
 	

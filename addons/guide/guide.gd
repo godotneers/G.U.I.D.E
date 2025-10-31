@@ -43,6 +43,7 @@ func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_reset_node = GUIDEReset.new()
 	_input_state = GUIDEInputState.new()
+	_input_state._reset()
 	add_child(_reset_node)
 	# attach to the current viewport to get input events
 	GUIDEInputTracker._instrument.call_deferred(get_viewport())
@@ -143,6 +144,7 @@ func _process(delta:float) -> void:
 			input_mapping._update_state(delta, action.action_value_type)
 			consolidated_value += input_mapping._value
 			consolidated_trigger_state = max(consolidated_trigger_state, input_mapping._state)
+			# print("%s - %s -> %s" % [Engine.get_process_frames(), consolidated_value, consolidated_trigger_state])
 		
 		# we do the blocking check only here because triggers may need to run anyways
 		# (e.g. to collect hold times).

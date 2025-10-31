@@ -73,9 +73,6 @@ func test_cursor_stays_in_frame():
 	
 	
 func test_cursor_follows_mouse_position_when_flag_is_set():
-	var dummy = auto_free(Node.new())
-	scene_runner(dummy).move_window_to_foreground()
-	
 	# WHEN: initializing the cursor from mouse position is enabled
 	_virtual_cursor.initialize_from_mouse_position = true
 	
