@@ -1,4 +1,5 @@
 @tool
+@icon("guide_virtual_stick.svg")
 ## A virtual joystick.
 class_name GUIDEVirtualStick
 extends GUIDEVirtualJoyBase
@@ -55,24 +56,47 @@ enum StickPosition {
 		position_mode = value
 		configuration_changed.emit()
 
+# The initial position of the stick, when not being actuated.
+var _initial_pos:Vector2
+
+# The global position where the stick was when it started to be actuated.
+# If the mode is FIXED, this is equal to _initial_pos, otherwise this
+# is the position where the finger came down within the interaction zone.
 var _start_pos: Vector2
+
+# The current global position of the stick
 var _current_pos: Vector2
+
 
 ## The index of the finger which is currently controlling this stick. Is -1 if no finger controls it.
 var _finger_index:int = -1
 
 ## Stick position relative to the center of the stick in world coordinates.
 var stick_relative_position:Vector2:
-	get: return _screen_to_world(_start_pos - _current_pos)
+	get: return _current_pos - _start_pos
 
 func _ready() -> void:
+	use_top_left = true
+	size = Vector2.ZERO
+	# the editor likes to set the size to 40x40, we'll override that
+	if Engine.is_editor_hint():
+		set_deferred("size", Vector2.ZERO)
+	_initial_pos = global_position
 	_start_pos = global_position
 	_current_pos = global_position
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	# let renderers know the initial configuration
+	configuration_changed.emit()
+	# and the initial state
+	changed.emit()
+
 	if Engine.is_editor_hint():
-		return # no input processing in the editor
+		# no input processing in the editor
+		return
 		
+	# connect to GUIDE
 	_reconnect()
+	# and report the initial state.
 	_report_input()
 
 
@@ -156,6 +180,7 @@ func _try_actuate(world_position: Vector2) -> void:
 			if world_position.distance_to(global_position) > interaction_zone_radius:
 				return
 
+			global_position = world_position
 			_start_pos = world_position
 			_current_pos = world_position
 			_is_actuated = true
@@ -171,6 +196,9 @@ func _move_towards(world_position: Vector2) -> void:
 ## Releases the joystick.
 func _release() -> void:
 	_is_actuated = false
+	# return to initial position
+	global_position = _initial_pos
+	
 	_start_pos = global_position
 	_current_pos = global_position
 	_report_input()
@@ -210,14 +238,15 @@ func _draw() -> void:
 	if not draw_debug:
 		return
 	
-	if not _is_actuated:
-		draw_circle(Vector2.ZERO, interaction_zone_radius, Color(0.5, 0.5, 1.0, 0.5))
-		draw_circle(Vector2.ZERO, max_actuation_radius, Color(0.9, 0.2, 0.2, 0.5))	
-		draw_circle(Vector2.ZERO, stick_radius, Color(0.9, 0.9, 0.3, 0.5))
-		return
+	draw_circle(Vector2.ZERO, interaction_zone_radius, Color(0.5, 0.5, 1.0, 0.5))
+	draw_circle(Vector2.ZERO, max_actuation_radius, Color(0.9, 0.2, 0.2, 0.5))	
+	draw_circle(Vector2.ZERO, stick_radius, Color(0.9, 0.9, 0.3, 0.5))
 
-	draw_circle(_start_pos - global_position, interaction_zone_radius, Color(0.5, 0.5, 1.0, 0.5))
-	draw_circle(_start_pos - global_position, max_actuation_radius, Color(0.9, 0.2, 0.2, 0.5))
-	draw_circle(_current_pos - global_position, stick_radius, Color(0.9, 0.9, 0.3, 0.5))
+	if _is_actuated:
+		draw_circle(stick_relative_position, stick_radius, Color(0.9, 0.9, 0.7, 0.5))
 		
-	
+func _get_configuration_warnings() -> PackedStringArray:
+	var result:PackedStringArray = []
+	if get_parent() is Container:
+		result.append("Virtual sticks must be top level elements. They cannot be a child of a container.")
+	return result

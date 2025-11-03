@@ -5,8 +5,11 @@
 class_name GUIDEVirtualStickTextureRenderer
 extends GUIDEVirtualStickRenderer
 
+## When to show the joystick.
 enum ShowMode {
+	## Always show the joystick.
 	ALWAYS = 0,
+	## Only show the joystick when actuated.
 	ON_ACTUATE = 1
 }
 
@@ -38,22 +41,22 @@ var _outline_sprite: Sprite2D
 var _stick_sprite: Sprite2D
 var _hidden_sprite: Sprite2D
 
-func _ready() -> void:
+func _ready():
 	_rebuild()
+
+## React to configuration changes on the parent stick (e.g., radius changes).
+func _on_configuration_changed() -> void:
+	_rebuild()
+
 	
 ## (Re)build sprites and apply textures and scaling.
 func _rebuild() -> void:
+	print("noot")
 	_outline_sprite = _ensure_sprite(_outline_sprite, outline_texture)
 	_stick_sprite = _ensure_sprite(_stick_sprite, stick_texture)
 	_hidden_sprite = _ensure_sprite(_hidden_sprite, hidden_texture)
 	_update(Vector2.ZERO, Vector2.ZERO, is_stick_actuated)
 	
-## React to configuration changes on the parent stick (e.g., radius changes).
-func _on_configuration_changed() -> void:
-	_outline_sprite = _ensure_sprite(_outline_sprite, outline_texture)
-	_stick_sprite = _ensure_sprite(_stick_sprite, stick_texture)
-	_hidden_sprite = _ensure_sprite(_hidden_sprite, hidden_texture)
-	_update(Vector2.ZERO, Vector2.ZERO, is_stick_actuated)
 	
 ## Ensure a sprite exists, has the given texture, and is scaled to cover the
 ## circular stick area based on the current `stick_radius`.

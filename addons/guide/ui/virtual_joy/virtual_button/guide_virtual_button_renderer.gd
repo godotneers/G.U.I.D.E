@@ -1,4 +1,5 @@
 @tool
+@icon("guide_virtual_button_renderer.svg")
 ## Base class for virtual button renderers.
 class_name GUIDEVirtualButtonRenderer
 extends Control

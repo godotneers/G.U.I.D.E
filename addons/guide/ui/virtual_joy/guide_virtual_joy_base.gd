@@ -1,5 +1,5 @@
 class_name GUIDEVirtualJoyBase
-extends Container
+extends CenterContainer
 
 ## Called when the control's actuation state changes. Can be used to update
 ## the rendering of the button on screen.

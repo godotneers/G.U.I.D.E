@@ -24,3 +24,5 @@ G.U.I.D.E ships with quite a few small example projects that demonstrate how to 
 - `top_down_shooter` - Shows how to handle input from controller or mouse to rotate a the player in a top-down shooter game. The demo shows two control schemes: one for controller, where the player aims with a stick and one for keyboard & mouse, where the player aims with the mouse and how these two schemes can be supported at the same time with very little code involved.
 - `touch` - Shows how to use the touch inputs and triggers to detect screen drags, taps, long-presses, pinch/zoom and rotation gestures with one or multiple fingers.
 - `two_joysticks` - Shows how to do local multiplayer with two joysticks. Each player has their own joystick and can move around independently while both players use the same script to handle input.
+- `virtual_cursor` - Shows how to control a cursor with a gamepad or keyboard and interact with UI elements using the virtual cursor utilities.
+- `virtual_sticks` - Shows on-screen virtual joysticks and buttons for touch devices, including custom renderers and configuration.

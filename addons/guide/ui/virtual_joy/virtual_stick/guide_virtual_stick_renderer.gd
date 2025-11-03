@@ -1,4 +1,5 @@
 @tool
+@icon("guide_virtual_stick_renderer.svg")
 ## Base class for virtual stick renderers.
 class_name GUIDEVirtualStickRenderer
 extends Control
@@ -40,6 +41,7 @@ var stick_start_position:Vector2:
 	get:
 		if _stick != null:
 			return _stick._start_pos
+		print("stick zero")
 		return Vector2.ZERO
 			
 		
@@ -63,6 +65,7 @@ func _notification(what:int) -> void:
 			return
 		# we only react to input changes in the real game, not in the editor.
 		_stick.changed.connect(_on_stick_changed)
+
 
 ## Called when configuration changed on the parent stick (e.g., radii or modes changed).
 func _on_configuration_changed() -> void:

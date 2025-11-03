@@ -14,9 +14,7 @@ var _material:ShaderMaterial
 
 var _multiplier:float = 1.0
 
-func _ready() -> void:
-	_rebuild()
-	
+
 func _on_configuration_changed():
 	_rebuild()
 
@@ -26,11 +24,10 @@ func _rebuild():
 		
 	if not is_instance_valid(_rect):
 		_rect = ColorRect.new()
-		add_child(_rect)
+		get_parent().add_child(_rect)
 		_material = ShaderMaterial.new()
 		_material.shader = preload("custom_stick_renderer.gdshader")
 		_rect.material = _material
-	
 	
 	# make the control big enough to render the joy fully without
 	# cutting 
@@ -42,11 +39,9 @@ func _rebuild():
 	# far.
 	_multiplier = max_actuation_radius / half_size
 	_rect.custom_minimum_size = Vector2(2 * half_size, 2 * half_size)
-	_rect.global_position = stick_start_position - _rect.size / 2
 		
 	_material.set_shader_parameter("stick_radius", stick_radius / (2.0 * half_size))
 	_material.set_shader_parameter("outline_thickness", outline_thickness)	
 		
 func _update(joy_position: Vector2, joy_offset:Vector2, is_actuated:bool) -> void:
-	_rect.global_position = stick_start_position - _rect.size / 2
 	_material.set_shader_parameter("stick_position", Vector2(0.5, 0.5) + _multiplier * joy_offset / 2.0)

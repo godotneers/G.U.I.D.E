@@ -1,4 +1,5 @@
 @tool
+@icon("guide_virtual_button.svg")
 ## A virtual joystick button.
 class_name GUIDEVirtualButton
 extends GUIDEVirtualJoyBase
@@ -23,7 +24,18 @@ var _finger_positions:Dictionary = {}
 var _mouse_down_consumed: bool = false
 
 func _ready() -> void:
+	use_top_left = true
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	size = Vector2.ZERO
+	# the editor likes to set the size to 40x40, we'll override that
+	if Engine.is_editor_hint():
+		set_deferred("size", Vector2.ZERO)
+		
+	# let renderers know the initial configuration
+	configuration_changed.emit()
+	# and the initial state
+	changed.emit()
+		
 	if Engine.is_editor_hint():
 		return # no input processing in the editor
 		
