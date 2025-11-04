@@ -6,9 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- G.U.I.D.E has now support for virtual on-screen joysticks and buttons. These work both with mouse and touch inputs. This is useful for mobile games and allows steering controls just the touch screen. There is a new demo in the `guide_examples` folder showing how to use this. You can also check the [documentation](https://godotneers.github.io/G.U.I.D.E/usage/virtual-joysticks) for more information on how to use them. 
 - `GUIDEMappingContext` now has signals `enabled` and `disabled` which fire when the context is enabled or disabled. This can be useful to trigger some game logic when a context is activated or deactivated. A big thanks goes to [Jonathan Durbin](https://github.com/jonathan-durbin) for providing a PR for this ([#119](https://github.com/godotneers/G.U.I.D.E/pull/119)).
 
 - The virtual cursor modifier now has a setting allowing to synchronize the cursor position with the actual mouse position when activated or deactivated. This is useful when switching between a gamepad and a mouse to avoid jumps in the cursor position. The virtual cursor demo has been updated to make use of this functionality ([#122](https://github.com/godotneers/G.U.I.D.E/issues/122)).
+
+### Improved
+- The joy device index in `GUIDEInputJoy*` has been changed from a number to a dropdown. This makes the implicit meaning of `-1` as _Any joystick_ more explicit. It also allows for easy selection of virtual joysticks.
 
 ### Fixed
 - The input detector will now properly detect abort input even when this input was already pressed when starting the detection ([#123](https://github.com/godotneers/G.U.I.D.E/pull/119)).

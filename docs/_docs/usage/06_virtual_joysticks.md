@@ -19,6 +19,16 @@ You will notice that by default, nothing is visible when you add a virtual joyst
 
 After adding a joystick or button to your scene, you can configure various options. Adjust its size and decide whether it works with a mouse, touch or both. Also, choose which virtual device the button or joystick should belong to. This will become important later when we try to map the virtual joystick in our G.U.I.D.E mapping context.
 
+### Input mode
+
+Virtual joysticks and joy buttons can work in three different input modes:
+
+- _Mouse_ - the joystick or button will respond to mouse input.
+- _Touch_ - the joystick or button will respond to touch input.
+- _Mouse and touch_ - the joystick or button will respond to both mouse and touch input.
+
+If you use _Mouse and touch_ as input mode, make sure that Godot's _Emulate mouse from touch_ and _Emulate touch from mouse_ options are disabled, otherwise you will get unexpected behavior. Also note, that when using _Mouse_ you can only ever use one joystick or button at a time, as there is only a single mouse cursor. 
+
 ## Rendering virtual joysticks and joy buttons
 
 Because the style of your virtual joysticks and joy buttons should match the style of your game, G.U.I.D.E allows you to fully control how this is rendered on screen. The rendering is controlled by two custom nodes:
