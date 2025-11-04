@@ -4,7 +4,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.9.0-beta1]
+
 ### Added
 - G.U.I.D.E has now support for virtual on-screen joysticks and buttons. These work both with mouse and touch inputs. This is useful for mobile games and allows steering controls just the touch screen. There is a new demo in the `guide_examples` folder showing how to use this. You can also check the [documentation](https://godotneers.github.io/G.U.I.D.E/usage/virtual-joysticks) for more information on how to use them. 
 - `GUIDEMappingContext` now has signals `enabled` and `disabled` which fire when the context is enabled or disabled. This can be useful to trigger some game logic when a context is activated or deactivated. A big thanks goes to [Jonathan Durbin](https://github.com/jonathan-durbin) for providing a PR for this ([#119](https://github.com/godotneers/G.U.I.D.E/pull/119)).
