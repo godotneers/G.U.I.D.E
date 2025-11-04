@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://8thurteeibtu"]
 
-[ext_resource type="Script" path="res://addons/guide/ui/icon_maker/icon_maker.gd" id="1_hdbjk"]
+[ext_resource type="Script" uid="uid://dq6cdbdturmel" path="res://addons/guide/ui/icon_maker/icon_maker.gd" id="1_hdbjk"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_kra7t"]
 viewport_path = NodePath("SubViewport")
