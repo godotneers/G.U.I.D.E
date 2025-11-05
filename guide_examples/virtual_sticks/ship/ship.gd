@@ -8,7 +8,7 @@ extends Node2D
 @export var projectile_scene: PackedScene
 @export var projectile_spawn_offset: float = 40.0
 
-func _ready():
+func _ready() -> void:
 	fire_projectile.triggered.connect(_fire)
 
 func _process(delta: float) -> void:

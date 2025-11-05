@@ -6,7 +6,7 @@ const Utils = preload("../utils.gd")
 
 signal input_selected(input:GUIDEInput)
 
-@onready var _input_display = %InputDisplay
+@onready var _input_display:RichTextLabel = %InputDisplay
 @onready var _available_types:Container = %AvailableTypes
 @onready var _none_available:Control = %NoneAvailable
 @onready var _some_available:Control = %SomeAvailable
@@ -26,11 +26,11 @@ var _scanner:ClassScanner
 var _last_detected_input:GUIDEInput
 
 	
-func initialize(scanner:ClassScanner):
+func initialize(scanner:ClassScanner) -> void:
 	_scanner = scanner
 	_setup_dialog()
 	
-func _setup_dialog():
+func _setup_dialog() -> void:
 	# we need to bind this here. if we bind it in the editor, the editor
 	# will crash when opening the scene because it will delete the node it
 	# just tries to edit.
@@ -54,7 +54,7 @@ func _show_inputs_of_value_type(type:GUIDEAction.GUIDEActionValueType) -> void:
 	_select_2d_button.set_pressed_no_signal(type == GUIDEAction.GUIDEActionValueType.AXIS_2D)
 	_select_3d_button.set_pressed_no_signal(type == GUIDEAction.GUIDEActionValueType.AXIS_3D)
 	
-	var all_inputs = _scanner.find_inheritors("GUIDEInput")
+	var all_inputs := _scanner.find_inheritors("GUIDEInput")
 	for script in all_inputs.values():
 		var dummy:GUIDEInput = script.new()
 		if dummy._native_value_type() == type:
@@ -70,7 +70,7 @@ func _show_inputs_of_value_type(type:GUIDEAction.GUIDEActionValueType) -> void:
 	Utils.clear(_available_types)
 	
 	for item in items:
-		var button = Button.new()
+		var button := Button.new()
 		button.text = item._editor_name()
 		button.tooltip_text = item._editor_description()
 		button.pressed.connect(_deliver.bind(item))	

@@ -5,7 +5,7 @@ var _action_a: GUIDEAction
 var _action_lt_a: GUIDEAction
 var _modifier_lt: GUIDEAction
 
-func _setup():
+func _setup() -> void:
 	_context = mapping_context()
 	_action_a = action_bool("a")
 	_action_lt_a = action_bool("lt+a")
@@ -25,7 +25,7 @@ func _setup():
 	GUIDE.enable_mapping_context(_context)
 
 
-func test_a_triggers_without_modifier():
+func test_a_triggers_without_modifier() -> void:
 	# WHEN: I press A without holding LT
 	await tap_joy_button(JOY_BUTTON_A)
 
@@ -34,8 +34,8 @@ func test_a_triggers_without_modifier():
 	await assert_not_triggered(_action_lt_a)
 
 
-func test_chorded_action_blocks_lower_priority():
-	for a in GUIDE._actions_sharing_input.keys():
+func test_chorded_action_blocks_lower_priority() -> void:
+	for a:GUIDEAction in GUIDE._actions_sharing_input.keys():
 		print("%s > %s" % [a.name, GUIDE._actions_sharing_input[a][0].name])
 	await joy_axis(JOY_AXIS_TRIGGER_LEFT, 1.0)
 	await tap_joy_button(JOY_BUTTON_A)

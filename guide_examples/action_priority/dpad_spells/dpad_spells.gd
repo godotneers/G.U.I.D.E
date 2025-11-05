@@ -38,11 +38,11 @@ extends GridContainer
 		_refresh()
 
 
-func _ready():
+func _ready() -> void:
 	_refresh()
 	
 	
-func _refresh():
+func _refresh() -> void:
 	if not is_node_ready():
 		return
 		

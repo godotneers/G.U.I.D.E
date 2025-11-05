@@ -5,13 +5,13 @@ var _context2: GUIDEMappingContext
 var _action: GUIDEAction
 
 
-func _setup():
+func _setup() -> void:
 	_context1 = mapping_context()
 	_context2 = mapping_context()
 	_action = action_bool("some_action")
 
 
-func test_action_with_pressed_trigger_does_not_trigger_again_on_context_switch():
+func test_action_with_pressed_trigger_does_not_trigger_again_on_context_switch() -> void:
 	var input := input_key(KEY_A)
 	var trigger := trigger_pressed()
 	map(_context1, _action, input, [], [trigger] )
@@ -36,7 +36,7 @@ func test_action_with_pressed_trigger_does_not_trigger_again_on_context_switch()
 	await assert_not_triggered(_action)
 
 
-func test_action_with_down_trigger_triggers_again_on_context_switch():
+func test_action_with_down_trigger_triggers_again_on_context_switch() -> void:
 	var input := input_key(KEY_A)
 	var trigger := trigger_down()
 	map(_context1, _action, input, [], [trigger] )
@@ -66,7 +66,7 @@ func test_action_with_down_trigger_triggers_again_on_context_switch():
 	await assert_triggered(_action)
 
 	
-func test_action_with_different_inputs_retains_value_on_context_switch():
+func test_action_with_different_inputs_retains_value_on_context_switch() -> void:
 	_action = action_2d("some_action")
 	
 	# we have 2 contexts with the same action, but different inputs (e.g. one keyboard, one gamepad)

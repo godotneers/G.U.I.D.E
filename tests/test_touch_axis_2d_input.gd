@@ -4,11 +4,11 @@ extends GUIDETestBase
 var _context:GUIDEMappingContext
 var _action:GUIDEAction
 
-func _setup():
+func _setup() -> void:
 	_context = mapping_context()
 	_action = action_2d()
 
-func test_touch_axis_2d_input():
+func test_touch_axis_2d_input() -> void:
 	var input := input_touch_axis_2d()
 	map(_context, _action, input)
 	
@@ -22,5 +22,3 @@ func test_touch_axis_2d_input():
 	# THEN
 	# the action is triggered
 	await assert_triggered(_action)
-	
-	

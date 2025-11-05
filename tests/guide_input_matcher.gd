@@ -3,7 +3,7 @@ class_name GUIDEInputMatcher
 extends GdUnitArgumentMatcher
 
 var _input: GUIDEInput
-func _init(input:GUIDEInput):
+func _init(input:GUIDEInput) -> void:
 	_input = input
 	
 func is_match(argument:Variant) -> bool:

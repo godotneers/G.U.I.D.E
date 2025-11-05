@@ -19,7 +19,7 @@ extends GUIDEModifier
 
 ## Create default curve resource with a smoothstep, 0.0 - 1.0 input/output range
 static func default_curve() -> Curve:
-	var curve = Curve.new()
+	var curve := Curve.new()
 	curve.add_point(Vector2(0.0, 0.0))
 	curve.add_point(Vector2(1.0, 1.0))
 

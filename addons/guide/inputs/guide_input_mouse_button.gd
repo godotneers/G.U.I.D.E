@@ -58,7 +58,7 @@ func is_same_as(other: GUIDEInput) -> bool:
 	return other is GUIDEInputMouseButton and other.button == button
 
 
-func _to_string():
+func _to_string() -> String:
 	return "(GUIDEInputMouseButton: button=" + str(button) + ")"
 
 

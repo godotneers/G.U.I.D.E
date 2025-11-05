@@ -6,7 +6,7 @@ var _context2:GUIDEMappingContext
 var _action1:GUIDEAction
 var _action2:GUIDEAction
 
-func _setup():
+func _setup() -> void:
 	_context1 = mapping_context()
 	_context2 = mapping_context()
 	_action1 = action_bool()
@@ -14,7 +14,7 @@ func _setup():
 
 # https://github.com/godotneers/G.U.I.D.E/issues/61
 # Switching mapping contexts while an input is active should not deactivate the input.
-func test_input_stays_active_when_mapping_contexts_change():
+func test_input_stays_active_when_mapping_contexts_change() -> void:
 	var input:GUIDEInput = input_key(KEY_A)
 	map(_context1, _action1, input)
 	map(_context2, _action2, input)

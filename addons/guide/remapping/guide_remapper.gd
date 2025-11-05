@@ -81,7 +81,7 @@ func get_remappable_items(context:GUIDEMappingContext = null,
 				if display_category.length() > 0 and effective_display_category != display_category:
 					continue		
 				
-				var item = ConfigItem.new(a_context, action_mapping.action, index, input_mapping)
+				var item := ConfigItem.new(a_context, action_mapping.action, index, input_mapping)
 				item_changed.connect(item._item_changed)
 				result.append(item)
 		

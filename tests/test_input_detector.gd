@@ -2,16 +2,16 @@ extends GUIDETestBase
 
 var _input_detector: GUIDEInputDetector
 
-func _setup():
+func _setup() -> void:
 	_input_detector = auto_free(GUIDEInputDetector.new())
 	_input_detector.detection_countdown_seconds = 0
-	_input_detector.detection_started.connect(func(): print_f("Detection started."))
-	_input_detector.input_detected.connect(func(val): print_f("Input detected: %s" % val))
+	_input_detector.detection_started.connect(func() -> void: print_f("Detection started."))
+	_input_detector.input_detected.connect(func(val:GUIDEInput) -> void: print_f("Input detected: %s" % val))
 	
 	add_child(_input_detector)
 	
 
-func test_input_is_detected():
+func test_input_is_detected() -> void:
 	monitor_signals(_input_detector)
 	
 	# when i try to detect boolean input
@@ -24,7 +24,7 @@ func test_input_is_detected():
 	await assert_signal(_input_detector).is_emitted("input_detected", [GUIDEInputMatcher.new(input_key(KEY_A))])
 	
 
-func test_axis_1d_input_is_detected():
+func test_axis_1d_input_is_detected() -> void:
 	monitor_signals(_input_detector)
 	
 	# when i try to detect axis 1D input
@@ -38,7 +38,7 @@ func test_axis_1d_input_is_detected():
 	
 	
 
-func test_axis_2d_input_is_detected():
+func test_axis_2d_input_is_detected() -> void:
 	monitor_signals(_input_detector)
 	
 	# when i try to detect axis 2D input
@@ -51,7 +51,7 @@ func test_axis_2d_input_is_detected():
 	await assert_signal(_input_detector).is_emitted("input_detected", [GUIDEInputMatcher.new(input_mouse_axis_2d())])
 
 	
-func test_aborting_input_detection_works():
+func test_aborting_input_detection_works() -> void:
 	monitor_signals(_input_detector)
 	_input_detector.abort_detection_on = [input_key(KEY_ESCAPE)]
 	
@@ -65,7 +65,7 @@ func test_aborting_input_detection_works():
 	await assert_signal(_input_detector).is_emitted("input_detected", [null])
 	
 
-func test_input_detector_ensures_that_abort_input_is_released_before_detection():
+func test_input_detector_ensures_that_abort_input_is_released_before_detection() -> void:
 	monitor_signals(_input_detector)
 	_input_detector.abort_detection_on = [input_key(KEY_ESCAPE)]
 	var holder:Array = []
@@ -73,7 +73,7 @@ func test_input_detector_ensures_that_abort_input_is_released_before_detection()
 	await key_down(KEY_ESCAPE)
 	
 	# and then run an input detection
-	var detect = func(): 
+	var detect := func() -> void:
 		_input_detector.detect(GUIDEAction.GUIDEActionValueType.BOOL) 
 		holder.append(await _input_detector.input_detected)
 	

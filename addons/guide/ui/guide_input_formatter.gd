@@ -3,15 +3,15 @@
 class_name GUIDEInputFormatter
 
 const IconMaker = preload("icon_maker/icon_maker.gd")
-const KeyRenderer = preload("renderers/keyboard/key_renderer.tscn")
-const MouseRenderer = preload("renderers/mouse/mouse_renderer.tscn")
-const TouchRenderer = preload("renderers/touch/touch_renderer.tscn")
-const JoyRenderer = preload("renderers/joy/joy_renderer.tscn")
-const XboxRenderer = preload("renderers/controllers/xbox/xbox_controller_renderer.tscn")
-const PlayStationRenderer = preload("renderers/controllers/playstation/playstation_controller_renderer.tscn")
-const SwitchRenderer = preload("renderers/controllers/switch/switch_controller_renderer.tscn")
-const ActionRenderer = preload("renderers/misc/action_renderer.tscn")
-const FallbackRenderer = preload("renderers/misc/fallback_renderer.tscn")
+const KeyRenderer:PackedScene = preload("renderers/keyboard/key_renderer.tscn")
+const MouseRenderer:PackedScene = preload("renderers/mouse/mouse_renderer.tscn")
+const TouchRenderer:PackedScene = preload("renderers/touch/touch_renderer.tscn")
+const JoyRenderer:PackedScene = preload("renderers/joy/joy_renderer.tscn")
+const XboxRenderer:PackedScene = preload("renderers/controllers/xbox/xbox_controller_renderer.tscn")
+const PlayStationRenderer:PackedScene = preload("renderers/controllers/playstation/playstation_controller_renderer.tscn")
+const SwitchRenderer:PackedScene = preload("renderers/controllers/switch/switch_controller_renderer.tscn")
+const ActionRenderer:PackedScene = preload("renderers/misc/action_renderer.tscn")
+const FallbackRenderer:PackedScene = preload("renderers/misc/fallback_renderer.tscn")
 const DefaultTextProvider = preload("text_providers/default_text_provider.gd")
 const XboxTextProvider = preload("text_providers/controllers/xbox/xbox_controller_text_provider.gd")
 const PlayStationTextProvider = preload("text_providers/controllers/playstation/playstation_controller_text_provider.gd")
@@ -34,7 +34,7 @@ static var combo_input_separator:String = " > "
 var _action_resolver:Callable
 var _icon_size:int
 
-static func _ensure_readiness():
+static func _ensure_readiness() -> void:
 	if _is_ready:
 		return
 		
@@ -112,7 +112,7 @@ static func remove_text_provider(provider:GUIDETextProvider) -> void:
 
 ## Returns an input formatter that can format actions using the currently active inputs.
 static func for_active_contexts(icon_size:int = 32) -> GUIDEInputFormatter:
-	var resolver = func(action:GUIDEAction) -> GUIDEActionMapping:
+	var resolver := func(action:GUIDEAction) -> GUIDEActionMapping:
 		for mapping in GUIDE._active_action_mappings:
 			if mapping.action == action:
 				return mapping
@@ -171,7 +171,7 @@ func _materialized_as_text(input:MaterializedInput) -> String:
 			## push_warning("No formatter found for input ", input)
 		return text
 
-	var separator = _separator_for_input(input)
+	var separator := _separator_for_input(input)
 	if separator == "" or input.parts.is_empty():
 		return ""
 		
@@ -198,7 +198,7 @@ func _materialized_as_richtext_async(input:MaterializedInput) -> String:
 		return "[img]%s[/img]" % [icon.resource_path]
 	
 
-	var separator = _separator_for_input(input)
+	var separator := _separator_for_input(input)
 	if separator == "" or input.parts.is_empty():
 		return ""
 		
@@ -288,19 +288,19 @@ func _materialize_input(input:GUIDEInput, materialize_actions:bool = true) -> Ma
 	if input is GUIDEInputKey:
 		var chord := MaterializedChordedInput.new()
 		if input.control:
-			var ctrl = GUIDEInputKey.new()
+			var ctrl := GUIDEInputKey.new()
 			ctrl.key = KEY_CTRL
 			chord.parts.append(MaterializedSimpleInput.new(ctrl))
 		if input.alt:
-			var alt = GUIDEInputKey.new()
+			var alt := GUIDEInputKey.new()
 			alt.key = KEY_ALT
 			chord.parts.append(MaterializedSimpleInput.new(alt))
 		if input.shift:
-			var shift = GUIDEInputKey.new()
+			var shift := GUIDEInputKey.new()
 			shift.key = KEY_SHIFT
 			chord.parts.append(MaterializedSimpleInput.new(shift))
 		if input.meta:
-			var meta = GUIDEInputKey.new()
+			var meta := GUIDEInputKey.new()
 			meta.key = KEY_META
 			chord.parts.append(MaterializedSimpleInput.new(meta))
 	
@@ -345,7 +345,7 @@ static func _joy_name_for_input(input:GUIDEInput) -> String:
 		return ""
 	
 	var joypads:Array[int] = Input.get_connected_joypads()
-	var joy_index = input.joy_index
+	var joy_index := input.joy_index
 	if joy_index < 0:
 		# pick the first one
 		joy_index = 0
@@ -354,5 +354,5 @@ static func _joy_name_for_input(input:GUIDEInput) -> String:
 	if joypads.size() <= joy_index:
 		return "" 
 		
-	var id = joypads[joy_index]
+	var id := joypads[joy_index]
 	return Input.get_joy_name(id)	

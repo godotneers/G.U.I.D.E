@@ -4,11 +4,11 @@ extends GUIDETestBase
 var _context:GUIDEMappingContext
 var _action:GUIDEAction
 
-func _setup():
+func _setup() -> void:
 	_context = mapping_context()
 	_action = action_2d()
 
-func test_touch_position_input():
+func test_touch_position_input() -> void:
 	var input := input_touch_position()
 	map(_context, _action, input)
 	
@@ -24,7 +24,7 @@ func test_touch_position_input():
 	
 	assert_vector(_action.value_axis_2d).is_equal(Vector2(50, 50))
 	
-func test_touch_position_input_with_multiple_fingers():
+func test_touch_position_input_with_multiple_fingers() -> void:
 	var input := input_touch_position(2, 3)
 	map(_context, _action, input)
 	
@@ -43,7 +43,7 @@ func test_touch_position_input_with_multiple_fingers():
 	# and i get the third finger's value
 	assert_vector(_action.value_axis_2d).is_equal(Vector2(300, 50))
 	
-func test_touch_position_input_with_multiple_fingers_doesnt_trigger_if_not_enough_fingers():
+func test_touch_position_input_with_multiple_fingers_doesnt_trigger_if_not_enough_fingers() -> void:
 	var input := input_touch_position(2, 3)
 	map(_context, _action, input)
 	
@@ -60,7 +60,7 @@ func test_touch_position_input_with_multiple_fingers_doesnt_trigger_if_not_enoug
 	
 	
 
-func test_touch_position_input_with_multiple_fingers_calculates_average():
+func test_touch_position_input_with_multiple_fingers_calculates_average() -> void:
 	var input := input_touch_position(-1, 3)
 	map(_context, _action, input)
 	
@@ -78,6 +78,3 @@ func test_touch_position_input_with_multiple_fingers_calculates_average():
 	
 	# and the value is the average of the three fingers
 	assert_vector(_action.value_axis_2d).is_equal(Vector2(0, 100))
-	
-	
-	

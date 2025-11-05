@@ -4,12 +4,12 @@ extends GUIDETestBase
 var _context:GUIDEMappingContext
 var _action:GUIDEAction
 
-func _setup():
+func _setup() -> void:
 	_context = mapping_context()
 	_action = action_1d()
 	
 	
-func test_modifier_works_if_both_ranges_are_ascending():
+func test_modifier_works_if_both_ranges_are_ascending() -> void:
 	var input := input_joy_axis_1d(JOY_AXIS_LEFT_X)
 	var modifier := modifier_map_range(-1, 1, 0, 100)
 	map(_context, _action, input, [modifier])
@@ -26,7 +26,7 @@ func test_modifier_works_if_both_ranges_are_ascending():
 	assert_float(_action.value_axis_1d).is_equal_approx(100, 0.01)
 
 	
-func test_modifier_works_if_output_range_is_descending():
+func test_modifier_works_if_output_range_is_descending() -> void:
 	var input := input_joy_axis_1d(JOY_AXIS_LEFT_X)
 	var modifier := modifier_map_range(-1, 1, 100, 0)
 	map(_context, _action, input, [modifier])
@@ -43,7 +43,7 @@ func test_modifier_works_if_output_range_is_descending():
 	assert_float(_action.value_axis_1d).is_equal_approx(0, 0.01)
 	
 
-func test_modifier_works_if_input_range_is_descending():
+func test_modifier_works_if_input_range_is_descending() -> void:
 	var input := input_joy_axis_1d(JOY_AXIS_LEFT_X)
 	var modifier := modifier_map_range(1, -1, 0, 100)
 	map(_context, _action, input, [modifier])
@@ -60,7 +60,7 @@ func test_modifier_works_if_input_range_is_descending():
 	assert_float(_action.value_axis_1d).is_equal_approx(0, 0.01)
 	
 
-func test_modifier_works_if_both_ranges_are_descending():
+func test_modifier_works_if_both_ranges_are_descending() -> void:
 	var input := input_joy_axis_1d(JOY_AXIS_LEFT_X)
 	var modifier := modifier_map_range(1, -1, 100, 0)
 	map(_context, _action, input, [modifier])
@@ -77,7 +77,7 @@ func test_modifier_works_if_both_ranges_are_descending():
 	assert_float(_action.value_axis_1d).is_equal_approx(100, 0.01)
 
 	
-func test_modifier_works_with_purely_negative_ranges():
+func test_modifier_works_with_purely_negative_ranges() -> void:
 	var input := input_joy_axis_1d(JOY_AXIS_LEFT_X)
 	var modifier := modifier_map_range(-2, -1, -100, -50)
 	map(_context, _action, input, [modifier])

@@ -26,7 +26,7 @@ func is_same_as(other:GUIDEInput) -> bool:
 		 other.joy_index == joy_index
 
 
-func _to_string():
+func _to_string() -> String:
 	return "(GUIDEInputJoyButton: button=" + str(button) + ", joy_index="  + str(joy_index) + ")"
 
 

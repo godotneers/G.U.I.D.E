@@ -26,7 +26,7 @@ func is_same_as(other:GUIDEInput) -> bool:
 		other.axis == axis and \
 		other.joy_index == joy_index
 
-func _to_string():
+func _to_string() -> String:
 	return "(GUIDEInputJoyAxis1D: axis=" + str(axis) + ", joy_index="  + str(joy_index) + ")"
 
 func _editor_name() -> String:

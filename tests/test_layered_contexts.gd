@@ -5,7 +5,7 @@ var _context2:GUIDEMappingContext
 var _action1:GUIDEAction
 var _action2:GUIDEAction
 
-func _setup():
+func _setup() -> void:
 	_context1 = mapping_context()
 	_context2 = mapping_context()
 	_action1 = action_bool()
@@ -17,7 +17,7 @@ func _setup():
 
 ## https://github.com/godotneers/G.U.I.D.E/issues/89
 ## When layering contexts we should not get duplicate action mappings.
-func test_mapping_works():
+func test_mapping_works() -> void:
 	GUIDE.enable_mapping_context(_context1)
 
 	assert_int(GUIDE._active_action_mappings.size()).is_equal(1)
@@ -30,7 +30,7 @@ func test_mapping_works():
 
 ## https://github.com/godotneers/G.U.I.D.E/issues/94
 ## When layering contexts, the inputs are properly mapped.
-func test_mapping_inputs_works():
+func test_mapping_inputs_works() -> void:
 	GUIDE.enable_mapping_context(_context1)
 	
 	# when i press the A key
@@ -50,7 +50,7 @@ func test_mapping_inputs_works():
 
 
 ## When layering contexts, disabling one context should not affect the other.
-func test_disable_one_context():
+func test_disable_one_context() -> void:
 	# enable both contexts
 	GUIDE.enable_mapping_context(_context1)
 	GUIDE.enable_mapping_context(_context2)

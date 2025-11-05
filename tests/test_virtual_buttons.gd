@@ -3,7 +3,7 @@ extends GUIDETestBase
 var _action:GUIDEAction
 var _action2:GUIDEAction
 
-func _setup():
+func _setup() -> void:
 	var context := mapping_context()
 	_action = action_bool("Action 1")
 	var input := input_joy_button(JOY_BUTTON_A)
@@ -33,7 +33,7 @@ func _make_button(input_mode:GUIDEVirtualButton.InputMode, position:Vector2 = Ve
 	
 	return virtual_button
 
-func test_virtual_button_can_be_touched():
+func test_virtual_button_can_be_touched() -> void:
 	var virtual_button := _make_button(GUIDEVirtualButton.InputMode.TOUCH)
 	# WHEN i touch the virtual button
 	await tap_finger(0, virtual_button.global_position)
@@ -41,7 +41,7 @@ func test_virtual_button_can_be_touched():
 	await assert_triggered(_action)
 	
 	
-func test_virtual_button_can_be_clicked():
+func test_virtual_button_can_be_clicked() -> void:
 	var virtual_button := _make_button(GUIDEVirtualButton.InputMode.MOUSE)
 
 	# WHEN i click the virtual button
@@ -50,7 +50,7 @@ func test_virtual_button_can_be_clicked():
 	await assert_triggered(_action)
 
 
-func test_virtual_button_can_be_clicked_and_touched():
+func test_virtual_button_can_be_clicked_and_touched() -> void:
 	var virtual_button := _make_button(GUIDEVirtualButton.InputMode.MOUSE_AND_TOUCH)
 
 	# WHEN i click the virtual button
@@ -67,7 +67,7 @@ func test_virtual_button_can_be_clicked_and_touched():
 	# THEN the action is triggered
 	await assert_triggered(_action)
 		
-func test_virtual_button_stops_actuation_when_last_finger_moves_out():
+func test_virtual_button_stops_actuation_when_last_finger_moves_out() -> void:
 	var virtual_button := _make_button(GUIDEVirtualButton.InputMode.TOUCH)
 
 	# WHEN i touch the virtual button with two fingers
@@ -93,7 +93,7 @@ func test_virtual_button_stops_actuation_when_last_finger_moves_out():
 	await finger_up(1)
 
 
-func test_virtual_button_stops_actuation_when_mouse_moves_out():
+func test_virtual_button_stops_actuation_when_mouse_moves_out() -> void:
 	var virtual_button := _make_button(GUIDEVirtualButton.InputMode.MOUSE, Vector2(400,400))
 
 	# WHEN i move the mouse over the button and press
@@ -112,7 +112,7 @@ func test_virtual_button_stops_actuation_when_mouse_moves_out():
 	await mouse_up(MOUSE_BUTTON_LEFT)
 
 
-func test_multiple_virtual_buttons_on_different_devices_dont_interfere():
+func test_multiple_virtual_buttons_on_different_devices_dont_interfere() -> void:
 	var virtual_button1 := _make_button(GUIDEVirtualButton.InputMode.TOUCH, Vector2(200,200))
 	virtual_button1.virtual_device = 0  # First virtual joy pad
 	
@@ -147,7 +147,7 @@ func test_multiple_virtual_buttons_on_different_devices_dont_interfere():
 	assert_is_not_triggered(_action2)
 	
 		
-func test_moving_mouse_while_clicking_updates_hit_test():
+func test_moving_mouse_while_clicking_updates_hit_test() -> void:
 	var virtual_button := _make_button(GUIDEVirtualButton.InputMode.MOUSE, Vector2(400,400))		
 
 	# WHEN i start clicking outside the button area
@@ -172,7 +172,7 @@ func test_moving_mouse_while_clicking_updates_hit_test():
 	await mouse_up(MOUSE_BUTTON_LEFT)
 	
 	
-func test_moving_finger_while_pressing_updates_hit_test():
+func test_moving_finger_while_pressing_updates_hit_test() -> void:
 	var virtual_button := _make_button(GUIDEVirtualButton.InputMode.TOUCH, Vector2(400,400))
 
 	# WHEN i start touching outside the button area

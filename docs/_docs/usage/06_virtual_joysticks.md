@@ -65,8 +65,8 @@ func _on_configuration_changed() -> void:
 
     # you can get the new configuration from
     # the base class' properties:
-    var new_stick_radius = stick_radius
-    var new_max_actuation_radius = max_actuation_radius
+    var new_stick_radius := stick_radius
+    var new_max_actuation_radius := max_actuation_radius
     
     # update custom UI elements or shaders here
     ...
@@ -97,7 +97,7 @@ extends GUIDEVirtualButtonRenderer
 ## This is called when the virtual button changes its configuration, e.g. size.
 func _on_configuration_changed() -> void:
     # Called when the virtual button changes its configuration, e.g. size.
-   var new_button_radius = button_radius 
+   var new_button_radius := button_radius 
 
 func _update(is_actuated:bool) -> void:
     # is_actuated is true when the button is actuated,

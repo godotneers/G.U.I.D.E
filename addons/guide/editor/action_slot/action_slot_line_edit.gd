@@ -18,7 +18,7 @@ func _can_drop_data(at_position, data) -> bool:
 	
 func _drop_data(at_position, data) -> void:
 	for file in data["files"]:
-		var item = ResourceLoader.load(file) 
+		var item := ResourceLoader.load(file) 
 		if item is GUIDEAction:
 			action_dropped.emit(item)
 

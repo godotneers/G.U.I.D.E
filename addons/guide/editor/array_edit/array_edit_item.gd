@@ -14,8 +14,8 @@ signal duplicate_requested(index:int)
 @onready var _popup_menu:PopupMenu = %PopupMenu
 
 
-const ID_DELETE = 2
-const ID_DUPLICATE = 3
+const ID_DELETE:int = 2
+const ID_DUPLICATE:int = 3
 
 func _ready():
 	_dragger.icon = get_theme_icon("GuiSpinboxUpdown", "EditorIcons")
@@ -39,9 +39,9 @@ func initialize(content:Control):
 
 func _can_drop_data(at_position:Vector2, data) -> bool:
 	if data is Dictionary and data.has("parent_array") and data.parent_array == get_parent() and data.index != get_index():
-		var height = size.y
+		var height := size.y
 	
-		var is_before = not _is_last_child() or (at_position.y < height/2.0)
+		var is_before := not _is_last_child() or (at_position.y < height/2.0)
 		if is_before and data.index == get_index() - 1:
 			# don't allow the previous child to be inserted at its
 			# own position
@@ -54,11 +54,10 @@ func _can_drop_data(at_position:Vector2, data) -> bool:
 	return false
 	
 	
-func _drop_data(at_position, data):
-	var height = size.y
-	var is_before = not _is_last_child() or (at_position.y < height/2.0)
-	var from = data.index
-	var to = get_index() if is_before else get_index() + 1
+func _drop_data(at_position:Vector2, data:Variant) -> void:
+	var height := size.y
+	var is_before := not _is_last_child() or (at_position.y < height/2.0)
+	var to := get_index() if is_before else get_index() + 1
 	move_requested.emit(data.index, to) 
 	_before_indicator.visible = false
 	_after_indicator.visible = false
@@ -67,19 +66,19 @@ func _is_last_child() -> bool:
 	return get_index() == get_parent().get_child_count() - 1
 
 
-func _on_mouse_exited():
+func _on_mouse_exited() -> void:
 	_before_indicator.visible = false
 	_after_indicator.visible = false
 
 
-func _show_popup_menu():
+func _show_popup_menu() -> void:
 	# https://github.com/godotneers/G.U.I.D.E/issues/88
 	# We use DisplayServer.mouse_get_position() to get the position of the mouse
 	# in a way that works with multiple monitors.
 	_popup_menu.popup(Rect2(get_screen_position() + get_local_mouse_position(), Vector2.ZERO))
 
 
-func _on_popup_menu_id_pressed(id:int):
+func _on_popup_menu_id_pressed(id:int) -> void:
 	match id:
 		ID_DELETE:
 			delete_requested.emit(get_index())

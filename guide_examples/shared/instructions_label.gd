@@ -15,7 +15,7 @@ extends RichTextLabel
 # The formatter. This will do the actual work of formatting action inputs into prompts.
 var _formatter:GUIDEInputFormatter
 
-func _ready():
+func _ready() -> void:
 	bbcode_enabled = true
 	fit_content = true
 	scroll_active = false
@@ -28,7 +28,7 @@ func _ready():
 	_formatter = GUIDEInputFormatter.for_active_contexts(icon_size)
 	
 	
-func _update_instructions():
+func _update_instructions() -> void:
 	# If we only show for a certain context, hide if that context isn't active right now.
 	if limit_to_context != null and not GUIDE.is_mapping_context_enabled(limit_to_context):
 		visible = false

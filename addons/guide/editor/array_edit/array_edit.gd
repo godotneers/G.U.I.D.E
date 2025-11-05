@@ -93,7 +93,7 @@ func clear():
 
 
 func add_item(new_item:Control):
-	var item_wrapper = item_scene.instantiate()
+	var item_wrapper := item_scene.instantiate()
 	_contents.add_child(item_wrapper)
 	item_wrapper.initialize(new_item)
 	item_wrapper.move_requested.connect(func(from:int, to:int): move_requested.emit(from, to))

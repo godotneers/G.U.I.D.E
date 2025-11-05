@@ -4,11 +4,11 @@ extends GUIDETestBase
 var _context:GUIDEMappingContext
 var _action:GUIDEAction
 
-func _setup():
+func _setup() -> void:
 	_context = mapping_context()
 	_action = action_bool()
 
-func test_mouse_button_input():
+func test_mouse_button_input() -> void:
 	var input := input_mouse_button()
 	map(_context, _action, input)
 	

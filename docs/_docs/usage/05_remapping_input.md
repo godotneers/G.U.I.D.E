@@ -167,7 +167,7 @@ So a very simple way to build the interface could look like this:
 # get a formatter
 var _formatter:GUIDEInputFormatter = GUIDEInputFormatter.new(48)
 
-func _build_interface():
+func _build_interface() -> void:
     # get all items
     var items:Array[GUIDERemapper.ConfigItem] = _remapper.get_remappable_items()
     
@@ -197,7 +197,7 @@ func _build_interface():
 
 # This function applies the input to a label. If the input is null, it will
 # show a grayed out "Not bound" text.
-func _apply_input(input:GUIDEInput, label:RichTextLabel):
+func _apply_input(input:GUIDEInput, label:RichTextLabel) -> void:
     if input == null:
         label.parse_bbcode("[color=gray]Not bound[/color]")
         return
@@ -227,7 +227,7 @@ Now that we have the `GUIDEInputDetector` node in our scene, we can start detect
 ```gdscript
 @onready var input_detector:GUIDEInputDetector = %InputDetector
 
-func _rebind(item:GUIDERemapper.ConfigItem):
+func _rebind(item:GUIDERemapper.ConfigItem) -> void:
     input_detector.detect(item.value_type)
 ```
 
@@ -248,7 +248,7 @@ input_detector.detect(item.value_type, \
 When the input detector has detected an input, it will emit the `input_detected` signal. We can connect to this signal to handle the detected input. A very simple way to do this is to simply `await` the signal right after we started the detection:
 
 ```gdscript
-func _rebind(item:GUIDERemapper.ConfigItem):
+func _rebind(item:GUIDERemapper.ConfigItem) -> void:
     input_detector.detect(item.value_type)
 
     var input:GUIDEInput = await input_detector.input_detected
@@ -260,7 +260,7 @@ func _rebind(item:GUIDERemapper.ConfigItem):
 Now we have the detected input and feed it back into the remapper to apply the new input binding:
 
 ```gdscript
-func _rebind(item:GUIDERemapper.ConfigItem):
+func _rebind(item:GUIDERemapper.ConfigItem) -> void:
     ...
     if input != null:
         _remapper.set_bound_input(item, input)
@@ -273,7 +273,7 @@ Setting the input binding like we just did is very simple, but it doesn't check 
 To prevent this, we should check for collisions before we set the input binding:
 
 ```gdscript
-func _rebind(item:GUIDERemapper.ConfigItem):
+func _rebind(item:GUIDERemapper.ConfigItem) -> void:
     ...
     # if the detection was aborted, there is no input to check for conflicts.
     if input == null:

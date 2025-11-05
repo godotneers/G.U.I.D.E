@@ -6,7 +6,7 @@ extends Node
 @export var switch_to_keyboard:GUIDEAction
 @export var switch_to_joystick:GUIDEAction
 
-func _ready():
+func _ready() -> void:
 	# When we get a command to switch the input scheme, we
 	# switch.
 	switch_to_keyboard.triggered.connect(_switch_input_scheme.bind(keyboard_scheme))
@@ -16,6 +16,6 @@ func _ready():
 	_switch_input_scheme(keyboard_scheme)
 
 
-func _switch_input_scheme(context:GUIDEMappingContext):
+func _switch_input_scheme(context:GUIDEMappingContext) -> void:
 	GUIDE.enable_mapping_context(context, true)
 	

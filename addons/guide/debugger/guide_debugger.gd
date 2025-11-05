@@ -6,12 +6,12 @@ extends MarginContainer
 @onready var _formatter:GUIDEInputFormatter = GUIDEInputFormatter.for_active_contexts()
 
 
-func _ready():
+func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	GUIDE.input_mappings_changed.connect(_update_priorities)
 	_update_priorities()
 
-func _process(delta):
+func _process(delta) -> void:
 	if not is_visible_in_tree():
 		return
 		
@@ -56,7 +56,7 @@ func _process(delta):
 	
 	index = 0
 	for input in GUIDE._active_inputs.values():
-		var input_label = _formatter.input_as_text(input, false)	
+		var input_label := _formatter.input_as_text(input, false)	
 		var input_value:String = str(input._value)
 
 		var label := _get_label(_inputs, index)
@@ -80,11 +80,11 @@ func _get_label(container:Container, index:int) -> Label:
 	
 func _cleanup(container:Container, index:int) -> void:
 	while container.get_child_count() > index:
-		var to_free = container.get_child(index)
+		var to_free := container.get_child(index)
 		container.remove_child(to_free)		
 		to_free.queue_free()	
 
-func _update_priorities():
+func _update_priorities() -> void:
 	# since we don't update these per frame, we can just clear them out and 
 	# rebuild them when mapping contexts change
 	_cleanup(_priorities, 0)
@@ -93,9 +93,9 @@ func _update_priorities():
 		var action := mapping.action
 		if GUIDE._actions_sharing_input.has(action):
 			var label := Label.new()
-			var names = ", ".join(GUIDE._actions_sharing_input[action].map(func(it): return it._editor_name()))
+			var names := ", ".join(GUIDE._actions_sharing_input[action].map(func(it): return it._editor_name()))
 			label.text = "[%s] > [%s]" % [action._editor_name(), names]
-			_priorities.add_child(label)			
+			_priorities.add_child(label)
 			
 			
 	if _priorities.get_child_count() == 0:

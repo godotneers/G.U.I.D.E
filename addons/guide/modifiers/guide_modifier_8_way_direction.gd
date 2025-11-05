@@ -33,8 +33,8 @@ func _modify_input(input:Vector3, delta:float, value_type:GUIDEAction.GUIDEActio
 	
 		
 	# get the angle in which the direction is pointing in radians.
-	var angle_radians = atan2( -input.y, input.x );
-	var octant = roundi( 8 * angle_radians / TAU + 8 ) % 8;
+	var angle_radians := atan2( -input.y, input.x );
+	var octant := roundi( 8 * angle_radians / TAU + 8 ) % 8;
 	if octant == direction:
 		return Vector3.RIGHT # (1, 0, 0) indicating boolean true
 	else:

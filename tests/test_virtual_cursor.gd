@@ -4,7 +4,7 @@ var _vc_action:GUIDEAction
 var _virtual_cursor:GUIDEModifierVirtualCursor
 var _mc:GUIDEMappingContext
 
-func _setup():
+func _setup() -> void:
 	_mc = mapping_context()
 	
 	# Combine D and S into a single action where D moves right and S moves down
@@ -31,7 +31,7 @@ func _setup():
 	
 
 
-func test_cursor_speed_is_uniform():
+func test_cursor_speed_is_uniform() -> void:
 	GUIDE.enable_mapping_context(_mc)
 	
 	# WHEN
@@ -43,7 +43,7 @@ func test_cursor_speed_is_uniform():
 	assert_float(value.x).is_equal(value.y).append_failure_message("Cursor moved non-uniformly")
 	
 	
-func test_cursor_stays_in_frame():
+func test_cursor_stays_in_frame() -> void:
 	GUIDE.enable_mapping_context(_mc)
 	
 	# WHEN i press left
@@ -72,7 +72,7 @@ func test_cursor_stays_in_frame():
 	
 	
 	
-func test_cursor_follows_mouse_position_when_flag_is_set():
+func test_cursor_follows_mouse_position_when_flag_is_set() -> void:
 	# WHEN: initializing the cursor from mouse position is enabled
 	_virtual_cursor.initialize_from_mouse_position = true
 	

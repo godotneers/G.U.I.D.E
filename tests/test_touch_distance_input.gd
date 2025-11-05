@@ -4,11 +4,11 @@ extends GUIDETestBase
 var _context:GUIDEMappingContext
 var _action:GUIDEAction
 
-func _setup():
+func _setup() -> void:
 	_context = mapping_context()
 	_action = action_1d()
 
-func test_touch_distance_input_triggers_on_fingers_moving_closer():
+func test_touch_distance_input_triggers_on_fingers_moving_closer() -> void:
 	var input := input_touch_distance()
 	map(_context, _action, input)
 	
@@ -24,7 +24,7 @@ func test_touch_distance_input_triggers_on_fingers_moving_closer():
 	# the action is triggered
 	await assert_triggered(_action)
 	
-func test_touch_distance_input_on_fingers_moving_apart():
+func test_touch_distance_input_on_fingers_moving_apart() -> void:
 	var input := input_touch_distance()
 	map(_context, _action, input)
 	
@@ -41,7 +41,7 @@ func test_touch_distance_input_on_fingers_moving_apart():
 	await assert_triggered(_action)
 	
 
-func test_touch_distance_input_doesnt_trigger_on_fingers_standing_still():
+func test_touch_distance_input_doesnt_trigger_on_fingers_standing_still() -> void:
 	var input := input_touch_distance()
 	map(_context, _action, input)
 	

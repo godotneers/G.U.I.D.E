@@ -4,14 +4,14 @@ extends GUIDETestBase
 var _context:GUIDEMappingContext
 var _action:GUIDEAction
 
-func _setup():
+func _setup() -> void:
 	_context = mapping_context()
 	_action = action_bool()
 
 # https://github.com/godotneers/G.U.I.D.E/issues/77
 # Having an actuation and release event in the same frame causes
 # missing trigger of an action.
-func test_rapid_key_actuations_are_handled_correctly():
+func test_rapid_key_actuations_are_handled_correctly() -> void:
 	var input:GUIDEInput = input_key(KEY_A)
 	map(_context, _action, input)
 
@@ -32,7 +32,7 @@ func test_rapid_key_actuations_are_handled_correctly():
 	await assert_completed(_action)
 
 
-func test_rapid_mouse_actuations_are_handled_correctly():
+func test_rapid_mouse_actuations_are_handled_correctly() -> void:
 	var input:GUIDEInput = input_mouse_button(MOUSE_BUTTON_LEFT)
 	map(_context, _action, input)
 
@@ -53,7 +53,7 @@ func test_rapid_mouse_actuations_are_handled_correctly():
 	await assert_completed(_action)
 
 
-func test_rapid_controller_actuations_are_handled_correctly():
+func test_rapid_controller_actuations_are_handled_correctly() -> void:
 	var input:GUIDEInput = input_joy_button(JOY_BUTTON_A)
 	map(_context, _action, input)
 

@@ -88,7 +88,7 @@ func set_remapping_config(config:GUIDERemappingConfig) -> void:
 	
 ## Enables the given context with the given priority. Lower numbers have higher priority. If 
 ## disable_others is set to true, all other currently enabled mapping contexts will be disabled.
-func enable_mapping_context(context:GUIDEMappingContext, disable_others:bool = false,  priority:int = 0):
+func enable_mapping_context(context:GUIDEMappingContext, disable_others:bool = false,  priority:int = 0) -> void:
 	if not is_instance_valid(context):
 		push_error("Null context given. Ignoring.")
 		return
@@ -103,7 +103,7 @@ func enable_mapping_context(context:GUIDEMappingContext, disable_others:bool = f
 	
 	
 ## Disables the given mapping context.
-func disable_mapping_context(context:GUIDEMappingContext):
+func disable_mapping_context(context:GUIDEMappingContext) -> void:
 	if not is_instance_valid(context):
 		push_error("Null context given. Ignoring.")
 		return
@@ -194,7 +194,7 @@ func _process(delta:float) -> void:
 ## a lot of processing time during the actual input processing. It also simplifies the input processing
 ## code as all the rules for how inputs, actions and modifiers are consolidated are already applied here.
 ## This is called automatically when contexts are enabled/disabled or remapping configs are applied.
-func _update_caches():
+func _update_caches() -> void:
 	if _locked:
 		push_error("Mapping context changed again while processing a change. Ignoring to avoid endless loop.")
 		return
@@ -288,7 +288,7 @@ func _update_caches():
 			# - we make sure nobody shares triggers as they are stateful and
 			#   should not be shared.
 			
-			var effective_mapping  = GUIDEActionMapping.new()
+			var effective_mapping := GUIDEActionMapping.new()
 			effective_mapping.action = action
 		
 			# the trigger hold threshold is the minimum time that the input must be held
@@ -422,7 +422,7 @@ func _update_caches():
 	_actions_sharing_input.clear()
 	for i:int in _active_action_mappings.size():
 		
-		var mapping = _active_action_mappings[i]
+		var mapping := _active_action_mappings[i]
 		
 		if mapping.action.block_lower_priority_actions:
 			# first find out if the action uses any chorded actions and 
@@ -445,7 +445,7 @@ func _update_caches():
 			# chain unblocked. In addition we need to add the inputs of all
 			# these chorded actions to the list of blocked inputs.
 			for j:int in range(i+1, _active_action_mappings.size()):
-				var inner_mapping = _active_action_mappings[j]
+				var inner_mapping := _active_action_mappings[j]
 				# this is a chorded action that is used by one other action
 				# in the chain.
 				if chorded_actions.has(inner_mapping.action):
@@ -462,7 +462,7 @@ func _update_caches():
 			
 			# now find lower priority actions that share input
 			for j:int in range(i+1, _active_action_mappings.size()):
-				var inner_mapping = _active_action_mappings[j]
+				var inner_mapping := _active_action_mappings[j]
 				if chorded_actions.has(inner_mapping.action):
 					continue
 					

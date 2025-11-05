@@ -98,6 +98,7 @@ offset_bottom = -382.0
 grow_horizontal = 0
 grow_vertical = 0
 mouse_filter = 2
+use_top_left = true
 script = ExtResource("9_67dlh")
 input_mode = 2
 

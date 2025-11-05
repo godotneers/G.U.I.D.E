@@ -4,7 +4,7 @@ extends GUIDETestBase
 var _context:GUIDEMappingContext
 var _action:GUIDEAction
 
-func _setup():
+func _setup() -> void:
 	_context = mapping_context()
 	_action = action_1d()
 	await mouse_move_to(Vector2(100, 100))
@@ -13,7 +13,7 @@ func _setup():
 	await wait_f(2)
 	
 
-func test_mouse_axis1d_input_x():
+func test_mouse_axis1d_input_x() -> void:
 	var input := input_mouse_axis_1d(GUIDEInputMouseAxis1D.GUIDEInputMouseAxis.X)
 	map(_context, _action, input)
 	
@@ -28,7 +28,7 @@ func test_mouse_axis1d_input_x():
 	# the action should be triggered
 	await assert_triggered(_action)
 
-func test_mouse_axis1d_input_y():
+func test_mouse_axis1d_input_y() -> void:
 	var input := input_mouse_axis_1d(GUIDEInputMouseAxis1D.GUIDEInputMouseAxis.Y)
 	map(_context, _action, input)
 	
@@ -44,7 +44,7 @@ func test_mouse_axis1d_input_y():
 	await assert_triggered(_action)
 
 
-func test_mouse_axis1d_input_ignores_other_axis_x():
+func test_mouse_axis1d_input_ignores_other_axis_x() -> void:
 	var input := input_mouse_axis_1d(GUIDEInputMouseAxis1D.GUIDEInputMouseAxis.X)
 	map(_context, _action, input)
 
@@ -61,7 +61,7 @@ func test_mouse_axis1d_input_ignores_other_axis_x():
 	# the action should not be triggered
 	await assert_not_triggered(_action)
 	
-func test_mouse_axis1d_input_ignores_other_axis_y():
+func test_mouse_axis1d_input_ignores_other_axis_y() -> void:
 	var input := input_mouse_axis_1d(GUIDEInputMouseAxis1D.GUIDEInputMouseAxis.Y)
 	map(_context, _action, input)
 	GUIDE.enable_mapping_context(_context)

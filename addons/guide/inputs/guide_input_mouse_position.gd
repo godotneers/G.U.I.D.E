@@ -19,11 +19,11 @@ func _refresh():
 	_value.y = position.y
 		
 		
-func is_same_as(other:GUIDEInput):
+func is_same_as(other:GUIDEInput) -> bool:
 	return other is GUIDEInputMousePosition
 
 
-func _to_string():
+func _to_string() -> String:
 	return "(GUIDEInputMousePosition)"
 
 

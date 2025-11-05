@@ -8,6 +8,10 @@
 
 config_version=5
 
+[addons]
+
+diagnostic_list/auto_refresh=false
+
 [application]
 
 config/name="G.U.I.D.E"
@@ -18,6 +22,10 @@ config/icon="res://icon.svg"
 [autoload]
 
 GUIDE="*res://addons/guide/guide.gd"
+
+[debug]
+
+gdscript/warnings/untyped_declaration=2
 
 [display]
 
@@ -31,7 +39,7 @@ project/assembly_name="guide"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg", "res://addons/guide/plugin.cfg")
+enabled=PackedStringArray("res://addons/diagnosticlist/plugin.cfg", "res://addons/gdUnit4/plugin.cfg", "res://addons/guide/plugin.cfg")
 
 [gdunit4]
 

@@ -17,7 +17,7 @@ const Utils = preload("utils.gd")
 
 @onready var _remapping_dialog:Control = %RemappingDialog
 
-func _ready():
+func _ready() -> void:
 	# React when the open menu action is triggered.
 	open_menu.triggered.connect(_open_menu)
 	
@@ -41,7 +41,7 @@ func _open_menu() -> void:
 	_remapping_dialog.open()
 	
 	
-func _load_remapping_config(config:GUIDERemappingConfig):
+func _load_remapping_config(config:GUIDERemappingConfig) -> void:
 	GUIDE.set_remapping_config(config)
 	
 	# also apply changes to our modifiers
@@ -49,7 +49,7 @@ func _load_remapping_config(config:GUIDERemappingConfig):
 	controller_axis_invert_modifier.y = config.custom_data.get(Utils.CUSTOM_DATA_INVERT_VERTICAL, false)
 
 
-func _switch(context:GUIDEMappingContext):
+func _switch(context:GUIDEMappingContext) -> void:
 	# ignore while remapping is active, remapping will take care of it
 	if _remapping_dialog.visible:
 		return

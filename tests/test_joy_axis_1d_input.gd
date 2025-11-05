@@ -4,11 +4,11 @@ extends GUIDETestBase
 var _context:GUIDEMappingContext
 var _action:GUIDEAction
 
-func _setup():
+func _setup() -> void:
 	_context = mapping_context()
 	_action = action_1d()
 
-func test_joy_axis_1d_input():
+func test_joy_axis_1d_input() -> void:
 	var input := input_joy_axis_1d(JOY_AXIS_LEFT_X)
 	map(_context, _action, input)
 	
@@ -25,7 +25,7 @@ func test_joy_axis_1d_input():
 	# and the value is correct
 	assert_float(_action.value_axis_1d).is_equal(-0.5)
 		
-func test_joy_axis_1d_input_ignores_other_axis():
+func test_joy_axis_1d_input_ignores_other_axis() -> void:
 	var input := input_joy_axis_1d(JOY_AXIS_LEFT_X)
 	map(_context, _action, input)
 	

@@ -139,7 +139,7 @@ func _native_value_type() -> GUIDEAction.GUIDEActionValueType:
 	return GUIDEAction.GUIDEActionValueType.BOOL
 
 # support for legacy properties
-func _get_property_list():
+func _get_property_list() -> Array[Dictionary]:
 	return [
 		{
 			"name": "mouse",

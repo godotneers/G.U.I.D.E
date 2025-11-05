@@ -9,10 +9,10 @@ extends MarginContainer
 		_refresh()
 		
 		
-func _ready():
+func _ready() -> void:
 	_refresh()
 		
-func _refresh():
+func _refresh() -> void:
 	if _label != null:
 		_label.text = text
 	

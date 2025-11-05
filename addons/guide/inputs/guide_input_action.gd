@@ -12,7 +12,7 @@ extends GUIDEInput
 		action = value
 		emit_changed()	
 
-func _begin_usage():
+func _begin_usage() -> void:
 	if is_instance_valid(action):
 		action.triggered.connect(_on)
 		action.completed.connect(_off)
@@ -24,7 +24,7 @@ func _begin_usage():
 	_off()
 	
 	
-func _end_usage():
+func _end_usage() -> void:
 	if is_instance_valid(action):
 		action.triggered.disconnect(_on)
 		action.completed.disconnect(_off)
@@ -44,7 +44,7 @@ func is_same_as(other:GUIDEInput) -> bool:
 	return other is GUIDEInputAction and other.action == action
 
 
-func _to_string():
+func _to_string() -> String:
 	return "(GUIDEInputAction: " + str(action) + ")"
 
 func _editor_name() -> String:

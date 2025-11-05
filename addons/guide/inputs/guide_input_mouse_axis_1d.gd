@@ -38,10 +38,10 @@ func _refresh() -> void:
 			_value.x = delta.y
 
 		
-func is_same_as(other:GUIDEInput):
+func is_same_as(other:GUIDEInput) -> bool:
 	return other is GUIDEInputMouseAxis1D and other.axis == axis
 
-func _to_string():
+func _to_string() -> String:
 	return "(GUIDEInputMouseAxis1D: axis=" + str(axis) + ")"
 
 

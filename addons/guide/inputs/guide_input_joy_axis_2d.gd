@@ -38,7 +38,7 @@ func is_same_as(other:GUIDEInput) -> bool:
 		other.y == y and \
 		other.joy_index == joy_index
 
-func _to_string():
+func _to_string() -> String:
 	return "(GUIDEInputJoyAxis2D: x=" + str(x) + ", y=" + str(y) + ", joy_index="  + str(joy_index) + ")"
 
 

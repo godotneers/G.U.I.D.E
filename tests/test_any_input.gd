@@ -3,11 +3,11 @@ extends GUIDETestBase
 var _context:GUIDEMappingContext
 var _action:GUIDEAction
 
-func _setup():
+func _setup() -> void:
 	_context = mapping_context()
 	_action = action_bool()
 
-func test_any_input_works_for_mouse_clicks():
+func test_any_input_works_for_mouse_clicks() -> void:
 	
 	var input := input_any()
 	input.mouse = true
@@ -22,7 +22,7 @@ func test_any_input_works_for_mouse_clicks():
 	await assert_triggered(_action)
 	
 	
-func test_any_input_works_for_mouse_movement():
+func test_any_input_works_for_mouse_movement() -> void:
 	var input := input_any()
 	input.mouse_movement = true
 	input.minimum_mouse_movement_distance = 2
@@ -38,7 +38,7 @@ func test_any_input_works_for_mouse_movement():
 	await assert_triggered(_action)
 	
 
-func test_any_input_adheres_to_mouse_minimum_distance():
+func test_any_input_adheres_to_mouse_minimum_distance() -> void:
 	var input := input_any()
 	input.mouse_movement = true
 	input.minimum_mouse_movement_distance = 30
@@ -53,7 +53,7 @@ func test_any_input_adheres_to_mouse_minimum_distance():
 	
 
 
-func test_any_input_works_with_joy_buttons():
+func test_any_input_works_with_joy_buttons() -> void:
 	var input := input_any()
 	input.joy_buttons = true
 	map(_context, _action, input)
@@ -66,7 +66,7 @@ func test_any_input_works_with_joy_buttons():
 	await assert_triggered(_action)
 	
 
-func test_any_input_works_with_joy_axis():
+func test_any_input_works_with_joy_axis() -> void:
 	var input := input_any()
 	input.joy_axes = true
 	map(_context, _action, input)
@@ -80,7 +80,7 @@ func test_any_input_works_with_joy_axis():
 	
 	await joy_axis(JOY_AXIS_LEFT_X, 0)
 	
-func test_any_input_works_with_joy_axis_with_deadzone():
+func test_any_input_works_with_joy_axis_with_deadzone() -> void:
 	var input := input_any()
 	input.joy_axes = true
 	input.minimum_joy_axis_actuation_strength = 0.7
@@ -94,7 +94,7 @@ func test_any_input_works_with_joy_axis_with_deadzone():
 	await assert_not_triggered(_action)
 
 	
-func test_any_input_works_with_keyboard():
+func test_any_input_works_with_keyboard() -> void:
 	var input := input_any()
 	input.keyboard = true
 	map(_context, _action, input)
@@ -106,7 +106,7 @@ func test_any_input_works_with_keyboard():
 	# THEN: the action is triggered
 	await assert_triggered(_action)
 	
-func test_any_input_works_with_touch():
+func test_any_input_works_with_touch() -> void:
 	var input := input_any()
 	input.touch = true
 	map(_context, _action, input)
@@ -118,7 +118,7 @@ func test_any_input_works_with_touch():
 	# THEN: the action is triggered
 	await assert_triggered(_action)
 	
-func test_any_input_handles_queuing_input_correctly():
+func test_any_input_handles_queuing_input_correctly() -> void:
 	var input := input_any()
 	input.joy_buttons = true
 	

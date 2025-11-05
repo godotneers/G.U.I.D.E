@@ -1,8 +1,8 @@
-const REMAPPING_CONFIG_PATH = "user://remapping_config.tres"
+const REMAPPING_CONFIG_PATH:String = "user://remapping_config.tres"
 
 # Constants for custom data that we store in the remapping config.
-const CUSTOM_DATA_INVERT_HORIZONTAL = "invert_horizontal"
-const CUSTOM_DATA_INVERT_VERTICAL = "invert_vertical"
+const CUSTOM_DATA_INVERT_HORIZONTAL:String = "invert_horizontal"
+const CUSTOM_DATA_INVERT_VERTICAL:String = "invert_vertical"
 
 ## Loads the saved remapping config if it exists, or an empty remapping
 ## config if none exists.

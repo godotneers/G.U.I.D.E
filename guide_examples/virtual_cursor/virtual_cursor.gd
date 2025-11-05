@@ -7,7 +7,7 @@ extends Node2D
 @export var switch_to_keyboard_and_mouse:GUIDEAction
 
 
-func _ready():
+func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 	GUIDE.enable_mapping_context(keyboard_and_mouse)
 	
@@ -15,9 +15,9 @@ func _ready():
 	switch_to_keyboard_and_mouse.triggered.connect(_to_keyboard_and_mouse)
 	
 	
-func _to_controller():
+func _to_controller() -> void:
 	GUIDE.enable_mapping_context(controller, true)
 	
 	
-func _to_keyboard_and_mouse():
+func _to_keyboard_and_mouse() -> void:
 	GUIDE.enable_mapping_context(keyboard_and_mouse, true)

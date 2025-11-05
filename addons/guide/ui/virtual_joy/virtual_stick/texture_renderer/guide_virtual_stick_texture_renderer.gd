@@ -41,7 +41,7 @@ var _outline_sprite: Sprite2D
 var _stick_sprite: Sprite2D
 var _hidden_sprite: Sprite2D
 
-func _ready():
+func _ready() -> void:
 	_rebuild()
 
 ## React to configuration changes on the parent stick (e.g., radius changes).
@@ -51,7 +51,6 @@ func _on_configuration_changed() -> void:
 	
 ## (Re)build sprites and apply textures and scaling.
 func _rebuild() -> void:
-	print("noot")
 	_outline_sprite = _ensure_sprite(_outline_sprite, outline_texture)
 	_stick_sprite = _ensure_sprite(_stick_sprite, stick_texture)
 	_hidden_sprite = _ensure_sprite(_hidden_sprite, hidden_texture)

@@ -8,7 +8,7 @@ extends Node2D
 @onready var _layer_2:Control = %Layer2
 
 
-func _ready():
+func _ready() -> void:
 	GUIDE.enable_mapping_context(mapping_context)
-	spell_toggle.triggered.connect(func(): _layer_1.hide(); _layer_2.show())
-	spell_toggle.completed.connect(func(): _layer_1.show(); _layer_2.hide())
+	spell_toggle.triggered.connect(func() -> void: _layer_1.hide(); _layer_2.show())
+	spell_toggle.completed.connect(func() -> void: _layer_1.show(); _layer_2.hide())

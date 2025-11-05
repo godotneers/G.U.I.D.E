@@ -111,7 +111,7 @@ func is_same_as(other:GUIDEInput) -> bool:
 			and other.meta == meta \
 			and other.allow_additional_modifiers == allow_additional_modifiers
 
-func _to_string():
+func _to_string() -> String:
 	return "(GUIDEInputKey: key=" + str(key) + ", shift="  + str(shift) + ", alt=" + str(alt) + ", control=" + str(control) + ", meta="+ str(meta) + ")"
 
 

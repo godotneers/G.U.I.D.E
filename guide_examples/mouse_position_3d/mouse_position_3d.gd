@@ -3,5 +3,5 @@ extends Node3D
 
 @export var mapping_context:GUIDEMappingContext
 
-func _ready():
+func _ready() -> void:
 	GUIDE.enable_mapping_context(mapping_context)

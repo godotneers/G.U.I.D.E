@@ -3,7 +3,7 @@ extends Area2D
 
 var _is_spinning:bool = false
 
-func spin():
+func spin() -> void:
 	if _is_spinning:
 		return
 	_is_spinning = true

@@ -15,11 +15,11 @@ signal exited()
 
 var _player:Node2D
 
-func _ready():
+func _ready() -> void:
 	leave.triggered.connect(_on_leave)
 
 
-func _physics_process(delta):
+func _physics_process(delta:float) -> void:
 	# rotate by our turn axis
 	rotate(turn.value_axis_1d * deg_to_rad(turn_speed_degrees) * delta)
 	# accelerate by our acceleration axis
@@ -27,7 +27,7 @@ func _physics_process(delta):
 	move_and_slide()
 	
 
-func enter(player:Node2D):
+func enter(player:Node2D) -> void:
 	# Move the player to the player spot
 	_player = player
 	player.reparent(_player_spot, false)
@@ -37,7 +37,7 @@ func enter(player:Node2D):
 	GUIDE.enable_mapping_context(context)
 	
 
-func _on_leave():
+func _on_leave() -> void:
 	# Disable boat controls
 	GUIDE.disable_mapping_context(context)
 	

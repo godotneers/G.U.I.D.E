@@ -22,11 +22,11 @@ func _refresh() -> void:
 	_value.x = delta.x
 	_value.y = delta.y
 		
-func is_same_as(other:GUIDEInput):
+func is_same_as(other:GUIDEInput) -> bool:
 	return other is GUIDEInputMouseAxis2D
 
 
-func _to_string():
+func _to_string() -> String:
 	return "(GUIDEInputMouseAxis2D)"
 
 

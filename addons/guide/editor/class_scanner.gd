@@ -63,9 +63,9 @@ func find_inheritors(clazz_name:StringName) -> Dictionary:
 	return result
 
 
-func _scan(folder:EditorFileSystemDirectory):
+func _scan(folder:EditorFileSystemDirectory) -> void:
 	for i in folder.get_file_count():
-		var script_clazz = folder.get_file_script_class_name(i)
+		var script_clazz := folder.get_file_script_class_name(i)
 		if script_clazz != "":
 			var info := _script_lut.get(script_clazz)
 			if info == null:
@@ -74,7 +74,7 @@ func _scan(folder:EditorFileSystemDirectory):
 				info.clazz_script = ResourceLoader.load(folder.get_file_path(i))
 				_script_lut[script_clazz] = info
 				
-			var script_extendz = folder.get_file_script_class_extends(i)
+			var script_extendz := folder.get_file_script_class_extends(i)
 			info.extendz = script_extendz
 			
 	for i in folder.get_subdir_count():

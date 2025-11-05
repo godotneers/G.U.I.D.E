@@ -15,27 +15,27 @@ extends Node3D
 @onready var _camera_yaw:Node3D = %CameraYaw
 @onready var _camera_pitch:SpringArm3D = %CameraPitch
 
-func _ready():
+func _ready() -> void:
 	camera_toggle.triggered.connect(_hide_mouse)
 	camera_toggle.completed.connect(_show_mouse)
 	camera_yaw.triggered.connect(_yaw)
 	camera_pitch.triggered.connect(_pitch)
 	
-func _hide_mouse():
+func _hide_mouse() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	
-func _show_mouse():
+func _show_mouse() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
-func _yaw():
+func _yaw() -> void:
 	_camera_yaw.rotate_y(camera_yaw.value_axis_1d)
 
-func _pitch():
+func _pitch() -> void:
 	_camera_pitch.rotate_x(camera_pitch.value_axis_1d)	
 	_camera_pitch.rotation_degrees.x = clamp(_camera_pitch.rotation_degrees.x, -75.0, 0.0)
 
 		
-func _process(delta):
+func _process(delta:float) -> void:
 	# we already used the input-swizzle modifier to get forward as -z, backward as z
 	# left as -x and right as x, so we can use this immediately
 	position += basis * camera_move.value_axis_3d * movement_speed * delta

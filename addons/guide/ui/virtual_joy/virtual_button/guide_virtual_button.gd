@@ -135,7 +135,7 @@ func _release():
 
 ## Reports the current input state to the input system.
 func _report_input():
-	var event = InputEventJoypadButton.new()
+	var event := InputEventJoypadButton.new()
 	event.button_index = button_index
 	event.pressed = _is_actuated
 	event.device = _virtual_joy_id
@@ -149,5 +149,5 @@ func _draw():
 	if not draw_debug:
 		return
 	## 
-	var color = Color(0.9, 0.9, 0.9, 0.8) if _is_actuated else Color(0.5, 0.5, 0.5, 0.5)
+	var color := Color(0.9, 0.9, 0.9, 0.8) if _is_actuated else Color(0.5, 0.5, 0.5, 0.5)
 	draw_circle(Vector2.ZERO, button_radius, color)

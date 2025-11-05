@@ -13,12 +13,12 @@ extends CharacterBody2D
 @onready var right_hand:Node2D = %RightHand
 
 
-func _ready():
+func _ready() -> void:
 	# fire some bolts when the fire action triggers
 	fire.triggered.connect(_fire)
 
-func _physics_process(delta):
-	var target = Vector2.INF
+func _physics_process(delta:float) -> void:
+	var target := Vector2.INF
 	
 	# Looking at absolute coordinates. This is the case when we use a mouse.
 	if look_absolute.is_triggered():
@@ -29,7 +29,7 @@ func _physics_process(delta):
 	
 	# If we have a target, rotate towards it
 	if target.is_finite():
-		var target_orientation = Transform2D()\
+		var target_orientation := Transform2D()\
 			.translated(transform.origin)\
 			.looking_at(target)
 		transform = transform.interpolate_with(target_orientation, 5 * delta)
@@ -38,9 +38,9 @@ func _physics_process(delta):
 	velocity = speed * move.value_axis_2d
 	move_and_slide() 
 
-func _fire():
+func _fire() -> void:
 	# for each hand of the player, spawn a bolt
-	for hand in [left_hand, right_hand]:
+	for hand:Node2D in [left_hand, right_hand]:
 		var a_bolt:Node2D = bolt.instantiate()
 		get_parent().add_child(a_bolt)
 		a_bolt.global_transform = hand.global_transform

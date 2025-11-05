@@ -97,7 +97,7 @@ func _initialize(value_type:GUIDEAction.GUIDEActionValueType) -> void :
 	
 	if triggers.is_empty():
 		# make a default trigger and use that
-		var default_trigger = GUIDETriggerDown.new()
+		var default_trigger := GUIDETriggerDown.new()
 		default_trigger.actuation_threshold = 0
 		_explicit_count = 1
 		_trigger_list.append(default_trigger)
@@ -132,7 +132,7 @@ func _initialize(value_type:GUIDEAction.GUIDEActionValueType) -> void :
 		trigger._last_value = input_value
 		
 
-func _update_state(delta:float, value_type:GUIDEAction.GUIDEActionValueType):
+func _update_state(delta:float, value_type:GUIDEAction.GUIDEActionValueType) -> void:
 	# Collect the current input value
 	var input_value:Vector3 = input._value if input != null else Vector3.ZERO
 	
@@ -152,7 +152,7 @@ func _update_state(delta:float, value_type:GUIDEAction.GUIDEActionValueType):
 		var trigger_result:GUIDETrigger.GUIDETriggerState = trigger._update_state(_value, delta, value_type)
 		trigger._last_value = _value
 		
-		var trigger_type = trigger._get_trigger_type()
+		var trigger_type := trigger._get_trigger_type()
 		if trigger_result == GUIDETrigger.GUIDETriggerState.TRIGGERED:
 			match trigger_type:
 				GUIDETrigger.GUIDETriggerType.EXPLICIT:

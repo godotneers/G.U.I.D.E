@@ -15,10 +15,10 @@ var _material:ShaderMaterial
 var _multiplier:float = 1.0
 
 
-func _on_configuration_changed():
+func _on_configuration_changed() -> void:
 	_rebuild()
 
-func _rebuild():	
+func _rebuild() -> void:	
 	if not is_node_ready():
 		return
 		
@@ -43,5 +43,5 @@ func _rebuild():
 	_material.set_shader_parameter("stick_radius", stick_radius / (2.0 * half_size))
 	_material.set_shader_parameter("outline_thickness", outline_thickness)	
 		
-func _update(joy_position: Vector2, joy_offset:Vector2, is_actuated:bool) -> void:
+func _update(_joy_position: Vector2, joy_offset:Vector2, _is_actuated:bool) -> void:
 	_material.set_shader_parameter("stick_position", Vector2(0.5, 0.5) + _multiplier * joy_offset / 2.0)

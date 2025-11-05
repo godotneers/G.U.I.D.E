@@ -10,7 +10,7 @@ const ArrayEdit = preload("../array_edit/array_edit.gd")
 @onready var _title_label:Label = %TitleLabel
 @onready var _action_mappings:ArrayEdit = %ActionMappings
 @onready var _editing_view:Control = %EditingView
-@onready var _empty_view = %EmptyView
+@onready var _empty_view:Control = %EmptyView
 
 var _plugin:EditorPlugin
 var _current_context:GUIDEMappingContext
@@ -18,7 +18,7 @@ var _undo_redo:EditorUndoRedoManager
 var _scanner:ClassScanner
 
 
-func _ready():
+func _ready() -> void:
 	_title_label.add_theme_font_override("font", get_theme_font("title", "EditorFonts"))
 	_scanner = ClassScanner.new()
 	
@@ -49,7 +49,7 @@ func edit(context:GUIDEMappingContext) -> void:
 	_refresh()
 	
 	
-func _refresh():
+func _refresh() -> void:
 	_editing_view.visible = is_instance_valid(_current_context)
 	_empty_view.visible = not is_instance_valid(_current_context)
 	
@@ -62,9 +62,9 @@ func _refresh():
 	_action_mappings.clear()
 		
 	for i in _current_context.mappings.size():
-		var mapping = _current_context.mappings[i]
+		var mapping := _current_context.mappings[i]
 		
-		var mapping_editor = action_mapping_editor_scene.instantiate()
+		var mapping_editor:Variant = action_mapping_editor_scene.instantiate()
 		mapping_editor.initialize(_plugin, _scanner)
 		
 		_action_mappings.add_item(mapping_editor)
@@ -73,8 +73,8 @@ func _refresh():
 		
 	_action_mappings.collapsed = _current_context.get_meta("_guide_action_mappings_collapsed", false)
 		
-func _on_action_mappings_add_requested():
-	var mappings = _current_context.mappings.duplicate()
+func _on_action_mappings_add_requested() -> void:
+	var mappings := _current_context.mappings.duplicate()
 	var new_mapping := GUIDEActionMapping.new()
 	# don't set an action because they should come from the file system
 	mappings.append(new_mapping)
@@ -87,9 +87,9 @@ func _on_action_mappings_add_requested():
 	_undo_redo.commit_action()
 
 
-func _on_action_mappings_move_requested(from:int, to:int):
-	var mappings = _current_context.mappings.duplicate()
-	var mapping = mappings[from]
+func _on_action_mappings_move_requested(from:int, to:int) -> void:
+	var mappings := _current_context.mappings.duplicate()
+	var mapping:Variant = mappings[from]
 	mappings.remove_at(from)
 	if from < to:
 		to -= 1
@@ -103,8 +103,8 @@ func _on_action_mappings_move_requested(from:int, to:int):
 	_undo_redo.commit_action()
 
 
-func _on_action_mapping_delete_requested(index:int):
-	var mappings = _current_context.mappings.duplicate()
+func _on_action_mapping_delete_requested(index:int) -> void:
+	var mappings := _current_context.mappings.duplicate()
 	mappings.remove_at(index)
 	
 	_undo_redo.create_action("Delete action mapping")
@@ -115,7 +115,7 @@ func _on_action_mapping_delete_requested(index:int):
 	_undo_redo.commit_action()
 
 
-func _on_action_mappings_clear_requested():
+func _on_action_mappings_clear_requested() -> void:
 	var mappings:Array[GUIDEActionMapping] = []
 	
 	_undo_redo.create_action("Clear action mappings")
@@ -125,11 +125,11 @@ func _on_action_mappings_clear_requested():
 	
 	_undo_redo.commit_action()
 	
-func _on_action_mapping_duplicate_requested(index:int):
-	var mappings = _current_context.mappings.duplicate()
+func _on_action_mapping_duplicate_requested(index:int) -> void:
+	var mappings := _current_context.mappings.duplicate()
 	var to_duplicate:GUIDEActionMapping = mappings[index]
 	
-	var copy = GUIDEActionMapping.new()
+	var copy := GUIDEActionMapping.new()
 	# don't set the action, because each mapping should have a unique mapping
 	for input_mapping:GUIDEInputMapping in to_duplicate.input_mappings:
 		var copied_input_mapping := GUIDEInputMapping.new()
@@ -153,7 +153,7 @@ func _on_action_mapping_duplicate_requested(index:int):
 	
 	_undo_redo.commit_action()	
 
-func _on_action_mappings_collapse_state_changed(new_state:bool):
+func _on_action_mappings_collapse_state_changed(new_state:bool) -> void:
 	_current_context.set_meta("_guide_action_mappings_collapsed", new_state)
 
 

@@ -3,10 +3,12 @@ extends GUIDETestBase
 # https://github.com/godotneers/G.U.I.D.E/issues/34
 # if modifier IS the bound key, disabling "allow additional modifiers"
 # does not prevent the action from triggering
-func test_modifiers(modifier:int, test_parameters = [[KEY_SHIFT], [KEY_CTRL], [KEY_META], [KEY_ALT]]):
-	var mc = mapping_context()
-	var action = action_bool()
-	var input = input_key(modifier)
+@warning_ignore("unused_parameter")
+func test_modifiers(modifier:int, test_parameters := [[KEY_SHIFT], [KEY_CTRL], [KEY_META], [KEY_ALT]]) -> void:
+	var mc := mapping_context()
+	@warning_ignore("shadowed_variable")
+	var action := action_bool()
+	var input := input_key(modifier)
 	input.allow_additional_modifiers = false
 	map(mc, action, input)
 	
@@ -21,10 +23,11 @@ func test_modifiers(modifier:int, test_parameters = [[KEY_SHIFT], [KEY_CTRL], [K
 
 # If bind something to a key and the modifier is down that is disallowed
 # the action is not triggered.
-func test_disallowed_modifiers_prevent_action():
-	var mc = mapping_context()
-	var action = action_bool()
-	var input = input_key(KEY_A)
+func test_disallowed_modifiers_prevent_action() -> void:
+	var mc := mapping_context()
+	@warning_ignore("shadowed_variable")
+	var action := action_bool()
+	var input := input_key(KEY_A)
 	input.control = true
 	input.allow_additional_modifiers = false
 	map(mc, action, input)

@@ -4,13 +4,13 @@ var _context:GUIDEMappingContext
 var _action:GUIDEAction
 var _trigger:GUIDETrigger
 
-func _setup():
+func _setup() -> void:
 	_context = mapping_context()
 	_action = action_bool()
 	_trigger = trigger_down()
 
-func test_down_trigger_works_for_key_input():
-	var input = input_key(KEY_Q)
+func test_down_trigger_works_for_key_input() -> void:
+	var input := input_key(KEY_Q)
 	map(_context, _action, input, [], [_trigger])
 	GUIDE.enable_mapping_context(_context)
 	

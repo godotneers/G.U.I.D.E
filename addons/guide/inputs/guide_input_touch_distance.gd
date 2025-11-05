@@ -10,8 +10,8 @@ var _initial_distance:float = INF
 func _needs_reset() -> bool:
 	return true
 
-func _reset():
-	var distance = _calculate_distance()
+func _reset() -> void:
+	var distance := _calculate_distance()
 	# update initial distance when input is actuated or stops being actuated
 	if is_finite(_initial_distance) != is_finite(distance):
 		_initial_distance = distance
@@ -55,12 +55,12 @@ func _calculate_distance() -> float:
 	# calculate distance for the fingers
 	return pos1.distance_to(pos2)
 	
- 		
-func is_same_as(other:GUIDEInput):
+
+func is_same_as(other:GUIDEInput) -> bool:
 	return other is GUIDEInputTouchDistance
 
 
-func _to_string():
+func _to_string() -> String:
 	return "(GUIDEInputTouchDistance)"
 
 

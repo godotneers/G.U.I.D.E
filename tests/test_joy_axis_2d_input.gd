@@ -4,11 +4,11 @@ extends GUIDETestBase
 var _context:GUIDEMappingContext
 var _action:GUIDEAction
 
-func _setup():
+func _setup() -> void:
 	_context = mapping_context()
 	_action = action_2d()
 
-func test_joy_axis_2d_input():
+func test_joy_axis_2d_input() -> void:
 	var input := input_joy_axis_2d(JOY_AXIS_LEFT_X, JOY_AXIS_LEFT_Y)
 	map(_context, _action, input)
 	

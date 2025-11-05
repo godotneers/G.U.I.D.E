@@ -5,18 +5,18 @@ extends GdUnitTestSuite
 var start_frame:int = 0
 var runner:GdUnitSceneRunner
 
-func after_test():
+func after_test() -> void:
 	print_f("Cleanup phase")
 	# Clear all mapping contexts after each test
 	# since this will modify the dictionary in GUIDE, we make a copy
 	var contexts:Array = GUIDE._active_contexts.keys()
-	for context in contexts:
+	for context:GUIDEMappingContext in contexts:
 		GUIDE.disable_mapping_context(context)
 		
 	GUIDEInputFormatter.cleanup()
 
 
-func before_test():
+func before_test() -> void:
 	print("-----------------------------------")
 	start_frame = Engine.get_process_frames()
 	print_f("Setup phase")
@@ -25,7 +25,7 @@ func before_test():
 	_setup()
 	print_f("Test phase")
 	
-func _setup():
+func _setup() -> void:
 	pass
 
 #------------------- Setup -------------------------------------------------
@@ -183,6 +183,7 @@ func trigger_down() -> GUIDETriggerDown:
 func trigger_pressed() -> GUIDETriggerPressed:
 	return GUIDETriggerPressed.new()
 	
+@warning_ignore("shadowed_variable")
 func trigger_chorded_action(action:GUIDEAction) -> GUIDETriggerChordedAction:
 	var result := GUIDETriggerChordedAction.new()		
 	result.action = action
@@ -191,7 +192,7 @@ func trigger_chorded_action(action:GUIDEAction) -> GUIDETriggerChordedAction:
 		
 @warning_ignore("shadowed_variable")
 func map(context:GUIDEMappingContext, action:GUIDEAction, input:GUIDEInput, \
-	modifiers:Array[GUIDEModifier] = [], triggers:Array[GUIDETrigger] = []):
+	modifiers:Array[GUIDEModifier] = [], triggers:Array[GUIDETrigger] = []) -> void:
 	var action_mapping:GUIDEActionMapping = null
 	
 	for mapping in context.mappings:
@@ -204,7 +205,7 @@ func map(context:GUIDEMappingContext, action:GUIDEAction, input:GUIDEInput, \
 		action_mapping.action = action
 		context.mappings.append(action_mapping)	
 	
-	var input_mapping = GUIDEInputMapping.new()
+	var input_mapping := GUIDEInputMapping.new()
 	input_mapping.input = input
 	input_mapping.modifiers = modifiers
 	input_mapping.triggers = triggers
@@ -226,7 +227,7 @@ func mouse_down(button:MouseButton, wait:bool =  true) -> void:
 
 
 func mouse_up(button:MouseButton, wait:bool =  true) -> void:
-	var input = InputEventMouseButton.new()
+	var input := InputEventMouseButton.new()
 	input.button_index = button
 	input.pressed= false
 	input.position = get_viewport().get_mouse_position()
@@ -245,7 +246,7 @@ func tap_mouse_at(button:MouseButton, position:Vector2) -> void:
 	await tap_mouse(button)
 		
 func key_down(key:Key, wait:bool = true) -> void:
-	var input = InputEventKey.new()
+	var input := InputEventKey.new()
 	input.physical_keycode = key
 	input.pressed = true
 	Input.parse_input_event(input)
@@ -254,7 +255,7 @@ func key_down(key:Key, wait:bool = true) -> void:
 		await wait_f(2)
 	
 func key_up(key:Key, wait:bool = true) -> void:
-	var input = InputEventKey.new()
+	var input := InputEventKey.new()
 	input.physical_keycode = key
 	input.pressed = false
 	Input.parse_input_event(input)
@@ -288,7 +289,7 @@ func tap_keys(keys:Array[Key]) -> void:
 	
 	
 func mouse_move_by(delta:Vector2, wait:bool = true) -> void:
-	var pos = get_viewport().get_mouse_position() + delta
+	var pos := get_viewport().get_mouse_position() + delta
 	
 	if wait:
 		await mouse_move_to(pos, true)
@@ -374,14 +375,14 @@ func finger_move(index:int, to:Vector2, wait:bool = true) -> void:
 	
 		
 func world_to_viewport(global_position:Vector2) -> Vector2:
-	var final_transform = get_viewport().get_final_transform()
+	var final_transform := get_viewport().get_final_transform()
 	return final_transform.basis_xform(global_position) + final_transform.origin
 
 #------------------ Custom asserts -------------------------------------------
 
 ## Asserts that the given action has been triggered (emitted "triggered" signal).
 @warning_ignore("shadowed_variable")
-func assert_triggered(action:GUIDEAction):
+func assert_triggered(action:GUIDEAction) -> void:
 	await assert_signal(action) \
 		.append_failure_message("Action should be triggered but is not.") \
 		.is_emitted("triggered")
@@ -389,7 +390,7 @@ func assert_triggered(action:GUIDEAction):
 	
 ## Asserts that the given action is currently reporting as triggered.
 @warning_ignore("shadowed_variable")
-func assert_is_triggered(action:GUIDEAction):
+func assert_is_triggered(action:GUIDEAction) -> void:
 	assert_bool(action.is_triggered()) \
 		.append_failure_message("Action should be triggered but is not.") \
 		.is_true()
@@ -397,14 +398,15 @@ func assert_is_triggered(action:GUIDEAction):
 
 ## Asserts that the given action has NOT been triggered (did NOT emit "triggered" signal).	
 @warning_ignore("shadowed_variable")
-func assert_not_triggered(action:GUIDEAction):
+func assert_not_triggered(action:GUIDEAction) -> void:
 	await assert_signal(action) \
 		.append_failure_message("Action should not be triggered but is.") \
 		.is_not_emitted("triggered")
 		
 
 ## Asserts that the given action is currently not reporting as triggered.
-func assert_is_not_triggered(action:GUIDEAction):
+@warning_ignore("shadowed_variable")
+func assert_is_not_triggered(action:GUIDEAction) -> void:
 	assert_bool(action.is_triggered()) \
 		.append_failure_message("Action should not be triggered but is.") \
 		.is_false()
@@ -412,7 +414,7 @@ func assert_is_not_triggered(action:GUIDEAction):
 
 ## Asserts that the given action has been completed (emitted "completed" signal).
 @warning_ignore("shadowed_variable")
-func assert_completed(action:GUIDEAction):
+func assert_completed(action:GUIDEAction) -> void:
 	await assert_signal(action) \
 		.append_failure_message("Action should be triggered but is not.") \
 		.is_emitted("completed")
@@ -420,57 +422,59 @@ func assert_completed(action:GUIDEAction):
 	
 ## Asserts that the given action has NOT been completed (did NOT emit "completed" signal).	
 @warning_ignore("shadowed_variable")
-func assert_not_completed(action:GUIDEAction):
+func assert_not_completed(action:GUIDEAction) -> void:
 	await assert_signal(action) \
 		.append_failure_message("Action should not be triggered but is.") \
 		.is_not_emitted("completed")
 
 
 ## Asserts that the given action has the given axis 1D value.
-func assert_axis_1d(action:GUIDEAction, expected_value:float, deviation:float = 0.1):
+@warning_ignore("shadowed_variable")
+func assert_axis_1d(action:GUIDEAction, expected_value:float, deviation:float = 0.1) -> void:
 	assert_float(action.value_axis_1d) \
 		.append_failure_message("Action axis 1D value is not the expected value.") \
 		.is_equal_approx(expected_value, deviation) 
 		
 		
 ## Asserts that the given action has the given axis 2D value.
-func assert_axis_2d(action:GUIDEAction, expected_value:Vector2, deviation:Vector2 = Vector2(1.0, 1.0)):
+@warning_ignore("shadowed_variable")
+func assert_axis_2d(action:GUIDEAction, expected_value:Vector2, deviation:Vector2 = Vector2(1.0, 1.0)) -> void:
 	assert_vector(action.value_axis_2d) \
 		.append_failure_message("Action axis 2D value is not the expected value.") \
 		.is_equal_approx(expected_value, deviation)
 
 
 #------------------ Other stuff -------------------------------------------
-func reset_signal_watcher(emitter:Variant):
+func reset_signal_watcher(emitter:Variant) -> void:
 	var collector := GdUnitThreadManager.get_current_context().get_signal_collector()
 	var _collected_signals := collector._collected_signals
 	if _collected_signals.has(emitter):
 		var signals_by_emitter :Dictionary = _collected_signals[emitter]
-		for signl in signals_by_emitter.keys():
+		for signl:Variant in signals_by_emitter.keys():
 			_collected_signals[emitter][signl] = []
 
 @warning_ignore("shadowed_variable")
-func log_signals(action:GUIDEAction):
-	action.triggered.connect(func(): print_f("action triggered: '%s' (%s)" % [action.name, action._value]))
-	action.cancelled.connect(func(): print_f("action cancelled: '%s'" % action.name))
-	action.completed.connect(func(): print_f("action completed: '%s'" % action.name))
-	action.started.connect(func(): print_f("action started: '%s'" % action.name))
-	action.ongoing.connect(func(): print_f("action ongoing: '%s'" % action.name))
+func log_signals(action:GUIDEAction) -> void:
+	action.triggered.connect(func() -> void: print_f("action triggered: '%s' (%s)" % [action.name, action._value]))
+	action.cancelled.connect(func() -> void: print_f("action cancelled: '%s'" % action.name))
+	action.completed.connect(func() -> void: print_f("action completed: '%s'" % action.name))
+	action.started.connect(func() -> void: print_f("action started: '%s'" % action.name))
+	action.ongoing.connect(func() -> void: print_f("action ongoing: '%s'" % action.name))
 
-func wait_f(frames:int):
-	var start = get_f()
+func wait_f(frames:int) -> void:
+	var start := get_f()
 	while start + frames > get_f():
-		var tree = get_tree()
+		var tree := get_tree()
 		assert_object(tree)\
 			.is_not_null()\
 			.append_failure_message("Got no tree. Did you forget to add an await somewhere?")
 		
 		await get_tree().process_frame
 
-func wait_seconds(seconds:float):
+func wait_seconds(seconds:float) -> void:
 	await get_tree().create_timer(seconds).timeout
 
-func print_f(text:Variant = ""):
+func print_f(text:Variant = "") -> void:
 	print("[%s (%s)] %s" % [get_f(), Engine.get_process_frames(), text])
 
 func get_f() -> int:

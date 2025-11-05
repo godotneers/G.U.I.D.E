@@ -9,11 +9,11 @@ extends Camera2D
 @export var speed:float = 300
 
 
-func _ready():
+func _ready() -> void:
 	camera_zoom.triggered.connect(_zoom_camera)
 
-func _process(delta):
+func _process(delta:float) -> void:
 	position += camera_movement.value_axis_2d * speed * delta
 	
-func _zoom_camera():
+func _zoom_camera() -> void:
 	zoom = clamp( zoom + Vector2.ONE * camera_zoom.value_axis_1d, Vector2(0.1, 0.1), Vector2(3, 3))

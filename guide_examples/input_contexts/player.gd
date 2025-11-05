@@ -9,15 +9,15 @@ extends CharacterBody2D
 @onready var _detection_area:Area2D = %DetectionArea
 @onready var _collision_shape:CollisionShape2D = %CollisionShape
 
-func _ready():
+func _ready() -> void:
 	use.triggered.connect(_enter_boat)
 	
-func _physics_process(_delta):
+func _physics_process(_delta:float) -> void:
 	velocity = move.value_axis_2d.normalized() * speed
 	move_and_slide()	
 	
 	
-func _enter_boat():
+func _enter_boat() -> void:
 	var boats := _detection_area.get_overlapping_bodies()
 	if boats.is_empty():
 		return
@@ -33,7 +33,7 @@ func _enter_boat():
 	boats[0].exited.connect(_boat_exited, CONNECT_ONE_SHOT)	
 
 
-func _boat_exited():
+func _boat_exited() -> void:
 	# re-enable our own mapping context
 	GUIDE.enable_mapping_context(context)
 	
