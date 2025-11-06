@@ -345,7 +345,7 @@ static func _joy_name_for_input(input:GUIDEInput) -> String:
 		return ""
 	
 	var joypads:Array[int] = Input.get_connected_joypads()
-	var joy_index := input.joy_index
+	var joy_index:int = input.joy_index
 	if joy_index < 0:
 		# pick the first one
 		joy_index = 0
