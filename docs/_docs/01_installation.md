@@ -25,6 +25,11 @@ After you installed it, make sure you enable the plugin in the project settings:
 
 Also, please **restart the Godot editor** after enabling the plugin. This is required, because Godot usually doesn't fully pick up new plugins while it's running. If you don't restart the editor the plugin might not work correctly or not at all.
 
+The following video shows the installation process in detail and launches one of the examples to verify that the plugin is working correctly.
+
+{% include video.html path="assets/img/manual/manual_installation.mp4" %}
+
+
 ## Updating from an earlier version
 
 The asset library currently has no support for plugin updates, therefore in order to update the plugin, perform the following steps:
