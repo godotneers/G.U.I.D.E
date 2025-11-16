@@ -20,8 +20,17 @@ func is_same_as(other:GUIDEModifier) -> bool:
 		collision_mask == other.collision_mask and \
 		is_equal_approx(max_depth, other.max_depth)
 
+var _input: Vector3 = Vector3.ZERO
+var _latest_update_input: Vector3 = Vector3.ZERO
+
+func _physics_process(_delta: float) -> void:
+	_latest_update_input = _update_input(_input)
 
 func _modify_input(input:Vector3, delta:float, value_type:GUIDEAction.GUIDEActionValueType) -> Vector3:
+	_input = input
+	return _latest_update_input
+
+func _update_input(input: Vector3) -> Vector3:
 	# if we collide with nothing, no need to even try
 	if collision_mask == 0:
 		return Vector3.INF
@@ -34,7 +43,6 @@ func _modify_input(input:Vector3, delta:float, value_type:GUIDEAction.GUIDEActio
 	if camera == null:
 		return Vector3.INF
 		
-	
 	var input_position:Vector2 = Vector2(input.x, input.y)	
 		
 	var from:Vector3 = camera.project_ray_origin(input_position)
@@ -47,8 +55,6 @@ func _modify_input(input:Vector3, delta:float, value_type:GUIDEAction.GUIDEActio
 		return result.position
 		
 	return Vector3.INF	
-
-
 
 func _editor_name() -> String:
 	return "3D coordinates"

@@ -21,6 +21,9 @@ var _active_remapping_config:GUIDERemappingConfig
 ## All currently active inputs as collected from the active input mappings
 var _active_inputs:GUIDESet = GUIDESet.new()
 
+## All currently active modifiers as collected from the active input mappings
+var _active_modifiers: GUIDESet = GUIDESet.new()
+
 ## A dictionary of actions sharing input. Key is the action, value
 ## is an array of lower-priority actions that share input with the 
 ## key action.
@@ -126,6 +129,10 @@ func get_enabled_mapping_contexts() -> Array[GUIDEMappingContext]:
 		result.append(key)
 	return result
 
+## Updates all currently active modifiers
+func _physics_process(delta: float) -> void:
+	for modifier: GUIDEModifier in _active_modifiers.values():
+		modifier._physics_process(delta)
 
 ## Processes all currently active actions
 func _process(delta:float) -> void:
@@ -392,6 +399,7 @@ func _update_caches() -> void:
 		
 	# and now the consolidated inputs are the new active inputs.
 	_active_inputs = new_inputs
+	_active_modifiers = new_modifiers
 	
 	# Now action mappings and their modifiers.
 	for mapping:GUIDEActionMapping in _active_action_mappings:

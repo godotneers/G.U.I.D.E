@@ -29,3 +29,7 @@ func _editor_name() -> String:
 ## The description as it should be displayed in the editor.
 func _editor_description() -> String:
 	return ""
+
+## Called to update any internal state of the modifier during physics processing.
+func _physics_process(_delta: float) -> void:
+	pass
