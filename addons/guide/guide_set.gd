@@ -1,4 +1,7 @@
 ## Helper class for modelling sets
+
+const GUIDESet = preload("guide_set.gd")
+
 var _values: Dictionary = {}
 
 
@@ -28,7 +31,16 @@ func clear() -> void:
 ## Returns true if the set is empty, false otherwise.
 func is_empty() -> bool:
 	return _values.is_empty()
+	
 
+## Returns a new set containing only the values for which the given predicate returns true.
+## The predicate should take a single argument and return a boolean.
+func filter(predicate:Callable) -> GUIDESet:
+	var result = GUIDESet.new()
+	for key in _values.keys():
+		if predicate.call(key):
+			result.add(key)
+	return result
 
 ## Returns the first item in the set and removes it from the set.
 ## If the set is empty, returns null.

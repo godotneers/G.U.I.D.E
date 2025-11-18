@@ -30,6 +30,12 @@ func _editor_name() -> String:
 func _editor_description() -> String:
 	return ""
 
+## Whether this modifier needs physics processing. This is queried once
+## when the modifier is used, not every frame.
+func _needs_physics_process() -> bool:
+	return false
+
 ## Called to update any internal state of the modifier during physics processing.
+## Only called if _needs_physics_process() returns true.
 func _physics_process(_delta: float) -> void:
 	pass

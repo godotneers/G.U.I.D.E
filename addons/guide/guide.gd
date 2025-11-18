@@ -399,7 +399,10 @@ func _update_caches() -> void:
 		
 	# and now the consolidated inputs are the new active inputs.
 	_active_inputs = new_inputs
-	_active_modifiers = new_modifiers
+	# only modifiers that require physics processing are considered "active" modifiers
+	_active_modifiers = new_modifiers.filter(func(it:GUIDEModifier) -> bool: return it._needs_physics_process())
+	# only enable physics_processing if we actually have an active modifiers
+	set_physics_process(not _active_modifiers.is_empty())
 	
 	# Now action mappings and their modifiers.
 	for mapping:GUIDEActionMapping in _active_action_mappings:

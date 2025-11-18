@@ -14,21 +14,28 @@ extends GUIDEModifier
 ## Collision mask to use for the ray cast.
 @export_flags_3d_physics var collision_mask:int
 
+# The latest known input for this physics frame
+var _input: Vector3 = Vector3.ZERO
+# The output coordinates matching the latest known input
+var _latest_update_input: Vector3 = Vector3.ZERO
+
 func is_same_as(other:GUIDEModifier) -> bool:
 	return other is GUIDEModifier3DCoordinates and \
 		collide_with_areas == other.collide_with_areas and \
 		collision_mask == other.collision_mask and \
 		is_equal_approx(max_depth, other.max_depth)
 
-var _input: Vector3 = Vector3.ZERO
-var _latest_update_input: Vector3 = Vector3.ZERO
+func _needs_physics_process() -> bool:
+	return true
 
 func _physics_process(_delta: float) -> void:
 	_latest_update_input = _update_input(_input)
 
+
 func _modify_input(input:Vector3, delta:float, value_type:GUIDEAction.GUIDEActionValueType) -> Vector3:
 	_input = input
 	return _latest_update_input
+
 
 func _update_input(input: Vector3) -> Vector3:
 	# if we collide with nothing, no need to even try
