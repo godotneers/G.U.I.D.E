@@ -1,11 +1,30 @@
 ﻿
 ## Generic code guidelines
-Always add GDScript type hints everywhere. When doing null checks use `is_instance_valid(object)` rather than `object != null`. GDScripts should always end with an empty line. All `@onready` variables are private and need to start with an underscore. For constructs, that refer to other code, always use the type-safe variant without strings, e.g:
+Always use tabs for indentation. Always add GDScript type hints everywhere. When doing null checks use `is_instance_valid(object)` rather than `object != null`. GDScripts should always end with an empty line. All `@onready` variables are private and need to start with an underscore. For constructs, that refer to other code, always use the type-safe variant without strings, e.g:
 
 - `my_signal.emit()` rather than `emit_signal("my_signal")`
 - `foo.some_signal.connect(_on_foo_some_signal)` rather than `foo.connect("some_signal", self, "_on_foo_some_signal")`
 
-Omit `self` when not stricly needed.
+Omit `self` when not stricly needed. GDScript does not support nested named functions. So something like:
+
+```gdscript
+func foo():
+    func bar():
+        print("Hello world!")
+    bar()
+```
+
+does not work. If needed, you can make a lambda:
+
+```gdscript
+func foo():
+    var bar = func(): print("Hello world!")
+    bar()
+    
+```
+
+Lambdas should be used sparingly, e.g., in functions that take callables as arguments. For example, `Array.sort_custom()`.
+  
 
 ## Accessing nodes 
 When referring to nodes, always use scene unique names instead of paths. If a node has no scene unique name in a scene, but you need it in a script, then add a scene unique name. Always initialize node references in an `@onready` variable rather than littering the code with inline node references. When getting a node from the scene use the provided `Assure.exists` method to check that the node is there and of the right type (e.g. `@onready var _my_node: Node2D = Assure.exists(%MyNode as Node2D)`). This will ensure that the node exists and is of the correct type, and will throw an error if it is not. This also means that we don't need to check for null or type errors later in the code.
