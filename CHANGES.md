@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- It is now possible to quickly select a mapping context directly from the mapping context editor without having to search the tree for it ([#124](https://github.com/godotneers/G.U.I.D.E/issues/124)).
+
 ### Fixed
 - The `GUIDEModifier3DCoordinates` now also works when physics are processed in a separate thread ([#91](https://github.com/godotneers/G.U.I.D.E/issues/91)). A big thanks goes to [elsen0xcc](https://github.com/elsen0xcc) for submitting a PR for this ([#138](https://github.com/godotneers/G.U.I.D.E/pull/138)).
 - Type hints are now added to all files, allowing to run the project in strict typing mode ([#130](https://github.com/godotneers/G.U.I.D.E/issues/130)).

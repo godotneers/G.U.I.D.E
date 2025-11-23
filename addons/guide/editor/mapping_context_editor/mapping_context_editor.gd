@@ -2,25 +2,25 @@
 extends MarginContainer
 
 const ClassScanner = preload("../class_scanner.gd")
+const ResourceScanner = preload("../resource_scanner.gd")
 const Utils = preload("../utils.gd")
 const ArrayEdit = preload("../array_edit/array_edit.gd")
 
 @export var action_mapping_editor_scene:PackedScene
 
-@onready var _title_label:Label = %TitleLabel
 @onready var _action_mappings:ArrayEdit = %ActionMappings
 @onready var _editing_view:Control = %EditingView
 @onready var _empty_view:Control = %EmptyView
+@onready var _mapping_context_switcher:OptionButton = %MappingContextSwitcher
 
 var _plugin:EditorPlugin
 var _current_context:GUIDEMappingContext
 var _undo_redo:EditorUndoRedoManager
-var _scanner:ClassScanner
-
+var _list_dirty:bool
 
 func _ready() -> void:
-	_title_label.add_theme_font_override("font", get_theme_font("title", "EditorFonts"))
-	_scanner = ClassScanner.new()
+	if Utils.is_node_in_edited_scene(self):
+		return
 	
 	_editing_view.visible = false
 	_empty_view.visible = true
@@ -31,10 +31,18 @@ func _ready() -> void:
 	_action_mappings.clear_requested.connect(_on_action_mappings_clear_requested)
 	_action_mappings.duplicate_requested.connect(_on_action_mapping_duplicate_requested)
 	_action_mappings.collapse_state_changed.connect(_on_action_mappings_collapse_state_changed)
+	
+	_mapping_context_switcher.item_selected.connect(_on_mapping_context_switch_requested)
+	
+	_list_dirty = true
+	visibility_changed.connect(func() -> void: if visible: _update_list())
+	
 
 func initialize(plugin:EditorPlugin) -> void:
 	_plugin = plugin
 	_undo_redo = plugin.get_undo_redo()
+	# mark the list dirty in case the fiqddle system changed.
+	EditorInterface.get_resource_filesystem().filesystem_changed.connect(func() -> void: _list_dirty = true)
 	
 	
 func edit(context:GUIDEMappingContext) -> void:
@@ -49,15 +57,58 @@ func edit(context:GUIDEMappingContext) -> void:
 	_refresh()
 	
 	
+func _update_list() -> void:
+	if not _list_dirty:
+		return
+		
+	var context_paths:Array[String] = ResourceScanner.find_resources_of_type("GUIDEMappingContext")
+	## Build a mapping of shortened labels -> full paths and populate the switcher
+	var shortened:Dictionary = _build_shortened_path_map(context_paths)
+	_mapping_context_switcher.clear()
+
+	# Insert a dummy entry at the top so the user can intentionally pick a context.
+	var dummy_label:String = "Select mapping context..."
+	_mapping_context_switcher.add_item(dummy_label)
+	# Metadata null marks the dummy entry.
+	_mapping_context_switcher.set_item_metadata(0, null)
+
+	var keys:Array[String] = []
+	for k in shortened.keys():
+		keys.append(k as String)
+	keys.sort()
+
+	for i in keys.size():
+		var key:String = keys[i]
+		var full_path:String = shortened[key]
+		# +1 because of the dummy item at index 0
+		var render_index:int = i + 1
+		_mapping_context_switcher.add_item(key)
+		_mapping_context_switcher.set_item_metadata(render_index, full_path)
+		_mapping_context_switcher.set_item_tooltip(render_index, full_path)
+	
+	_list_dirty = false
+
+	
 func _refresh() -> void:
+	_update_list()
+	
 	_editing_view.visible = is_instance_valid(_current_context)
 	_empty_view.visible = not is_instance_valid(_current_context)
 	
+
 	if not is_instance_valid(_current_context):
 		return
-	
-	_title_label.text = _current_context._editor_name()
-	_title_label.tooltip_text = _current_context.resource_path
+
+	# make sure the switcher shows the currently selected item.
+	_mapping_context_switcher.tooltip_text = _current_context.resource_path
+	var selected_index:int = 0
+	for i in _mapping_context_switcher.item_count:
+		var item_path = _mapping_context_switcher.get_item_metadata(i)
+		if item_path == _current_context.resource_path:
+			selected_index = i
+			break
+			
+	_mapping_context_switcher.select(selected_index)
 	
 	_action_mappings.clear()
 		
@@ -65,13 +116,88 @@ func _refresh() -> void:
 		var mapping := _current_context.mappings[i]
 		
 		var mapping_editor:Variant = action_mapping_editor_scene.instantiate()
-		mapping_editor.initialize(_plugin, _scanner)
+		mapping_editor.initialize(_plugin)
 		
 		_action_mappings.add_item(mapping_editor)
 		
 		mapping_editor.edit(mapping)
 		
 	_action_mappings.collapsed = _current_context.get_meta("_guide_action_mappings_collapsed", false)
+
+
+## Creates unique, human-friendly short labels for a list of resource paths by
+## progressively adding parent directories to conflicting filenames until they
+## become unique. The resulting keys are sorted elsewhere for display.
+## @param paths All full resource paths to mapping contexts (e.g. res://foo/bar/baz.tres).
+## @return Dictionary that maps a shortened label (e.g. "bar/baz.tres") to the full path.
+func _build_shortened_path_map(paths:Array[String]) -> Dictionary:
+	# Prepare path parts reversed per path for easy prefix growth from filename upwards.
+	# Note: Avoid nested typed collections (Array[Array[String]]) due to GDScript limitations.
+	var parts_per_path:Array = []
+	parts_per_path.resize(paths.size())
+	for i in paths.size():
+		var p:String = paths[i]
+		var without_scheme:String = p
+		if without_scheme.begins_with("res://"):
+			without_scheme = without_scheme.substr(6)
+		var comps:Array = without_scheme.split("/", false)
+		comps.reverse() # [filename, parent, grandparent, ...]
+		parts_per_path[i] = comps
+
+	# Track how many components from the end each entry currently uses for its label.
+	var used_counts:Array[int] = []
+	used_counts.resize(paths.size())
+	for i in used_counts.size():
+		used_counts[i] = 1 # start with filename only
+
+	var current_label:Callable = func(idx:int) -> String:
+		var parts:Array = parts_per_path[idx]
+		var count:int = min(used_counts[idx], parts.size())
+		var slice:Array = parts.slice(0, count)
+		slice.reverse() # restore order to parent/.../filename
+		return "/".join(slice)
+
+	# Iteratively resolve collisions by adding parents to all entries in each clashing group.
+	while true:
+		var label_to_indices:Dictionary = {}
+		for i in paths.size():
+			var label:String = current_label.call(i)
+			if not label_to_indices.has(label):
+				label_to_indices[label] = []
+			(label_to_indices[label] as Array).append(i)
+		
+		var had_collision:bool = false
+		for label in label_to_indices.keys():
+			var indices:Array = label_to_indices[label]
+			if indices.size() > 1:
+				had_collision = true
+				for idx in indices:
+					var i:int = int(idx)
+					# Only increase if there are more parents available.
+					if used_counts[i] < parts_per_path[i].size():
+						used_counts[i] += 1
+					# If exhausted, we leave it as full path-equivalent label.
+		
+		if not had_collision:
+			break
+
+	# Build the final dictionary mapping label -> full path.
+	var result:Dictionary = {}
+	for i in paths.size():
+		var label:String = current_label.call(i)
+		result[label] = paths[i]
+	return result
+	
+	
+		
+		
+func _on_mapping_context_switch_requested(index:int) -> void:
+	var mc := _mapping_context_switcher.get_item_metadata(index) as String
+	if mc != null:
+		var context:GUIDEMappingContext = load(mc) as GUIDEMappingContext
+		if context != null and context != _current_context:
+			edit(context)
+	
 		
 func _on_action_mappings_add_requested() -> void:
 	var mappings := _current_context.mappings.duplicate()

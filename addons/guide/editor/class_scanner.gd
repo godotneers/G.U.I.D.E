@@ -6,24 +6,25 @@
 @tool
 
 const GUIDESet = preload("../guide_set.gd")
+const ClassScanner = preload("class_scanner.gd")
 
-var _dirty:bool = true
+static var _dirty:bool = true
 
 # looks like we only get very limited access to the script's inheritance tree,
 # so we need to do a little caching ourselves
-var _script_lut:Dictionary = {}
+static var _script_lut:Dictionary = {}
 
-func _init():
-	EditorInterface.get_resource_filesystem().script_classes_updated.connect(_mark_dirty)
+static func _static_init():
+	EditorInterface.get_resource_filesystem().script_classes_updated.connect(Callable(ClassScanner, "_mark_dirty"))
 
 
-func _mark_dirty():
+static func _mark_dirty():
 	_dirty = true
 
 ## Returns all classes that directly or indirectly inherit from the 
 ## given class. Only works for scripts in the project, e.g. doesn't
 ## scan the whole class_db. Key is class name, value is the Script instance
-func find_inheritors(clazz_name:StringName) -> Dictionary:
+static func find_inheritors(clazz_name:StringName) -> Dictionary:
 	var result:Dictionary = {}
 
 	var root := EditorInterface.get_resource_filesystem().get_filesystem()
@@ -63,7 +64,7 @@ func find_inheritors(clazz_name:StringName) -> Dictionary:
 	return result
 
 
-func _scan(folder:EditorFileSystemDirectory) -> void:
+static func _scan(folder:EditorFileSystemDirectory) -> void:
 	for i in folder.get_file_count():
 		var script_clazz := folder.get_file_script_class_name(i)
 		if script_clazz != "":

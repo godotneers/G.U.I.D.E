@@ -21,7 +21,6 @@ const Utils = preload("../utils.gd")
 @onready var _add_trigger_popup:PopupMenu = %AddTriggerPopup
 
 var _plugin:EditorPlugin
-var _scanner:ClassScanner
 var _undo_redo:EditorUndoRedoManager
 
 var _mapping:GUIDEInputMapping
@@ -46,9 +45,8 @@ func _ready():
 	_triggers.collapse_state_changed.connect(_on_triggers_collapse_state_changed)
 	
 	
-func initialize(plugin:EditorPlugin, scanner:ClassScanner) -> void:
+func initialize(plugin:EditorPlugin) -> void:
 	_plugin = plugin
-	_scanner = scanner
 	_undo_redo = plugin.get_undo_redo()
 	_input_display.clicked.connect(_on_input_display_clicked)
 	
@@ -96,7 +94,7 @@ func _on_triggers_add_requested():
 func _fill_popup(popup:PopupMenu, base_clazz:StringName):
 	popup.clear(true)
 	
-	var inheritors := _scanner.find_inheritors(base_clazz)
+	var inheritors := ClassScanner.find_inheritors(base_clazz)
 	for type in inheritors.keys():
 		var class_script:Script = inheritors[type]
 		var dummy:Variant = class_script.new()
@@ -124,7 +122,7 @@ func _on_input_changed(input:GUIDEInput):
 func _on_edit_input_button_pressed():
 	var dialog:Window = binding_dialog_scene.instantiate()
 	EditorInterface.popup_dialog_centered(dialog)	
-	dialog.initialize(_scanner)
+	dialog.initialize()
 	dialog.input_selected.connect(_on_input_changed)
 
 

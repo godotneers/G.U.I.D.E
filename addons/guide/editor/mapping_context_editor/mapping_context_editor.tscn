@@ -19,29 +19,39 @@ theme_override_constants/margin_bottom = 5
 script = ExtResource("1_vytdu")
 action_mapping_editor_scene = ExtResource("2_qb3p8")
 
-[node name="EditingView" type="VBoxContainer" parent="."]
+[node name="Toolbar" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Toolbar" type="HBoxContainer" parent="Toolbar"]
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="Toolbar/Toolbar"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Toolbar/Toolbar"]
+layout_mode = 2
+text = "Mapping context:"
+
+[node name="MappingContextSwitcher" type="OptionButton" parent="Toolbar/Toolbar"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="EditingView"]
-layout_mode = 2
-
-[node name="TitleLabel" type="Label" parent="EditingView/HBoxContainer"]
+[node name="EditingView" type="VBoxContainer" parent="Toolbar"]
 unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 6
-text = "narf.tres"
-horizontal_alignment = 1
-
-[node name="MarginContainer" type="MarginContainer" parent="EditingView"]
-layout_mode = 2
-theme_override_constants/margin_bottom = 5
-
-[node name="ScrollContainer" type="ScrollContainer" parent="EditingView"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ActionMappings" parent="EditingView/ScrollContainer" instance=ExtResource("3_x7h5x")]
+[node name="MarginContainer" type="MarginContainer" parent="Toolbar/EditingView"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 5
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Toolbar/EditingView"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ActionMappings" parent="Toolbar/EditingView/ScrollContainer" instance=ExtResource("3_x7h5x")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -49,10 +59,11 @@ title = "Action mappings"
 add_tooltip = "Add action mapping"
 clear_tooltip = "Clear action mappings"
 
-[node name="EmptyView" type="CenterContainer" parent="."]
+[node name="EmptyView" type="CenterContainer" parent="Toolbar"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="EmptyView"]
+[node name="Label" type="Label" parent="Toolbar/EmptyView"]
 layout_mode = 2
 text = "Create and open a GUIDEMappingContext to get started."

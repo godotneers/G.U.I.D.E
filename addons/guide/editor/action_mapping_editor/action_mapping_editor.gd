@@ -15,7 +15,6 @@ signal duplicate_requested()
 const ClassScanner = preload("../class_scanner.gd")
 
 var _plugin:EditorPlugin
-var _scanner:ClassScanner
 var _undo_redo:EditorUndoRedoManager
 
 var _mapping:GUIDEActionMapping
@@ -29,9 +28,8 @@ func _ready():
 	_input_mappings.duplicate_requested.connect(_on_input_mappings_duplicate_requested)
 	_input_mappings.collapse_state_changed.connect(_on_input_mappings_collapse_state_changed)
 
-func initialize(plugin:EditorPlugin, scanner:ClassScanner) -> void:
+func initialize(plugin:EditorPlugin) -> void:
 	_plugin = plugin
-	_scanner = scanner
 	_undo_redo = _plugin.get_undo_redo()
 
 
@@ -54,7 +52,7 @@ func _update() -> void:
 		var input_mapping_editor := input_mapping_editor_scene.instantiate()
 		_input_mappings.add_item(input_mapping_editor)
 
-		input_mapping_editor.initialize(_plugin, _scanner)
+		input_mapping_editor.initialize(_plugin)
 		input_mapping_editor.edit(input_mapping)
 
 	_input_mappings.collapsed = _mapping.get_meta("_guide_input_mappings_collapsed", false)

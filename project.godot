@@ -39,7 +39,7 @@ project/assembly_name="guide"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/diagnosticlist/plugin.cfg", "res://addons/gdUnit4/plugin.cfg", "res://addons/guide/plugin.cfg")
+enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg", "res://addons/guide/plugin.cfg")
 
 [gdunit4]
 
@@ -71,6 +71,11 @@ wqw={
 [input_devices]
 
 pointing/emulate_mouse_from_touch=false
+
+[physics]
+
+2d/run_on_separate_thread=true
+3d/run_on_separate_thread=true
 
 [rendering]
 

@@ -22,12 +22,10 @@ signal input_selected(input:GUIDEInput)
 @onready var _detect_2d_button:Button = %Detect2DButton
 @onready var _detect_3d_button:Button = %Detect3DButton
 
-var _scanner:ClassScanner
 var _last_detected_input:GUIDEInput
 
 	
-func initialize(scanner:ClassScanner) -> void:
-	_scanner = scanner
+func initialize() -> void:
 	_setup_dialog()
 	
 func _setup_dialog() -> void:
@@ -54,7 +52,7 @@ func _show_inputs_of_value_type(type:GUIDEAction.GUIDEActionValueType) -> void:
 	_select_2d_button.set_pressed_no_signal(type == GUIDEAction.GUIDEActionValueType.AXIS_2D)
 	_select_3d_button.set_pressed_no_signal(type == GUIDEAction.GUIDEActionValueType.AXIS_3D)
 	
-	var all_inputs := _scanner.find_inheritors("GUIDEInput")
+	var all_inputs := ClassScanner.find_inheritors("GUIDEInput")
 	for script in all_inputs.values():
 		var dummy:GUIDEInput = script.new()
 		if dummy._native_value_type() == type:
