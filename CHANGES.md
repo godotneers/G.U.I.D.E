@@ -5,8 +5,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Breaking Changes
+- The input formatting system has received an overhaul to make it more flexible. This has been done in a way that is backwards compatible, as long as the game code only uses `GUIDEInputFormatter` to interface with the formatting system. If you have written a custom icon renderer or text provider, you will need to do a few slight adjustments to your code:
+  - The functions `GUIDEIconRenderer.supports`, `GUIDEIconRenderer.render` and `GUIDEIconRenderer.cache_key` now take an additional parameter of type `GUIDEInputFormattingOptions`. This parameter contains the newly introduced formatting options that are currently active on the `GUIDEInputFormatter`. Unless you want to make use of these, all you need to do is to add this new parameter to the function signatures.
+  - Similarly `GUIDETextProvider.supports` and `GUIDETextProvider.get_text` now take an additional parameter of type `GUIDEInputFormattingOptions`.
 
 ### Added
+- It is now possible to create render styles for the built-in icon renderers. This allows you to customize the icons used in input prompts to match the style of your game without having to write a custom renderer. See the [documentation](https://godotneers.github.io/G.U.I.D.E/usage/input-prompts#customizing-the-style-of-the-input-prompt-icons) for more information.
+- It is now [possible to force a specific set of icons](https://godotneers.github.io/G.U.I.D.E/usage/input-prompts#controlling-the-displayed-controller-icons) to display for controllers, no matter which type of controller is currently connected. This allows you to work around issues with generic controllers not being detected correctly or just to cater for player who want to select which icons they see ([#133](https://github.com/godotneers/G.U.I.D.E/issues/133)). 
+- This feature allows you to force the display of specific controller icons in the editor. There is a new project setting for this. Enable _Advanced_ settings and check the _GUIDE/Editor_ section of the project settings to enable this ([#132](https://github.com/godotneers/G.U.I.D.E/discussions/132)).
+- It is now possible to [only show input related to certain device types](https://godotneers.github.io/G.U.I.D.E/usage/input-prompts#controlling-the-display-of-mixed-inputs) in the input prompts. This is useful in simple scenarios where you just want to bind multiple different inputs to the same action and don't want to to have input prompts like "press Space, left mouse button or RB to jump" ([#139](https://github.com/godotneers/G.U.I.D.E/issues/139)).
 - It is now possible to quickly select a mapping context directly from the mapping context editor without having to search the tree for it ([#124](https://github.com/godotneers/G.U.I.D.E/issues/124)).
 
 ### Fixed

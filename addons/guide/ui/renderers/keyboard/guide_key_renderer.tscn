@@ -1,0 +1,37 @@
+[gd_scene load_steps=4 format=3 uid="uid://toty2e3yx26l"]
+
+[ext_resource type="Script" path="res://addons/guide/ui/renderers/keyboard/guide_key_renderer.gd" id="1_i8mmb"]
+[ext_resource type="Texture2D" uid="uid://b3x586os8uuwb" path="res://addons/guide/ui/renderers/keyboard/styles/Blank_White_Normal.png" id="2_sckay"]
+[ext_resource type="FontFile" uid="uid://cu8bvod6tnnwr" path="res://addons/guide/ui/renderers/keyboard/styles/Lato-Black.ttf" id="3_6l21u"]
+
+[node name="KeyRenderer" type="MarginContainer"]
+custom_minimum_size = Vector2(100, 100)
+offset_right = 267.0
+offset_bottom = 100.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+script = ExtResource("1_i8mmb")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("2_sckay")
+region_rect = Rect2(10, 10, 80, 80)
+patch_margin_left = 29
+patch_margin_top = 30
+patch_margin_right = 29
+patch_margin_bottom = 29
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_right = 30
+
+[node name="Label" type="Label" parent="MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.25098, 0.25098, 0.25098, 1)
+theme_override_fonts/font = ExtResource("3_6l21u")
+theme_override_font_sizes/font_size = 45
+text = "Long Long Long"
+horizontal_alignment = 1

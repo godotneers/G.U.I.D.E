@@ -1,0 +1,50 @@
+[gd_resource type="Resource" script_class="GUIDEControllerRenderStyle" load_steps=24 format=3 uid="uid://c46mfn2386oyb"]
+
+[ext_resource type="Texture2D" uid="uid://cfy1rx4d4wjdh" path="res://addons/guide/ui/renderers/controllers/styles/sony/PS5_Cross.png" id="1_am5kd"]
+[ext_resource type="Texture2D" uid="uid://civpcnwgbu5ky" path="res://addons/guide/ui/renderers/controllers/styles/sony/PS5_Circle.png" id="2_8a27q"]
+[ext_resource type="Texture2D" uid="uid://bw2h7xxdtp31i" path="res://addons/guide/ui/renderers/controllers/styles/sony/PS5_Share.png" id="3_30ngq"]
+[ext_resource type="Texture2D" uid="uid://vk1vje3280tk" path="res://addons/guide/ui/renderers/controllers/styles/sony/PS5_Dpad_Down.png" id="4_mm0o5"]
+[ext_resource type="Texture2D" uid="uid://bkpw61ctv0fbg" path="res://addons/guide/ui/renderers/controllers/styles/sony/PS5_Dpad_Left.png" id="5_ygki3"]
+[ext_resource type="Texture2D" uid="uid://dybnayy8y7rxe" path="res://addons/guide/ui/renderers/controllers/styles/sony/PS5_Dpad_Right.png" id="6_icenk"]
+[ext_resource type="Texture2D" uid="uid://bvbd876sy2430" path="res://addons/guide/ui/renderers/controllers/styles/sony/PS5_Dpad_Up.png" id="7_egk1w"]
+[ext_resource type="Texture2D" uid="uid://bmgxqbypegjxh" path="res://addons/guide/ui/renderers/textures/arrow_horizontal.svg" id="8_iddvo"]
+[ext_resource type="Texture2D" uid="uid://cqgpumb0tf5xr" path="res://addons/guide/ui/renderers/controllers/styles/sony/PS5_L1.png" id="9_v2ufa"]
+[ext_resource type="Texture2D" uid="uid://c3qet180o0dn6" path="res://addons/guide/ui/renderers/controllers/styles/sony/PS5_Left_Stick.png" id="10_nwwnw"]
+[ext_resource type="Texture2D" uid="uid://c0b1sdadfcnbk" path="res://addons/guide/ui/renderers/controllers/styles/sony/PS5_Left_Stick_Click.png" id="11_ila4q"]
+[ext_resource type="Texture2D" uid="uid://bhoi6nfung5ye" path="res://addons/guide/ui/renderers/controllers/styles/sony/PS5_L2.png" id="12_e0aew"]
+[ext_resource type="Texture2D" uid="uid://eljpu2rrb3k4" path="res://addons/guide/ui/renderers/controllers/styles/sony/PS5_Microphone.png" id="13_kcrif"]
+[ext_resource type="Texture2D" uid="uid://rwgkfm18pk3l" path="res://addons/guide/ui/renderers/controllers/styles/sony/PS5_R1.png" id="14_uqcpj"]
+[ext_resource type="Texture2D" uid="uid://bukgaq1m26bw3" path="res://addons/guide/ui/renderers/controllers/styles/sony/PS5_Right_Stick.png" id="15_ntssf"]
+[ext_resource type="Texture2D" uid="uid://c4krmros0va1i" path="res://addons/guide/ui/renderers/controllers/styles/sony/PS5_Right_Stick_Click.png" id="16_0ojkd"]
+[ext_resource type="Texture2D" uid="uid://u6ba23igjbj5" path="res://addons/guide/ui/renderers/controllers/styles/sony/PS5_R2.png" id="17_r1pnn"]
+[ext_resource type="Script" path="res://addons/guide/ui/renderers/controllers/guide_controller_render_style.gd" id="18_dqomh"]
+[ext_resource type="Texture2D" uid="uid://bkttgyeuecjw" path="res://addons/guide/ui/renderers/controllers/styles/sony/PS5_Options.png" id="19_c1heh"]
+[ext_resource type="Texture2D" uid="uid://bxxkjsl2u83mp" path="res://addons/guide/ui/renderers/controllers/styles/sony/PS5_Touch_Pad.png" id="20_7oww7"]
+[ext_resource type="Texture2D" uid="uid://bu5nlug6uf03w" path="res://addons/guide/ui/renderers/textures/arrow_vertical.svg" id="21_w4qcp"]
+[ext_resource type="Texture2D" uid="uid://dm6vfcwtodame" path="res://addons/guide/ui/renderers/controllers/styles/sony/PS5_Square.png" id="22_a4leh"]
+[ext_resource type="Texture2D" uid="uid://bjjj12v4g82g4" path="res://addons/guide/ui/renderers/controllers/styles/sony/PS5_Triangle.png" id="23_w7tnn"]
+
+[resource]
+script = ExtResource("18_dqomh")
+a_button = ExtResource("1_am5kd")
+b_button = ExtResource("2_8a27q")
+x_button = ExtResource("22_a4leh")
+y_button = ExtResource("23_w7tnn")
+left_stick = ExtResource("10_nwwnw")
+left_stick_click = ExtResource("11_ila4q")
+right_stick = ExtResource("15_ntssf")
+right_stick_click = ExtResource("16_0ojkd")
+left_bumper = ExtResource("9_v2ufa")
+right_bumper = ExtResource("14_uqcpj")
+left_trigger = ExtResource("12_e0aew")
+right_trigger = ExtResource("17_r1pnn")
+dpad_up = ExtResource("7_egk1w")
+dpad_left = ExtResource("5_ygki3")
+dpad_right = ExtResource("6_icenk")
+dpad_down = ExtResource("4_mm0o5")
+start = ExtResource("19_c1heh")
+misc1 = ExtResource("13_kcrif")
+back = ExtResource("3_30ngq")
+touch_pad = ExtResource("20_7oww7")
+horizontal = ExtResource("8_iddvo")
+vertical = ExtResource("21_w4qcp")

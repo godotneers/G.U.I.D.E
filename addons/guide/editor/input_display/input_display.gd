@@ -2,7 +2,13 @@
 extends RichTextLabel
 signal clicked()
 
+const GUIDEProjectSettings = preload("../guide_project_settings.gd")
+
 var _formatter:GUIDEInputFormatter = GUIDEInputFormatter.new(64)
+
+func _ready() -> void:
+	ProjectSettings.settings_changed.connect(_refresh)
+	
 
 var input:GUIDEInput:
 	set(value):
@@ -20,6 +26,9 @@ var input:GUIDEInput:
 		_refresh()
 
 func _refresh():
+	_formatter.formatting_options.joy_rendering = GUIDEProjectSettings.editor_joy_rendering
+	_formatter.formatting_options.preferred_joy_type = GUIDEProjectSettings.editor_joy_type
+	
 	if not is_instance_valid(input):
 		parse_bbcode("[center][i]<not bound>[/i][/center]")
 		tooltip_text = ""

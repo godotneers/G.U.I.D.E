@@ -26,9 +26,10 @@ func clear_cache() -> void:
 
 ## Makes an icon for the given input and returns a Texture2D with the icon. Icons
 ## are cached on disk so subsequent calls for the same input will be faster.
-func make_icon(input:GUIDEInput, renderer:GUIDEIconRenderer, height_px:int) -> Texture2D:
+func make_icon(input:GUIDEInput, renderer:GUIDEIconRenderer, \
+		height_px:int, options:GUIDEInputFormattingOptions) -> Texture2D:
 	DirAccess.make_dir_recursive_absolute(CACHE_DIR)
-	var cache_key := (str(height_px) + renderer.cache_key(input)).sha256_text()
+	var cache_key := (str(height_px) + renderer.cache_key(input, options)).sha256_text()
 	var cache_path := "user://_guide_cache/" + cache_key + ".res"
 	if ResourceLoader.exists(cache_path):
 		return ResourceLoader.load(cache_path, "Texture2D") 
@@ -36,6 +37,7 @@ func make_icon(input:GUIDEInput, renderer:GUIDEIconRenderer, height_px:int) -> T
 	var job := Job.new()
 	job.height = height_px
 	job.input = input
+	job.options = options
 	job.renderer = renderer
 	_pending_requests.append(job)
 	set_process(true)
@@ -62,7 +64,7 @@ func _process(_delta:float) -> void:
 		var renderer := _current_request.renderer
 		_root.add_child(renderer)
 		
-		renderer.render(_current_request.input)
+		renderer.render(_current_request.input, _current_request.options)
 		await get_tree().process_frame
 		
 		var actual_size := renderer.get_rect().size
@@ -98,6 +100,7 @@ class Job:
 	var height:int
 	var input:GUIDEInput
 	var renderer:GUIDEIconRenderer
+	var options:GUIDEInputFormattingOptions
 	var result:Image
 	
 	

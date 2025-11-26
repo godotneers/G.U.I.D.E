@@ -92,3 +92,112 @@ At runtime, the label will use the `GUIDEInputFormatter` to generate the input p
 
 
 The label will automatically update the input prompt strings when the input mappings change. This is not the only way to display input prompts, but it is a simple and effective way to do so and you can easily adapt it to your needs or use it as a starting point for your own implementation. You can find the full implementation of the input prompt label in the example projects that come with G.U.I.D.E at `guide_examples/shared/instructions_label.gd`. 
+
+## Controlling the displayed controller icons
+
+When the player has connected a controller, you usually want to match the icons that are displayed on screen to the controller type that the player is using. G.U.I.D.E automatically tries to detect the type of controller that is connected and will show icons matching the general type of controller. So if the player uses a PlayStation controller, they will see PlayStation icons, and if they use an Xbox controller, they will see Xbox icons.
+
+Sometimes it is not possible to properly detect the controller type. This is very often the case with off-brand controllers that just register as a generic controller to the operating system and have no useful detection strings that can identify them. In these cases, G.U.I.D.E will by default show generic icons that will not match what is printed on the buttons of the controller. This is not a great user experience. Therefore, the input prompt system allows you to override which controller icons are displayed depending on a set of rules:
+
+```gdscript
+var _formatter: GUIDEInputFormatter = GUIDEInputFormatter.new()
+
+# Instruct the formatter to detect the controller type and format the icons accordingly.
+# If the controller type cannot be detected, the formatter will use generic icons instead.
+# This is the default behavior.
+_formatter.formatting_options.joy_rendering = GUIDEInputFormattingOptions.JoyRendering.DEFAULT
+
+# Instruct the formatter to detect the controller type. If the controller type 
+# cannot be detected, tell the formatter to use a specific controller type instead.
+_formatter.formatting_options.joy_rendering = GUIDEInputFormattingOptions.JoyRendering.PREFER_JOY_TYPE
+# In this case, tell the formatter to use the Microsoft controller type as fallback.
+_formatter.formatting_options.preferred_joy_type = GUIDEInputFormattingOptions.JoyType.MICROSOFT_CONTROLLER
+
+# Instruct the formatter to skip controller type detection and always use a specific 
+# set of icons.
+_formatter.formatting_options.joy_rendering = GUIDEInputFormattingOptions.JoyRendering.FORCE_JOY_TYPE
+# In this case, tell the formatter to use Sony controller icons, always.
+_formatter.formatting_options.preferred_joy_type = GUIDEInputFormattingOptions.JoyType.SONY_CONTROLLER
+```
+
+You can find an example of how to use this feature in the `input_prompts` example that ships with G.U.I.D.E.
+
+## Controlling the display of mixed inputs
+
+In simple setups, it is quite common to just create an action and bind this action to multiple different inputs from different input devices. For example, this action is bound to the right mouse button, the Ctrl key on the keyboard, and the A button of a controller:
+
+![Mixed input]({{site.baseurl}}/assets/img/manual/manual_example_mixed_input.png)
+
+If you create a string for this action, you will get something like this:
+
+![Mixed input string]({{site.baseurl}}/assets/img/manual/manual_mixed_input_string.png)
+
+Now, depending on your intent, this may or may not be what you would like to have. For example, if the player is free to change their input device at any time, you may want to only show the binding that matches the input device that the player has last used. To achieve this you can use the formatting options like this:
+
+```gdscript
+# Tell the formatter to only render inputs related to the mouse and keyboard:
+_formatter.formatting_options.only_device_types = \
+    GUIDEInputFormattingOptions.DeviceType.MOUSE \
+    | GUIDEInputFormattingOptions.DeviceType.KEYBOARD
+
+# Tell the formatter to only render inputs related to joysticks/controllers:
+_formatter.formatting_options.only_device_types = \
+    GUIDEInputFormattingOptions.DeviceType.JOY
+
+# Tell the formatter to render all inputs:
+_formatter.formatting_options.only_device_types = \
+    GUIDEInputFormattingOptions.DeviceType.ALL
+```
+
+You can find an example of how to use this feature in the `input_prompts` example that ships with G.U.I.D.E. This example also has code to detect when the player changes their input device and update the input prompt strings accordingly.
+
+## Customizing the style of the input prompt icons
+
+G.U.I.D.E ships with a variety of renderers that can produce icons for all supported inputs. These renderers come with a built-in icon set that is good enough for prototyping or simple games where you don't have any specific needs to match the icons to the theme of your game. If you want to match the icons to your game, you have two options: 
+
+- You can create a style for each renderer of G.U.I.D.E and apply this style when the game starts. 
+- You can create a custom renderer that gives you complete freedom over how the icons are rendered. 
+
+### Creating a style for each renderer
+
+Render styles are simply resources, so you can create them by right-clicking in the folder structure and then selecting _Create New..._ > _Resource_. Search for _RenderStyle_ in the search bar and then pick the style you want to create:
+
+![Render styles]({{site.baseurl}}/assets/img/manual/manual_render_styles.png)
+
+Once you have created the style, you can double-click it and edit it in the inspector. Most styles will only allow you to change the icons for something else, but some styles like the key renderer style also allow you to change other aspects, like the font and the color of the key labels. 
+
+![Render style example]({{site.baseurl}}/assets/img/manual/manual_render_style_example.png)
+
+Once you have created and customized your render style, you can register it with G.U.I.D.E, and G.U.I.D.E will use your style over the built-in one. This can be done with one line of code.
+
+```gdscript
+# For joy render styles:
+GUIDEJoyRenderer.set_style(load("res://my_joy_render_style.tres"))
+
+# For keyboard render styles:
+GUIDEKeyboardRenderer.set_style(load("res://my_keyboard_render_style.tres"))
+
+# For mouse render styles:
+GUIDEMouseRenderer.set_style(load("res://my_mouse_render_style.tres"))
+
+# For touch render styles:
+GUIDETouchRenderer.set_style(load("res://my_touch_render_style.tres"))
+
+# For controller render styles, you can override the render style per controller type.
+# For Microsoft controllers
+GUIDEControllerRenderer.set_style(GUIDEControllerRenderer.ControllerType.MICROSOFT, \
+    load("res://my_microsoft_controller_render_style.tres"))
+
+# For Nintendo controllers    
+GUIDEControllerRenderer.set_style(GUIDEControllerRenderer.ControllerType.NINTENDO, \
+    load("res://my_nintendo_controller_render_style.tres"))
+
+# For Sony controllers    
+GUIDEControllerRenderer.set_style(GUIDEControllerRenderer.ControllerType.SONY, \
+    load("res://my_sony_controller_render_style.tres"))
+```
+
+### Creating a custom renderer
+
+Creating a custom renderer is a bit more involved, but it allows you total freedom over how your icon looks and how it is put together. You can find more details about creating a custom renderer in the [Extending G.U.I.D.E]({{site.baseurl}}/usage/extending-guide#creating-custom-icon-renderers) section. 
+

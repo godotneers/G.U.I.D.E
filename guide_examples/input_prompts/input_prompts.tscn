@@ -1,0 +1,136 @@
+[gd_scene load_steps=14 format=3 uid="uid://u21n04y2xftp"]
+
+[ext_resource type="Script" path="res://guide_examples/input_prompts/input_prompts.gd" id="1_ogapc"]
+[ext_resource type="Resource" uid="uid://b5s7df53wnarw" path="res://guide_examples/input_prompts/mapping_contexts/input_prompts.tres" id="2_drrnj"]
+[ext_resource type="Resource" uid="uid://bxa8jsi2dbtw4" path="res://guide_examples/input_prompts/mapping_contexts/fire.tres" id="3_gessh"]
+[ext_resource type="Resource" uid="uid://dbjyxldjlm3yw" path="res://guide_examples/input_prompts/mapping_contexts/controller_activated.tres" id="4_hasd2"]
+[ext_resource type="Resource" uid="uid://bpnyp22tg2ccv" path="res://guide_examples/input_prompts/mapping_contexts/mouse_activated.tres" id="5_dndl7"]
+[ext_resource type="Resource" uid="uid://dbf0wsbnpx3u8" path="res://guide_examples/input_prompts/mapping_contexts/keyboard_activated.tres" id="6_ofh7e"]
+[ext_resource type="Theme" uid="uid://dot0gi1yoqmrl" path="res://guide_examples/shared/ui_theme.tres" id="7_li4sj"]
+[ext_resource type="Script" path="res://guide_examples/shared/instructions_label.gd" id="8_i8f53"]
+
+[sub_resource type="Gradient" id="Gradient_j5prp"]
+offsets = PackedFloat32Array(0, 0.184375, 0.496875, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 0.603922, 1, 1, 0.370487, 0.325751, 0.623529, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_d1csl"]
+gradient = SubResource("Gradient_j5prp")
+
+[sub_resource type="Curve" id="Curve_3lhls"]
+max_value = 5.0
+_data = [Vector2(0, 0.449663), 0.0, 0.0, 0, 0, Vector2(1, 2.46539), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_rgacx"]
+curve = SubResource("Curve_3lhls")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1unui"]
+particle_flag_disable_z = true
+angle_max = 360.0
+radial_velocity_min = 37.04
+radial_velocity_max = 185.19
+gravity = Vector3(0, 98, 0)
+scale_over_velocity_min = 1.0
+scale_over_velocity_max = 2.0
+scale_over_velocity_curve = SubResource("CurveTexture_rgacx")
+color_ramp = SubResource("GradientTexture1D_d1csl")
+
+[node name="InputPrompts" type="Node2D"]
+script = ExtResource("1_ogapc")
+mapping_context = ExtResource("2_drrnj")
+fire = ExtResource("3_gessh")
+controller_activated = ExtResource("4_hasd2")
+mouse_activated = ExtResource("5_dndl7")
+keyboard_activated = ExtResource("6_ofh7e")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(939, 335)
+emitting = false
+amount = 400
+process_material = SubResource("ParticleProcessMaterial_1unui")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Spacer2" type="Control" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(800, 0)
+layout_mode = 2
+theme = ExtResource("7_li4sj")
+text = "This example shows how input prompts can be configured at runtime. We have one action that can be triggered by three different input devices. Using the options, you can change what appears in the input prompt and how controller icons will be rendered."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Spacer" type="Control" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 40
+
+[node name="Label" type="RichTextLabel" parent="CanvasLayer/CenterContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("7_li4sj")
+script = ExtResource("8_i8f53")
+instructions_text = "%s to do the magic action!"
+actions = Array[Resource("res://addons/guide/guide_action.gd")]([ExtResource("3_gessh")])
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/CenterContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="DeviceSelection" type="OptionButton" parent="CanvasLayer/CenterContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("7_li4sj")
+item_count = 2
+selected = 0
+popup/item_0/text = "Show input for all devices"
+popup/item_0/id = 0
+popup/item_1/text = "Show input for currently active device"
+popup/item_1/id = 1
+
+[node name="ControllerTypeOverride" type="OptionButton" parent="CanvasLayer/CenterContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("7_li4sj")
+item_count = 4
+selected = 0
+popup/item_0/text = "Use detected controller type"
+popup/item_0/id = 0
+popup/item_1/text = "Force Microsoft Controller"
+popup/item_1/id = 1
+popup/item_2/text = "Force Nintendo Controller"
+popup/item_2/id = 2
+popup/item_3/text = "Force Sony Controller"
+popup/item_3/id = 3
+
+[connection signal="item_selected" from="CanvasLayer/CenterContainer/HBoxContainer/VBoxContainer/DeviceSelection" to="." method="_on_device_selection_item_selected"]
+[connection signal="item_selected" from="CanvasLayer/CenterContainer/HBoxContainer/VBoxContainer/ControllerTypeOverride" to="." method="_on_controller_type_override_item_selected"]

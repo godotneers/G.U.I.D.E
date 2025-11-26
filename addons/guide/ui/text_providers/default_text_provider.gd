@@ -6,7 +6,7 @@ func _init():
 	priority = 0
 	_is_on_desktop = OS.has_feature("linuxbsd") or OS.has_feature("macos") or OS.has_feature("windows")
 	
-func supports(input:GUIDEInput) -> bool:
+func supports(input:GUIDEInput, options:GUIDEInputFormattingOptions) -> bool:
 	return true
 	
 
@@ -14,7 +14,7 @@ func _format(input:String) -> String:
 	return "[%s]" % [input]
 
 	
-func get_text(input:GUIDEInput) -> String:
+func get_text(input:GUIDEInput, options:GUIDEInputFormattingOptions) -> String:
 	if input is GUIDEInputKey:
 		var result:PackedStringArray = []
 		var the_key = input.key

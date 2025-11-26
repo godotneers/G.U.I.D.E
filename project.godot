@@ -8,6 +8,11 @@
 
 config_version=5
 
+[Guide]
+
+"Editor/Joy Icons"=2
+"Editor/Joy Type"=1
+
 [addons]
 
 diagnostic_list/auto_refresh=false

@@ -24,6 +24,9 @@ static func is_inline(resource:Resource) -> bool:
 	
 ## Checks if the given node is somewhere in the currently edited scene.	
 static func is_node_in_edited_scene(node:Node) -> bool:
+	if not Engine.is_editor_hint():
+		return false
+	
 	if not is_instance_valid(node):
 		return false
 	

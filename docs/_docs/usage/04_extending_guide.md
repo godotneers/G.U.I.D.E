@@ -231,12 +231,12 @@ Rendering is handled for you. Internally, G.U.I.D.E instantiates a small GUI sce
    - The root node should be a control or container. The size of the root control defines the icon size. G.U.I.D.E will take a screenshot of your root control at its current size and then scales it down to what was requested.
 2. Attach a script to the scene root that extends `GUIDEIconRenderer`.
 3. Implement three methods:
-   - `supports(input: GUIDEInput) -> bool` — return true if this renderer can draw the given input.
-   - `render(input: GUIDEInput) -> void` — show/hide or configure your UI elements so the icon represents the input.
-   - `cache_key(input: GUIDEInput) -> String` — return a string that uniquely identifies the final look for this input. G.U.I.D.E uses this for disk caching.
-4. Optionally, set the `priority` export on your renderer. Lower values mean higher priority. Built‑in renderers use `0`, the built‑in fallback uses `100`.
+   - `supports(input: GUIDEInput, options:GUIDEInputFormattingOptions) -> bool` — return true if this renderer can draw the given input.
+   - `render(input: GUIDEInput, options:GUIDEInputFormattingOptions) -> void` — show/hide or configure your UI elements so the icon represents the input.
+   - `cache_key(input: GUIDEInput, options:GUIDEInputFormattingOptions) -> String` — return a string that uniquely identifies the final look for this input. G.U.I.D.E uses this for disk caching.
+4. Optionally, set the `priority` export on your renderer. Lower values mean higher priority. 
 
-A minimal example (see also `addons/guide/ui/renderers/keyboard/key_renderer.gd` and `addons/guide/ui/renderers/controllers/controller_renderer.gd`):
+A minimal example (see also `addons/guide/ui/renderers/keyboard/guide_key_renderer.gd` and `addons/guide/ui/renderers/controllers/guide_controller_renderer.gd`):
 
 ```gdscript
 @tool
@@ -244,17 +244,17 @@ extends GUIDEIconRenderer
 
 @onready var _label: Label = %Label
 
-func supports(input: GUIDEInput) -> bool:
+func supports(input: GUIDEInput, options:GUIDEInputFormattingOptions) -> bool:
     return input is GUIDEInputKey
 
-func render(input: GUIDEInput) -> void:
+func render(input: GUIDEInput, options:GUIDEInputFormattingOptions) -> void:
     var key: Key = input.key
     var display_key: Key = DisplayServer.keyboard_get_label_from_physical(key)
     _label.text = OS.get_keycode_string(display_key).strip_edges()
     size = Vector2.ZERO
     call("queue_sort")
 
-func cache_key(input: GUIDEInput) -> String:
+func cache_key(input: GUIDEInput, options:GUIDEInputFormattingOptions) -> String:
     # Use a stable prefix unique to your renderer plus what differentiates inputs
     return "my-key-renderer-v1" + input.to_string()
 ```
@@ -262,6 +262,7 @@ func cache_key(input: GUIDEInput) -> String:
 Tips:
 - Show or hide parts of the UI as needed in `render`. The controller renderer is a good example for toggling multiple elements.
 - Keep the `cache_key` stable across sessions for the same visual result so the on‑disk cache can be reused.
+- In many cases, using the input as a cache key is good enough. If you have additional input that goes into rendering an icon (e.g., a configurable icon style), this should also go into the calculation of the cache key. See the controller renderer for an example.
 
 ### How renderers are selected
 
@@ -270,7 +271,11 @@ When formatting an input as icons, G.U.I.D.E:
 - asks them in order if they `supports` the input, and
 - uses the first renderer that returns `true`.
 
-This means you can override built‑in behavior by using a smaller priority.
+This means you can override built‑in behavior by using a smaller priority. G.U.I.D.E's built-in renderers have the following priority:
+
+- `GUIDEControllerRenderer`: `-10`
+- `GUIDEFallbackRenderer`: `100`
+- All other renderers: `0`
 
 ### Registering your renderer
 
@@ -281,7 +286,7 @@ var my_renderer_scene := preload("res://path/to/my_renderer.tscn")
 GUIDEInputFormatter.add_icon_renderer(my_renderer_scene.instantiate())
 ```
 
-After registration, the renderer becomes part of the selection process described above. No further work is required - G.U.I.D.E will call your renderer when appropriate.
+After registration, the renderer becomes part of the selection process described above. No further work is required. G.U.I.D.E will call your renderer when appropriate.
 
 ## Creating custom text providers
 
@@ -293,8 +298,8 @@ Rendering is handled entirely by G.U.I.D.E. Your provider only decides what text
 
 1. Create a new script that extends `GUIDETextProvider`.
 2. Implement two methods:
-   - `supports(input: GUIDEInput) -> bool` — return true if this provider can label the given input.
-   - `get_text(input: GUIDEInput) -> String` — return a concise label for that input. This is called only if `supports` returned true.
+   - `supports(input: GUIDEInput, options:GUIDEInputFormattingOptions) -> bool` — return true if this provider can label the given input.
+   - `get_text(input: GUIDEInput, options:GUIDEInputFormattingOptions) -> String` — return a concise label for that input. This is called only if `supports` returned true.
 3. Optionally, set the `priority` export on your provider. Lower numbers mean higher priority. The built‑in default text provider uses `0`. Specialized controller providers use negative priorities so they win over the default for matching devices. G.U.I.D.E will pick the provider with the smallest priority that supports the input.
 
 A minimal example that specializes keyboard labels:
@@ -306,10 +311,10 @@ extends GUIDETextProvider
 func _init() -> void:
     priority = -1  # has precedence over the default provider
 
-func supports(input: GUIDEInput) -> bool:
+func supports(input: GUIDEInput, options:GUIDEInputFormattingOptions) -> bool:
     return input is GUIDEInputKey
 
-func get_text(input: GUIDEInput) -> String:
+func get_text(input: GUIDEInput, options:GUIDEInputFormattingOptions) -> String:
     # Map certain keys to custom names, fall back to OS label
     var key: Key = input.key
     var display_key: Key = DisplayServer.keyboard_get_label_from_physical(key)
@@ -331,7 +336,10 @@ When formatting text, G.U.I.D.E:
 - asks them in order if they `supports` the input, and
 - uses the first provider that returns `true`.
 
-This allows you to override the built‑in wording by using a smaller priority than the default provider.
+This allows you to override the built‑in wording by using a smaller priority than the default provider. G.U.I.D.E's built-in providers have the following priority:
+
+- `GUIDEControllerTextProvider`: `-10`
+- `GUIDEDefaultTextProvider`: `0`
 
 ### Registering your provider
 
@@ -343,6 +351,5 @@ GUIDEInputFormatter.add_text_provider(MyCustomKeyTextProvider.new())
 ```
 
 After registration, your provider participates in the selection process described above. See these references for concrete implementations:
-- `addons/guide/ui/text_providers/default_text_provider.gd` — generic fallback labels
-- `addons/guide/ui/text_providers/controllers/controller_text_provider.gd` — base for controller‑specific naming
-- Platform examples: `xbox_controller_text_provider.gd`, `playstation_controller_text_provider.gd`, `switch_controller_text_provider.gd`
+- `addons/guide/ui/text_providers/guide_default_text_provider.gd` — generic fallback labels
+- `addons/guide/ui/text_providers/controllers/guide_controller_text_provider.gd` — for controller‑specific naming

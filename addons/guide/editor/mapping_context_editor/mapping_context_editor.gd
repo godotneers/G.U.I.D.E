@@ -192,9 +192,9 @@ func _build_shortened_path_map(paths:Array[String]) -> Dictionary:
 		
 		
 func _on_mapping_context_switch_requested(index:int) -> void:
-	var mc := _mapping_context_switcher.get_item_metadata(index) as String
+	var mc:Variant = _mapping_context_switcher.get_item_metadata(index)
 	if mc != null:
-		var context:GUIDEMappingContext = load(mc) as GUIDEMappingContext
+		var context:GUIDEMappingContext = load(mc as String) as GUIDEMappingContext
 		if context != null and context != _current_context:
 			edit(context)
 	

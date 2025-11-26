@@ -3,25 +3,24 @@
 class_name GUIDEInputFormatter
 
 const IconMaker = preload("icon_maker/icon_maker.gd")
-const KeyRenderer:PackedScene = preload("renderers/keyboard/key_renderer.tscn")
-const MouseRenderer:PackedScene = preload("renderers/mouse/mouse_renderer.tscn")
-const TouchRenderer:PackedScene = preload("renderers/touch/touch_renderer.tscn")
-const JoyRenderer:PackedScene = preload("renderers/joy/joy_renderer.tscn")
-const XboxRenderer:PackedScene = preload("renderers/controllers/xbox/xbox_controller_renderer.tscn")
-const PlayStationRenderer:PackedScene = preload("renderers/controllers/playstation/playstation_controller_renderer.tscn")
-const SwitchRenderer:PackedScene = preload("renderers/controllers/switch/switch_controller_renderer.tscn")
-const ActionRenderer:PackedScene = preload("renderers/misc/action_renderer.tscn")
-const FallbackRenderer:PackedScene = preload("renderers/misc/fallback_renderer.tscn")
+const KeyRenderer:PackedScene = preload("renderers/keyboard/guide_key_renderer.tscn")
+const MouseRenderer:PackedScene = preload("renderers/mouse/guide_mouse_renderer.tscn")
+const TouchRenderer:PackedScene = preload("renderers/touch/guide_touch_renderer.tscn")
+const JoyRenderer:PackedScene = preload("renderers/joy/guide_joy_renderer.tscn")
+const ControllerRenderer:PackedScene = preload("renderers/controllers/guide_controller_renderer.tscn")
+const ActionRenderer:PackedScene = preload("renderers/misc/guide_action_renderer.tscn")
+const FallbackRenderer:PackedScene = preload("renderers/misc/guide_fallback_renderer.tscn")
 const DefaultTextProvider = preload("text_providers/default_text_provider.gd")
-const XboxTextProvider = preload("text_providers/controllers/xbox/xbox_controller_text_provider.gd")
-const PlayStationTextProvider = preload("text_providers/controllers/playstation/playstation_controller_text_provider.gd")
-const SwitchTextProvider = preload("text_providers/controllers/switch/switch_controller_text_provider.gd")
+const ControllerTextProvider = preload("text_providers/controllers/guide_controller_text_provider.gd")
+
 
 # These are shared across all instances
 static var _icon_maker:IconMaker
 static var _icon_renderers:Array[GUIDEIconRenderer] = []
 static var _text_providers:Array[GUIDETextProvider] = []
 static var _is_ready:bool = false
+
+
 
 ## Separator to separate mixed input. 
 static var mixed_input_separator:String = ", "
@@ -33,6 +32,9 @@ static var combo_input_separator:String = " > "
 # These are per-instance
 var _action_resolver:Callable
 var _icon_size:int
+
+## The formatting options that this renderer uses. See [GUIDEInputFormattingOptions].
+var formatting_options:GUIDEInputFormattingOptions = GUIDEInputFormattingOptions.new()
 
 static func _ensure_readiness() -> void:
 	if _is_ready:
@@ -53,15 +55,11 @@ static func _ensure_readiness() -> void:
 	add_icon_renderer(TouchRenderer.instantiate())
 	add_icon_renderer(ActionRenderer.instantiate())
 	add_icon_renderer(JoyRenderer.instantiate())
-	add_icon_renderer(XboxRenderer.instantiate())
-	add_icon_renderer(PlayStationRenderer.instantiate())
-	add_icon_renderer(SwitchRenderer.instantiate())
+	add_icon_renderer(ControllerRenderer.instantiate())
 	add_icon_renderer(FallbackRenderer.instantiate())
 	
 	add_text_provider(DefaultTextProvider.new())
-	add_text_provider(XboxTextProvider.new())
-	add_text_provider(PlayStationTextProvider.new())
-	add_text_provider(SwitchTextProvider.new())
+	add_text_provider(ControllerTextProvider.new())
 	
 	_is_ready = true
 
@@ -162,8 +160,8 @@ func _materialized_as_text(input:MaterializedInput) -> String:
 	if input is MaterializedSimpleInput:
 		var text:String = ""
 		for provider in _text_providers:
-			if provider.supports(input.input):
-				text = provider.get_text(input.input)
+			if provider.supports(input.input, formatting_options):
+				text = provider.get_text(input.input, formatting_options)
 				# first provider wins
 				break
 		if text == "":
@@ -177,7 +175,10 @@ func _materialized_as_text(input:MaterializedInput) -> String:
 		
 	var parts:Array[String] = []
 	for part in input.parts:
-		parts.append(_materialized_as_text(part))	
+		var result := _materialized_as_text(part)
+		# strip out empty parts (e.g. from devices we ignore)
+		if not result.is_empty(): 
+			parts.append(result)	
 		
 	return separator.join(parts)
 			
@@ -186,9 +187,9 @@ func _materialized_as_richtext_async(input:MaterializedInput) -> String:
 	_ensure_readiness()	
 	if input is MaterializedSimpleInput:
 		var icon:Texture2D = null
-		for renderer in _icon_renderers:
-			if renderer.supports(input.input):
-				icon = await _icon_maker.make_icon(input.input, renderer, _icon_size)
+		for renderer:GUIDEIconRenderer in _icon_renderers:
+			if renderer.supports(input.input, formatting_options):
+				icon = await _icon_maker.make_icon(input.input, renderer, _icon_size, formatting_options)
 				# first renderer wins
 				break
 		if icon == null:
@@ -204,7 +205,10 @@ func _materialized_as_richtext_async(input:MaterializedInput) -> String:
 		
 	var parts:Array[String] = []
 	for part in input.parts:
-		parts.append(await _materialized_as_richtext_async(part))	
+		var result := await _materialized_as_richtext_async(part)
+		# strip out any empty part (e.g. from devices we skip)
+		if not result.is_empty():
+			parts.append(result)	
 		
 	return separator.join(parts)
 		
@@ -277,6 +281,10 @@ func _materialize_input(input:GUIDEInput, materialize_actions:bool = true) -> Ma
 		push_warning("Trying to materialize a null input.")
 		return MaterializedMixedInput.new()
 	
+	# if the formatting options exclude this input, return an empty input.
+	if _is_from_ignored_device(input):
+		return MaterializedMixedInput.new()
+	
 	# if its an action input, get its parts
 	if input is GUIDEInputAction:
 		if materialize_actions:
@@ -313,7 +321,33 @@ func _materialize_input(input:GUIDEInput, materialize_actions:bool = true) -> Ma
 
 	# everything else is just a simple input
 	return MaterializedSimpleInput.new(input)
-			
+	
+## Checks if the given input is pertaining to a device type that we 
+## currently ignore when formatting.
+func _is_from_ignored_device(input:GUIDEInput) -> bool:
+	# fast out for the common case
+	if formatting_options.only_device_types == GUIDEInputFormattingOptions.DeviceType.ALL:
+		return false
+		
+	if input is GUIDEInputJoyBase:
+		return formatting_options.only_device_types	& GUIDEInputFormattingOptions.DeviceType.JOY == 0
+
+	if input is GUIDEInputKey:
+		return formatting_options.only_device_types	& GUIDEInputFormattingOptions.DeviceType.KEYBOARD == 0
+
+	if input is GUIDEInputMouseAxis1D \
+		or input is GUIDEInputMouseAxis2D \
+		or input is GUIDEInputMouseButton \
+		or input is GUIDEInputMousePosition:
+		return formatting_options.only_device_types	& GUIDEInputFormattingOptions.DeviceType.MOUSE == 0
+
+	if input is GUIDEInputTouchBase \
+		or input is GUIDEInputTouchAngle \
+		or input is GUIDEInputTouchDistance:
+		return formatting_options.only_device_types	& GUIDEInputFormattingOptions.DeviceType.TOUCH == 0
+		
+	return false
+	
 class MaterializedInput:
 	pass
 	
@@ -336,23 +370,4 @@ class MaterializedComboInput:
 	extends MaterializedInput
 	var parts:Array[MaterializedInput] = []
 
-
-## Returns the name of the associated joystick/pad of the given input.
-## If the input is no joy input or the device name cannot be determined
-## returns an empty string. 
-static func _joy_name_for_input(input:GUIDEInput) -> String:
-	if not input is GUIDEInputJoyBase:
-		return ""
-	
-	var joypads:Array[int] = Input.get_connected_joypads()
-	var joy_index:int = input.joy_index
-	if joy_index < 0:
-		# pick the first one
-		joy_index = 0
-	
-	# We don't have such a controller, so bail out.
-	if joypads.size() <= joy_index:
-		return "" 
-		
-	var id := joypads[joy_index]
-	return Input.get_joy_name(id)	
+# ---- Utilities used by renderers / text providers -----

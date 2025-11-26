@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="GUIDEControllerLabelSet" load_steps=2 format=3 uid="uid://bhk8il4hvogom"]
+
+[ext_resource type="Script" path="res://addons/guide/ui/text_providers/controllers/guide_controller_label_set.gd" id="1_xmd61"]
+
+[resource]
+script = ExtResource("1_xmd61")
+a_button = "Cross"
+b_button = "Circle"
+x_button = "Square"
+y_button = "Triangle"
+left_stick = "Left Stick"
+left_stick_click = "Left Stick Click"
+left_stick_horizontal_movement = "Left Stick Horizontal"
+left_stick_vertical_movement = "Left Stick Horizontal"
+right_stick = "Right Stick"
+right_stick_click = "Left Stick Click"
+right_stick_horizontal_movement = "Left Stick Horizontal"
+right_stick_vertical_movement = "Left Stick Horizontal"
+left_bumper = "L1"
+right_bumper = "R1"
+left_trigger = "L2"
+right_trigger = "R2"
+dpad_up = "DPAD Up"
+dpad_left = "DPAD Left"
+dpad_right = "DPAD Right"
+dpad_down = "DPAD Down"
+start = "Options"
+misc1 = "Microphone"
+back = "Share"
+touch_pad = "Touchpad"

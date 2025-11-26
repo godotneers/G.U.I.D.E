@@ -1,5 +1,7 @@
 @tool
 extends EditorPlugin
+
+const GUIDEProjectSettings = preload("editor/guide_project_settings.gd")
 const MainPanel:PackedScene = preload("editor/mapping_context_editor/mapping_context_editor.tscn")
 
 var _main_panel:Control
@@ -12,6 +14,7 @@ func _enter_tree() -> void:
 	_main_panel = MainPanel.instantiate()
 	_main_panel.initialize(self)
 	EditorInterface.get_editor_main_screen().add_child(_main_panel)
+	GUIDEProjectSettings.initialize()
 	# Hide the main panel. Very much required.
 	_make_visible(false)
 

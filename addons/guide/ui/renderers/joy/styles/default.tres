@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="GUIDEJoyRenderStyle" load_steps=7 format=3 uid="uid://x36d7y75jfnr"]
+
+[ext_resource type="Texture2D" uid="uid://veqjcwokdukw" path="res://addons/guide/ui/renderers/joy/styles/button_empty.png" id="1_ctnxf"]
+[ext_resource type="FontFile" uid="uid://cu8bvod6tnnwr" path="res://addons/guide/ui/renderers/keyboard/styles/Lato-Black.ttf" id="2_uodat"]
+[ext_resource type="Texture2D" uid="uid://do001o6aysaxo" path="res://addons/guide/ui/renderers/joy/styles/stick_empty.png" id="3_0cij2"]
+[ext_resource type="Texture2D" uid="uid://bmgxqbypegjxh" path="res://addons/guide/ui/renderers/textures/arrow_horizontal.svg" id="3_5228y"]
+[ext_resource type="Script" path="res://addons/guide/ui/renderers/joy/guide_joy_render_style.gd" id="4_ms3wg"]
+[ext_resource type="Texture2D" uid="uid://bu5nlug6uf03w" path="res://addons/guide/ui/renderers/textures/arrow_vertical.svg" id="6_p8c8i"]
+
+[resource]
+script = ExtResource("4_ms3wg")
+button = ExtResource("1_ctnxf")
+stick = ExtResource("3_0cij2")
+font = ExtResource("2_uodat")
+font_color = Color(0.843, 0.843, 0.843, 1)
+font_size = 50
+horizontal = ExtResource("3_5228y")
+vertical = ExtResource("6_p8c8i")

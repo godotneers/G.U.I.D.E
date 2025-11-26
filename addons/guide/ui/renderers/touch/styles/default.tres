@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="GUIDETouchRenderStyle" load_steps=11 format=3 uid="uid://c6em225fn0luc"]
+
+[ext_resource type="Script" path="res://addons/guide/ui/renderers/touch/guide_touch_render_style.gd" id="1_dclrw"]
+[ext_resource type="Texture2D" uid="uid://dwb1h8sfsccyy" path="res://addons/guide/ui/renderers/textures/arrow_all_directions.svg" id="1_quugf"]
+[ext_resource type="Texture2D" uid="uid://cjw5m42gufghr" path="res://addons/guide/ui/renderers/touch/styles/touch_4_fingers.png" id="2_mf862"]
+[ext_resource type="Texture2D" uid="uid://bmgxqbypegjxh" path="res://addons/guide/ui/renderers/textures/arrow_horizontal.svg" id="3_biagq"]
+[ext_resource type="Texture2D" uid="uid://c5nwnp5cjny7m" path="res://addons/guide/ui/renderers/touch/styles/touch_1_finger.png" id="4_v2uag"]
+[ext_resource type="Texture2D" uid="uid://bxj4t5vjx7o3w" path="res://addons/guide/ui/renderers/touch/styles/touch_rotate.png" id="5_to8ga"]
+[ext_resource type="Texture2D" uid="uid://bwhqf2nmm5q1w" path="res://addons/guide/ui/renderers/touch/styles/touch_3_fingers.png" id="7_r27vr"]
+[ext_resource type="Texture2D" uid="uid://bllhe78a1yo6" path="res://addons/guide/ui/renderers/touch/styles/touch_2_fingers.png" id="8_svelr"]
+[ext_resource type="Texture2D" uid="uid://bu5nlug6uf03w" path="res://addons/guide/ui/renderers/textures/arrow_vertical.svg" id="9_c28mq"]
+[ext_resource type="Texture2D" uid="uid://cutplj0nhphk" path="res://addons/guide/ui/renderers/touch/styles/touch_zoom.png" id="10_3pu8f"]
+
+[resource]
+script = ExtResource("1_dclrw")
+one_finger = ExtResource("4_v2uag")
+two_fingers = ExtResource("8_svelr")
+three_fingers = ExtResource("7_r27vr")
+four_fingers = ExtResource("2_mf862")
+rotate = ExtResource("5_to8ga")
+zoom = ExtResource("10_3pu8f")
+horizontal = ExtResource("3_biagq")
+vertical = ExtResource("9_c28mq")
+both = ExtResource("1_quugf")

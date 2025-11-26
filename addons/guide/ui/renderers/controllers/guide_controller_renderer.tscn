@@ -1,0 +1,141 @@
+[gd_scene load_steps=4 format=3 uid="uid://bsaylcb5ixjxk"]
+
+[ext_resource type="Script" path="res://addons/guide/ui/renderers/controllers/guide_controller_renderer.gd" id="1_0s5v7"]
+[ext_resource type="Texture2D" uid="uid://bmgxqbypegjxh" path="res://addons/guide/ui/renderers/textures/arrow_horizontal.svg" id="2_vkejn"]
+[ext_resource type="Texture2D" uid="uid://bu5nlug6uf03w" path="res://addons/guide/ui/renderers/textures/arrow_vertical.svg" id="3_wqne5"]
+
+[node name="ControllerRenderer" type="MarginContainer"]
+process_mode = 3
+offset_right = 100.0
+offset_bottom = 100.0
+size_flags_horizontal = 0
+script = ExtResource("1_0s5v7")
+priority = -1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Controls" type="MarginContainer" parent="HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="AButton" type="TextureRect" parent="HBoxContainer/Controls"]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="BButton" type="TextureRect" parent="HBoxContainer/Controls"]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="XButton" type="TextureRect" parent="HBoxContainer/Controls"]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="YButton" type="TextureRect" parent="HBoxContainer/Controls"]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="LeftStick" type="TextureRect" parent="HBoxContainer/Controls"]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="LeftStickClick" type="TextureRect" parent="HBoxContainer/Controls"]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="RightStick" type="TextureRect" parent="HBoxContainer/Controls"]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="RightStickClick" type="TextureRect" parent="HBoxContainer/Controls"]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="LeftBumper" type="TextureRect" parent="HBoxContainer/Controls"]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="RightBumper" type="TextureRect" parent="HBoxContainer/Controls"]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="LeftTrigger" type="TextureRect" parent="HBoxContainer/Controls"]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="RightTrigger" type="TextureRect" parent="HBoxContainer/Controls"]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="DpadUp" type="TextureRect" parent="HBoxContainer/Controls"]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="DpadLeft" type="TextureRect" parent="HBoxContainer/Controls"]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="DpadRight" type="TextureRect" parent="HBoxContainer/Controls"]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="DpadDown" type="TextureRect" parent="HBoxContainer/Controls"]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="Start" type="TextureRect" parent="HBoxContainer/Controls"]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="Misc1" type="TextureRect" parent="HBoxContainer/Controls"]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="Back" type="TextureRect" parent="HBoxContainer/Controls"]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="TouchPad" type="TextureRect" parent="HBoxContainer/Controls"]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="Directions" type="MarginContainer" parent="HBoxContainer"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+
+[node name="LeftRight" type="TextureRect" parent="HBoxContainer/Directions"]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("2_vkejn")
+stretch_mode = 5
+
+[node name="UpDown" type="TextureRect" parent="HBoxContainer/Directions"]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("3_wqne5")
+stretch_mode = 5

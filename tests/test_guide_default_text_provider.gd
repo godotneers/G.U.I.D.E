@@ -15,7 +15,7 @@ class DefaultProvider:
 	
 	func _init() -> void:
 		super()
-		priority = -2	
+		priority = -100	
 	
 	
 func _setup() -> void:
