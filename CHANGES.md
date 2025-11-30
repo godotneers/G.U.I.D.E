@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.9.0-beta2] - 2025-11-30
 ### Breaking Changes
 - The input formatting system has received an overhaul to make it more flexible. This has been done in a way that is backwards compatible, as long as the game code only uses `GUIDEInputFormatter` to interface with the formatting system. If you have written a custom icon renderer or text provider, you will need to do a few slight adjustments to your code:
   - The functions `GUIDEIconRenderer.supports`, `GUIDEIconRenderer.render` and `GUIDEIconRenderer.cache_key` now take an additional parameter of type `GUIDEInputFormattingOptions`. This parameter contains the newly introduced formatting options that are currently active on the `GUIDEInputFormatter`. Unless you want to make use of these, all you need to do is to add this new parameter to the function signatures.
@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The `GUIDEModifier3DCoordinates` now also works when physics are processed in a separate thread ([#91](https://github.com/godotneers/G.U.I.D.E/issues/91)). A big thanks goes to [elsen0xcc](https://github.com/elsen0xcc) for submitting a PR for this ([#138](https://github.com/godotneers/G.U.I.D.E/pull/138)).
 - Type hints are now added to all files, allowing to run the project in strict typing mode ([#130](https://github.com/godotneers/G.U.I.D.E/issues/130)).
 
-## [0.9.0-beta1]
+## [0.9.0-beta1] - 2025-11-04
 
 ### Added
 - G.U.I.D.E has now support for virtual on-screen joysticks and buttons. These work both with mouse and touch inputs. This is useful for mobile games and allows steering controls just the touch screen. There is a new demo in the `guide_examples` folder showing how to use this. You can also check the [documentation](https://godotneers.github.io/G.U.I.D.E/usage/virtual-joysticks) for more information on how to use them. 
