@@ -153,3 +153,15 @@ func _get_property_list() -> Array[Dictionary]:
 		}
 	]
 	
+func _device_type() -> DeviceType:
+	var result:DeviceType = DeviceType.NONE
+	if joy_axes or joy_buttons:
+		result |= DeviceType.JOY
+	if mouse_buttons or mouse_movement:
+		result |= DeviceType.MOUSE
+	if keyboard:
+		result |= DeviceType.KEYBOARD
+	if touch:
+		result |= DeviceType.TOUCH
+		
+	return result

@@ -46,4 +46,3 @@ func is_same_as(other:GUIDEInput):
 		other.finger_count == finger_count and \
 		other.finger_index == finger_index
 
-

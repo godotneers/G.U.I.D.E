@@ -72,3 +72,6 @@ func _editor_description() -> String:
 
 func _native_value_type() -> GUIDEAction.GUIDEActionValueType:
 	return GUIDEAction.GUIDEActionValueType.BOOL
+
+func _device_type() -> DeviceType:
+	return DeviceType.MOUSE

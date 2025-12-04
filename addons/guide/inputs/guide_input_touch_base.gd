@@ -20,3 +20,7 @@ extends GUIDEInput
 			value = -1
 		finger_index = value
 		emit_changed()
+
+
+func _device_type() -> DeviceType:
+	return DeviceType.TOUCH

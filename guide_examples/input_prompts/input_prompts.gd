@@ -1,7 +1,7 @@
 extends Node2D
 
 const InstructionsLabel = preload("../shared/instructions_label.gd")
-const DeviceType = GUIDEInputFormattingOptions.DeviceType
+const DeviceType = GUIDEInput.DeviceType
 const JoyRendering = GUIDEInputFormattingOptions.JoyRendering
 const JoyType = GUIDEInputFormattingOptions.JoyType
 
@@ -38,10 +38,10 @@ func _on_device_selection_item_selected(index: int) -> void:
 	# option button only has 2 entries, so if it's the second one we limit the 
 	# device type
 	if index == 0:
-		_formatter.formatting_options.only_device_types = DeviceType.ALL
+		_formatter.formatting_options.input_filter = GUIDEInputFormattingOptions.INPUT_FILTER_SHOW_ALL
 		_render_all_devices = true
 	else:
-		_formatter.formatting_options.only_device_types = _current_device_type
+		_formatter.formatting_options.input_filter = _filter_current_device_type
 		_render_all_devices = false
 	label._update_instructions()
 
@@ -69,6 +69,12 @@ func _on_controller_type_override_item_selected(index: int) -> void:
 func _on_device_activated(type:DeviceType) -> void:
 	_current_device_type = type
 	if not _render_all_devices:
-		_formatter.formatting_options.only_device_types = _current_device_type
+		_formatter.formatting_options.input_filter = _filter_current_device_type
 	
 	label._update_instructions()
+
+## Filter function which filters the input and only shows input from the current
+## device type.
+func _filter_current_device_type(context:GUIDEInputFormatter.FormattingContext) -> bool:
+	# check if there is an overlap between the input device type and the current device type
+	return context.input.device_type & _current_device_type > 0

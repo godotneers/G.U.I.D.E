@@ -132,21 +132,31 @@ If you create a string for this action, you will get something like this:
 
 ![Mixed input string]({{site.baseurl}}/assets/img/manual/manual_mixed_input_string.png)
 
-Now, depending on your intent, this may or may not be what you would like to have. For example, if the player is free to change their input device at any time, you may want to only show the binding that matches the input device that the player has last used. To achieve this you can use the formatting options like this:
+Now, depending on your intent, this may or may not be what you would like to have. For example, if the player is free to change their input device at any time, you may want to only show the binding that matches the input device that the player has last used. To achieve this, you can set a filter in the input formatting options, that controls what kind of input is shown. The filter is a `Callable` which receives a formatting context and returns a boolean value:
 
 ```gdscript
+
 # Tell the formatter to only render inputs related to the mouse and keyboard:
-_formatter.formatting_options.only_device_types = \
-    GUIDEInputFormattingOptions.DeviceType.MOUSE \
-    | GUIDEInputFormattingOptions.DeviceType.KEYBOARD
+_formatter.formatting_options.input_filter = \
+    func (context:GUIDEInputFormatter.FormattingContext):
+        # context.input holds the input that we're about to format
+        # this is a GUIDEInput object.
+        # we use the device_type property of GUIDEInput to check 
+        # if the input is related to the mouse or the keyboard.
+        return context.input.device_type & \
+            (GUIDEInput.DeviceType.MOUSE | GUIDEInput.DeviceType.KEYBOARD) > 0
+
 
 # Tell the formatter to only render inputs related to joysticks/controllers:
-_formatter.formatting_options.only_device_types = \
-    GUIDEInputFormattingOptions.DeviceType.JOY
+_formatter.formatting_options.input_filter = \
+    func (context:GUIDEInputFormatter.FormattingContext):
+        return context.input.device_type & GUIDEInput.DeviceType.JOY > 0
+
 
 # Tell the formatter to render all inputs:
-_formatter.formatting_options.only_device_types = \
-    GUIDEInputFormattingOptions.DeviceType.ALL
+_formatter.formatting_options.input_filter = \
+    # this is the default filter,
+    GUIDEInputFormattingOptions.INPUT_FILTER_SHOW_ALL
 ```
 
 You can find an example of how to use this feature in the `input_prompts` example that ships with G.U.I.D.E. This example also has code to detect when the player changes their input device and update the input prompt strings accordingly.

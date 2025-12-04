@@ -145,13 +145,17 @@ func action_as_text(action:GUIDEAction) -> String:
 ## is async as icons may need to be rendered in the background which can take a few frames, so 
 ## you will need to await on it.
 func input_as_richtext_async(input:GUIDEInput, materialize_actions:bool = true) -> String:
-	return await _materialized_as_richtext_async(_materialize_input(input, materialize_actions))
+	return await _materialized_as_richtext_async( 
+		_materialize_input(FormattingContext.for_input(input), materialize_actions) 
+	)
 
 
 ## Formats the input as plain text which can be used in any UI component. This is a bit
 ## more light-weight than formatting as icons and returns immediately.
 func input_as_text(input:GUIDEInput, materialize_actions:bool = true) -> String:
-	return _materialized_as_text(_materialize_input(input, materialize_actions))	
+	return _materialized_as_text(
+		_materialize_input(FormattingContext.for_input(input), materialize_actions)
+	)	
 	
 
 ## Renders materialized input as text.
@@ -265,88 +269,68 @@ func _materialize_action_input(action:GUIDEAction) -> MaterializedInput:
 				chord.parts.append(combo)
 			if combos.is_empty():
 				if input_mapping.input != null:
-					chord.parts.append(_materialize_input(input_mapping.input))					
+					chord.parts.append(
+						_materialize_input(FormattingContext.for_action(input_mapping.input, input_mapping, action))
+					)					
 			result.parts.append(chord)
 		else:
 			for combo in combos:
 				result.parts.append(combo)
 			if combos.is_empty():
 				if input_mapping.input != null:
-					result.parts.append(_materialize_input(input_mapping.input))			
+					result.parts.append(
+						_materialize_input(FormattingContext.for_action(input_mapping.input, input_mapping, action))
+					)
 	return result
 	
 ## Materializes direct input.
-func _materialize_input(input:GUIDEInput, materialize_actions:bool = true) -> MaterializedInput:
-	if input == null:
+func _materialize_input(context:FormattingContext, materialize_actions:bool = true) -> MaterializedInput:
+	if context.input == null:
 		push_warning("Trying to materialize a null input.")
 		return MaterializedMixedInput.new()
 	
 	# if the formatting options exclude this input, return an empty input.
-	if _is_from_ignored_device(input):
+	if not formatting_options.input_filter.call(context):
 		return MaterializedMixedInput.new()
+		
 	
 	# if its an action input, get its parts
-	if input is GUIDEInputAction:
+	if context.input is GUIDEInputAction:
 		if materialize_actions:
-			return _materialize_action_input(input.action)
+			return _materialize_action_input(context.input.action)
 		else:
-			return MaterializedSimpleInput.new(input)
+			return MaterializedSimpleInput.new(context.input)
 	
 	# if its a key input, split out the modifiers
-	if input is GUIDEInputKey:
+	if context.input is GUIDEInputKey:
 		var chord := MaterializedChordedInput.new()
-		if input.control:
+		if context.input.control:
 			var ctrl := GUIDEInputKey.new()
 			ctrl.key = KEY_CTRL
 			chord.parts.append(MaterializedSimpleInput.new(ctrl))
-		if input.alt:
+		if context.input.alt:
 			var alt := GUIDEInputKey.new()
 			alt.key = KEY_ALT
 			chord.parts.append(MaterializedSimpleInput.new(alt))
-		if input.shift:
+		if context.input.shift:
 			var shift := GUIDEInputKey.new()
 			shift.key = KEY_SHIFT
 			chord.parts.append(MaterializedSimpleInput.new(shift))
-		if input.meta:
+		if context.input.meta:
 			var meta := GUIDEInputKey.new()
 			meta.key = KEY_META
 			chord.parts.append(MaterializedSimpleInput.new(meta))
 	
 		# got no modifiers?
 		if chord.parts.is_empty():
-			return MaterializedSimpleInput.new(input)
+			return MaterializedSimpleInput.new(context.input)
 			
-		chord.parts.append(MaterializedSimpleInput.new(input))	
+		chord.parts.append(MaterializedSimpleInput.new(context.input))	
 		return chord
 
 	# everything else is just a simple input
-	return MaterializedSimpleInput.new(input)
+	return MaterializedSimpleInput.new(context.input)
 	
-## Checks if the given input is pertaining to a device type that we 
-## currently ignore when formatting.
-func _is_from_ignored_device(input:GUIDEInput) -> bool:
-	# fast out for the common case
-	if formatting_options.only_device_types == GUIDEInputFormattingOptions.DeviceType.ALL:
-		return false
-		
-	if input is GUIDEInputJoyBase:
-		return formatting_options.only_device_types	& GUIDEInputFormattingOptions.DeviceType.JOY == 0
-
-	if input is GUIDEInputKey:
-		return formatting_options.only_device_types	& GUIDEInputFormattingOptions.DeviceType.KEYBOARD == 0
-
-	if input is GUIDEInputMouseAxis1D \
-		or input is GUIDEInputMouseAxis2D \
-		or input is GUIDEInputMouseButton \
-		or input is GUIDEInputMousePosition:
-		return formatting_options.only_device_types	& GUIDEInputFormattingOptions.DeviceType.MOUSE == 0
-
-	if input is GUIDEInputTouchBase \
-		or input is GUIDEInputTouchAngle \
-		or input is GUIDEInputTouchDistance:
-		return formatting_options.only_device_types	& GUIDEInputFormattingOptions.DeviceType.TOUCH == 0
-		
-	return false
 	
 class MaterializedInput:
 	pass
@@ -370,4 +354,26 @@ class MaterializedComboInput:
 	extends MaterializedInput
 	var parts:Array[MaterializedInput] = []
 
-# ---- Utilities used by renderers / text providers -----
+## A formatting context.
+class FormattingContext:
+	## The input we'd like to format.
+	var input:GUIDEInput
+	## The input mapping from which this input originates.
+	## Can be null, if this is a raw input.
+	var input_mapping:GUIDEInputMapping
+	## The action to which the input mapping is bound.
+	## Can be null, if there is no input mapping. 
+	var action:GUIDEAction
+	
+	static func for_input(input:GUIDEInput) -> FormattingContext:
+		var result = FormattingContext.new()
+		result.input = input
+		return result
+		
+	static func for_action(input:GUIDEInput, input_mapping:GUIDEInputMapping, action:GUIDEAction) -> FormattingContext:
+		var result = FormattingContext.new()
+		result.input = input
+		result.input_mapping = input_mapping
+		result.action = action
+		return result
+		

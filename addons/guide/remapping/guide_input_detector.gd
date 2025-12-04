@@ -5,16 +5,7 @@ class_name GUIDEInputDetector
 extends Node
 
 ## The device type for which the input should be filtered.
-enum DeviceType {
-	## Only detect input from keyboard.
-	KEYBOARD = 1,
-	## Only detect input from the mouse.
-	MOUSE = 2,
-	## Only detect input from joysticks/gamepads.
-	JOY = 4
-	# touch doesn't make a lot of sense as this is usually
-	# not remappable.
-}
+const DeviceType = GUIDEInput.DeviceType
 
 ## Which joy index should be used for detected joy events
 enum JoyIndex {
@@ -122,6 +113,9 @@ func detect(value_type:GUIDEAction.GUIDEActionValueType,
 	if device_types == null:
 		push_error("Device types must not be null. Supply an empty array if you want to detect input from all devices.")
 		return
+		
+	if device_types.has(DeviceType.TOUCH):
+		push_error("Detecting touch events is not supported.")
 	
 
 	# If we are already detecting, abort this.

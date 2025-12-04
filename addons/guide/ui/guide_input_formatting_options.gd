@@ -1,14 +1,5 @@
 class_name GUIDEInputFormattingOptions
 
-## Device types. Can be used to only render output for certain devices.
-enum DeviceType {
-	KEYBOARD = 1,
-	MOUSE = 2,
-	JOY = 4,
-	TOUCH = 8,
-	ALL = 15,
-}
-
 ## Options for rendering joy icons. 
 enum JoyRendering {
 	## Renders by detecting the joy type and uses the appropriate icon set for this joy type.  
@@ -34,16 +25,23 @@ enum JoyType {
 	SONY_CONTROLLER = 3
 }
 
+## An input filter that shows all input. This is the default.
+static var INPUT_FILTER_SHOW_ALL:Callable:
+	# should be a const but Callables cannot be const, so we use a read-only static property.
+	# Note: this is Variant here to avoid circular dependencies between GUIDEInputFormatter
+	# and GUIDEInputFormattingOptions. Godot really doesn't like these.
+	get: return func(_context:Variant) -> bool: return true
 
-## Limits for which devices input is rendered. By default renders input for all device types. You 
-## can combine the device types using bitwise operation.
-##
+## A callable that allows for filtering which parts of an input are included in the
+## formatted output. The callable takes a formatting context:
 ## [codeblock]
-## var options := GUIDEInputFormattingOptions.new()
-## options.only_device_types = \
-##     GUIDEInputFormattingOptions.KEYBOARD | GUIDEInputFormattingOptions.MOUSE
+## options.input_filter = func(context:GUIDEInputFormatter.FormattingContext) -> bool:
+##      # only show keyboard input
+##     return context.input.device_type & GUIDEInput.DeviceType.KEYBOARD > 0
 ## [/codeblock]
-var only_device_types:DeviceType = DeviceType.ALL
+## If the function returns true, then the given input will be shown in the formatted
+## output, otherwise it will be ignored.
+var input_filter:Callable = INPUT_FILTER_SHOW_ALL
 
 ## Determines how joy icons are rendered. 
 var joy_rendering:JoyRendering = JoyRendering.DEFAULT
