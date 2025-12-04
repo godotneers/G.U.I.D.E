@@ -206,6 +206,7 @@ func _process(delta: float) -> void:
 		# print("pre-clear done, detecting now")
 		_status = DetectionState.DETECTING
 		set_process(false)
+		detection_started.emit()
 		return
 	
 	# otherwise, this was post-clear, so we can tear down the whole

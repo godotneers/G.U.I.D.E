@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Fixed
+- `GUIDEInputDetector` now again properly emits the `detection_started` signal ([#142](https://github.com/godotneers/G.U.I.D.E/issues/142)).
+
 ## [0.9.0-beta2] - 2025-11-30
 ### Breaking Changes
 - The input formatting system has received an overhaul to make it more flexible. This has been done in a way that is backwards compatible, as long as the game code only uses `GUIDEInputFormatter` to interface with the formatting system. If you have written a custom icon renderer or text provider, you will need to do a few slight adjustments to your code:
