@@ -297,6 +297,7 @@ func _update_caches() -> void:
 			
 			var effective_mapping := GUIDEActionMapping.new()
 			effective_mapping.action = action
+			_copy_meta(action_mapping, effective_mapping)
 		
 			# the trigger hold threshold is the minimum time that the input must be held
 			# down before the action triggers. This is used to hint the UI about
@@ -306,8 +307,9 @@ func _update_caches() -> void:
 
 			# now update the action and input mappings
 			for index in action_mapping.input_mappings.size():
+				var input_mapping:GUIDEInputMapping = action_mapping.input_mappings[index]
 				# get the input that is assigned to this action mapping
-				var bound_input:GUIDEInput = action_mapping.input_mappings[index].input
+				var bound_input:GUIDEInput = input_mapping.input
 				
 				# if the re-mapping has an override for the input (e.g. the player has changed
 				# the default binding to something else), apply it.
@@ -340,11 +342,18 @@ func _update_caches() -> void:
 
 					new_inputs.add(bound_input)
 					
+				# copy metadata as this may be important for formatting	
 				new_input_mapping.input = bound_input
+				new_input_mapping.display_name = input_mapping.display_name
+				new_input_mapping.display_category = input_mapping.display_category
+				new_input_mapping.override_action_settings = input_mapping.override_action_settings
+				new_input_mapping.is_remappable = input_mapping.is_remappable
+				_copy_meta(input_mapping, new_input_mapping)
+				
 				# modifiers cannot be re-bound so we can just use the one
 				# from the original configuration. this is also needed for shared
 				# modifiers to work.
-				new_input_mapping.modifiers = action_mapping.input_mappings[index].modifiers
+				new_input_mapping.modifiers = input_mapping.modifiers
 				# track the modifiers, so we can later only disable the ones we don't need anymore.
 				for modifier:GUIDEModifier in new_input_mapping.modifiers:
 					# new_modifiers is a set so we can just add the modifier,
@@ -360,7 +369,7 @@ func _update_caches() -> void:
 				# to ensure that no shared triggers exist.
 				new_input_mapping.triggers = []
 				
-				for trigger in action_mapping.input_mappings[index].triggers:
+				for trigger in input_mapping.triggers:
 					new_input_mapping.triggers.append(trigger.duplicate())
 
 				# now initialize the input mapping
@@ -584,3 +593,8 @@ static func _mark_used(object: Object, value:bool) -> void:
 static func _is_used(object: Object) -> bool:
 	return object.has_meta("__guide_in_use")
 	
+
+static func _copy_meta(source:Object, target:Object) -> void:
+	var keys:Array[StringName] = source.get_meta_list()
+	for key:StringName in keys:
+		target.set_meta(key, source.get_meta(key))
