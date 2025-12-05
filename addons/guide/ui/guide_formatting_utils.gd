@@ -1,5 +1,5 @@
+@tool
 ## Helper functions for icon renderers and text providers
-
 
 ## Supported controller types.
 enum ControllerType {
