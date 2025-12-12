@@ -25,6 +25,8 @@ const Utils = preload("../utils.gd")
 @onready var _press_prompt:Control = %PressPrompt
 @onready var _controller_invert_horizontal:CheckBox = %ControllerInvertHorizontal
 @onready var _controller_invert_vertical:CheckBox = %ControllerInvertVertical
+@onready var _deadzone_h_slider:HSlider = %DeadzoneHSlider
+@onready var _deadzone_spin_box:SpinBox = %DeadzoneSpinBox
 @onready var _tab_container:TabContainer = %TabContainer
 
 ## The input detector for detecting new input
@@ -81,6 +83,9 @@ func open() -> void:
 	_controller_invert_horizontal.button_pressed = _remapper.get_custom_data("invert_horizontal", false)
 	_controller_invert_vertical.button_pressed = _remapper.get_custom_data("invert_vertical", false)
 	
+	var deadzone:float = _remapper.get_custom_data(Utils.CUSTOM_DATA_MOVEMENT_DEADZONE, 0.2)
+	_deadzone_h_slider.value = deadzone
+	_deadzone_spin_box.value = deadzone
 	
 	visible = true
 	
@@ -168,6 +173,14 @@ func _on_controller_invert_horizontal_toggled(toggled_on:bool) -> void:
 
 func _on_controller_invert_vertical_toggled(toggled_on:bool) -> void:
 	_remapper.set_custom_data(Utils.CUSTOM_DATA_INVERT_VERTICAL, toggled_on)
+
+func _on_deadzone_h_slider_value_changed(value:float) -> void:
+	_remapper.set_custom_data(Utils.CUSTOM_DATA_MOVEMENT_DEADZONE, value)
+	_deadzone_spin_box.value = value
+
+func _on_deadzone_spin_box_value_changed(value:float) -> void:
+	_remapper.set_custom_data(Utils.CUSTOM_DATA_MOVEMENT_DEADZONE, value)
+	_deadzone_h_slider.value = value
 
 
 func _on_return_to_game_pressed() -> void:

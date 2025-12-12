@@ -1,8 +1,8 @@
-[gd_resource type="Resource" script_class="GUIDEMappingContext" load_steps=31 format=3 uid="uid://bexjevffjsh3i"]
+[gd_resource type="Resource" script_class="GUIDEMappingContext" load_steps=30 format=3 uid="uid://bexjevffjsh3i"]
 
 [ext_resource type="Resource" uid="uid://chhw5umkd1j2p" path="res://guide_examples/remapping/mapping_contexts/shared_actions/player_movement_2d.tres" id="1_78yyx"]
 [ext_resource type="Script" path="res://addons/guide/guide_mapping_context.gd" id="1_l4253"]
-[ext_resource type="Script" path="res://addons/guide/modifiers/guide_modifier_deadzone.gd" id="3_rbwxh"]
+[ext_resource type="Resource" uid="uid://bv2xv48haqh2b" path="res://guide_examples/remapping/mapping_contexts/controller_actions/player_movement_stick_deadzone.tres" id="3_xdxov"]
 [ext_resource type="Script" path="res://addons/guide/guide_input_mapping.gd" id="4_m37gr"]
 [ext_resource type="Resource" uid="uid://qikyr1rgxw2l" path="res://guide_examples/remapping/mapping_contexts/controller_actions/player_movement_stick_invert.tres" id="4_qbgwt"]
 [ext_resource type="Script" path="res://addons/guide/guide_action_mapping.gd" id="5_167oa"]
@@ -21,11 +21,6 @@ x = 0
 y = 1
 joy_index = -1
 
-[sub_resource type="Resource" id="Resource_towa1"]
-script = ExtResource("3_rbwxh")
-lower_threshold = 0.2
-upper_threshold = 1.0
-
 [sub_resource type="Resource" id="Resource_gpn8l"]
 script = ExtResource("4_m37gr")
 override_action_settings = false
@@ -33,7 +28,7 @@ is_remappable = false
 display_name = ""
 display_category = ""
 input = SubResource("Resource_nr3w6")
-modifiers = Array[Resource("res://addons/guide/modifiers/guide_modifier.gd")]([SubResource("Resource_towa1"), ExtResource("4_qbgwt")])
+modifiers = Array[Resource("res://addons/guide/modifiers/guide_modifier.gd")]([ExtResource("3_xdxov"), ExtResource("4_qbgwt")])
 triggers = Array[Resource("res://addons/guide/triggers/guide_trigger.gd")]([])
 
 [sub_resource type="Resource" id="Resource_6h1my"]

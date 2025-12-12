@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://gjweqc0stfqh"]
+[gd_scene load_steps=18 format=3 uid="uid://gjweqc0stfqh"]
 
 [ext_resource type="Script" path="res://guide_examples/remapping/remapping.gd" id="1_3d1tp"]
 [ext_resource type="Texture2D" uid="uid://byjxtsekdl8t2" path="res://guide_examples/shared/godot_logo.svg" id="1_gkmxq"]
@@ -8,6 +8,7 @@
 [ext_resource type="Resource" uid="uid://bexjevffjsh3i" path="res://guide_examples/remapping/mapping_contexts/controller.tres" id="3_apwxt"]
 [ext_resource type="Resource" uid="uid://c65tsmp268vdq" path="res://guide_examples/remapping/mapping_contexts/shared_actions/open_menu.tres" id="3_g1dlj"]
 [ext_resource type="Resource" uid="uid://chhw5umkd1j2p" path="res://guide_examples/remapping/mapping_contexts/shared_actions/player_movement_2d.tres" id="4_07jn1"]
+[ext_resource type="Resource" uid="uid://bv2xv48haqh2b" path="res://guide_examples/remapping/mapping_contexts/controller_actions/player_movement_stick_deadzone.tres" id="5_0d7qx"]
 [ext_resource type="Resource" uid="uid://ce3ytxn2tcxxe" path="res://guide_examples/remapping/mapping_contexts/controller_actions/switch_to_keyboard.tres" id="5_aqwgr"]
 [ext_resource type="PackedScene" uid="uid://dkr80d2pi0d41" path="res://addons/guide/debugger/guide_debugger.tscn" id="5_kdgir"]
 [ext_resource type="Resource" uid="uid://b1iaet1m2gi2e" path="res://guide_examples/remapping/mapping_contexts/shared_actions/fire.tres" id="6_esnhm"]
@@ -22,6 +23,7 @@ script = ExtResource("1_3d1tp")
 keyboard = ExtResource("2_issuo")
 controller = ExtResource("3_apwxt")
 controller_axis_invert_modifier = ExtResource("2_3dav4")
+controller_axis_deadzone = ExtResource("5_0d7qx")
 switch_to_keyboard = ExtResource("5_aqwgr")
 switch_to_controller = ExtResource("6_jncg0")
 open_menu = ExtResource("3_g1dlj")
