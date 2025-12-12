@@ -13,7 +13,19 @@ func _ready() -> void:
 
 
 func _process(delta:float) -> void:
-	position += move_action.value_axis_2d.normalized() * speed * delta
+	var vector: Vector2 = move_action.value_axis_2d
+	
+	# Circular length limiting
+	var length: float = vector.length();
+	var modified_vector: Vector2 = Vector2.ZERO
+	if length <= 0:
+		modified_vector = Vector2.ZERO
+	elif length > 1.0:
+		modified_vector = vector / length;
+	else:
+		modified_vector = vector * (inverse_lerp(0.0, 1.0, length) / length)
+	
+	position += modified_vector * speed * delta
 
 
 func _shoot_fireball() -> void:
