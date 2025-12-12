@@ -150,6 +150,28 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Invert vertical movement"
 
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/TabContainer/Controller/MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="DeadzoneLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/TabContainer/Controller/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Deadzone"
+
+[node name="DeadzoneHSlider" type="HSlider" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/TabContainer/Controller/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_vertical = 4
+max_value = 0.99
+step = 0.01
+
+[node name="DeadzoneSpinBox" type="SpinBox" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/TabContainer/Controller/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 2
+max_value = 0.99
+step = 0.01
+
 [node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
 mouse_filter = 2
@@ -221,4 +243,6 @@ text = "Press new input..."
 
 [connection signal="toggled" from="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/TabContainer/Controller/MarginContainer/ScrollContainer/VBoxContainer/ControllerInvertHorizontal" to="." method="_on_controller_invert_horizontal_toggled"]
 [connection signal="toggled" from="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/TabContainer/Controller/MarginContainer/ScrollContainer/VBoxContainer/ControllerInvertVertical" to="." method="_on_controller_invert_vertical_toggled"]
+[connection signal="value_changed" from="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/TabContainer/Controller/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/DeadzoneHSlider" to="." method="_on_deadzone_h_slider_value_changed"]
+[connection signal="value_changed" from="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/TabContainer/Controller/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/DeadzoneSpinBox" to="." method="_on_deadzone_spin_box_value_changed"]
 [connection signal="pressed" from="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/ReturnToGame" to="." method="_on_return_to_game_pressed"]
