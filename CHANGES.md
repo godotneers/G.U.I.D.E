@@ -4,9 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.9.0-beta3]
 ### Fixed
 - `GUIDEInputDetector` now again properly emits the `detection_started` signal ([#142](https://github.com/godotneers/G.U.I.D.E/issues/142)).
+- Inputs are now properly formatted in exported games again ([#149](https://github.com/godotneers/G.U.I.D.E/issues/149))
 
 ## [0.9.0-beta2] - 2025-11-30
 ### Breaking Changes
