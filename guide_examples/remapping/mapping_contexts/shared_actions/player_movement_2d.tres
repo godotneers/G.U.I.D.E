@@ -9,5 +9,5 @@ action_value_type = 2
 block_lower_priority_actions = true
 emit_as_godot_actions = false
 is_remappable = true
-display_name = ""
+display_name = "Move"
 display_category = "Player Actions"
