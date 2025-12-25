@@ -1,0 +1,125 @@
+[gd_scene format=3 uid="uid://bfl6dbw21xqs1"]
+
+[ext_resource type="Script" uid="uid://cn6ivu7fg31s8" path="res://addons/GuideCS/UI/Renderers/Mouse/GUIDEMouseRenderer.cs" id="1_3qgt2"]
+[ext_resource type="Texture2D" uid="uid://b3uxk5agbpmab" path="res://addons/GuideCS/UI/Renderers/Mouse/Styles/Mouse_Simple_Key_Light.png" id="2_t8pey"]
+[ext_resource type="Texture2D" uid="uid://vvgpheda22ew" path="res://addons/GuideCS/UI/Renderers/Mouse/Styles/Mouse_Left_Key_Light.png" id="3_x0waw"]
+[ext_resource type="Texture2D" uid="uid://b8bsyguf4qw6f" path="res://addons/GuideCS/UI/Renderers/Mouse/Styles/Mouse_Right_Key_Light.png" id="4_dtdsa"]
+[ext_resource type="Texture2D" uid="uid://bmj244x0jn7v2" path="res://addons/GuideCS/UI/Renderers/Mouse/Styles/Mouse_Middle_Key_Light.png" id="5_kw2v6"]
+[ext_resource type="Texture2D" uid="uid://je8rm7jk2nxd" path="res://addons/GuideCS/UI/Renderers/Mouse/Styles/Mouse_Side_Key_1_Light.png" id="6_mbavq"]
+[ext_resource type="Texture2D" uid="uid://bqxly0g8pftxa" path="res://addons/GuideCS/UI/Renderers/Mouse/Styles/Mouse_Side_Key_2_Light.png" id="7_eseen"]
+[ext_resource type="Texture2D" uid="uid://ci7icm3q4l1sg" path="res://addons/GuideCS/UI/Renderers/Mouse/Styles/Mouse_Cursor.png" id="8_gauyw"]
+[ext_resource type="Texture2D" uid="uid://d0qnemurcerao" path="res://addons/GuideCS/UI/Renderers/Textures/ArrowLeft.svg" id="9_xglas"]
+[ext_resource type="Texture2D" uid="uid://dxig4g0kjqgwy" path="res://addons/GuideCS/UI/Renderers/Textures/ArrowRight.svg" id="10_8jstk"]
+[ext_resource type="Texture2D" uid="uid://bf50a00jyp11c" path="res://addons/GuideCS/UI/Renderers/Textures/ArrowUp.svg" id="11_edlod"]
+[ext_resource type="Texture2D" uid="uid://bq2dsvy6iuuwb" path="res://addons/GuideCS/UI/Renderers/Textures/ArrowDown.svg" id="12_f7esb"]
+[ext_resource type="Texture2D" uid="uid://cq8r5uqyithp0" path="res://addons/GuideCS/UI/Renderers/Textures/ArrowHorizontal.svg" id="13_8atfk"]
+[ext_resource type="Texture2D" uid="uid://cvv0btxvk4u5a" path="res://addons/GuideCS/UI/Renderers/Textures/ArrowVertical.svg" id="14_5j0sm"]
+
+[node name="MouseRenderer" type="MarginContainer" unique_id=152468134]
+process_mode = 3
+offset_right = 100.0
+offset_bottom = 100.0
+size_flags_horizontal = 0
+script = ExtResource("1_3qgt2")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=6736497]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Controls" type="MarginContainer" parent="HBoxContainer" unique_id=1661365249]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+
+[node name="MouseBlank" type="TextureRect" parent="HBoxContainer/Controls" unique_id=1869030987]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+texture = ExtResource("2_t8pey")
+stretch_mode = 4
+
+[node name="MouseLeft" type="TextureRect" parent="HBoxContainer/Controls" unique_id=2123023515]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+texture = ExtResource("3_x0waw")
+stretch_mode = 4
+
+[node name="MouseRight" type="TextureRect" parent="HBoxContainer/Controls" unique_id=1006291517]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+texture = ExtResource("4_dtdsa")
+stretch_mode = 4
+
+[node name="MouseMiddle" type="TextureRect" parent="HBoxContainer/Controls" unique_id=698290379]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+texture = ExtResource("5_kw2v6")
+stretch_mode = 4
+
+[node name="MouseSideA" type="TextureRect" parent="HBoxContainer/Controls" unique_id=895953082]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+texture = ExtResource("6_mbavq")
+stretch_mode = 4
+
+[node name="MouseSideB" type="TextureRect" parent="HBoxContainer/Controls" unique_id=348789326]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+texture = ExtResource("7_eseen")
+stretch_mode = 4
+
+[node name="MouseCursor" type="TextureRect" parent="HBoxContainer/Controls" unique_id=1253991129]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+texture = ExtResource("8_gauyw")
+stretch_mode = 4
+
+[node name="Directions" type="MarginContainer" parent="HBoxContainer" unique_id=1511925441]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+
+[node name="Left" type="TextureRect" parent="HBoxContainer/Directions" unique_id=562885431]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+texture = ExtResource("9_xglas")
+stretch_mode = 4
+
+[node name="Right" type="TextureRect" parent="HBoxContainer/Directions" unique_id=699895483]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+texture = ExtResource("10_8jstk")
+stretch_mode = 4
+
+[node name="Up" type="TextureRect" parent="HBoxContainer/Directions" unique_id=2030797943]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("11_edlod")
+stretch_mode = 4
+
+[node name="Down" type="TextureRect" parent="HBoxContainer/Directions" unique_id=848095204]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("12_f7esb")
+stretch_mode = 4
+
+[node name="Horizontal" type="TextureRect" parent="HBoxContainer/Directions" unique_id=423911861]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("13_8atfk")
+stretch_mode = 4
+
+[node name="Vertical" type="TextureRect" parent="HBoxContainer/Directions" unique_id=2139166293]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("14_5j0sm")
+stretch_mode = 4

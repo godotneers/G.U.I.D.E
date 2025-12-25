@@ -1,0 +1,93 @@
+[gd_scene format=3 uid="uid://dmiovorlkiho"]
+
+[ext_resource type="Script" uid="uid://q5esh5uqshew" path="res://addons/GuideCS/UI/Renderers/Touch/GUIDETouchRenderer.cs" id="1_grg5w"]
+[ext_resource type="Texture2D" uid="uid://c5nwnp5cjny7m" path="res://addons/GuideCS/UI/Renderers/Touch/Styles/touch_1_finger.png" id="2_b6hdr"]
+[ext_resource type="Texture2D" uid="uid://bllhe78a1yo6" path="res://addons/GuideCS/UI/Renderers/Touch/Styles/touch_2_fingers.png" id="3_hk3mb"]
+[ext_resource type="Texture2D" uid="uid://bwhqf2nmm5q1w" path="res://addons/GuideCS/UI/Renderers/Touch/Styles/touch_3_fingers.png" id="4_swfqu"]
+[ext_resource type="Texture2D" uid="uid://cjw5m42gufghr" path="res://addons/GuideCS/UI/Renderers/Touch/Styles/touch_4_fingers.png" id="5_b7wc6"]
+[ext_resource type="Texture2D" uid="uid://bxj4t5vjx7o3w" path="res://addons/GuideCS/UI/Renderers/Touch/Styles/touch_rotate.png" id="6_m5fhs"]
+[ext_resource type="Texture2D" uid="uid://cutplj0nhphk" path="res://addons/GuideCS/UI/Renderers/Touch/Styles/touch_zoom.png" id="7_q2tlp"]
+[ext_resource type="Texture2D" uid="uid://cq8r5uqyithp0" path="res://addons/GuideCS/UI/Renderers/Textures/ArrowHorizontal.svg" id="8_v744w"]
+[ext_resource type="Texture2D" uid="uid://cvv0btxvk4u5a" path="res://addons/GuideCS/UI/Renderers/Textures/ArrowVertical.svg" id="9_yug52"]
+[ext_resource type="Texture2D" uid="uid://dqryvuuljcyuu" path="res://addons/GuideCS/UI/Renderers/Textures/ArrowAllDirections.svg" id="10_w0ld1"]
+
+[node name="TouchRenderer" type="MarginContainer" unique_id=1605745377]
+offset_right = 100.0
+offset_bottom = 100.0
+size_flags_horizontal = 0
+script = ExtResource("1_grg5w")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1982569878]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Controls" type="MarginContainer" parent="HBoxContainer" unique_id=1815875703]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+
+[node name="T1Finger" type="TextureRect" parent="HBoxContainer/Controls" unique_id=754430281]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+texture = ExtResource("2_b6hdr")
+stretch_mode = 4
+
+[node name="T2Fingers" type="TextureRect" parent="HBoxContainer/Controls" unique_id=2132054960]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+texture = ExtResource("3_hk3mb")
+stretch_mode = 4
+
+[node name="T3Fingers" type="TextureRect" parent="HBoxContainer/Controls" unique_id=500302711]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+texture = ExtResource("4_swfqu")
+stretch_mode = 4
+
+[node name="T4Fingers" type="TextureRect" parent="HBoxContainer/Controls" unique_id=2039995415]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+texture = ExtResource("5_b7wc6")
+stretch_mode = 4
+
+[node name="Rotate" type="TextureRect" parent="HBoxContainer/Controls" unique_id=1464024839]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+texture = ExtResource("6_m5fhs")
+stretch_mode = 4
+
+[node name="Zoom" type="TextureRect" parent="HBoxContainer/Controls" unique_id=1592762190]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+texture = ExtResource("7_q2tlp")
+stretch_mode = 4
+
+[node name="Directions" type="MarginContainer" parent="HBoxContainer" unique_id=879548236]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+
+[node name="Horizontal" type="TextureRect" parent="HBoxContainer/Directions" unique_id=2109047124]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("8_v744w")
+stretch_mode = 4
+
+[node name="Vertical" type="TextureRect" parent="HBoxContainer/Directions" unique_id=537932352]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("9_yug52")
+stretch_mode = 4
+
+[node name="Axis2D" type="TextureRect" parent="HBoxContainer/Directions" unique_id=528040841]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("10_w0ld1")
+stretch_mode = 4

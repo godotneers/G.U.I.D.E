@@ -5,6 +5,7 @@ This lists the currently open to do items in no particular order.
 ## Open
 - [ ] The stick renderer throws errors about a signal being connected twice. Fix that.
 - [ ] Add a C# API.
+- [ ] Make C# API use strong typing where possible rather than using variant.
  
 ## Done
 - [x] Virtual stick device change mid-game support.
