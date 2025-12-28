@@ -5,6 +5,7 @@
 #include <godot_cpp/classes/timer.hpp>
 #include <godot_cpp/classes/input_event.hpp>
 #include "inputs/guide_input.h"
+#include "guide_mapping_context.h"
 #include "guide_action.h"
 
 using namespace godot;
@@ -14,16 +15,16 @@ class GUIDEInputDetector : public Node {
 
 public:
     enum JoyIndex {
-        JOY_ANY = 0,
-        JOY_DETECTED = 1
+        ANY = 0,
+        DETECTED = 1
     };
 
     enum DetectionState {
-        STATUS_IDLE = 0,
-        STATUS_COUNTDOWN = 3,
-        STATUS_INPUT_PRE_CLEAR = 4,
-        STATUS_DETECTING = 1,
-        STATUS_INPUT_POST_CLEAR = 2
+        IDLE = 0,
+        COUNTDOWN = 3,
+        INPUT_PRE_CLEAR = 4,
+        DETECTING = 1,
+        INPUT_POST_CLEAR = 2
     };
 
     GUIDEInputDetector();
@@ -33,7 +34,11 @@ public:
     void _process(double delta) override;
     void _input(const Ref<InputEvent> &event) override;
 
-    void detect(int value_type, const TypedArray<int> &device_types = TypedArray<int>());
+    void detect_bool(const TypedArray<int> &device_types = TypedArray<int>());
+    void detect_axis_1d(const TypedArray<int> &device_types = TypedArray<int>());
+    void detect_axis_2d(const TypedArray<int> &device_types = TypedArray<int>());
+    void detect_axis_3d(const TypedArray<int> &device_types = TypedArray<int>());
+    void detect(GUIDEAction::GUIDEActionValueType value_type, const TypedArray<int> &device_types = TypedArray<int>());
     void abort_detection();
 
     // Getters and Setters
@@ -52,7 +57,7 @@ public:
     bool get_allow_triggers_for_boolean_actions() const { return allow_triggers_for_boolean_actions; }
     void set_allow_triggers_for_boolean_actions(bool p_val) { allow_triggers_for_boolean_actions = p_val; }
 
-    bool is_detecting() const { return _status != STATUS_IDLE; }
+    bool is_detecting() const { return _status != IDLE; }
 
 protected:
     static void _bind_methods();
@@ -61,11 +66,11 @@ private:
     double detection_countdown_seconds = 0.5;
     double minimum_axis_amplitude = 0.2;
     TypedArray<GUIDEInput> abort_detection_on;
-    JoyIndex use_joy_index = JOY_ANY;
+    JoyIndex use_joy_index = ANY;
     bool allow_triggers_for_boolean_actions = true;
 
     Timer *_timer = nullptr;
-    DetectionState _status = STATUS_IDLE;
+    DetectionState _status = IDLE;
     TypedArray<GUIDEMappingContext> _saved_mapping_contexts;
     Ref<GUIDEInput> _last_detected_input;
 
@@ -80,6 +85,7 @@ private:
     void _try_detect_bool(const Ref<InputEvent> &event);
     void _try_detect_axis_1d(const Ref<InputEvent> &event);
     void _try_detect_axis_2d(const Ref<InputEvent> &event);
+    void _try_detect_axis_3d(const Ref<InputEvent> &event);
 };
 
 VARIANT_ENUM_CAST(GUIDEInputDetector::JoyIndex);

@@ -17,6 +17,9 @@ public:
     GUIDERemappingConfig();
     virtual ~GUIDERemappingConfig();
 
+    Dictionary custom_data;
+    Dictionary remapped_inputs;
+
     void _bind(const Ref<GUIDEMappingContext> &mapping_context, const Ref<GUIDEAction> &action, const Ref<GUIDEInput> &input, int index = 0);
     void _unbind(const Ref<GUIDEMappingContext> &mapping_context, const Ref<GUIDEAction> &action, int index = 0);
     void _clear(const Ref<GUIDEMappingContext> &mapping_context, const Ref<GUIDEAction> &action, int index = 0);
@@ -32,8 +35,6 @@ public:
 protected:
     static void _bind_methods();
 
-    Dictionary remapped_inputs;
-    Dictionary custom_data;
 };
 
 #endif // GUIDE_REMAPPING_CONFIG_H
