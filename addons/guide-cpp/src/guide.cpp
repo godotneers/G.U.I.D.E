@@ -1,4 +1,5 @@
 #include "guide.h"
+#include "guide_set.h"
 #include "guide_input_tracker.h"
 #include <godot_cpp/classes/engine.hpp>
 #include <godot_cpp/classes/input.hpp>
@@ -26,7 +27,10 @@ void GUIDE::_bind_methods() {
     ClassDB::bind_method(D_METHOD("disable_mapping_context", "context"), &GUIDE::disable_mapping_context);
     ClassDB::bind_method(D_METHOD("is_mapping_context_enabled", "context"), &GUIDE::is_mapping_context_enabled);
     ClassDB::bind_method(D_METHOD("get_enabled_mapping_contexts"), &GUIDE::get_enabled_mapping_contexts);
-    ClassDB::bind_method(D_METHOD("_deferred_instrument_setup"), &GUIDE::_deferred_instrument_setup);
+    
+    ClassDB::bind_method(D_METHOD("get_active_action_mappings"), &GUIDE::get_active_action_mappings);
+    ClassDB::bind_method(D_METHOD("get_active_inputs"), &GUIDE::get_active_inputs);
+    ClassDB::bind_method(D_METHOD("get_actions_sharing_input"), &GUIDE::get_actions_sharing_input);
 
     ADD_SIGNAL(MethodInfo("input_mappings_changed"));
 }
@@ -35,16 +39,14 @@ GUIDE::GUIDE() {
     if (singleton == nullptr) {
         singleton = this;
     }
+    _active_inputs.instantiate();
+    _active_modifiers.instantiate();
 }
 
 GUIDE::~GUIDE() {
     if (singleton == this) {
         singleton = nullptr;
     }
-}
-
-void GUIDE::_deferred_instrument_setup() {
-    GUIDEInputTracker::_instrument(get_viewport());
 }
 
 void GUIDE::_ready() {
@@ -54,9 +56,8 @@ void GUIDE::_ready() {
     _input_state->_reset();
     add_child(_reset_node);
 
-    // Instrument viewport - this would normally happen via GUIDEInputTracker
-    // For now we'll do it manually or port the tracker later.
-    Callable(this, "_deferred_instrument_setup").call_deferred();
+    // attach to the current viewport to get input events
+    GUIDEInputTracker::_instrument(get_viewport());
     
     get_tree()->connect("node_added", Callable(this, "_on_node_added"));
     Input::get_singleton()->connect("joy_connection_changed", Callable(this, "_update_caches_on_joy"));
@@ -70,7 +71,6 @@ void GUIDE::_on_node_added(Node *node) {
 }
 
 void GUIDE::inject_input(const Ref<InputEvent> &event) {
-    // Ported from guide.gd
     if (event->is_class("InputEventAction")) {
         return;
     }
@@ -119,7 +119,7 @@ TypedArray<GUIDEMappingContext> GUIDE::get_enabled_mapping_contexts() const {
 }
 
 void GUIDE::_physics_process(double delta) {
-    Array modifiers = _active_modifiers.values();
+    Array modifiers = _active_modifiers->values();
     for (int i = 0; i < modifiers.size(); i++) {
         Ref<GUIDEModifier> modifier = modifiers[i];
         if (modifier.is_valid()) {
@@ -129,7 +129,8 @@ void GUIDE::_physics_process(double delta) {
 }
 
 void GUIDE::_process(double delta) {
-    Dictionary blocked_actions;
+    Ref<GUIDESet> blocked_actions;
+    blocked_actions.instantiate();
 
     for (int i = 0; i < _active_action_mappings.size(); i++) {
         Ref<GUIDEActionMapping> action_mapping = _active_action_mappings[i];
@@ -146,14 +147,14 @@ void GUIDE::_process(double delta) {
             consolidated_trigger_state = Math::max(consolidated_trigger_state, (int)input_mapping->get_state());
         }
 
-        if (blocked_actions.has(action)) {
+        if (blocked_actions->has(action)) {
             consolidated_trigger_state = GUIDETrigger::NONE;
         }
 
         if (action->get_block_lower_priority_actions() && consolidated_trigger_state == GUIDETrigger::TRIGGERED && _actions_sharing_input.has(action)) {
             Array sharing = _actions_sharing_input[action];
             for (int j = 0; j < sharing.size(); j++) {
-                blocked_actions[sharing[j]] = true;
+                blocked_actions->add(sharing[j]);
             }
         }
 
@@ -186,7 +187,10 @@ struct ContextPriority {
 };
 
 void GUIDE::_update_caches() {
-    if (_locked) return;
+    if (_locked) {
+        UtilityFunctions::push_error("Mapping context changed again while processing a change. Ignoring to avoid endless loop.");
+        return;
+    }
     _locked = true;
 
     Array context_keys = _active_contexts.keys();
@@ -197,26 +201,29 @@ void GUIDE::_update_caches() {
     }
     std::sort(sorted_contexts.begin(), sorted_contexts.end());
 
-    Dictionary processed_actions;
-    Dictionary new_inputs;
+    Ref<GUIDESet> processed_actions; processed_actions.instantiate();
+    Ref<GUIDESet> new_inputs; new_inputs.instantiate();
     TypedArray<GUIDEActionMapping> new_action_mappings;
-    Dictionary new_modifiers;
+    Ref<GUIDESet> new_modifiers; new_modifiers.instantiate();
 
-    // Step 0: Ensure we don't recreate existing inputs/modifiers
+    // Step 0: walk over the new contexts and save over all inputs and modifiers that we
+    // are going to keep.
     for (const auto &cp : sorted_contexts) {
         TypedArray<GUIDEActionMapping> mappings = cp.context->get_mappings();
         for (int i = 0; i < mappings.size(); i++) {
-            Ref<GUIDEActionMapping> mapping = mappings[i];
+            Ref<GUIDEActionMapping> action_mapping = mappings[i];
             for (int j = 0; j < _active_action_mappings.size(); j++) {
-                Ref<GUIDEActionMapping> existing = _active_action_mappings[j];
-                if (_is_same_action_mapping(existing, mapping)) {
-                    TypedArray<GUIDEInputMapping> input_mappings = existing->get_input_mappings();
+                Ref<GUIDEActionMapping> existing_mapping = _active_action_mappings[j];
+                if (_is_same_action_mapping(existing_mapping, action_mapping)) {
+                    TypedArray<GUIDEInputMapping> input_mappings = existing_mapping->get_input_mappings();
                     for (int k = 0; k < input_mappings.size(); k++) {
-                        Ref<GUIDEInputMapping> im = input_mappings[k];
-                        if (im->get_input().is_valid()) new_inputs[im->get_input()] = im->get_input();
-                        TypedArray<GUIDEModifier> mods = im->get_modifiers();
+                        Ref<GUIDEInputMapping> input_mapping = input_mappings[k];
+                        if (input_mapping->get_input().is_valid()) {
+                            new_inputs->add(input_mapping->get_input());
+                        }
+                        TypedArray<GUIDEModifier> mods = input_mapping->get_modifiers();
                         for (int l = 0; l < mods.size(); l++) {
-                            new_modifiers[mods[l]] = mods[l];
+                            new_modifiers->add(mods[l]);
                         }
                     }
                 }
@@ -224,15 +231,22 @@ void GUIDE::_update_caches() {
         }
     }
 
-    // Step 1: Collect action mappings
+    // Step 1: Collect all action mappings from the currently enabled contexts.
     for (const auto &cp : sorted_contexts) {
+        int position = 0;
         TypedArray<GUIDEActionMapping> mappings = cp.context->get_mappings();
         for (int i = 0; i < mappings.size(); i++) {
+            position++;
             Ref<GUIDEActionMapping> action_mapping = mappings[i];
             Ref<GUIDEAction> action = action_mapping->get_action();
-            if (action.is_null()) continue;
-            if (processed_actions.has(action)) continue;
-            processed_actions[action] = action;
+            
+            if (action.is_null()) {
+                UtilityFunctions::push_warning("Mapping at position " + String::num(position) + " in context " + cp.context->get_path() + " has no action set. This mapping will be ignored.");
+                continue;
+            }
+            
+            if (processed_actions->has(action)) continue;
+            processed_actions->add(action);
 
             bool found_existing = false;
             for (int j = 0; j < _active_action_mappings.size(); j++) {
@@ -247,6 +261,7 @@ void GUIDE::_update_caches() {
             Ref<GUIDEActionMapping> effective_mapping;
             effective_mapping.instantiate();
             effective_mapping->set_action(action);
+            _copy_meta(action_mapping, effective_mapping);
 
             double trigger_hold_threshold = -1.0;
             TypedArray<GUIDEInputMapping> input_mappings = action_mapping->get_input_mappings();
@@ -256,7 +271,9 @@ void GUIDE::_update_caches() {
                 Ref<GUIDEInputMapping> im = input_mappings[j];
                 Ref<GUIDEInput> bound_input = im->get_input();
 
-                if (_active_remapping_config.is_valid() && _active_remapping_config->_has(cp.context, action, j)) {
+                if (_active_remapping_config.is_valid() 
+                    && _active_remapping_config->_has(cp.context, action, j)
+                ) {
                     bound_input = _active_remapping_config->_get_bound_input_or_null(cp.context, action, j);
                 }
 
@@ -264,35 +281,28 @@ void GUIDE::_update_caches() {
                 new_im.instantiate();
 
                 if (bound_input.is_valid()) {
-                    // Try to find existing input
                     Ref<GUIDEInput> existing;
-                    Array active_in_keys = _active_inputs.keys();
-                    for (int k = 0; k < active_in_keys.size(); k++) {
-                        Ref<GUIDEInput> iter = active_in_keys[k];
-                        if (iter->is_same_as(bound_input)) {
-                            existing = iter;
-                            break;
-                        }
+                    Array active_vals = _active_inputs->values();
+                    for (int k = 0; k < active_vals.size(); k++) {
+                        Ref<GUIDEInput> in = active_vals[k];
+                        if (in->is_same_as(bound_input)) { existing = in; break; }
                     }
                     if (existing.is_null()) {
-                        Array new_in_keys = new_inputs.keys();
-                        for (int k = 0; k < new_in_keys.size(); k++) {
-                            Ref<GUIDEInput> iter = new_in_keys[k];
-                            if (iter->is_same_as(bound_input)) {
-                                existing = iter;
-                                break;
-                            }
+                        Array new_vals = new_inputs->values();
+                        for (int k = 0; k < new_vals.size(); k++) {
+                            Ref<GUIDEInput> in = new_vals[k];
+                            if (in->is_same_as(bound_input)) { existing = in; break; }
                         }
                     }
 
                     if (existing.is_valid()) bound_input = existing;
 
-                    if (!bound_input->has_meta("__guide_in_use")) {
+                    if (!_is_used(bound_input)) {
                         bound_input->set_state(_input_state);
                         bound_input->_begin_usage();
-                        bound_input->set_meta("__guide_in_use", true);
+                        _mark_used(bound_input, true);
                     }
-                    new_inputs[bound_input] = bound_input;
+                    new_inputs->add(bound_input);
                 }
 
                 new_im->set_input(bound_input);
@@ -300,15 +310,16 @@ void GUIDE::_update_caches() {
                 new_im->set_display_category(im->get_display_category());
                 new_im->set_override_action_settings(im->get_override_action_settings());
                 new_im->set_is_remappable(im->get_is_remappable());
+                _copy_meta(im, new_im);
 
                 new_im->set_modifiers(im->get_modifiers());
                 TypedArray<GUIDEModifier> mods = new_im->get_modifiers();
                 for (int k = 0; k < mods.size(); k++) {
                     Ref<GUIDEModifier> mod = mods[k];
-                    new_modifiers[mod] = mod;
-                    if (!mod->has_meta("__guide_in_use")) {
+                    new_modifiers->add(mod);
+                    if (!_is_used(mod)) {
                         mod->_begin_usage();
-                        mod->set_meta("__guide_in_use", true);
+                        _mark_used(mod, true);
                     }
                 }
 
@@ -322,9 +333,10 @@ void GUIDE::_update_caches() {
 
                 new_im->_initialize(action->get_action_value_type());
                 double mapping_hold = new_im->get_trigger_hold_threshold();
-                if (trigger_hold_threshold < 0 || (mapping_hold >= 0 && mapping_hold < trigger_hold_threshold)) {
-                    trigger_hold_threshold = mapping_hold;
-                }
+                if (trigger_hold_threshold < 0 || 
+                    (mapping_hold >= 0 && mapping_hold < trigger_hold_threshold)
+                ) { trigger_hold_threshold = mapping_hold; }
+
                 effective_input_mappings.append(new_im);
             }
             effective_mapping->set_input_mappings(effective_input_mappings);
@@ -337,27 +349,27 @@ void GUIDE::_update_caches() {
     }
 
     // Cleanup
-    Array old_inputs = _active_inputs.values();
+    Array old_inputs = _active_inputs->values();
     for (int i = 0; i < old_inputs.size(); i++) {
         Ref<GUIDEInput> input = old_inputs[i];
-        if (!new_inputs.has(input)) {
+        if (!new_inputs->has(input)) {
             input->_reset();
             input->_end_usage();
             input->set_state(nullptr);
-            input->remove_meta("__guide_in_use");
+            _mark_used(input, false);
         }
     }
     _active_inputs = new_inputs;
 
-    _active_modifiers.clear();
-    Array mod_vals = new_modifiers.values();
+    _active_modifiers->clear();
+    Array mod_vals = new_modifiers->values();
     for (int i = 0; i < mod_vals.size(); i++) {
         Ref<GUIDEModifier> mod = mod_vals[i];
         if (mod->_needs_physics_process()) {
-            _active_modifiers[mod] = mod;
+            _active_modifiers->add(mod);
         }
     }
-    set_physics_process(!_active_modifiers.is_empty());
+    set_physics_process(!_active_modifiers->is_empty());
 
     for (int i = 0; i < _active_action_mappings.size(); i++) {
         Ref<GUIDEActionMapping> mapping = _active_action_mappings[i];
@@ -371,9 +383,9 @@ void GUIDE::_update_caches() {
                 TypedArray<GUIDEModifier> mods = ((Ref<GUIDEInputMapping>)ims[j])->get_modifiers();
                 for (int k = 0; k < mods.size(); k++) {
                     Ref<GUIDEModifier> mod = mods[k];
-                    if (!new_modifiers.has(mod)) {
+                    if (!new_modifiers->has(mod)) {
                         mod->_end_usage();
-                        mod->remove_meta("__guide_in_use");
+                        _mark_used(mod, false);
                     }
                 }
             }
@@ -387,35 +399,35 @@ void GUIDE::_update_caches() {
         Ref<GUIDEActionMapping> mapping = _active_action_mappings[i];
         Ref<GUIDEAction> action = mapping->get_action();
         if (action->get_block_lower_priority_actions()) {
-            Dictionary chorded_actions;
-            Dictionary inputs;
-            Array blocked;
+            Ref<GUIDESet> chorded_actions; chorded_actions.instantiate();
+            Ref<GUIDESet> inputs; inputs.instantiate();
+            Ref<GUIDESet> blocked_actions; blocked_actions.instantiate();
 
             TypedArray<GUIDEInputMapping> ims = mapping->get_input_mappings();
             for (int j = 0; j < ims.size(); j++) {
                 Ref<GUIDEInputMapping> im = ims[j];
-                if (im->get_input().is_valid()) inputs[im->get_input()] = im->get_input();
+                if (im->get_input().is_valid()) inputs->add(im->get_input());
                 TypedArray<GUIDETrigger> trigs = im->get_triggers();
                 for (int k = 0; k < trigs.size(); k++) {
                     Ref<GUIDETriggerChordedAction> chord = trigs[k];
                     if (chord.is_valid() && chord->get_action().is_valid()) {
-                        chorded_actions[chord->get_action()] = chord->get_action();
+                        chorded_actions->add(chord->get_action());
                     }
                 }
             }
 
             for (int j = i + 1; j < _active_action_mappings.size(); j++) {
                 Ref<GUIDEActionMapping> inner = _active_action_mappings[j];
-                if (chorded_actions.has(inner->get_action())) {
+                if (chorded_actions->has(inner->get_action())) {
                     TypedArray<GUIDEInputMapping> inner_ims = inner->get_input_mappings();
                     for (int k = 0; k < inner_ims.size(); k++) {
                         Ref<GUIDEInputMapping> inner_im = inner_ims[k];
-                        if (inner_im->get_input().is_valid()) inputs[inner_im->get_input()] = inner_im->get_input();
+                        if (inner_im->get_input().is_valid()) inputs->add(inner_im->get_input());
                         TypedArray<GUIDETrigger> inner_trigs = inner_im->get_triggers();
                         for (int l = 0; l < inner_trigs.size(); l++) {
                             Ref<GUIDETriggerChordedAction> inner_chord = inner_trigs[l];
                             if (inner_chord.is_valid() && inner_chord->get_action().is_valid()) {
-                                chorded_actions[inner_chord->get_action()] = inner_chord->get_action();
+                                chorded_actions->add(inner_chord->get_action());
                             }
                         }
                     }
@@ -424,24 +436,24 @@ void GUIDE::_update_caches() {
 
             for (int j = i + 1; j < _active_action_mappings.size(); j++) {
                 Ref<GUIDEActionMapping> inner = _active_action_mappings[j];
-                if (chorded_actions.has(inner->get_action())) continue;
+                if (chorded_actions->has(inner->get_action())) continue;
                 bool shares = false;
                 TypedArray<GUIDEInputMapping> inner_ims = inner->get_input_mappings();
                 for (int k = 0; k < inner_ims.size(); k++) {
                     Ref<GUIDEInputMapping> inner_im = inner_ims[k];
-                    if (inner_im->get_input().is_valid() && inputs.has(inner_im->get_input())) {
+                    if (inner_im->get_input().is_valid() && inputs->has(inner_im->get_input())) {
                         shares = true;
                         break;
                     }
                 }
-                if (shares) blocked.append(inner->get_action());
+                if (shares) blocked_actions->add(inner->get_action());
             }
-            if (!blocked.is_empty()) _actions_sharing_input[action] = blocked;
+            if (!blocked_actions->is_empty()) _actions_sharing_input[action] = blocked_actions->values();
         }
     }
 
     _reset_node->_inputs_to_reset.clear();
-    Array all_active_inputs = _active_inputs.values();
+    Array all_active_inputs = _active_inputs->values();
     for (int i = 0; i < all_active_inputs.size(); i++) {
         Ref<GUIDEInput> in = all_active_inputs[i];
         if (in->_needs_reset()) _reset_node->_inputs_to_reset.append(in);
@@ -489,4 +501,24 @@ bool GUIDE::_is_same_action_mapping(const Ref<GUIDEActionMapping> &a, const Ref<
         }
     }
     return true;
+}
+
+void GUIDE::_mark_used(const Ref<Object> &p_object, bool p_value) {
+    if (p_value) {
+        p_object->set_meta("__guide_in_use", true);
+    } else {
+        p_object->remove_meta("__guide_in_use");
+    }
+}
+
+bool GUIDE::_is_used(const Ref<Object> &p_object) {
+    return p_object->has_meta("__guide_in_use");
+}
+
+void GUIDE::_copy_meta(const Ref<Object> &p_source, const Ref<Object> &p_target) {
+    TypedArray<StringName> keys = p_source->get_meta_list();
+    for (int i = 0; i < keys.size(); i++) {
+        StringName key = keys[i];
+        p_target->set_meta(key, p_source->get_meta(key));
+    }
 }

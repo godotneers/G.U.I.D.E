@@ -12,6 +12,7 @@
 #include "remapping/guide_remapping_config.h"
 #include "inputs/guide_input.h"
 #include "guide_reset.h"
+#include "guide_set.h"
 #include "inputs/guide_input_state.h"
 
 using namespace godot;
@@ -42,11 +43,15 @@ public:
     void _update_caches_on_joy(int p_id, bool p_connected) { _update_caches(); }
     static bool _is_same_action_mapping(const Ref<GUIDEActionMapping> &a, const Ref<GUIDEActionMapping> &b);
 
+    static void _mark_used(const Ref<Object> &p_object, bool p_value);
+    static bool _is_used(const Ref<Object> &p_object);
+    static void _copy_meta(const Ref<Object> &p_source, const Ref<Object> &p_target);
+
     GUIDEInputState* get_input_state() const { return _input_state; }
 
     // Internal access for debugger etc.
     Array get_active_action_mappings() const { return _active_action_mappings; };
-    Dictionary get_active_inputs() const { return _active_inputs; };
+    Ref<GUIDESet> get_active_inputs() const { return _active_inputs; };
     Dictionary get_actions_sharing_input() const { return _actions_sharing_input; };
 
 protected:
@@ -58,8 +63,8 @@ private:
     Dictionary _active_contexts; // GUIDEMappingContext -> priority
     TypedArray<GUIDEActionMapping> _active_action_mappings;
     Ref<GUIDERemappingConfig> _active_remapping_config;
-    Dictionary _active_inputs; // GUIDEInput -> GUIDEInput (set)
-    Dictionary _active_modifiers; // GUIDEModifier -> GUIDEModifier (set)
+    Ref<GUIDESet> _active_inputs; // GUIDEInput -> GUIDEInput (set)
+    Ref<GUIDESet> _active_modifiers; // GUIDEModifier -> GUIDEModifier (set)
     Dictionary _actions_sharing_input; // GUIDEAction -> Array[GUIDEAction]
 
     GUIDEReset *_reset_node = nullptr;
