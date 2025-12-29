@@ -24,7 +24,6 @@ public:
 protected:
     static void _bind_methods();
     String _to_string() const;
-    double INF = std::numeric_limits<double>::infinity();
 };
 
 #endif // GUIDE_INPUT_TOUCH_POSITION_H

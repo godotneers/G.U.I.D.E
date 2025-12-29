@@ -1,7 +1,6 @@
 #include "guide_input_touch_distance.h"
 #include "guide_input_state.h"
 #include <godot_cpp/core/math.hpp>
-#include <limits>
 
 using namespace godot;
 
@@ -11,7 +10,7 @@ void GUIDEInputTouchDistance::_bind_methods() {
 }
 
 GUIDEInputTouchDistance::GUIDEInputTouchDistance() {
-    _initial_distance = INF;
+    _initial_distance = Math_INF;
 }
 
 GUIDEInputTouchDistance::~GUIDEInputTouchDistance() {}
@@ -52,11 +51,11 @@ void GUIDEInputTouchDistance::_refresh() {
 }
 
 double GUIDEInputTouchDistance::_calculate_distance() {
-    if (!_state) return INF;
+    if (!_state) return Math_INF;
     Vector2 p1 = _state->get_finger_position(0, 2);
-    if (Math::is_nan(p1.x)) return INF;
+    if (Math::is_nan(p1.x)) return Math_INF;
     Vector2 p2 = _state->get_finger_position(1, 2);
-    if (Math::is_nan(p2.x)) return INF;
+    if (Math::is_nan(p2.x)) return Math_INF;
     return p1.distance_to(p2);
 }
 

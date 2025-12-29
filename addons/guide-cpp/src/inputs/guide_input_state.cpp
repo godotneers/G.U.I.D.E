@@ -456,10 +456,10 @@ bool GUIDEInputState::is_any_joy_axis_actuated(float minimum_strength) const {
 }
 
 Vector2 GUIDEInputState::get_finger_position(int finger_index, int finger_count) const {
-    if (_finger_positions.is_empty()) return Vector2(INF, INF);
-    if (_finger_positions.size() != finger_count) return Vector2(INF, INF);
+    if (_finger_positions.is_empty()) return Vector2(Math_INF, Math_INF);
+    if (_finger_positions.size() != finger_count) return Vector2(Math_INF, Math_INF);
     if (finger_index > -1) {
-        return _finger_positions.get(finger_index, Vector2(INF, INF));
+        return _finger_positions.get(finger_index, Vector2(Math_INF, Math_INF));
     }
     Vector2 result = Vector2(0, 0);
     Array vals = _finger_positions.values();

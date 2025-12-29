@@ -29,8 +29,7 @@ protected:
     static void _bind_methods();
     String _to_string() const;
 
-    double _initial_distance = NAN;
-    double INF = std::numeric_limits<double>::infinity();
+    double _initial_distance = Math_NAN;
 };
 
 #endif // GUIDE_INPUT_TOUCH_DISTANCE_H

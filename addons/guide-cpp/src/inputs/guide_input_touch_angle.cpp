@@ -18,7 +18,7 @@ void GUIDEInputTouchAngle::_bind_methods() {
 }
 
 GUIDEInputTouchAngle::GUIDEInputTouchAngle() {
-    _initial_angle = NAN;
+    _initial_angle = Math_NAN;
 }
 
 GUIDEInputTouchAngle::~GUIDEInputTouchAngle() {}
@@ -63,12 +63,11 @@ void GUIDEInputTouchAngle::_refresh() {
 }
 
 double GUIDEInputTouchAngle::_calculate_angle() {
-    double INF = std::numeric_limits<double>::infinity();
-    if (!_state) return INF;
+    if (!_state) return Math_INF;
     Vector2 p1 = _state->get_finger_position(0, 2);
-    if (!Math::is_finite(p1.x)) return INF;
+    if (!Math::is_finite(p1.x)) return Math_INF;
     Vector2 p2 = _state->get_finger_position(1, 2);
-    if (!Math::is_finite(p2.x)) return INF;
+    if (!Math::is_finite(p2.x)) return Math_INF;
     return -p1.angle_to_point(p2);
 }
 

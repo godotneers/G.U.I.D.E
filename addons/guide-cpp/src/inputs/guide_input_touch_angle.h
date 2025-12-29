@@ -38,7 +38,7 @@ protected:
     String _to_string() const;
 
     AngleUnit unit = RADIANS;
-    double _initial_angle = NAN;
+    double _initial_angle = Math_NAN;
 };
 
 VARIANT_ENUM_CAST(GUIDEInputTouchAngle::AngleUnit);

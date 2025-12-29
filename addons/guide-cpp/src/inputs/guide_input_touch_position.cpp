@@ -1,7 +1,6 @@
 #include "guide_input_touch_position.h"
 #include "guide_input_state.h"
 #include <godot_cpp/core/math.hpp>
-#include <cmath>
 
 using namespace godot;
 
@@ -27,7 +26,7 @@ void GUIDEInputTouchPosition::_refresh() {
     if (_state) {
         Vector2 pos = _state->get_finger_position(finger_index, finger_count);
         if (!pos.is_finite()) {
-            _value = Vector3(INF, INF, INF);
+            _value = Vector3(Math_INF, Math_INF, Math_INF);
         } else {
             _value = Vector3(pos.x, pos.y, 0);
         }
