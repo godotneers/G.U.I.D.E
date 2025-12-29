@@ -38,6 +38,7 @@ void GUIDEInputAny::_bind_methods() {
     ADD_PROPERTY(PropertyInfo(Variant::BOOL, "touch"), "set_touch", "get_touch");
 
     ClassDB::bind_method(D_METHOD("_refresh"), &GUIDEInputAny::_refresh);
+    ClassDB::bind_method(D_METHOD("_to_string"), &GUIDEInputAny::_to_string);
 }
 
 GUIDEInputAny::GUIDEInputAny() {
@@ -107,9 +108,12 @@ void GUIDEInputAny::_refresh() {
 bool GUIDEInputAny::is_same_as(const Ref<GUIDEInput> &other) const {
     Ref<GUIDEInputAny> o = other;
     if (o.is_null()) return false;
-    return o->mouse_buttons == mouse_buttons && o->mouse_movement == mouse_movement &&
-           o->joy_buttons == joy_buttons && o->joy_axes == joy_axes &&
-           o->keyboard == keyboard && o->touch == touch &&
+    return o->mouse_buttons == mouse_buttons && 
+           o->mouse_movement == mouse_movement &&
+           o->joy_buttons == joy_buttons && 
+           o->joy_axes == joy_axes &&
+           o->keyboard == keyboard && 
+           o->touch == touch &&
            Math::abs(o->minimum_mouse_movement_distance - minimum_mouse_movement_distance) < 0.00001 &&
            Math::abs(o->minimum_joy_axis_actuation_strength - minimum_joy_axis_actuation_strength) < 0.00001;
 }
@@ -122,15 +126,15 @@ String GUIDEInputAny::_editor_description() const {
     return "Input that triggers if any input from the given device class is given.";
 }
 
-int GUIDEInputAny::_native_value_type() const {
-    return 0; // BOOL
+GUIDEAction::GUIDEActionValueType GUIDEInputAny::_native_value_type() const {
+    return GUIDEAction::GUIDEActionValueType::BOOL;
 }
 
 GUIDEInput::DeviceType GUIDEInputAny::_device_type() const {
-    int res = DEVICE_NONE;
-    if (joy_axes || joy_buttons) res |= DEVICE_JOY;
-    if (mouse_buttons || mouse_movement) res |= DEVICE_MOUSE;
-    if (keyboard) res |= DEVICE_KEYBOARD;
-    if (touch) res |= DEVICE_TOUCH;
+    int res = NONE;
+    if (joy_axes || joy_buttons) res |= JOY;
+    if (mouse_buttons || mouse_movement) res |= MOUSE;
+    if (keyboard) res |= KEYBOARD;
+    if (touch) res |= TOUCH;
     return (DeviceType)res;
 }

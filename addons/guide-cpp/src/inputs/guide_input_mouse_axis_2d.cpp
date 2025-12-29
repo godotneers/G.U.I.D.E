@@ -5,6 +5,7 @@ using namespace godot;
 
 void GUIDEInputMouseAxis2D::_bind_methods() {
     ClassDB::bind_method(D_METHOD("_refresh"), &GUIDEInputMouseAxis2D::_refresh);
+    ClassDB::bind_method(D_METHOD("_to_string"), &GUIDEInputMouseAxis2D::_to_string);
 }
 
 GUIDEInputMouseAxis2D::GUIDEInputMouseAxis2D() {
@@ -39,7 +40,13 @@ void GUIDEInputMouseAxis2D::_refresh() {
 }
 
 bool GUIDEInputMouseAxis2D::is_same_as(const Ref<GUIDEInput> &other) const {
-    return other.is_valid() && other->get_class() == get_class();
+    Ref<GUIDEInputMouseAxis2D> o = other;
+    if (o.is_null()) return false;
+    return true;
+}
+
+String GUIDEInputMouseAxis2D::_to_string() const {
+    return "(GUIDEInputMouseAxis2D)";
 }
 
 String GUIDEInputMouseAxis2D::_editor_name() const {
@@ -50,10 +57,10 @@ String GUIDEInputMouseAxis2D::_editor_description() const {
     return "Relative mouse movement on 2 axes.";
 }
 
-int GUIDEInputMouseAxis2D::_native_value_type() const {
-    return 2; // AXIS_2D
+GUIDEAction::GUIDEActionValueType GUIDEInputMouseAxis2D::_native_value_type() const {
+    return GUIDEAction::AXIS_2D;
 }
 
 GUIDEInput::DeviceType GUIDEInputMouseAxis2D::_device_type() const {
-    return DEVICE_MOUSE;
+    return MOUSE;
 }

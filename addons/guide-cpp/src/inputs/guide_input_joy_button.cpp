@@ -9,6 +9,7 @@ void GUIDEInputJoyButton::_bind_methods() {
     ADD_PROPERTY(PropertyInfo(Variant::INT, "button"), "set_button", "get_button");
 
     ClassDB::bind_method(D_METHOD("_refresh"), &GUIDEInputJoyButton::_refresh);
+    ClassDB::bind_method(D_METHOD("_to_string"), &GUIDEInputJoyButton::_to_string);
 }
 
 GUIDEInputJoyButton::GUIDEInputJoyButton() {
@@ -42,6 +43,10 @@ bool GUIDEInputJoyButton::is_same_as(const Ref<GUIDEInput> &other) const {
     return o->button == button && o->joy_index == joy_index;
 }
 
+String GUIDEInputJoyButton::_to_string() const {
+    return "(GUIDEInputJoyButton: button=" + String::num(button) + ", joy_index=" + String::num(joy_index) + ")";
+}
+
 String GUIDEInputJoyButton::_editor_name() const {
     return "Joy Button";
 }
@@ -50,6 +55,6 @@ String GUIDEInputJoyButton::_editor_description() const {
     return "A button press from a joy button.";
 }
 
-int GUIDEInputJoyButton::_native_value_type() const {
-    return 0; // BOOL
+GUIDEAction::GUIDEActionValueType GUIDEInputJoyButton::_native_value_type() const {
+    return GUIDEAction::BOOL;
 }

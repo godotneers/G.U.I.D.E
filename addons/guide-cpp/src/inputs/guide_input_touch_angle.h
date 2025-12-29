@@ -1,16 +1,21 @@
-#ifndef GUIDE_INPUT_MOUSE_BUTTON_H
-#define GUIDE_INPUT_MOUSE_BUTTON_H
+#ifndef GUIDE_INPUT_TOUCH_ANGLE_H
+#define GUIDE_INPUT_TOUCH_ANGLE_H
 
 #include "guide_input.h"
 
 using namespace godot;
 
-class GUIDEInputMouseButton : public GUIDEInput {
-    GDCLASS(GUIDEInputMouseButton, GUIDEInput)
+class GUIDEInputTouchAngle : public GUIDEInput {
+    GDCLASS(GUIDEInputTouchAngle, GUIDEInput)
 
 public:
-    GUIDEInputMouseButton();
-    virtual ~GUIDEInputMouseButton();
+    enum AngleUnit {
+        RADIANS = 0,
+        DEGREES = 1
+    };
+
+    GUIDEInputTouchAngle();
+    virtual ~GUIDEInputTouchAngle();
 
     virtual bool _needs_reset() const override;
     virtual void _reset() override;
@@ -23,17 +28,19 @@ public:
     virtual DeviceType _device_type() const override;
 
     void _refresh();
+    double _calculate_angle();
 
-    int get_button() const { return (int)button; }
-    void set_button(int p_button) { button = (MouseButton)p_button; emit_changed(); }
+    AngleUnit get_unit() const { return unit; }
+    void set_unit(AngleUnit p_unit) { unit = p_unit; emit_changed(); }
 
 protected:
     static void _bind_methods();
     String _to_string() const;
 
-    MouseButton button = MOUSE_BUTTON_LEFT;
-    Vector3 _reset_to;
-    bool _was_pressed_this_frame = false;
+    AngleUnit unit = RADIANS;
+    double _initial_angle = NAN;
 };
 
-#endif // GUIDE_INPUT_MOUSE_BUTTON_H
+VARIANT_ENUM_CAST(GUIDEInputTouchAngle::AngleUnit);
+
+#endif // GUIDE_INPUT_TOUCH_ANGLE_H

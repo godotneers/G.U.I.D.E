@@ -9,6 +9,7 @@ void GUIDEInputJoyAxis1D::_bind_methods() {
     ADD_PROPERTY(PropertyInfo(Variant::INT, "axis"), "set_axis", "get_axis");
 
     ClassDB::bind_method(D_METHOD("_refresh"), &GUIDEInputJoyAxis1D::_refresh);
+    ClassDB::bind_method(D_METHOD("_to_string"), &GUIDEInputJoyAxis1D::_to_string);
 }
 
 GUIDEInputJoyAxis1D::GUIDEInputJoyAxis1D() {
@@ -42,6 +43,10 @@ bool GUIDEInputJoyAxis1D::is_same_as(const Ref<GUIDEInput> &other) const {
     return o->axis == axis && o->joy_index == joy_index;
 }
 
+String GUIDEInputJoyAxis1D::_to_string() const {
+    return "(GUIDEInputJoyAxis1D: axis=" + String::num(axis) + ", joy_index=" + String::num(joy_index) + ")";
+}
+
 String GUIDEInputJoyAxis1D::_editor_name() const {
     return "Joy Axis 1D";
 }
@@ -50,6 +55,6 @@ String GUIDEInputJoyAxis1D::_editor_description() const {
     return "The input from a single joy axis.";
 }
 
-int GUIDEInputJoyAxis1D::_native_value_type() const {
-    return 1; // AXIS_1D
+GUIDEAction::GUIDEActionValueType GUIDEInputJoyAxis1D::_native_value_type() const {
+    return GUIDEAction::AXIS_1D;
 }

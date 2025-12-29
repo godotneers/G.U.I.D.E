@@ -9,6 +9,7 @@ void GUIDEInputAction::_bind_methods() {
 
     ClassDB::bind_method(D_METHOD("_on"), &GUIDEInputAction::_on);
     ClassDB::bind_method(D_METHOD("_off"), &GUIDEInputAction::_off);
+    ClassDB::bind_method(D_METHOD("_to_string"), &GUIDEInputAction::_to_string);
 }
 
 GUIDEInputAction::GUIDEInputAction() {
@@ -40,7 +41,7 @@ void GUIDEInputAction::_end_usage() {
 
 void GUIDEInputAction::_on() {
     if (action.is_valid()) {
-        _value = action->v_get_value_axis_3d();
+        _value = action->get_value_axis_3d();
     }
 }
 
@@ -54,6 +55,10 @@ bool GUIDEInputAction::is_same_as(const Ref<GUIDEInput> &other) const {
     return o->action == action;
 }
 
+String GUIDEInputAction::_to_string() const {
+    return "(GUIDEInputAction: " + (action.is_valid() ? action->to_string() : String("null")) + ")";
+}
+
 String GUIDEInputAction::_editor_name() const {
     return "Action";
 }
@@ -63,5 +68,5 @@ String GUIDEInputAction::_editor_description() const {
 }
 
 int GUIDEInputAction::_native_value_type() const {
-    return 3; // AXIS_3D
+    return GUIDEAction::AXIS_3D;
 }

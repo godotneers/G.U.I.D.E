@@ -17,21 +17,22 @@ public:
     virtual bool is_same_as(const Ref<GUIDEInput> &other) const override;
     virtual String _editor_name() const override;
     virtual String _editor_description() const override;
-    virtual int _native_value_type() const override;
+    virtual GUIDEAction::GUIDEActionValueType _native_value_type() const override;
 
     void _refresh();
 
-    int get_x_axis() const { return x; }
-    void set_x_axis(int p_axis) { x = p_axis; emit_changed(); }
+    JoyAxis get_x_axis() const { return x; }
+    void set_x_axis(JoyAxis p_axis) { x = p_axis; emit_changed(); }
 
-    int get_y_axis() const { return y; }
-    void set_y_axis(int p_axis) { y = p_axis; emit_changed(); }
+    JoyAxis get_y_axis() const { return y; }
+    void set_y_axis(JoyAxis p_axis) { y = p_axis; emit_changed(); }
 
 protected:
     static void _bind_methods();
+    String _to_string() const;
 
-    int x = 0;
-    int y = 1;
+    JoyAxis x = JoyAxis::JOY_AXIS_LEFT_X;
+    JoyAxis y = JoyAxis::JOY_AXIS_LEFT_Y;
 };
 
 #endif // GUIDE_INPUT_JOY_AXIS_2D_H

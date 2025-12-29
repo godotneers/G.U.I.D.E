@@ -12,6 +12,7 @@ void GUIDEInputMouseAxis1D::_bind_methods() {
     ADD_PROPERTY(PropertyInfo(Variant::INT, "axis", PROPERTY_HINT_ENUM, "X,Y"), "set_axis", "get_axis");
 
     ClassDB::bind_method(D_METHOD("_refresh"), &GUIDEInputMouseAxis1D::_refresh);
+    ClassDB::bind_method(D_METHOD("_to_string"), &GUIDEInputMouseAxis1D::_to_string);
 }
 
 GUIDEInputMouseAxis1D::GUIDEInputMouseAxis1D() {
@@ -54,6 +55,10 @@ bool GUIDEInputMouseAxis1D::is_same_as(const Ref<GUIDEInput> &other) const {
     return o->axis == axis;
 }
 
+String GUIDEInputMouseAxis1D::_to_string() const {
+    return "(GUIDEInputMouseAxis1D: axis=" + String::num(axis) + ")";
+}
+
 String GUIDEInputMouseAxis1D::_editor_name() const {
     return "Mouse Axis 1D";
 }
@@ -62,10 +67,10 @@ String GUIDEInputMouseAxis1D::_editor_description() const {
     return "Relative mouse movement on a single axis.";
 }
 
-int GUIDEInputMouseAxis1D::_native_value_type() const {
-    return 1; // AXIS_1D
+GUIDEAction::GUIDEActionValueType GUIDEInputMouseAxis1D::_native_value_type() const {
+    return GUIDEAction::AXIS_1D;
 }
 
 GUIDEInput::DeviceType GUIDEInputMouseAxis1D::_device_type() const {
-    return DEVICE_MOUSE;
+    return MOUSE;
 }

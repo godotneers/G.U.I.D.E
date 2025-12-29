@@ -15,5 +15,5 @@ GUIDEInputJoyBase::~GUIDEInputJoyBase() {
 }
 
 GUIDEInput::DeviceType GUIDEInputJoyBase::_device_type() const {
-    return DEVICE_JOY;
+    return JOY;
 }

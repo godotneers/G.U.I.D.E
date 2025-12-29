@@ -12,14 +12,15 @@ public:
     GUIDEInputTouchAxis2D() {}
     virtual ~GUIDEInputTouchAxis2D() {}
 
-    virtual void _apply_value(Vector2 value) override { _value = Vector3(value.x, value.y, 0); }
+    virtual void _apply_value(Vector2 value) override;
     virtual bool is_same_as(const Ref<GUIDEInput> &other) const override;
-    virtual String _editor_name() const override { return "Touch Axis2D"; }
-    virtual String _editor_description() const override { return "2D relative movement of a touching finger."; }
-    virtual int _native_value_type() const override { return 2; /* AXIS_2D */ }
+    virtual String _editor_name() const override;
+    virtual String _editor_description() const override;
+    virtual GUIDEAction::GUIDEActionValueType _native_value_type() const override;
 
 protected:
-    static void _bind_methods() {}
+    static void _bind_methods();
+    String _to_string() const;
 };
 
 #endif // GUIDE_INPUT_TOUCH_AXIS_2D_H

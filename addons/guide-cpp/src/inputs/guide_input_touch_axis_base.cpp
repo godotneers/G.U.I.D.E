@@ -1,7 +1,7 @@
 #include "guide_input_touch_axis_base.h"
 #include "guide_input_state.h"
 #include <godot_cpp/core/math.hpp>
-#include <cmath>
+#include <limits>
 
 using namespace godot;
 
@@ -10,10 +10,15 @@ void GUIDEInputTouchAxisBase::_bind_methods() {
 }
 
 GUIDEInputTouchAxisBase::GUIDEInputTouchAxisBase() {
-    _last_position = Vector2(NAN, NAN);
+    float INF = std::numeric_limits<float>::infinity();
+    _last_position = Vector2(INF, INF);
 }
 
 GUIDEInputTouchAxisBase::~GUIDEInputTouchAxisBase() {}
+
+bool GUIDEInputTouchAxisBase::_needs_reset() const {
+    return true;
+}
 
 void GUIDEInputTouchAxisBase::_reset() {
     if (_state) {
@@ -43,7 +48,7 @@ void GUIDEInputTouchAxisBase::_refresh() {
 }
 
 Vector2 GUIDEInputTouchAxisBase::_calculate_value(Vector2 new_position) {
-    if (Math::is_nan(_last_position.x) || Math::is_nan(new_position.x)) {
+    if (!_last_position.is_finite() || !new_position.is_finite()) {
         return Vector2(0, 0);
     }
     return new_position - _last_position;

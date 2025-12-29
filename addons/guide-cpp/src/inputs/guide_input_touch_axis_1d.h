@@ -19,15 +19,16 @@ public:
 
     virtual void _apply_value(Vector2 value) override;
     virtual bool is_same_as(const Ref<GUIDEInput> &other) const override;
-    virtual String _editor_name() const override { return "Touch Axis1D"; }
-    virtual String _editor_description() const override { return "Relative movement of a touching finger on a single axis."; }
-    virtual int _native_value_type() const override { return 1; /* AXIS_1D */ }
+    virtual String _editor_name() const override;
+    virtual String _editor_description() const override;
+    virtual GUIDEAction::GUIDEActionValueType _native_value_type() const override;
 
-    int get_axis() const { return (int)axis; }
-    void set_axis(int p_axis) { axis = (GUIDEInputTouchAxis)p_axis; emit_changed(); }
+    GUIDEInputTouchAxis get_axis() const { return axis; }
+    void set_axis(GUIDEInputTouchAxis p_axis) { axis = p_axis; emit_changed(); }
 
 protected:
     static void _bind_methods();
+    String _to_string() const;
 
     GUIDEInputTouchAxis axis = AXIS_X;
 };

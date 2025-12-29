@@ -13,6 +13,7 @@ void GUIDEInputJoyAxis2D::_bind_methods() {
     ADD_PROPERTY(PropertyInfo(Variant::INT, "y"), "set_y_axis", "get_y_axis");
 
     ClassDB::bind_method(D_METHOD("_refresh"), &GUIDEInputJoyAxis2D::_refresh);
+    ClassDB::bind_method(D_METHOD("_to_string"), &GUIDEInputJoyAxis2D::_to_string);
 }
 
 GUIDEInputJoyAxis2D::GUIDEInputJoyAxis2D() {
@@ -36,8 +37,8 @@ void GUIDEInputJoyAxis2D::_end_usage() {
 
 void GUIDEInputJoyAxis2D::_refresh() {
     if (_state) {
-        _value.x = _state->get_joy_axis_value(joy_index, (JoyAxis)x);
-        _value.y = _state->get_joy_axis_value(joy_index, (JoyAxis)y);
+        _value.x = _state->get_joy_axis_value(joy_index, x);
+        _value.y = _state->get_joy_axis_value(joy_index, y);
     }
 }
 
@@ -45,6 +46,10 @@ bool GUIDEInputJoyAxis2D::is_same_as(const Ref<GUIDEInput> &other) const {
     Ref<GUIDEInputJoyAxis2D> o = other;
     if (o.is_null()) return false;
     return o->x == x && o->y == y && o->joy_index == joy_index;
+}
+
+String GUIDEInputJoyAxis2D::_to_string() const {
+    return "(GUIDEInputJoyAxis2D: x=" + String::num(x) + ", y=" + String::num(y) + ", joy_index=" + String::num(joy_index) + ")";
 }
 
 String GUIDEInputJoyAxis2D::_editor_name() const {
@@ -55,6 +60,6 @@ String GUIDEInputJoyAxis2D::_editor_description() const {
     return "The input from two Joy axes. Usually from a stick.";
 }
 
-int GUIDEInputJoyAxis2D::_native_value_type() const {
-    return 2; // AXIS_2D
+GUIDEAction::GUIDEActionValueType GUIDEInputJoyAxis2D::_native_value_type() const {
+    return GUIDEAction::AXIS_2D;
 }

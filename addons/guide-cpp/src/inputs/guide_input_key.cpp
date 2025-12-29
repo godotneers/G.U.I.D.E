@@ -29,6 +29,7 @@ void GUIDEInputKey::_bind_methods() {
     ADD_PROPERTY(PropertyInfo(Variant::BOOL, "allow_additional_modifiers"), "set_allow_additional_modifiers", "get_allow_additional_modifiers");
 
     ClassDB::bind_method(D_METHOD("_refresh"), &GUIDEInputKey::_refresh);
+    ClassDB::bind_method(D_METHOD("_to_string"), &GUIDEInputKey::_to_string);
 }
 
 GUIDEInputKey::GUIDEInputKey() {
@@ -75,7 +76,16 @@ void GUIDEInputKey::_refresh() {
 bool GUIDEInputKey::is_same_as(const Ref<GUIDEInput> &other) const {
     Ref<GUIDEInputKey> o = other;
     if (o.is_null()) return false;
-    return o->key == key && o->shift == shift && o->control == control && o->alt == alt && o->meta == meta && o->allow_additional_modifiers == allow_additional_modifiers;
+    return o->key == key && 
+           o->shift == shift && 
+           o->control == control && 
+           o->alt == alt && 
+           o->meta == meta && 
+           o->allow_additional_modifiers == allow_additional_modifiers;
+}
+
+String GUIDEInputKey::_to_string() const {
+    return "(GUIDEInputKey: key=" + String::num(key) + ", shift=" + (shift ? String("true") : String("false")) + ", alt=" + (alt ? String("true") : String("false")) + ", control=" + (control ? String("true") : String("false")) + ", meta=" + (meta ? String("true") : String("false")) + ")";
 }
 
 String GUIDEInputKey::_editor_name() const {
@@ -86,10 +96,10 @@ String GUIDEInputKey::_editor_description() const {
     return "A button press on the keyboard.";
 }
 
-int GUIDEInputKey::_native_value_type() const {
-    return 0; // BOOL
+GUIDEAction::GUIDEActionValueType GUIDEInputKey::_native_value_type() const {
+    return GUIDEAction::BOOL;
 }
 
 GUIDEInput::DeviceType GUIDEInputKey::_device_type() const {
-    return DEVICE_KEYBOARD;
+    return KEYBOARD;
 }

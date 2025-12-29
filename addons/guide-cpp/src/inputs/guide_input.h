@@ -2,8 +2,10 @@
 #define GUIDE_INPUT_H
 
 #include <godot_cpp/classes/resource.hpp>
+#include <godot_cpp/classes/object.hpp>
 #include <godot_cpp/variant/vector3.hpp>
 #include <godot_cpp/core/class_db.hpp>
+#include "guide_action.h"
 
 using namespace godot;
 
@@ -14,11 +16,11 @@ class GUIDEInput : public Resource {
 
 public:
     enum DeviceType {
-        DEVICE_NONE = 0,
-        DEVICE_KEYBOARD = 1,
-        DEVICE_MOUSE = 2,
-        DEVICE_JOY = 4,
-        DEVICE_TOUCH = 8,
+        NONE = 0,
+        KEYBOARD = 1,
+        MOUSE = 2,
+        JOY = 4,
+        TOUCH = 8,
     };
 
     GUIDEInput();
@@ -31,7 +33,7 @@ public:
     virtual void _end_usage();
     virtual String _editor_name() const;
     virtual String _editor_description() const;
-    virtual int _native_value_type() const;
+    virtual GUIDEAction::GUIDEActionValueType _native_value_type() const;
     virtual DeviceType _device_type() const;
 
     Vector3 get_value() const { return _value; }
@@ -42,6 +44,7 @@ public:
 
 protected:
     static void _bind_methods();
+    String _to_string() const;
 
     Vector3 _value;
     GUIDEInputState *_state = nullptr;

@@ -17,7 +17,7 @@ public:
     virtual bool is_same_as(const Ref<GUIDEInput> &other) const override;
     virtual String _editor_name() const override;
     virtual String _editor_description() const override;
-    virtual int _native_value_type() const override;
+    virtual GUIDEAction::GUIDEActionValueType _native_value_type() const override;
     virtual DeviceType _device_type() const override;
 
     void _refresh();
@@ -43,6 +43,7 @@ public:
 
 protected:
     static void _bind_methods();
+    String _to_string() const;
 
     int key = 0;
     bool shift = false;

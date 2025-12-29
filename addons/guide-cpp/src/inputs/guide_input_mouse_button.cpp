@@ -9,6 +9,7 @@ void GUIDEInputMouseButton::_bind_methods() {
     ADD_PROPERTY(PropertyInfo(Variant::INT, "button"), "set_button", "get_button");
 
     ClassDB::bind_method(D_METHOD("_refresh"), &GUIDEInputMouseButton::_refresh);
+    ClassDB::bind_method(D_METHOD("_to_string"), &GUIDEInputMouseButton::_to_string);
 }
 
 GUIDEInputMouseButton::GUIDEInputMouseButton() {
@@ -57,6 +58,10 @@ bool GUIDEInputMouseButton::is_same_as(const Ref<GUIDEInput> &other) const {
     return o->button == button;
 }
 
+String GUIDEInputMouseButton::_to_string() const {
+    return "(GUIDEInputMouseButton: button=" + String::num(button) + ")";
+}
+
 String GUIDEInputMouseButton::_editor_name() const {
     return "Mouse Button";
 }
@@ -65,10 +70,10 @@ String GUIDEInputMouseButton::_editor_description() const {
     return "A press of a mouse button. The mouse wheel is also a button.";
 }
 
-int GUIDEInputMouseButton::_native_value_type() const {
-    return 0; // BOOL
+GUIDEAction::GUIDEActionValueType GUIDEInputMouseButton::_native_value_type() const {
+    return GUIDEAction::BOOL;
 }
 
 GUIDEInput::DeviceType GUIDEInputMouseButton::_device_type() const {
-    return DEVICE_MOUSE;
+    return MOUSE;
 }

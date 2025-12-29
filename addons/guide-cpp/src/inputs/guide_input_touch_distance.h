@@ -1,18 +1,19 @@
-#ifndef GUIDE_INPUT_MOUSE_AXIS_2D_H
-#define GUIDE_INPUT_MOUSE_AXIS_2D_H
+#ifndef GUIDE_INPUT_TOUCH_DISTANCE_H
+#define GUIDE_INPUT_TOUCH_DISTANCE_H
 
 #include "guide_input.h"
 
 using namespace godot;
 
-class GUIDEInputMouseAxis2D : public GUIDEInput {
-    GDCLASS(GUIDEInputMouseAxis2D, GUIDEInput)
+class GUIDEInputTouchDistance : public GUIDEInput {
+    GDCLASS(GUIDEInputTouchDistance, GUIDEInput)
 
 public:
-    GUIDEInputMouseAxis2D();
-    virtual ~GUIDEInputMouseAxis2D();
+    GUIDEInputTouchDistance();
+    virtual ~GUIDEInputTouchDistance();
 
     virtual bool _needs_reset() const override;
+    virtual void _reset() override;
     virtual void _begin_usage() override;
     virtual void _end_usage() override;
     virtual bool is_same_as(const Ref<GUIDEInput> &other) const override;
@@ -22,10 +23,14 @@ public:
     virtual DeviceType _device_type() const override;
 
     void _refresh();
+    double _calculate_distance();
 
 protected:
     static void _bind_methods();
     String _to_string() const;
+
+    double _initial_distance = NAN;
+    double INF = std::numeric_limits<double>::infinity();
 };
 
-#endif // GUIDE_INPUT_MOUSE_AXIS_2D_H
+#endif // GUIDE_INPUT_TOUCH_DISTANCE_H

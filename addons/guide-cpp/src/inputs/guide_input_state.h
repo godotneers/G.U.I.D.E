@@ -12,6 +12,7 @@
 #include <godot_cpp/classes/input_event_joypad_motion.hpp>
 #include <godot_cpp/classes/input_event_screen_touch.hpp>
 #include <godot_cpp/classes/input_event_screen_drag.hpp>
+#include <limits>
 
 using namespace godot;
 
@@ -56,6 +57,7 @@ protected:
     static void _bind_methods();
 
 private:
+    float INF = std::numeric_limits<float>::infinity();
     Dictionary _virtual_joy_devices;
     Dictionary _keys;
     Dictionary _finger_positions;

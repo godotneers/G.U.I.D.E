@@ -13,7 +13,7 @@ public:
     GUIDEInputTouchBase();
     virtual ~GUIDEInputTouchBase();
 
-    virtual DeviceType _device_type() const override { return DEVICE_TOUCH; }
+    virtual DeviceType _device_type() const override { return TOUCH; }
 
     int get_finger_count() const { return finger_count; }
     void set_finger_count(int p_count) { finger_count = Math::max(1, p_count); emit_changed(); }

@@ -17,15 +17,16 @@ public:
     virtual bool is_same_as(const Ref<GUIDEInput> &other) const override;
     virtual String _editor_name() const override;
     virtual String _editor_description() const override;
-    virtual int _native_value_type() const override;
-
+    virtual GUIDEAction::GUIDEActionValueType _native_value_type() const override;
+    
     void _refresh();
-
+    
     int get_axis() const { return axis; }
     void set_axis(int p_axis) { axis = p_axis; emit_changed(); }
-
+    
 protected:
     static void _bind_methods();
+    String _to_string() const;
 
     int axis = 0;
 };

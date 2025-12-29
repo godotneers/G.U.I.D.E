@@ -15,14 +15,16 @@ public:
     virtual void _begin_usage() override;
     virtual void _end_usage() override;
     virtual bool is_same_as(const Ref<GUIDEInput> &other) const override;
-    virtual String _editor_name() const override { return "Touch Position"; }
-    virtual String _editor_description() const override { return "Position of a touching finger."; }
-    virtual int _native_value_type() const override { return 2; /* AXIS_2D */ }
+    virtual String _editor_name() const override;
+    virtual String _editor_description() const override;
+    virtual GUIDEAction::GUIDEActionValueType _native_value_type() const override;
 
     void _refresh();
 
 protected:
     static void _bind_methods();
+    String _to_string() const;
+    double INF = std::numeric_limits<double>::infinity();
 };
 
 #endif // GUIDE_INPUT_TOUCH_POSITION_H

@@ -5,6 +5,7 @@ using namespace godot;
 
 void GUIDEInputMousePosition::_bind_methods() {
     ClassDB::bind_method(D_METHOD("_refresh"), &GUIDEInputMousePosition::_refresh);
+    ClassDB::bind_method(D_METHOD("_to_string"), &GUIDEInputMousePosition::_to_string);
 }
 
 void GUIDEInputMousePosition::_begin_usage() {
@@ -29,5 +30,27 @@ void GUIDEInputMousePosition::_refresh() {
 }
 
 bool GUIDEInputMousePosition::is_same_as(const Ref<GUIDEInput> &other) const {
-    return other.is_valid() && other->get_class() == get_class();
+    Ref<GUIDEInputMousePosition> o = other;
+    if(o.is_null()) return false;
+    return true;
+}
+
+String GUIDEInputMousePosition::_to_string() const {
+    return "(GUIDEInputMousePosition)";
+}
+
+String GUIDEInputMousePosition::_editor_name() const { 
+    return "Mouse Position"; 
+}
+
+String GUIDEInputMousePosition::_editor_description() const { 
+    return "Position of the mouse in the main viewport."; 
+}
+
+GUIDEAction::GUIDEActionValueType GUIDEInputMousePosition::_native_value_type() const {
+    return GUIDEAction::AXIS_2D; 
+}
+
+GUIDEInput::DeviceType GUIDEInputMousePosition::_device_type() const { 
+    return GUIDEInput::MOUSE; 
 }

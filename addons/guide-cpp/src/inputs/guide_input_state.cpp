@@ -3,12 +3,35 @@
 #include <godot_cpp/classes/engine.hpp>
 #include <godot_cpp/classes/scene_tree.hpp>
 #include <godot_cpp/classes/window.hpp>
+#include <godot_cpp/variant/utility_functions.hpp>
 #include <godot_cpp/core/math.hpp>
 #include <cmath>
 
 using namespace godot;
 
 void GUIDEInputState::_bind_methods() {
+    ClassDB::bind_method(D_METHOD("connect_virtual_stick", "stick_index"), &GUIDEInputState::connect_virtual_stick);
+    ClassDB::bind_method(D_METHOD("disconnect_virtual_stick", "device_id"), &GUIDEInputState::disconnect_virtual_stick);
+
+    ClassDB::bind_method(D_METHOD("is_key_pressed", "key"), &GUIDEInputState::is_key_pressed);
+    ClassDB::bind_method(D_METHOD("is_at_least_one_key_pressed", "keys"), &GUIDEInputState::is_at_least_one_key_pressed);
+    ClassDB::bind_method(D_METHOD("are_all_keys_pressed", "keys"), &GUIDEInputState::are_all_keys_pressed);
+    ClassDB::bind_method(D_METHOD("is_any_key_pressed"), &GUIDEInputState::is_any_key_pressed);
+
+    ClassDB::bind_method(D_METHOD("get_mouse_delta_since_last_frame"), &GUIDEInputState::get_mouse_delta_since_last_frame);
+    ClassDB::bind_method(D_METHOD("get_mouse_position"), &GUIDEInputState::get_mouse_position);
+    ClassDB::bind_method(D_METHOD("is_mouse_button_pressed", "button_index"), &GUIDEInputState::is_mouse_button_pressed);
+    ClassDB::bind_method(D_METHOD("is_any_mouse_button_pressed"), &GUIDEInputState::is_any_mouse_button_pressed);
+
+    ClassDB::bind_method(D_METHOD("get_joy_axis_value", "index", "axis"), &GUIDEInputState::get_joy_axis_value);
+    ClassDB::bind_method(D_METHOD("is_joy_button_pressed", "index", "button"), &GUIDEInputState::is_joy_button_pressed);
+    ClassDB::bind_method(D_METHOD("is_any_joy_button_pressed"), &GUIDEInputState::is_any_joy_button_pressed);
+    ClassDB::bind_method(D_METHOD("is_any_joy_axis_actuated", "minimum_strength"), &GUIDEInputState::is_any_joy_axis_actuated);
+
+    ClassDB::bind_method(D_METHOD("get_finger_position", "finger_index", "finger_count"), &GUIDEInputState::get_finger_position);
+    ClassDB::bind_method(D_METHOD("get_finger_positions"), &GUIDEInputState::get_finger_positions);
+    ClassDB::bind_method(D_METHOD("is_any_finger_down"), &GUIDEInputState::is_any_finger_down);
+
     ADD_SIGNAL(MethodInfo("keyboard_state_changed"));
     ADD_SIGNAL(MethodInfo("mouse_position_changed"));
     ADD_SIGNAL(MethodInfo("mouse_button_state_changed"));
@@ -27,6 +50,7 @@ GUIDEInputState::~GUIDEInputState() {
 
 int GUIDEInputState::connect_virtual_stick(int stick_index) {
     if (stick_index < 0) {
+        UtilityFunctions::push_error("Invalid stick index " + String::num(stick_index) + " for virtual stick. Must be >= 0.");
         stick_index = 0;
     }
     int device_id = VIRTUAL_JOY_DEVICE_ID_OFFSET - stick_index;
@@ -50,6 +74,7 @@ void GUIDEInputState::disconnect_virtual_stick(int device_id) {
     }
     _virtual_joy_devices.erase(device_id);
     _joy_index_to_device_id.erase(device_id);
+
     if (_joy_buttons.has(device_id)) {
         _joy_buttons.erase(device_id);
         emit_signal("joy_button_state_changed");
@@ -67,9 +92,12 @@ void GUIDEInputState::_clear() {
     _mouse_buttons.clear();
     _joy_buttons.clear();
     _joy_axes.clear();
+
     _refresh_joy_device_ids(0, false);
+
     _joy_buttons[ANY_JOY_DEVICE_ID] = Dictionary();
     _joy_axes[ANY_JOY_DEVICE_ID] = Dictionary();
+
     Array virtual_keys = _virtual_joy_devices.keys();
     for (int i = 0; i < virtual_keys.size(); i++) {
         _joy_index_to_device_id.erase(virtual_keys[i]);
@@ -81,6 +109,7 @@ void GUIDEInputState::_refresh_joy_device_ids(int p_id, bool p_connected) {
     _joy_index_to_device_id.clear();
     Array connected_joys = Input::get_singleton()->get_connected_joypads();
     Array virtual_keys = _virtual_joy_devices.keys();
+
     for (int i = 0; i < virtual_keys.size(); i++) {
         connected_joys.append(virtual_keys[i]);
     }
@@ -371,7 +400,12 @@ Vector2 GUIDEInputState::get_mouse_delta_since_last_frame() const {
 }
 
 Vector2 GUIDEInputState::get_mouse_position() const {
-    return SceneTree::get_singleton()->get_root()->get_mouse_position();
+    SceneTree *tree = Object::cast_to<SceneTree>(Engine::get_singleton()->get_main_loop());
+    if (tree) {
+        return tree->get_root()->get_mouse_position();
+    }
+    UtilityFunctions::push_warning("Could not get mouse position: Main Loop returned isn't SceneTree");
+    return Vector2(0.0, 0.0);
 }
 
 bool GUIDEInputState::is_mouse_button_pressed(MouseButton button_index) const {
@@ -422,10 +456,10 @@ bool GUIDEInputState::is_any_joy_axis_actuated(float minimum_strength) const {
 }
 
 Vector2 GUIDEInputState::get_finger_position(int finger_index, int finger_count) const {
-    if (_finger_positions.is_empty()) return Vector2(NAN, NAN);
-    if (_finger_positions.size() != finger_count) return Vector2(NAN, NAN);
+    if (_finger_positions.is_empty()) return Vector2(INF, INF);
+    if (_finger_positions.size() != finger_count) return Vector2(INF, INF);
     if (finger_index > -1) {
-        return _finger_positions.get(finger_index, Vector2(NAN, NAN));
+        return _finger_positions.get(finger_index, Vector2(INF, INF));
     }
     Vector2 result = Vector2(0, 0);
     Array vals = _finger_positions.values();

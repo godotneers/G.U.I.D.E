@@ -94,7 +94,7 @@ void GUIDEInputDetector::detect(GUIDEAction::GUIDEActionValueType value_type, co
     //     UtilityFunctions::push_error("Device types must not be null. Supply an empty array if you want to detect input from all devices.");
     //     return;
     // }
-    if (device_types.has(GUIDEInput::DEVICE_TOUCH)) {
+    if (device_types.has(GUIDEInput::TOUCH)) {
         UtilityFunctions::push_error("Detecting touch events is not supported.");
     }
 
@@ -202,9 +202,9 @@ void GUIDEInputDetector::_input(const Ref<InputEvent> &event) {
 
 bool GUIDEInputDetector::_matches_device_types(const Ref<InputEvent> &event) const {
     if (_device_types.is_empty()) return true;
-    if (Object::cast_to<InputEventKey>(event.ptr())) return _device_types.has(GUIDEInput::DEVICE_KEYBOARD);
-    if (Object::cast_to<InputEventMouse>(event.ptr())) return _device_types.has(GUIDEInput::DEVICE_MOUSE);
-    if (Object::cast_to<InputEventJoypadButton>(event.ptr()) || Object::cast_to<InputEventJoypadMotion>(event.ptr())) return _device_types.has(GUIDEInput::DEVICE_JOY);
+    if (Object::cast_to<InputEventKey>(event.ptr())) return _device_types.has(GUIDEInput::KEYBOARD);
+    if (Object::cast_to<InputEventMouse>(event.ptr())) return _device_types.has(GUIDEInput::MOUSE);
+    if (Object::cast_to<InputEventJoypadButton>(event.ptr()) || Object::cast_to<InputEventJoypadMotion>(event.ptr())) return _device_types.has(GUIDEInput::JOY);
     return false;
 }
 

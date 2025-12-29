@@ -12,7 +12,7 @@ public:
     GUIDEInputTouchAxisBase();
     virtual ~GUIDEInputTouchAxisBase();
 
-    virtual bool _needs_reset() const override { return true; }
+    virtual bool _needs_reset() const override;
     virtual void _reset() override;
     virtual void _begin_usage() override;
     virtual void _end_usage() override;
