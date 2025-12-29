@@ -14,7 +14,7 @@ public:
     virtual ~GUIDEModifierCurve() {}
 
     virtual bool is_same_as(const Ref<GUIDEModifier> &other) const override;
-    virtual Vector3 _modify_input(Vector3 input, double delta, int value_type) const override;
+    virtual Vector3 _modify_input(Vector3 input, double delta, GUIDEAction::GUIDEActionValueType value_type) const override;
     virtual String _editor_name() const override { return "Curve"; }
     virtual String _editor_description() const override { return "Applies a curve to each input axis."; }
 
