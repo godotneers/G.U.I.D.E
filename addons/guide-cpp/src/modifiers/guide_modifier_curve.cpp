@@ -27,7 +27,7 @@ GUIDEModifierCurve::GUIDEModifierCurve() {
     curve->add_point(Vector2(1, 1));
 }
 
-Vector3 GUIDEModifierCurve::_modify_input(Vector3 input, double delta, int value_type) const {
+Vector3 GUIDEModifierCurve::_modify_input(Vector3 input, double delta, GUIDEAction::GUIDEActionValueType value_type) const {
     if (curve.is_null()) {
         UtilityFunctions::push_error("No curve added to Curve modifier.");
         return input;

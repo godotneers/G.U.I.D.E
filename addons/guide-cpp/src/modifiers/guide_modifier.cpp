@@ -21,7 +21,7 @@ void GUIDEModifier::_begin_usage() {
 void GUIDEModifier::_end_usage() {
 }
 
-Vector3 GUIDEModifier::_modify_input(Vector3 input, double delta, int value_type) const {
+Vector3 GUIDEModifier::_modify_input(Vector3 input, double delta, GUIDEAction::GUIDEActionValueType value_type) const {
     return input;
 }
 

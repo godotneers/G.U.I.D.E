@@ -38,7 +38,7 @@ double GUIDEModifierDeadzone::_rescale(double value) const {
     return Math::min(1.0, (Math::max(0.0, abs_val - lower_threshold) / (upper_threshold - lower_threshold))) * sign;
 }
 
-Vector3 GUIDEModifierDeadzone::_modify_input(Vector3 input, double delta, int value_type) const {
+Vector3 GUIDEModifierDeadzone::_modify_input(Vector3 input, double delta, GUIDEAction::GUIDEActionValueType value_type) const {
     if (upper_threshold <= lower_threshold) {
         UtilityFunctions::push_warning("upper_threshold shouldnt be lower than lower_threshold");
         return input;

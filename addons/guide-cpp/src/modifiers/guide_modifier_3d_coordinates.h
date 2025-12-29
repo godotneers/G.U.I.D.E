@@ -15,7 +15,7 @@ public:
     virtual bool is_same_as(const Ref<GUIDEModifier> &other) const override;
     virtual bool _needs_physics_process() const override { return true; }
     virtual void _physics_process(double delta) override;
-    virtual Vector3 _modify_input(Vector3 input, double delta, int value_type) const override;
+    virtual Vector3 _modify_input(Vector3 input, double delta, GUIDEAction::GUIDEActionValueType value_type) const override;
     virtual String _editor_name() const override { return "3D coordinates"; }
     virtual String _editor_description() const override { return "Converts a position input in viewport coordinates into 3D world coordinates."; }
 

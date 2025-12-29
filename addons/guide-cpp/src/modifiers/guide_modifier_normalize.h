@@ -18,7 +18,7 @@ public:
         return true;
     }
 
-    virtual Vector3 _modify_input(Vector3 input, double delta, int value_type) const override {
+    virtual Vector3 _modify_input(Vector3 input, double delta, GUIDEAction::GUIDEActionValueType value_type) const override {
         if (!input.is_finite()) return Vector3(Math_INF, Math_INF, Math_INF);
         return input.normalized();
     }

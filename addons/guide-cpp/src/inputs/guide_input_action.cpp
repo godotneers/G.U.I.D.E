@@ -67,6 +67,6 @@ String GUIDEInputAction::_editor_description() const {
     return "An input that mirrors the action's value while the action is triggered.";
 }
 
-int GUIDEInputAction::_native_value_type() const {
+GUIDEAction::GUIDEActionValueType GUIDEInputAction::_native_value_type() const {
     return GUIDEAction::AXIS_3D;
 }

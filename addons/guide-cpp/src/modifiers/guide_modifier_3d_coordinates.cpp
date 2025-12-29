@@ -36,7 +36,7 @@ void GUIDEModifier3DCoordinates::_physics_process(double delta) {
     _latest_update_input = _update_input(_input);
 }
 
-Vector3 GUIDEModifier3DCoordinates::_modify_input(Vector3 input, double delta, int value_type) const {
+Vector3 GUIDEModifier3DCoordinates::_modify_input(Vector3 input, double delta, GUIDEAction::GUIDEActionValueType value_type) const {
     _input = input;
     return _latest_update_input;
 }

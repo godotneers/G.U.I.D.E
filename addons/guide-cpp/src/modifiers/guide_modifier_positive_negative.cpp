@@ -30,7 +30,7 @@ GUIDEModifierPositiveNegative::GUIDEModifierPositiveNegative() {
 GUIDEModifierPositiveNegative::~GUIDEModifierPositiveNegative() {
 }
 
-Vector3 GUIDEModifierPositiveNegative::_modify_input(Vector3 input, double delta, int value_type) const {
+Vector3 GUIDEModifierPositiveNegative::_modify_input(Vector3 input, double delta, GUIDEAction::GUIDEActionValueType value_type) const {
     if (!input.is_finite()) return Vector3(Math_INF,Math_INF,Math_INF);
 
     if (range == POSITIVE) {

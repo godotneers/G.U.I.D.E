@@ -21,7 +21,7 @@ public:
     virtual bool is_same_as(const Ref<GUIDEModifier> &other) const override;
     virtual void _begin_usage() override;
     virtual void _end_usage() override;
-    virtual Vector3 _modify_input(Vector3 input, double delta, int value_type) const override;
+    virtual Vector3 _modify_input(Vector3 input, double delta, GUIDEAction::GUIDEActionValueType value_type) const override;
     virtual String _editor_name() const override { return "Virtual Cursor"; }
     virtual String _editor_description() const override { return "Stateful modifier providing a virtual cursor driven by input."; }
 

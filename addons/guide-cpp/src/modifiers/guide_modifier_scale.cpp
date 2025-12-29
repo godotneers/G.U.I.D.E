@@ -18,7 +18,7 @@ GUIDEModifierScale::GUIDEModifierScale() {
 GUIDEModifierScale::~GUIDEModifierScale() {
 }
 
-Vector3 GUIDEModifierScale::_modify_input(Vector3 input, double delta, int value_type) const {
+Vector3 GUIDEModifierScale::_modify_input(Vector3 input, double delta, GUIDEAction::GUIDEActionValueType value_type) const {
     if (!input.is_finite()) return Vector3(Math_INF, Math_INF, Math_INF);
     if (apply_delta_time) {
         return input * scale * delta;

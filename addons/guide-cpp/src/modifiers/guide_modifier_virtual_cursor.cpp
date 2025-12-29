@@ -87,7 +87,7 @@ void GUIDEModifierVirtualCursor::_end_usage() {
     }
 }
 
-Vector3 GUIDEModifierVirtualCursor::_modify_input(Vector3 input, double delta, int value_type) const {
+Vector3 GUIDEModifierVirtualCursor::_modify_input(Vector3 input, double delta, GUIDEAction::GUIDEActionValueType value_type) const {
     if (!input.is_finite()) return _offset;
 
     Vector2 size = _get_scaled_screen_size();

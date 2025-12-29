@@ -21,7 +21,7 @@ GUIDEModifierInputSwizzle::GUIDEModifierInputSwizzle() {
 GUIDEModifierInputSwizzle::~GUIDEModifierInputSwizzle() {
 }
 
-Vector3 GUIDEModifierInputSwizzle::_modify_input(Vector3 input, double delta, int value_type) const {
+Vector3 GUIDEModifierInputSwizzle::_modify_input(Vector3 input, double delta, GUIDEAction::GUIDEActionValueType value_type) const {
     switch (order) {
         case YXZ: return Vector3(input.y, input.x, input.z);
         case ZYX: return Vector3(input.z, input.y, input.x);

@@ -48,7 +48,7 @@ void GUIDEModifierMapRange::_begin_usage() {
     _omax = Math::max(output_min, output_max);
 }
 
-Vector3 GUIDEModifierMapRange::_modify_input(Vector3 input, double delta, int value_type) const {
+Vector3 GUIDEModifierMapRange::_modify_input(Vector3 input, double delta, GUIDEAction::GUIDEActionValueType value_type) const {
     if (!input.is_finite()) return Vector3(Math_INF, Math_INF, Math_INF);
 
     double xv = Math::remap((double)input.x, input_min, input_max, output_min, output_max);

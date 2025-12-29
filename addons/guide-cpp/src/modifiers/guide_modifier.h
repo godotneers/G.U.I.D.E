@@ -5,6 +5,7 @@
 #include <godot_cpp/variant/vector3.hpp>
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/core/math_defs.hpp>
+#include "guide_action.h"
 
 using namespace godot;
 
@@ -18,7 +19,7 @@ public:
     virtual bool is_same_as(const Ref<GUIDEModifier> &other) const;
     virtual void _begin_usage();
     virtual void _end_usage();
-    virtual Vector3 _modify_input(Vector3 input, double delta, int value_type) const;
+    virtual Vector3 _modify_input(Vector3 input, double delta, GUIDEAction::GUIDEActionValueType value_type) const;
     virtual String _editor_name() const;
     virtual String _editor_description() const;
     virtual bool _needs_physics_process() const;

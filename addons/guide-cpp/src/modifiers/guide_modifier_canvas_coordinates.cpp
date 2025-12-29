@@ -13,7 +13,7 @@ void GUIDEModifierCanvasCoordinates::_bind_methods() {
     ADD_PROPERTY(PropertyInfo(Variant::BOOL, "relative_input"), "set_relative_input", "get_relative_input");
 }
 
-Vector3 GUIDEModifierCanvasCoordinates::_modify_input(Vector3 input, double delta, int value_type) const {
+Vector3 GUIDEModifierCanvasCoordinates::_modify_input(Vector3 input, double delta, GUIDEAction::GUIDEActionValueType value_type) const {
     if (!input.is_finite()) return Vector3(Math_INF, Math_INF, Math_INF);
 
     SceneTree *tree =  Object::cast_to<SceneTree>(Engine::get_singleton()->get_main_loop());

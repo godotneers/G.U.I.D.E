@@ -11,7 +11,7 @@ void GUIDEModifier8WayDirection::_bind_methods() {
     ADD_PROPERTY(PropertyInfo(Variant::INT, "direction", PROPERTY_HINT_ENUM, "EAST,NORTH_EAST,NORTH,NORTH_WEST,WEST,SOUTH_WEST,SOUTH,SOUTH_EAST"), "set_direction", "get_direction");
 }
 
-Vector3 GUIDEModifier8WayDirection::_modify_input(Vector3 input, double delta, int value_type) const {
+Vector3 GUIDEModifier8WayDirection::_modify_input(Vector3 input, double delta, GUIDEAction::GUIDEActionValueType value_type) const {
     if (!input.is_finite()) return Vector3(Math_INF, Math_INF, Math_INF);
     if (input.is_zero_approx()) return Vector3(0, 0, 0);
 

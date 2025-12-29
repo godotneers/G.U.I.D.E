@@ -17,7 +17,7 @@ public:
         if (o.is_null()) return false;
         return true; 
     }
-    virtual Vector3 _modify_input(Vector3 input, double delta, int value_type) const override;
+    virtual Vector3 _modify_input(Vector3 input, double delta, GUIDEAction::GUIDEActionValueType value_type) const override;
     virtual String _editor_name() const override { return "Window relative"; }
     virtual String _editor_description() const override {
         return String("Converts the value of the input into window-relative units between 0 and 1.\n") +
