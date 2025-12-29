@@ -1,8 +1,8 @@
 #include "guide_action.h"
 #include <godot_cpp/classes/input.hpp>
 #include <godot_cpp/classes/input_event_action.hpp>
+#include <godot_cpp/variant/utility_functions.hpp>
 #include <godot_cpp/core/math.hpp>
-#include <cmath>
 
 using namespace godot;
 
@@ -120,6 +120,7 @@ void GUIDEAction::_emit_godot_action_maybe(bool pressed) {
         return;
     }
     if (name.is_empty()) {
+        UtilityFunctions::push_error("Cannot emit action into Godot's system because name is empty.");
         return;
     }
     Ref<InputEventAction> godot_action;
