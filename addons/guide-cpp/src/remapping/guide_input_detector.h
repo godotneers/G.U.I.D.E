@@ -74,7 +74,7 @@ private:
     TypedArray<GUIDEMappingContext> _saved_mapping_contexts;
     Ref<GUIDEInput> _last_detected_input;
 
-    int _value_type = 0;
+    GUIDEAction::GUIDEActionValueType _value_type = GUIDEAction::BOOL;
     TypedArray<int> _device_types;
 
     void _begin_detection();

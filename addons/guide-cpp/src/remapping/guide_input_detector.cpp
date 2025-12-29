@@ -196,6 +196,7 @@ void GUIDEInputDetector::_input(const Ref<InputEvent> &event) {
             case GUIDEAction::GUIDEActionValueType::BOOL: _try_detect_bool(event); break;
             case GUIDEAction::GUIDEActionValueType::AXIS_1D: _try_detect_axis_1d(event); break;
             case GUIDEAction::GUIDEActionValueType::AXIS_2D: _try_detect_axis_2d(event); break;
+            case GUIDEAction::GUIDEActionValueType::AXIS_3D: _try_detect_axis_3d(event); break;
         }
     }
 }

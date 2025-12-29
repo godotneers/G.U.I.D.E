@@ -24,7 +24,7 @@ public:
     String get_display_category() const;
     String get_display_name() const;
     bool is_remappable() const;
-    int get_value_type() const;
+    GUIDEAction::GUIDEActionValueType get_value_type() const;
 
     bool is_same_as(const Ref<GUIDERemapperConfigItem> &other) const;
     void _item_changed(const Ref<GUIDERemapperConfigItem> &item, const Ref<GUIDEInput> &input);

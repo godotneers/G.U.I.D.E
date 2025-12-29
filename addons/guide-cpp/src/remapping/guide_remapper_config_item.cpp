@@ -35,8 +35,8 @@ bool GUIDERemapperConfigItem::is_remappable() const {
     return GUIDERemapper::_is_effectively_remappable(action, _input_mapping);
 }
 
-int GUIDERemapperConfigItem::get_value_type() const {
-    return (int)GUIDERemapper::_get_effective_value_type(action, _input_mapping);
+GUIDEAction::GUIDEActionValueType GUIDERemapperConfigItem::get_value_type() const {
+    return GUIDERemapper::_get_effective_value_type(action, _input_mapping);
 }
 
 bool GUIDERemapperConfigItem::is_same_as(const Ref<GUIDERemapperConfigItem> &other) const {
