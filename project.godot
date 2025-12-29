@@ -17,16 +17,16 @@ config_version=5
 
 diagnostic_list/auto_refresh=false
 
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+
 [application]
 
 config/name="G.U.I.D.E"
 run/main_scene="res://guide_examples/virtual_sticks/virtual_sticks.tscn"
-config/features=PackedStringArray("4.2", "Forward Plus")
+config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
-
-[autoload]
-
-GUIDE="*res://addons/guide/guide.gd"
 
 [debug]
 
@@ -42,10 +42,6 @@ window/stretch/aspect="expand"
 
 project/assembly_name="guide"
 
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg", "res://addons/guide/plugin.cfg")
-
 [gdunit4]
 
 settings/test/test_lookup_folder="tests"
@@ -58,8 +54,8 @@ settings/common/update_notification_enabled=false
 
 ui_accept={
 "deadzone": 0.5,
-"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":4194309,"physical_keycode":0,"key_label":0,"unicode":0,"echo":false,"script":null)
-, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":32,"physical_keycode":0,"key_label":0,"unicode":32,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":4194309,"physical_keycode":0,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":32,"physical_keycode":0,"key_label":0,"unicode":32,"location":0,"echo":false,"script":null)
 ]
 }
 narf={
