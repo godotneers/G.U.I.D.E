@@ -1,5 +1,5 @@
-#ifndef GUIDE_MODIFIER_COORDINATES_H
-#define GUIDE_MODIFIER_COORDINATES_H
+#ifndef GUIDE_MODIFIER_3D_COORDINATES_H
+#define GUIDE_MODIFIER_3D_COORDINATES_H
 
 #include "guide_modifier.h"
 
@@ -41,26 +41,4 @@ private:
     Vector3 _update_input(Vector3 input) const;
 };
 
-class GUIDEModifierCanvasCoordinates : public GUIDEModifier {
-    GDCLASS(GUIDEModifierCanvasCoordinates, GUIDEModifier)
-
-public:
-    GUIDEModifierCanvasCoordinates() {}
-    virtual ~GUIDEModifierCanvasCoordinates() {}
-
-    virtual bool is_same_as(const Ref<GUIDEModifier> &other) const override;
-    virtual Vector3 _modify_input(Vector3 input, double delta, int value_type) const override;
-    virtual String _editor_name() const override { return "Canvas coordinates"; }
-    virtual String _editor_description() const override { return "Converts a position input in viewport coordinates into 2D world coordinates."; }
-
-    bool get_relative_input() const { return relative_input; }
-    void set_relative_input(bool p_val) { relative_input = p_val; emit_changed(); }
-
-protected:
-    static void _bind_methods();
-
-private:
-    bool relative_input = false;
-};
-
-#endif // GUIDE_MODIFIER_COORDINATES_H
+#endif // GUIDE_MODIFIER_3D_COORDINATES_H

@@ -1,17 +1,15 @@
-#include "guide_modifier_coordinates.h"
+#include "guide_modifier_3d_coordinates.h"
 #include <godot_cpp/classes/engine.hpp>
 #include <godot_cpp/classes/scene_tree.hpp>
 #include <godot_cpp/classes/viewport.hpp>
+#include <godot_cpp/classes/window.hpp>
 #include <godot_cpp/classes/camera3d.hpp>
 #include <godot_cpp/classes/world3d.hpp>
 #include <godot_cpp/classes/physics_direct_space_state3d.hpp>
 #include <godot_cpp/classes/physics_ray_query_parameters3d.hpp>
 #include <godot_cpp/core/math.hpp>
-#include <cmath>
 
 using namespace godot;
-
-// --- 3D Coordinates ---
 
 void GUIDEModifier3DCoordinates::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_max_depth"), &GUIDEModifier3DCoordinates::get_max_depth);
@@ -28,8 +26,8 @@ void GUIDEModifier3DCoordinates::_bind_methods() {
 }
 
 GUIDEModifier3DCoordinates::GUIDEModifier3DCoordinates() {
-    _input = Vector3(NAN, NAN, NAN);
-    _latest_update_input = Vector3(NAN, NAN, NAN);
+    _input = Vector3(0, 0, 0);
+    _latest_update_input = Vector3(0, 0, 0);
 }
 
 GUIDEModifier3DCoordinates::~GUIDEModifier3DCoordinates() {}
@@ -44,11 +42,13 @@ Vector3 GUIDEModifier3DCoordinates::_modify_input(Vector3 input, double delta, i
 }
 
 Vector3 GUIDEModifier3DCoordinates::_update_input(Vector3 input) const {
-    if (collision_mask == 0 || !input.is_finite()) return Vector3(NAN, NAN, NAN);
+    if (collision_mask == 0 || !input.is_finite()) return Vector3(Math_INF, Math_INF, Math_INF);
 
-    Viewport *viewport = SceneTree::get_singleton()->get_root();
+    SceneTree *tree = Object::cast_to<SceneTree>(Engine::get_singleton()->get_main_loop());
+    if (!tree) return Vector3(Math_INF, Math_INF, Math_INF);
+    Viewport *viewport = tree->get_root();
     Camera3D *camera = viewport->get_camera_3d();
-    if (!camera) return Vector3(NAN, NAN, NAN);
+    if (!camera) return Vector3(Math_INF, Math_INF, Math_INF);
 
     Vector2 pos(input.x, input.y);
     Vector3 from = camera->project_ray_origin(pos);
@@ -61,40 +61,13 @@ Vector3 GUIDEModifier3DCoordinates::_update_input(Vector3 input) const {
     if (result.has("position")) {
         return result["position"];
     }
-    return Vector3(NAN, NAN, NAN);
+    return Vector3(Math_INF, Math_INF, Math_INF);
 }
 
 bool GUIDEModifier3DCoordinates::is_same_as(const Ref<GUIDEModifier> &other) const {
     Ref<GUIDEModifier3DCoordinates> o = other;
     if (o.is_null()) return false;
-    return o->get_collide_with_areas() == collide_with_areas && o->get_collision_mask() == collision_mask && Math::abs(o->get_max_depth() - max_depth) < 0.00001;
-}
-
-// --- Canvas Coordinates ---
-
-void GUIDEModifierCanvasCoordinates::_bind_methods() {
-    ClassDB::bind_method(D_METHOD("get_relative_input"), &GUIDEModifierCanvasCoordinates::get_relative_input);
-    ClassDB::bind_method(D_METHOD("set_relative_input", "val"), &GUIDEModifierCanvasCoordinates::set_relative_input);
-    ADD_PROPERTY(PropertyInfo(Variant::BOOL, "relative_input"), "set_relative_input", "get_relative_input");
-}
-
-Vector3 GUIDEModifierCanvasCoordinates::_modify_input(Vector3 input, double delta, int value_type) const {
-    if (!input.is_finite()) return Vector3(NAN, NAN, NAN);
-
-    Viewport *viewport = SceneTree::get_singleton()->get_root();
-    Transform2D xform = viewport->get_canvas_transform().affine_inverse();
-    Vector2 coords = xform * Vector2(input.x, input.y);
-
-    if (relative_input) {
-        Vector2 origin = xform * Vector2(0, 0);
-        coords -= origin;
-    }
-
-    return Vector3(coords.x, coords.y, input.z);
-}
-
-bool GUIDEModifierCanvasCoordinates::is_same_as(const Ref<GUIDEModifier> &other) const {
-    Ref<GUIDEModifierCanvasCoordinates> o = other;
-    if (o.is_null()) return false;
-    return o->get_relative_input() == relative_input;
+    return o->get_collide_with_areas() == collide_with_areas && 
+           o->get_collision_mask() == collision_mask && 
+           Math::is_equal_approx(o->get_max_depth(), max_depth);
 }

@@ -1,7 +1,5 @@
 #include "guide_modifier_map_range.h"
 #include <godot_cpp/core/math.hpp>
-#include <algorithm>
-#include <cmath>
 
 using namespace godot;
 
@@ -50,27 +48,17 @@ void GUIDEModifierMapRange::_begin_usage() {
     _omax = Math::max(output_min, output_max);
 }
 
-static inline double remap_helper(double value, double i_min, double i_max, double o_min, double o_max) {
-    return o_min + (value - i_min) * (o_max - o_min) / (i_max - i_min);
-}
-
-static inline double clamp_helper(double value, double min_val, double max_val) {
-    if (value < min_val) return min_val;
-    if (value > max_val) return max_val;
-    return value;
-}
-
 Vector3 GUIDEModifierMapRange::_modify_input(Vector3 input, double delta, int value_type) const {
-    if (!input.is_finite()) return Vector3(NAN, NAN, NAN);
+    if (!input.is_finite()) return Vector3(Math_INF, Math_INF, Math_INF);
 
-    double xv = remap_helper(input.x, input_min, input_max, output_min, output_max);
-    double yv = remap_helper(input.y, input_min, input_max, output_min, output_max);
-    double zv = remap_helper(input.z, input_min, input_max, output_min, output_max);
+    double xv = Math::remap((double)input.x, input_min, input_max, output_min, output_max);
+    double yv = Math::remap((double)input.y, input_min, input_max, output_min, output_max);
+    double zv = Math::remap((double)input.z, input_min, input_max, output_min, output_max);
 
     if (apply_clamp) {
-        xv = clamp_helper(xv, _omin, _omax);
-        yv = clamp_helper(yv, _omin, _omax);
-        zv = clamp_helper(zv, _omin, _omax);
+        xv = Math::clamp(xv, _omin, _omax);
+        yv = Math::clamp(yv, _omin, _omax);
+        zv = Math::clamp(zv, _omin, _omax);
     }
 
     return Vector3(
@@ -83,11 +71,14 @@ Vector3 GUIDEModifierMapRange::_modify_input(Vector3 input, double delta, int va
 bool GUIDEModifierMapRange::is_same_as(const Ref<GUIDEModifier> &other) const {
     Ref<GUIDEModifierMapRange> o = other;
     if (o.is_null()) return false;
-    return o->get_apply_clamp() == apply_clamp && o->get_x() == x && o->get_y() == y && o->get_z() == z &&
-           Math::abs(o->get_input_min() - input_min) < 0.00001 &&
-           Math::abs(o->get_input_max() - input_max) < 0.00001 &&
-           Math::abs(o->get_output_min() - output_min) < 0.00001 &&
-           Math::abs(o->get_output_max() - output_max) < 0.00001;
+    return o->get_apply_clamp() == apply_clamp && 
+           o->get_x() == x && 
+           o->get_y() == y && 
+           o->get_z() == z &&
+           Math::is_equal_approx(input_min, o->get_input_min()) &&
+           Math::is_equal_approx(input_max, o->get_input_max()) &&
+           Math::is_equal_approx(output_min, o->get_output_min()) &&
+           Math::is_equal_approx(output_max, o->get_output_max());
 }
 
 String GUIDEModifierMapRange::_editor_name() const {

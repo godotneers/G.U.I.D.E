@@ -19,7 +19,7 @@ GUIDEModifierScale::~GUIDEModifierScale() {
 }
 
 Vector3 GUIDEModifierScale::_modify_input(Vector3 input, double delta, int value_type) const {
-    if (!input.is_finite()) return Vector3(NAN, NAN, NAN);
+    if (!input.is_finite()) return Vector3(Math_INF, Math_INF, Math_INF);
     if (apply_delta_time) {
         return input * scale * delta;
     } else {
@@ -30,7 +30,8 @@ Vector3 GUIDEModifierScale::_modify_input(Vector3 input, double delta, int value
 bool GUIDEModifierScale::is_same_as(const Ref<GUIDEModifier> &other) const {
     Ref<GUIDEModifierScale> o = other;
     if (o.is_null()) return false;
-    return o->get_scale().is_equal_approx(scale) && o->get_apply_delta_time() == apply_delta_time;
+    return o->get_scale().is_equal_approx(scale) &&
+           o->get_apply_delta_time() == apply_delta_time;
 }
 
 String GUIDEModifierScale::_editor_name() const {

@@ -1,4 +1,5 @@
 #include "guide_modifier_input_swizzle.h"
+#include <godot_cpp/variant/utility_functions.hpp>
 
 using namespace godot;
 
@@ -27,8 +28,10 @@ Vector3 GUIDEModifierInputSwizzle::_modify_input(Vector3 input, double delta, in
         case XZY: return Vector3(input.x, input.z, input.y);
         case YZX: return Vector3(input.y, input.z, input.x);
         case ZXY: return Vector3(input.z, input.x, input.y);
+        default:
+            UtilityFunctions::push_error("Unknown order " + String::num(order) + " this is most likely a bug, please report it.");
+            return input;
     }
-    return input;
 }
 
 bool GUIDEModifierInputSwizzle::is_same_as(const Ref<GUIDEModifier> &other) const {

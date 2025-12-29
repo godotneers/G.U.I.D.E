@@ -1,6 +1,5 @@
 #include "guide_modifier_positive_negative.h"
 #include <godot_cpp/core/math.hpp>
-#include <algorithm>
 
 using namespace godot;
 
@@ -32,19 +31,19 @@ GUIDEModifierPositiveNegative::~GUIDEModifierPositiveNegative() {
 }
 
 Vector3 GUIDEModifierPositiveNegative::_modify_input(Vector3 input, double delta, int value_type) const {
-    if (!input.is_finite()) return Vector3(NAN, NAN, NAN);
+    if (!input.is_finite()) return Vector3(Math_INF,Math_INF,Math_INF);
 
     if (range == POSITIVE) {
         return Vector3(
-            x ? Math::max(0.0, input.x) : input.x,
-            y ? Math::max(0.0, input.y) : input.y,
-            z ? Math::max(0.0, input.z) : input.z
+            x ? Math::max(0.0, (double)input.x) : input.x,
+            y ? Math::max(0.0, (double)input.y) : input.y,
+            z ? Math::max(0.0, (double)input.z) : input.z
         );
     } else {
         return Vector3(
-            x ? Math::min(0.0, input.x) : input.x,
-            y ? Math::min(0.0, input.y) : input.y,
-            z ? Math::min(0.0, input.z) : input.z
+            x ? Math::min(0.0, (double)input.x) : input.x,
+            y ? Math::min(0.0, (double)input.y) : input.y,
+            z ? Math::min(0.0, (double)input.z) : input.z
         );
     }
 }
@@ -52,7 +51,10 @@ Vector3 GUIDEModifierPositiveNegative::_modify_input(Vector3 input, double delta
 bool GUIDEModifierPositiveNegative::is_same_as(const Ref<GUIDEModifier> &other) const {
     Ref<GUIDEModifierPositiveNegative> o = other;
     if (o.is_null()) return false;
-    return o->get_range() == (int)range && o->get_x() == x && o->get_y() == y && o->get_z() == z;
+    return o->get_range() == range &&
+           o->get_x() == x &&
+           o->get_y() == y &&
+           o->get_z() == z;
 }
 
 String GUIDEModifierPositiveNegative::_editor_name() const {

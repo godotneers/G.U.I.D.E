@@ -17,27 +17,29 @@ void GUIDEModifierNegate::_bind_methods() {
 }
 
 GUIDEModifierNegate::GUIDEModifierNegate() {
-    _update_multiplier();
+    _update_caches();
 }
 
 GUIDEModifierNegate::~GUIDEModifierNegate() {
 }
 
-void GUIDEModifierNegate::_update_multiplier() {
+void GUIDEModifierNegate::_update_caches() {
     _multiplier.x = x ? -1.0 : 1.0;
     _multiplier.y = y ? -1.0 : 1.0;
     _multiplier.z = z ? -1.0 : 1.0;
 }
 
 Vector3 GUIDEModifierNegate::_modify_input(Vector3 input, double delta, int value_type) const {
-    if (!input.is_finite()) return Vector3(NAN, NAN, NAN);
+    if (!input.is_finite()) return Vector3(Math_INF, Math_INF, Math_INF);
     return input * _multiplier;
 }
 
 bool GUIDEModifierNegate::is_same_as(const Ref<GUIDEModifier> &other) const {
     Ref<GUIDEModifierNegate> o = other;
     if (o.is_null()) return false;
-    return o->get_x() == x && o->get_y() == y && o->get_z() == z;
+    return o->get_x() == x && 
+           o->get_y() == y &&
+           o->get_z() == z;
 }
 
 String GUIDEModifierNegate::_editor_name() const {

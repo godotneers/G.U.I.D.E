@@ -13,11 +13,13 @@ public:
     virtual ~GUIDEModifierMagnitude() {}
 
     virtual bool is_same_as(const Ref<GUIDEModifier> &other) const override {
-        return other.is_valid() && other->get_class() == get_class();
+        Ref<GUIDEModifierMagnitude> o = other;
+        if (o.is_null()) return false;
+        return true;
     }
 
     virtual Vector3 _modify_input(Vector3 input, double delta, int value_type) const override {
-        if (!input.is_finite()) return Vector3(NAN, NAN, NAN);
+        if (!input.is_finite()) return Vector3(Math_INF, Math_INF, Math_INF);
         return Vector3(input.length(), 0, 0);
     }
 

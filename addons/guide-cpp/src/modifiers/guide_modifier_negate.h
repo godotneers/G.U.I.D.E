@@ -18,13 +18,13 @@ public:
     virtual String _editor_description() const override;
 
     bool get_x() const { return x; }
-    void set_x(bool p_value) { x = p_value; _update_multiplier(); emit_changed(); }
+    void set_x(bool p_value) { x = p_value; _update_caches(); emit_changed(); }
 
     bool get_y() const { return y; }
-    void set_y(bool p_value) { y = p_value; _update_multiplier(); emit_changed(); }
+    void set_y(bool p_value) { y = p_value; _update_caches(); emit_changed(); }
 
     bool get_z() const { return z; }
-    void set_z(bool p_value) { z = p_value; _update_multiplier(); emit_changed(); }
+    void set_z(bool p_value) { z = p_value; _update_caches(); emit_changed(); }
 
 protected:
     static void _bind_methods();
@@ -35,7 +35,7 @@ protected:
 
 private:
     Vector3 _multiplier;
-    void _update_multiplier();
+    void _update_caches();
 };
 
 #endif // GUIDE_MODIFIER_NEGATE_H

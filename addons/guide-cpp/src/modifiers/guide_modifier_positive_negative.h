@@ -22,8 +22,8 @@ public:
     virtual String _editor_name() const override;
     virtual String _editor_description() const override;
 
-    int get_range() const { return (int)range; }
-    void set_range(int p_range) { range = (LimitRange)p_range; emit_changed(); }
+    LimitRange get_range() const { return range; }
+    void set_range(LimitRange p_range) { range = p_range; emit_changed(); }
 
     bool get_x() const { return x; }
     void set_x(bool p_val) { x = p_val; emit_changed(); }

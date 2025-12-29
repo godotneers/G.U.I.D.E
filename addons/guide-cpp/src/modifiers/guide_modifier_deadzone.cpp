@@ -1,8 +1,8 @@
 #include "guide_modifier_deadzone.h"
+#include "guide_action.h"
 #include <godot_cpp/variant/vector2.hpp>
+#include <godot_cpp/variant/utility_functions.hpp>
 #include <godot_cpp/core/math.hpp>
-#include <algorithm>
-#include <cmath>
 
 using namespace godot;
 
@@ -33,30 +33,36 @@ void GUIDEModifierDeadzone::set_upper_threshold(double p_value) {
 }
 
 double GUIDEModifierDeadzone::_rescale(double value) const {
-    if (upper_threshold <= lower_threshold) return value;
     double abs_val = Math::abs(value);
     double sign = (value > 0) ? 1.0 : ((value < 0) ? -1.0 : 0.0);
     return Math::min(1.0, (Math::max(0.0, abs_val - lower_threshold) / (upper_threshold - lower_threshold))) * sign;
 }
 
 Vector3 GUIDEModifierDeadzone::_modify_input(Vector3 input, double delta, int value_type) const {
-    if (upper_threshold <= lower_threshold) return input;
-    if (!input.is_finite()) return Vector3(NAN, NAN, NAN);
+    if (upper_threshold <= lower_threshold) {
+        UtilityFunctions::push_warning("upper_threshold shouldnt be lower than lower_threshold");
+        return input;
+    }
+    if (!input.is_finite()) return Vector3(Math_INF, Math_INF, Math_INF);
 
     switch (value_type) {
-        case 0: // BOOL
-        case 1: // AXIS_1D:
+        case GUIDEAction::BOOL: // BOOL
+        case GUIDEAction::AXIS_1D: // AXIS_1D
             return Vector3(_rescale(input.x), input.y, input.z);
-        case 2: { // AXIS_2D:
+
+        case GUIDEAction::AXIS_2D: { // AXIS_2D
             Vector2 v2d(input.x, input.y);
             if (v2d.is_zero_approx()) return Vector3(0, 0, input.z);
             v2d = v2d.normalized() * _rescale(v2d.length());
             return Vector3(v2d.x, v2d.y, input.z);
         }
-        case 3: { // AXIS_3D:
+        case GUIDEAction::AXIS_3D: { // AXIS_3D
             if (input.is_zero_approx()) return Vector3(0, 0, 0);
             return input.normalized() * _rescale(input.length());
         }
+        default:
+            UtilityFunctions::push_error("Unsupported value type. This is a bug. Please report it.");
+            return input;
     }
     return input;
 }
@@ -64,7 +70,8 @@ Vector3 GUIDEModifierDeadzone::_modify_input(Vector3 input, double delta, int va
 bool GUIDEModifierDeadzone::is_same_as(const Ref<GUIDEModifier> &other) const {
     Ref<GUIDEModifierDeadzone> o = other;
     if (o.is_null()) return false;
-    return Math::abs(o->get_lower_threshold() - lower_threshold) < 0.00001 && Math::abs(o->get_upper_threshold() - upper_threshold) < 0.00001;
+    return Math::is_equal_approx(lower_threshold, o->get_lower_threshold()) &&
+           Math::is_equal_approx(upper_threshold, o->get_upper_threshold());
 }
 
 String GUIDEModifierDeadzone::_editor_name() const {
@@ -72,6 +79,6 @@ String GUIDEModifierDeadzone::_editor_name() const {
 }
 
 String GUIDEModifierDeadzone::_editor_description() const {
-    return "Inputs between the lower and upper threshold are mapped 0 -> 1.\nValues outside the thresholds are clamped.";
+    return String("Inputs between the lower and upper threshold are mapped 0 -> 1.\n") +
+	       String("Values outside the thresholds are clamped.");
 }
-

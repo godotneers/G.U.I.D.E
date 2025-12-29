@@ -10,9 +10,9 @@ class GUIDEModifierVirtualCursor : public GUIDEModifier {
 
 public:
     enum ScreenScale {
-        SCALE_NONE = 0,
-        SCALE_LONGER_AXIS = 1,
-        SCALE_SHORTER_AXIS = 2
+        NONE = 0,
+        LONGER_AXIS = 1,
+        SHORTER_AXIS = 2
     };
 
     GUIDEModifierVirtualCursor();
@@ -38,8 +38,8 @@ public:
     Vector3 get_speed() const { return speed; }
     void set_speed(Vector3 p_val) { speed = p_val; emit_changed(); }
 
-    int get_screen_scale() const { return (int)screen_scale; }
-    void set_screen_scale(int p_val) { screen_scale = (ScreenScale)p_val; emit_changed(); }
+    ScreenScale get_screen_scale() const { return screen_scale; }
+    void set_screen_scale(ScreenScale p_val) { screen_scale = p_val; emit_changed(); }
 
     bool get_apply_delta_time() const { return apply_delta_time; }
     void set_apply_delta_time(bool p_val) { apply_delta_time = p_val; emit_changed(); }
@@ -52,7 +52,7 @@ private:
     bool initialize_from_mouse_position = false;
     bool apply_to_mouse_position_on_deactivation = false;
     Vector3 speed = Vector3(1, 1, 1);
-    ScreenScale screen_scale = SCALE_LONGER_AXIS;
+    ScreenScale screen_scale = LONGER_AXIS;
     bool apply_delta_time = true;
 
     mutable Vector3 _offset;

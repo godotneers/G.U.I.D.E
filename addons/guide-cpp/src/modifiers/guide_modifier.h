@@ -4,6 +4,7 @@
 #include <godot_cpp/classes/resource.hpp>
 #include <godot_cpp/variant/vector3.hpp>
 #include <godot_cpp/core/class_db.hpp>
+#include <godot_cpp/core/math_defs.hpp>
 
 using namespace godot;
 
