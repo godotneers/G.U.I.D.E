@@ -2,7 +2,8 @@
 #define GUIDE_TRIGGER_COMBO_H
 
 #include "guide_trigger.h"
-#include "guide_trigger_combo_components.h"
+#include "guide_trigger_combo_step.h"
+#include "guide_trigger_combo_cancel_action.h"
 
 using namespace godot;
 
@@ -10,15 +11,23 @@ class GUIDETriggerCombo : public GUIDETrigger {
     GDCLASS(GUIDETriggerCombo, GUIDETrigger)
 
 public:
+    enum ActionEventType {
+        TRIGGERED = 1,
+        STARTED = 2,
+        ONGOING = 4,
+        CANCELLED = 8,
+        COMPLETED = 16
+    };
+
     GUIDETriggerCombo();
     virtual ~GUIDETriggerCombo();
 
     virtual bool is_same_as(const Ref<GUIDETrigger> &other) const override;
-    virtual GUIDETriggerState _update_state(Vector3 input, double delta, int value_type) override;
+    virtual GUIDETriggerState _update_state(Vector3 input, double delta, GUIDEAction::GUIDEActionValueType value_type) override;
     virtual String _editor_name() const override;
     virtual String _editor_description() const override;
 
-    void _reset_combo();
+    void _reset();
 
     // Getters and Setters
     bool get_enable_debug_print() const { return enable_debug_print; }
@@ -40,5 +49,7 @@ protected:
     int _current_step = -1;
     double _remaining_time = 0.0;
 };
+
+VARIANT_ENUM_CAST(GUIDETriggerCombo::ActionEventType);
 
 #endif // GUIDE_TRIGGER_COMBO_H

@@ -32,13 +32,13 @@ GUIDETriggerPulse::~GUIDETriggerPulse() {
 bool GUIDETriggerPulse::is_same_as(const Ref<GUIDETrigger> &other) const {
     Ref<GUIDETriggerPulse> o = other;
     if (o.is_null()) return false;
-    return Math::abs(o->get_initial_delay() - initial_delay) < 0.00001 &&
-           Math::abs(o->get_pulse_interval() - pulse_interval) < 0.00001 &&
+    return Math::is_equal_approx(o->get_initial_delay(), initial_delay) &&
+           Math::is_equal_approx(o->get_pulse_interval(), pulse_interval) &&
            o->get_max_pulses() == max_pulses &&
            o->get_trigger_on_start() == trigger_on_start;
 }
 
-GUIDETrigger::GUIDETriggerState GUIDETriggerPulse::_update_state(Vector3 input, double delta, int value_type) {
+GUIDETrigger::GUIDETriggerState GUIDETriggerPulse::_update_state(Vector3 input, double delta, GUIDEAction::GUIDEActionValueType value_type) {
     if (_is_actuated(input, value_type)) {
         if (!_is_actuated(get_last_value(), value_type)) {
             // we went from "not actuated" to actuated, pulsing starts
@@ -68,7 +68,7 @@ GUIDETrigger::GUIDETriggerState GUIDETriggerPulse::_update_state(Vector3 input, 
         // as we can pulse at most once per frame.
 
         // in case someone sets the pulse interval to 0, we will pulse every frame.
-        if (Math::abs(pulse_interval) < 0.00001) {
+        if (Math::is_equal_approx(pulse_interval, 0.0)) {
             _delay_until_next_pulse = 0;
             if (max_pulses > 0) {
                 _emitted_pulses += 1;

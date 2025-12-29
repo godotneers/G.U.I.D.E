@@ -4,6 +4,7 @@
 #include <godot_cpp/classes/resource.hpp>
 #include <godot_cpp/variant/vector3.hpp>
 #include <godot_cpp/core/class_db.hpp>
+#include "guide_action.h"
 
 using namespace godot;
 
@@ -28,9 +29,9 @@ public:
 
     virtual bool is_same_as(const Ref<GUIDETrigger> &other) const;
     virtual GUIDETriggerType _get_trigger_type() const;
-    virtual GUIDETriggerState _update_state(Vector3 input, double delta, int value_type);
+    virtual GUIDETriggerState _update_state(Vector3 input, double delta, GUIDEAction::GUIDEActionValueType value_type);
     
-    bool _is_actuated(Vector3 input, int value_type) const;
+    bool _is_actuated(Vector3 input, GUIDEAction::GUIDEActionValueType value_type) const;
     bool _is_axis1d_actuated(Vector3 input) const;
     bool _is_axis2d_actuated(Vector3 input) const;
     bool _is_axis3d_actuated(Vector3 input) const;

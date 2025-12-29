@@ -18,10 +18,10 @@ GUIDETriggerTap::~GUIDETriggerTap() {
 bool GUIDETriggerTap::is_same_as(const Ref<GUIDETrigger> &other) const {
     Ref<GUIDETriggerTap> o = other;
     if (o.is_null()) return false;
-    return Math::abs(o->get_tap_threshold() - tap_threshold) < 0.00001;
+    return Math::is_equal_approx(o->get_tap_threshold(), tap_threshold);
 }
 
-GUIDETrigger::GUIDETriggerState GUIDETriggerTap::_update_state(Vector3 input, double delta, int value_type) {
+GUIDETrigger::GUIDETriggerState GUIDETriggerTap::_update_state(Vector3 input, double delta, GUIDEAction::GUIDEActionValueType value_type) {
     if (_is_actuated(input, value_type)) {
         if (_is_actuated(get_last_value(), value_type) && _accumulated_time > tap_threshold) {
             return NONE;

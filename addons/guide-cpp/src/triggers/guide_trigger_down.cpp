@@ -12,10 +12,12 @@ GUIDETriggerDown::~GUIDETriggerDown() {
 }
 
 bool GUIDETriggerDown::is_same_as(const Ref<GUIDETrigger> &other) const {
-    return other.is_valid() && other->get_class() == get_class();
+    Ref<GUIDETriggerDown> o = other;
+    if(o.is_null()) return false;
+    return true;
 }
 
-GUIDETrigger::GUIDETriggerState GUIDETriggerDown::_update_state(Vector3 input, double delta, int value_type) {
+GUIDETrigger::GUIDETriggerState GUIDETriggerDown::_update_state(Vector3 input, double delta, GUIDEAction::GUIDEActionValueType value_type) {
     if (_is_actuated(input, value_type)) {
         return TRIGGERED;
     }
@@ -30,4 +32,4 @@ String GUIDETriggerDown::_editor_description() const {
     return "Fires, when the input exceeds the actuation threshold. This is\nthe default trigger when no trigger is specified.";
 }
 
-} // namespace godot
+ // namespace godot

@@ -1,9 +1,17 @@
 #include "guide_trigger_combo.h"
+#include "guide_trigger_combo_step.h"
+#include "guide_trigger_combo_cancel_action.h"
 #include <godot_cpp/variant/utility_functions.hpp>
 
 using namespace godot;
 
 void GUIDETriggerCombo::_bind_methods() {
+    BIND_ENUM_CONSTANT(TRIGGERED);
+    BIND_ENUM_CONSTANT(STARTED);
+    BIND_ENUM_CONSTANT(ONGOING);
+    BIND_ENUM_CONSTANT(CANCELLED);
+    BIND_ENUM_CONSTANT(COMPLETED);
+
     ClassDB::bind_method(D_METHOD("get_enable_debug_print"), &GUIDETriggerCombo::get_enable_debug_print);
     ClassDB::bind_method(D_METHOD("set_enable_debug_print", "val"), &GUIDETriggerCombo::set_enable_debug_print);
     ADD_PROPERTY(PropertyInfo(Variant::BOOL, "enable_debug_print"), "set_enable_debug_print", "get_enable_debug_print");
@@ -40,24 +48,30 @@ bool GUIDETriggerCombo::is_same_as(const Ref<GUIDETrigger> &other) const {
     return true;
 }
 
-GUIDETrigger::GUIDETriggerState GUIDETriggerCombo::_update_state(Vector3 input, double delta, int value_type) {
-    if (steps.is_empty()) return NONE;
+GUIDETrigger::GUIDETriggerState GUIDETriggerCombo::_update_state(Vector3 input, double delta, GUIDEAction::GUIDEActionValueType value_type) {
+    if (steps.is_empty()) {
+        UtilityFunctions::push_warning("Combo with no steps will never fire.");
+        return NONE;
+    }
 
     if (_current_step == -1) {
         for (int i = 0; i < steps.size(); i++) ((Ref<GUIDETriggerComboStep>)steps[i])->_prepare();
         for (int i = 0; i < cancellation_actions.size(); i++) ((Ref<GUIDETriggerComboCancelAction>)cancellation_actions[i])->_prepare();
-        _reset_combo();
+        _reset();
     }
 
     Ref<GUIDEAction> current_action = ((Ref<GUIDETriggerComboStep>)steps[_current_step])->action;
-    if (current_action.is_null()) return NONE;
+    if (current_action.is_null()) {
+        UtilityFunctions::push_warning("Step " + String::num(_current_step) + " has no action " + get_path());
+        return NONE;
+    }
 
     for (int i = 0; i < cancellation_actions.size(); i++) {
         Ref<GUIDETriggerComboCancelAction> action = cancellation_actions[i];
         if (action->action == current_action) continue;
         if (action->_has_fired) {
             if (enable_debug_print) UtilityFunctions::print("Combo cancelled by action.");
-            _reset_combo();
+            _reset();
             return NONE;
         }
     }
@@ -67,7 +81,7 @@ GUIDETrigger::GUIDETriggerState GUIDETriggerCombo::_update_state(Vector3 input, 
         if (step->action == current_action) continue;
         if (step->_has_fired) {
             if (enable_debug_print) UtilityFunctions::print("Combo out of order step.");
-            _reset_combo();
+            _reset();
             return NONE;
         }
     }
@@ -76,7 +90,7 @@ GUIDETrigger::GUIDETriggerState GUIDETriggerCombo::_update_state(Vector3 input, 
         _remaining_time -= delta;
         if (_remaining_time <= 0.0) {
             if (enable_debug_print) UtilityFunctions::print("Step time exceeded.");
-            _reset_combo();
+            _reset();
             return NONE;
         }
     }
@@ -86,19 +100,25 @@ GUIDETrigger::GUIDETriggerState GUIDETriggerCombo::_update_state(Vector3 input, 
         cur_step->_has_fired = false;
         if (_current_step + 1 >= steps.size()) {
             if (enable_debug_print) UtilityFunctions::print("Combo fired.");
-            _reset_combo();
-            return TRIGGERED;
+            _reset();
+            return GUIDETriggerState::TRIGGERED;
         }
         _current_step++;
+        if (enable_debug_print){
+            UtilityFunctions::print("Combo advanced to step " + itos(_current_step) + ".");
+        }
         _remaining_time = ((Ref<GUIDETriggerComboStep>)steps[_current_step])->time_to_actuate;
         for (int i = 0; i < steps.size(); i++) ((Ref<GUIDETriggerComboStep>)steps[i])->_has_fired = false;
         for (int i = 0; i < cancellation_actions.size(); i++) ((Ref<GUIDETriggerComboCancelAction>)cancellation_actions[i])->_has_fired = false;
     }
 
-    return ONGOING;
+    return GUIDETriggerState::ONGOING;
 }
 
-void GUIDETriggerCombo::_reset_combo() {
+void GUIDETriggerCombo::_reset() {
+    if (enable_debug_print){
+        UtilityFunctions::print("Combo reset");
+    }
     _current_step = 0;
     if (!steps.is_empty()) {
         _remaining_time = ((Ref<GUIDETriggerComboStep>)steps[0])->time_to_actuate;

@@ -22,26 +22,27 @@ GUIDETriggerHold::~GUIDETriggerHold() {
 bool GUIDETriggerHold::is_same_as(const Ref<GUIDETrigger> &other) const {
     Ref<GUIDETriggerHold> o = other;
     if (o.is_null()) return false;
-    return Math::abs(o->get_hold_threshold() - hold_threshold) < 0.00001 && o->get_is_one_shot() == is_one_shot;
+    return Math::is_equal_approx(o->get_hold_threshold(), hold_threshold) &&
+           o->get_is_one_shot() == is_one_shot;
 }
 
-GUIDETrigger::GUIDETriggerState GUIDETriggerHold::_update_state(Vector3 input, double delta, int value_type) {
+GUIDETrigger::GUIDETriggerState GUIDETriggerHold::_update_state(Vector3 input, double delta, GUIDEAction::GUIDEActionValueType value_type) {
     if (_is_actuated(input, value_type)) {
         _accumulated_time += delta;
         if (_accumulated_time >= hold_threshold) {
             if (is_one_shot && _did_shoot) {
-                return GUIDETrigger::STATE_NONE;
+                return GUIDETrigger::NONE;
             } else {
                 _did_shoot = true;
-                return GUIDETrigger::STATE_TRIGGERED;
+                return GUIDETrigger::TRIGGERED;
             }
         } else {
-            return GUIDETrigger::STATE_ONGOING;
+            return GUIDETrigger::ONGOING;
         }
     } else {
         _accumulated_time = 0;
         _did_shoot = false;
-        return GUIDETrigger::STATE_NONE;
+        return GUIDETrigger::NONE;
     }
 }
 
@@ -53,4 +54,4 @@ String GUIDETriggerHold::_editor_description() const {
     return "Fires, once the input has remained actuated for hold_threshold seconds.\nMy fire once or repeatedly.";
 }
 
-} // namespace godot
+ // namespace godot

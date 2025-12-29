@@ -12,10 +12,12 @@ GUIDETriggerReleased::~GUIDETriggerReleased() {
 }
 
 bool GUIDETriggerReleased::is_same_as(const Ref<GUIDETrigger> &other) const {
-    return other.is_valid() && other->get_class() == get_class();
+    Ref<GUIDETriggerReleased> o = other;
+    if (o.is_null()) return false;
+    return true; 
 }
 
-GUIDETrigger::GUIDETriggerState GUIDETriggerReleased::_update_state(Vector3 input, double delta, int value_type) {
+GUIDETrigger::GUIDETriggerState GUIDETriggerReleased::_update_state(Vector3 input, double delta, GUIDEAction::GUIDEActionValueType value_type) {
     if (!_is_actuated(input, value_type)) {
         if (_is_actuated(get_last_value(), value_type)) {
             return TRIGGERED;

@@ -13,7 +13,7 @@ public:
     virtual ~GUIDETriggerDown();
 
     virtual bool is_same_as(const Ref<GUIDETrigger> &other) const override;
-    virtual GUIDETriggerState _update_state(Vector3 input, double delta, int value_type) override;
+    virtual GUIDETriggerState _update_state(Vector3 input, double delta, GUIDEAction::GUIDEActionValueType value_type) override;
     virtual String _editor_name() const override;
     virtual String _editor_description() const override;
 

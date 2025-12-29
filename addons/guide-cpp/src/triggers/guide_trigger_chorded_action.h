@@ -2,7 +2,6 @@
 #define GUIDE_TRIGGER_CHORDED_ACTION_H
 
 #include "guide_trigger.h"
-#include "../guide_action.h"
 
 using namespace godot;
 
@@ -15,7 +14,7 @@ public:
 
     virtual bool is_same_as(const Ref<GUIDETrigger> &other) const override;
     virtual GUIDETriggerType _get_trigger_type() const override;
-    virtual GUIDETriggerState _update_state(Vector3 input, double delta, int value_type) override;
+    virtual GUIDETriggerState _update_state(Vector3 input, double delta, GUIDEAction::GUIDEActionValueType value_type) override;
     
     virtual String _editor_name() const override;
     virtual String _editor_description() const override;

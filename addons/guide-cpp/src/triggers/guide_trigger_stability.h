@@ -19,7 +19,7 @@ public:
 
     virtual bool is_same_as(const Ref<GUIDETrigger> &other) const override;
     virtual GUIDETriggerType _get_trigger_type() const override;
-    virtual GUIDETriggerState _update_state(Vector3 input, double delta, int value_type) override;
+    virtual GUIDETriggerState _update_state(Vector3 input, double delta, GUIDEAction::GUIDEActionValueType value_type) override;
     
     virtual String _editor_name() const override;
     virtual String _editor_description() const override;
@@ -27,8 +27,8 @@ public:
     double get_max_deviation() const { return max_deviation; }
     void set_max_deviation(double p_val) { max_deviation = p_val; emit_changed(); }
 
-    int get_trigger_when() const { return (int)trigger_when; }
-    void set_trigger_when(int p_val) { trigger_when = (TriggerWhen)p_val; emit_changed(); }
+    TriggerWhen get_trigger_when() const { return trigger_when; }
+    void set_trigger_when(TriggerWhen p_val) { trigger_when = p_val; emit_changed(); }
 
 protected:
     static void _bind_methods();

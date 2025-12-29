@@ -1,6 +1,5 @@
 #include "guide_trigger.h"
 #include <godot_cpp/core/math.hpp>
-#include <cmath>
 
 using namespace godot;
 
@@ -25,26 +24,28 @@ GUIDETrigger::~GUIDETrigger() {
 }
 
 bool GUIDETrigger::is_same_as(const Ref<GUIDETrigger> &other) const {
-    return this == other.ptr();
+    Ref<GUIDETrigger> o = other;
+    if (o.is_null()) return false;
+    return true;
 }
 
 GUIDETrigger::GUIDETriggerType GUIDETrigger::_get_trigger_type() const {
     return EXPLICIT;
 }
 
-GUIDETrigger::GUIDETriggerState GUIDETrigger::_update_state(Vector3 input, double delta, int value_type) {
+GUIDETrigger::GUIDETriggerState GUIDETrigger::_update_state(Vector3 input, double delta, GUIDEAction::GUIDEActionValueType value_type) {
     return NONE;
 }
 
-bool GUIDETrigger::_is_actuated(Vector3 input, int value_type) const {
+bool GUIDETrigger::_is_actuated(Vector3 input, GUIDEAction::GUIDEActionValueType value_type) const {
     // value_type corresponds to GUIDEActionValueType
     switch (value_type) {
-        case 0: // BOOL
-        case 1: // AXIS_1D
+        case GUIDEAction::BOOL: // BOOL
+        case GUIDEAction::AXIS_1D: // AXIS_1D
             return _is_axis1d_actuated(input);
-        case 2: // AXIS_2D
+        case GUIDEAction::AXIS_2D: // AXIS_2D
             return _is_axis2d_actuated(input);
-        case 3: // AXIS_3D
+        case GUIDEAction::AXIS_3D: // AXIS_3D
             return _is_axis3d_actuated(input);
     }
     return false;
@@ -55,7 +56,9 @@ bool GUIDETrigger::_is_axis1d_actuated(Vector3 input) const {
 }
 
 bool GUIDETrigger::_is_axis2d_actuated(Vector3 input) const {
-    return Math::is_finite(input.x) && Math::is_finite(input.y) && (input.x * input.x + input.y * input.y) > actuation_threshold * actuation_threshold;
+    return Math::is_finite(input.x) &&
+           Math::is_finite(input.y) &&
+           Vector2(input.x, input.y).length_squared() > actuation_threshold * actuation_threshold;
 }
 
 bool GUIDETrigger::_is_axis3d_actuated(Vector3 input) const {

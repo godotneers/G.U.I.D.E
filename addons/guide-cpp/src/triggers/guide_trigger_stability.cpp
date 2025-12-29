@@ -26,34 +26,35 @@ GUIDETriggerStability::~GUIDETriggerStability() {
 bool GUIDETriggerStability::is_same_as(const Ref<GUIDETrigger> &other) const {
     Ref<GUIDETriggerStability> o = other;
     if (o.is_null()) return false;
-    return o->get_trigger_when() == (int)trigger_when && Math::abs(o->get_max_deviation() - max_deviation) < 0.00001;
+    return o->get_trigger_when() == trigger_when &&
+           Math::is_equal_approx(o->get_max_deviation(), max_deviation);
 }
 
 GUIDETrigger::GUIDETriggerType GUIDETriggerStability::_get_trigger_type() const {
-    return TYPE_IMPLICIT;
+    return IMPLICIT;
 }
 
-GUIDETrigger::GUIDETriggerState GUIDETriggerStability::_update_state(Vector3 input, double delta, int value_type) {
+GUIDETrigger::GUIDETriggerState GUIDETriggerStability::_update_state(Vector3 input, double delta, GUIDEAction::GUIDEActionValueType value_type) {
     if (_is_actuated(input, value_type)) {
         if (_deviated) {
-            return (trigger_when == INPUT_IS_STABLE) ? STATE_NONE : STATE_TRIGGERED;
+            return (trigger_when == INPUT_IS_STABLE) ? NONE : TRIGGERED;
         }
 
         if (!_is_actuated(get_last_value(), value_type)) {
             _initial_value = input;
-            return (trigger_when == INPUT_IS_STABLE) ? STATE_TRIGGERED : STATE_ONGOING;
+            return (trigger_when == INPUT_IS_STABLE) ? TRIGGERED : ONGOING;
         }
 
         if (_initial_value.distance_squared_to(input) > (max_deviation * max_deviation)) {
             _deviated = true;
-            return (trigger_when == INPUT_IS_STABLE) ? STATE_NONE : STATE_TRIGGERED;
+            return (trigger_when == INPUT_IS_STABLE) ? NONE : TRIGGERED;
         }
 
-        return (trigger_when == INPUT_IS_STABLE) ? STATE_TRIGGERED : STATE_ONGOING;
+        return (trigger_when == INPUT_IS_STABLE) ? TRIGGERED : ONGOING;
     }
 
     _deviated = false;
-    return STATE_NONE;
+    return NONE;
 }
 
 String GUIDETriggerStability::_editor_name() const {
@@ -64,4 +65,4 @@ String GUIDETriggerStability::_editor_description() const {
     return "Triggers depending on whether the input changes while actuated. This trigger\nis implicit, so it must succeed for all other triggers to succeed.";
 }
 
-} // namespace godot
+ // namespace godot

@@ -1,4 +1,5 @@
 #include "guide_trigger_chorded_action.h"
+#include <godot_cpp/variant/utility_functions.hpp>
 
 using namespace godot;
 
@@ -24,8 +25,11 @@ GUIDETrigger::GUIDETriggerType GUIDETriggerChordedAction::_get_trigger_type() co
     return IMPLICIT;
 }
 
-GUIDETrigger::GUIDETriggerState GUIDETriggerChordedAction::_update_state(Vector3 input, double delta, int value_type) {
-    if (action.is_null()) return NONE;
+GUIDETrigger::GUIDETriggerState GUIDETriggerChordedAction::_update_state(Vector3 input, double delta, GUIDEAction::GUIDEActionValueType value_type) {
+    if (action.is_null()) {
+        UtilityFunctions::push_warning("Chorded trigger without action will never trigger.");
+        return NONE;
+    }
     if (action->is_triggered()) return TRIGGERED;
     return NONE;
 }
@@ -35,5 +39,7 @@ String GUIDETriggerChordedAction::_editor_name() const {
 }
 
 String GUIDETriggerChordedAction::_editor_description() const {
-    return "Fires, when the given action is currently triggering. This trigger is implicit,\nso it will prevent the action from triggering even if other triggers are successful.";
+    return String("Fires when the given action is currently triggering. This trigger is implicit,\n") +
+           String("so it will prevent the action from triggering even if other triggers are successful.");
 }
+
