@@ -29,7 +29,9 @@ public:
             Ref<GUIDEInput> input;
             GUIDEIconRenderer* renderer;
             Ref<GUIDEInputFormattingOptions> options;
-            Ref<Image> result;
+
+            Ref<Texture2D> result;
+            // Ref<Image> result;
 
         protected:
             static void _bind_methods() {
@@ -72,13 +74,23 @@ public:
         }
     }
 
-    Ref<Texture2D> make_icon(const Ref<GUIDEInput> &input, GUIDEIconRenderer* renderer, int height_px, const Ref<GUIDEInputFormattingOptions> &options) {
+    Ref<Job> make_icon(const Ref<GUIDEInput> &input, GUIDEIconRenderer* renderer, int height_px, const Ref<GUIDEInputFormattingOptions> &options) {
         DirAccess::make_dir_recursive_absolute("user://_guide_cache");
         String key = (String::num(height_px) + renderer->cache_key(input, options)).sha256_text();
         String path = "user://_guide_cache/" + key + ".res";
 
+        // if (ResourceLoader::get_singleton()->exists(path)) {
+        //     return ResourceLoader::get_singleton()->load(path, "Texture2D");
+        // }
+
         if (ResourceLoader::get_singleton()->exists(path)) {
-            return ResourceLoader::get_singleton()->load(path, "Texture2D");
+            // Create a "fake" job that is already finished
+            Ref<Job> completed_job;
+            completed_job.instantiate();
+            completed_job->result = ResourceLoader::get_singleton()->load(path, "Texture2D");
+            
+            // We return it immediately. The caller will see result is valid.
+            return completed_job;
         }
 
         Ref<Job> job;
@@ -90,7 +102,7 @@ public:
         _pending_requests.append(job);
         set_process(true);
 
-        return Ref<Texture2D>();
+        return job;
     }
 
     void _process(double delta) override {
@@ -136,6 +148,8 @@ public:
             Ref<ImageTexture> image_texture = ImageTexture::create_from_image(image);
             ResourceSaver::get_singleton()->save(image_texture, path);
             image_texture->take_over_path(path);
+
+            _current_request->result = image_texture;
         }
 
         _current_request->emit_signal("done");
