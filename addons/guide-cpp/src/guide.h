@@ -43,9 +43,9 @@ public:
     void _update_caches_on_joy(int p_id, bool p_connected) { _update_caches(); }
     static bool _is_same_action_mapping(const Ref<GUIDEActionMapping> &a, const Ref<GUIDEActionMapping> &b);
 
-    static void _mark_used(const Ref<Object> &p_object, bool p_value);
-    static bool _is_used(const Ref<Object> &p_object);
-    static void _copy_meta(const Ref<Object> &p_source, const Ref<Object> &p_target);
+    static void _mark_used(Object *p_object, bool p_value);
+    static bool _is_used(const Object *p_object);
+    static void _copy_meta(const Object *p_source, Object *p_target);
 
     GUIDEInputState* get_input_state() const { return _input_state; }
 

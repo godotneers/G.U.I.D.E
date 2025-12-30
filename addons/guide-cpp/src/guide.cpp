@@ -261,7 +261,7 @@ void GUIDE::_update_caches() {
             Ref<GUIDEActionMapping> effective_mapping;
             effective_mapping.instantiate();
             effective_mapping->set_action(action);
-            _copy_meta(action_mapping, effective_mapping);
+            _copy_meta(action_mapping.ptr(), effective_mapping.ptr());
 
             double trigger_hold_threshold = -1.0;
             TypedArray<GUIDEInputMapping> input_mappings = action_mapping->get_input_mappings();
@@ -297,10 +297,10 @@ void GUIDE::_update_caches() {
 
                     if (existing.is_valid()) bound_input = existing;
 
-                    if (!_is_used(bound_input)) {
+                    if (!_is_used(bound_input.ptr())) {
                         bound_input->set_state(_input_state);
                         bound_input->_begin_usage();
-                        _mark_used(bound_input, true);
+                        _mark_used(bound_input.ptr(), true);
                     }
                     new_inputs->add(bound_input);
                 }
@@ -310,16 +310,16 @@ void GUIDE::_update_caches() {
                 new_im->set_display_category(im->get_display_category());
                 new_im->set_override_action_settings(im->get_override_action_settings());
                 new_im->set_is_remappable(im->get_is_remappable());
-                _copy_meta(im, new_im);
+                _copy_meta(im.ptr(), new_im.ptr());
 
                 new_im->set_modifiers(im->get_modifiers());
                 TypedArray<GUIDEModifier> mods = new_im->get_modifiers();
                 for (int k = 0; k < mods.size(); k++) {
                     Ref<GUIDEModifier> mod = mods[k];
                     new_modifiers->add(mod);
-                    if (!_is_used(mod)) {
+                    if (!_is_used(mod.ptr())) {
                         mod->_begin_usage();
-                        _mark_used(mod, true);
+                        _mark_used(mod.ptr(), true);
                     }
                 }
 
@@ -356,7 +356,7 @@ void GUIDE::_update_caches() {
             input->_reset();
             input->_end_usage();
             input->set_state(nullptr);
-            _mark_used(input, false);
+            _mark_used(input.ptr(), false);
         }
     }
     _active_inputs = new_inputs;
@@ -385,7 +385,7 @@ void GUIDE::_update_caches() {
                     Ref<GUIDEModifier> mod = mods[k];
                     if (!new_modifiers->has(mod)) {
                         mod->_end_usage();
-                        _mark_used(mod, false);
+                        _mark_used(mod.ptr(), false);
                     }
                 }
             }
@@ -503,7 +503,7 @@ bool GUIDE::_is_same_action_mapping(const Ref<GUIDEActionMapping> &a, const Ref<
     return true;
 }
 
-void GUIDE::_mark_used(const Ref<Object> &p_object, bool p_value) {
+void GUIDE::_mark_used(Object *p_object, bool p_value) {
     if (p_value) {
         p_object->set_meta("__guide_in_use", true);
     } else {
@@ -511,11 +511,11 @@ void GUIDE::_mark_used(const Ref<Object> &p_object, bool p_value) {
     }
 }
 
-bool GUIDE::_is_used(const Ref<Object> &p_object) {
+bool GUIDE::_is_used(const Object *p_object) {
     return p_object->has_meta("__guide_in_use");
 }
 
-void GUIDE::_copy_meta(const Ref<Object> &p_source, const Ref<Object> &p_target) {
+void GUIDE::_copy_meta(const Object *p_source, Object *p_target) {
     TypedArray<StringName> keys = p_source->get_meta_list();
     for (int i = 0; i < keys.size(); i++) {
         StringName key = keys[i];
