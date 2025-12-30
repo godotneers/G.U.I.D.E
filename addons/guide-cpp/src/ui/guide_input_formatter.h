@@ -163,8 +163,8 @@ public:
     static void cleanup() {
         _is_ready = false;
         for (int i = 0; i < _icon_renderers.size(); i++) {
-            Ref<GUIDEIconRenderer> r = _icon_renderers[i];
-            if (r.is_valid()) r->queue_free();
+            GUIDEIconRenderer* renderer = Object::cast_to<GUIDEIconRenderer>(_icon_renderers[i]);
+            if (renderer) renderer->queue_free();
         }
         _icon_renderers.clear();
         _text_providers.clear();
@@ -180,8 +180,8 @@ public:
         // Sort by priority (low number = high priority)
         for (int i = 0; i < _icon_renderers.size(); i++) {
             for (int j = i + 1; j < _icon_renderers.size(); j++) {
-                Ref<GUIDEIconRenderer> a = _icon_renderers[i];
-                Ref<GUIDEIconRenderer> b = _icon_renderers[j];
+                GUIDEIconRenderer *a = Object::cast_to<GUIDEIconRenderer>(_icon_renderers[i]);
+                GUIDEIconRenderer *b = Object::cast_to<GUIDEIconRenderer>(_icon_renderers[j]);
                 if (a->get_priority() > b->get_priority()) {
                     _icon_renderers[i] = b;
                     _icon_renderers[j] = a;
@@ -307,9 +307,9 @@ private:
 
         if (auto si = Object::cast_to<GUIDEMaterializedSimpleInput>(input.ptr())) {
             for (int i = 0; i < _icon_renderers.size(); i++) {
-                Ref<GUIDEIconRenderer> r = _icon_renderers[i];
-                if (r->supports(si->input, formatting_options)) {
-                    Ref<GUIDEIconMaker::Job> job = _icon_maker->make_icon(si->input, r.ptr(), _icon_size, formatting_options);
+                GUIDEIconRenderer *r = Object::cast_to<GUIDEIconRenderer>(_icon_renderers[i]);
+                if (r && r->supports(si->input, formatting_options)) {
+                    Ref<GUIDEIconMaker::Job> job = _icon_maker->make_icon(si->input, r, _icon_size, formatting_options);
                     if (job->result.is_valid()) {
                         return "[img]" + job->result->get_path() + "[/img]";
                     }
