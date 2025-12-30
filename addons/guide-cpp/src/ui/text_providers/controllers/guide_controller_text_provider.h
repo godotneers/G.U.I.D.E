@@ -64,6 +64,7 @@ public:
             switch (ja2->get_x_axis()) {
                 case JOY_AXIS_LEFT_X: case JOY_AXIS_LEFT_Y: return _format(tr(label_set->left_stick));
                 case JOY_AXIS_RIGHT_X: case JOY_AXIS_RIGHT_Y: return _format(tr(label_set->right_stick));
+                default: break;
             }
         }
 

@@ -71,6 +71,7 @@ public:
             switch (ja2->get_x_axis()) {
                 case JOY_AXIS_LEFT_X: case JOY_AXIS_LEFT_Y: if (_left_stick) _left_stick->set_visible(true); break;
                 case JOY_AXIS_RIGHT_X: case JOY_AXIS_RIGHT_Y: if (_right_stick) _right_stick->set_visible(true); break;
+                default: break;
             }
         }
 
