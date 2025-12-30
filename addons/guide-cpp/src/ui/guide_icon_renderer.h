@@ -7,7 +7,7 @@
 #include <godot_cpp/variant/utility_functions.hpp>
 #include "guide_input_formatting_options.h"
 #include "inputs/guide_input.h"
-#include "../editor/guide_editor_utils.h"
+#include "editor/guide_editor_utils.h"
 
 using namespace godot;
 

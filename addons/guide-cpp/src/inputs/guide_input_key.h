@@ -23,8 +23,8 @@ public:
     void _refresh();
 
     // Getters and Setters
-    int get_key() const { return key; }
-    void set_key(int p_key) { key = p_key; emit_changed(); }
+    Key get_key() const { return key; }
+    void set_key(Key p_key) { key = p_key; emit_changed(); }
 
     bool get_shift() const { return shift; }
     void set_shift(bool p_shift) { shift = p_shift; emit_changed(); }
@@ -45,15 +45,15 @@ protected:
     static void _bind_methods();
     String _to_string() const;
 
-    int key = 0;
+    Key key = Key::KEY_NONE;
     bool shift = false;
     bool control = false;
     bool alt = false;
     bool meta = false;
     bool allow_additional_modifiers = true;
 
-    TypedArray<int> _must_be_pressed;
-    TypedArray<int> _must_not_be_pressed;
+    TypedArray<Key> _must_be_pressed;
+    TypedArray<Key> _must_not_be_pressed;
 };
 
 #endif // GUIDE_INPUT_KEY_H
