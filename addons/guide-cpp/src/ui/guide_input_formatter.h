@@ -23,7 +23,7 @@
 #include "triggers/guide_trigger_chorded_action.h"
 #include "icon_maker/guide_icon_maker.h"
 #include "text_providers/guide_text_provider_default.h"
-#include "text_providers/guide_controller_text_provider.h"
+#include "text_providers/controllers/guide_controller_text_provider.h"
 
 using namespace godot;
 
@@ -257,6 +257,8 @@ protected:
         ClassDB::bind_method(D_METHOD("action_as_richtext", "action"), &GUIDEInputFormatter::action_as_richtext_async);
         ClassDB::bind_method(D_METHOD("input_as_richtext", "input", "materialize_actions"), &GUIDEInputFormatter::input_as_richtext_async, DEFVAL(true));
         ClassDB::bind_method(D_METHOD("get_formatting_options"), &GUIDEInputFormatter::get_formatting_options);
+
+        ADD_SIGNAL(MethodInfo("formatting_changed"));
     }
 
 private:
@@ -295,6 +297,10 @@ private:
         return sep.join(res_parts);
     }
 
+    void _trigger_refresh() {
+        emit_signal("formatting_changed"); 
+    }
+
     String _materialized_as_richtext_async(const Ref<GUIDEMaterializedInput> &input) {
         _ensure_readiness();
         if (input.is_null()) return "";
@@ -303,8 +309,13 @@ private:
             for (int i = 0; i < _icon_renderers.size(); i++) {
                 Ref<GUIDEIconRenderer> r = _icon_renderers[i];
                 if (r->supports(si->input, formatting_options)) {
-                    Ref<Texture2D> icon = _icon_maker->make_icon(si->input, r.ptr(), _icon_size, formatting_options);
-                    if (icon.is_valid()) return "[img]" + icon->get_path() + "[/img]";
+                    Ref<GUIDEIconMaker::Job> job = _icon_maker->make_icon(si->input, r.ptr(), _icon_size, formatting_options);
+                    if (job->result.is_valid()) {
+                        return "[img]" + job->result->get_path() + "[/img]";
+                    }
+                    if (!job->is_connected("done", callable_mp(this, &GUIDEInputFormatter::_trigger_refresh))) {
+                        job->connect("done", callable_mp(this, &GUIDEInputFormatter::_trigger_refresh));
+                    }
                     break;
                 }
             }
