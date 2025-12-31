@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://8thurteeibtu"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_kra7t"]
+
+[node name="GUIDEIconMaker" type="GUIDEIconMaker" unique_id=592700923]
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=1314712283]
+unique_name_in_owner = true
+transparent_bg = true
+gui_disable_input = true
+gui_snap_controls_to_pixels = false
+
+[node name="Root" type="Node2D" parent="SubViewport" unique_id=79346889]
+unique_name_in_owner = true
+scale = Vector2(0.1, 0.1)
+
+[node name="SceneHolder" type="Sprite2D" parent="." unique_id=1254469286]
+unique_name_in_owner = true
+visible = false
+texture = SubResource("ViewportTexture_kra7t")
