@@ -1,11 +1,3 @@
-; Engine configuration file.
-; It's best edited using the editor UI and not directly,
-; since the parameters that go here are not all obvious.
-;
-; Format:
-;   [section] ; section goes between []
-;   param=value ; assign values to parameters
-
 config_version=5
 
 [Guide]
@@ -23,10 +15,14 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 [application]
 
-config/name="G.U.I.D.E"
+config/name="G.U.I.D.E-CPP"
 run/main_scene="res://guide_examples/virtual_sticks/virtual_sticks.tscn"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+GUIDECPP="*uid://rmlguc6rmk4f"
 
 [debug]
 
@@ -41,6 +37,10 @@ window/stretch/aspect="expand"
 [dotnet]
 
 project/assembly_name="guide"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/guide-cpp/plugin.cfg")
 
 [gdunit4]
 
