@@ -115,6 +115,11 @@ public:
         formatting_options.instantiate();
     }
 
+    void _init(int p_icon_size, const Callable &p_resolver) {
+        _icon_size = p_icon_size;
+        _action_resolver = p_resolver;
+    }
+
     virtual ~GUIDEInputFormatter() {}
 
     static void _ensure_readiness() {
@@ -131,7 +136,7 @@ public:
         }
 
         if (_icon_maker == nullptr) {
-            Ref<PackedScene> maker_scene = ResourceLoader::get_singleton()->load("res://addons/guide/ui/icon_maker/icon_maker.tscn");
+            Ref<PackedScene> maker_scene = ResourceLoader::get_singleton()->load("res://addons/guide-cpp/plugin/ui/icon_maker/icon_maker.tscn");
             if (maker_scene.is_valid()) {
                 _icon_maker = Object::cast_to<GUIDEIconMaker>(maker_scene->instantiate());
                 root->add_child(_icon_maker);
@@ -143,13 +148,13 @@ public:
             if (scene.is_valid()) add_icon_renderer(Object::cast_to<GUIDEIconRenderer>(scene->instantiate()));
         };
 
-        load_renderer("res://addons/guide/ui/renderers/keyboard/guide_key_renderer.tscn");
-        load_renderer("res://addons/guide/ui/renderers/mouse/guide_mouse_renderer.tscn");
-        load_renderer("res://addons/guide/ui/renderers/touch/guide_touch_renderer.tscn");
-        load_renderer("res://addons/guide/ui/renderers/misc/guide_action_renderer.tscn");
-        load_renderer("res://addons/guide/ui/renderers/joy/guide_joy_renderer.tscn");
-        load_renderer("res://addons/guide/ui/renderers/controllers/guide_controller_renderer.tscn");
-        load_renderer("res://addons/guide/ui/renderers/misc/guide_fallback_renderer.tscn");
+        load_renderer("res://addons/guide-cpp/plugin/ui/renderers/keyboard/guide_key_renderer.tscn");
+        load_renderer("res://addons/guide-cpp/plugin/ui/renderers/mouse/guide_mouse_renderer.tscn");
+        load_renderer("res://addons/guide-cpp/plugin/ui/renderers/touch/guide_touch_renderer.tscn");
+        load_renderer("res://addons/guide-cpp/plugin/ui/renderers/misc/guide_action_renderer.tscn");
+        load_renderer("res://addons/guide-cpp/plugin/ui/renderers/joy/guide_joy_renderer.tscn");
+        load_renderer("res://addons/guide-cpp/plugin/ui/renderers/controllers/guide_controller_renderer.tscn");
+        load_renderer("res://addons/guide-cpp/plugin/ui/renderers/misc/guide_fallback_renderer.tscn");
 
         Ref<GUIDETextProviderDefault> default_tp; default_tp.instantiate();
         add_text_provider(default_tp.ptr());
@@ -162,12 +167,12 @@ public:
 
     static void cleanup() {
         _is_ready = false;
-        for (int i = 0; i < _icon_renderers.size(); i++) {
-            GUIDEIconRenderer* renderer = Object::cast_to<GUIDEIconRenderer>(_icon_renderers[i]);
+        for (int i = 0; i < get_icon_renderers().size(); i++) {
+            GUIDEIconRenderer* renderer = Object::cast_to<GUIDEIconRenderer>(get_icon_renderers()[i]);
             if (renderer) renderer->queue_free();
         }
-        _icon_renderers.clear();
-        _text_providers.clear();
+        get_icon_renderers().clear();
+        get_text_providers().clear();
         if (_icon_maker != nullptr) {
             _icon_maker->queue_free();
             _icon_maker = nullptr;
@@ -176,43 +181,43 @@ public:
 
     static void add_icon_renderer(GUIDEIconRenderer *renderer) {
         if (renderer == nullptr) return;
-        _icon_renderers.append(renderer);
+        get_icon_renderers().append(renderer);
         // Sort by priority (low number = high priority)
-        for (int i = 0; i < _icon_renderers.size(); i++) {
-            for (int j = i + 1; j < _icon_renderers.size(); j++) {
-                GUIDEIconRenderer *a = Object::cast_to<GUIDEIconRenderer>(_icon_renderers[i]);
-                GUIDEIconRenderer *b = Object::cast_to<GUIDEIconRenderer>(_icon_renderers[j]);
+        for (int i = 0; i < get_icon_renderers().size(); i++) {
+            for (int j = i + 1; j < get_icon_renderers().size(); j++) {
+                GUIDEIconRenderer *a = Object::cast_to<GUIDEIconRenderer>(get_icon_renderers()[i]);
+                GUIDEIconRenderer *b = Object::cast_to<GUIDEIconRenderer>(get_icon_renderers()[j]);
                 if (a->get_priority() > b->get_priority()) {
-                    _icon_renderers[i] = b;
-                    _icon_renderers[j] = a;
+                    get_icon_renderers()[i] = b;
+                    get_icon_renderers()[j] = a;
                 }
             }
         }
     }
 
     static void remove_icon_renderer(GUIDEIconRenderer *renderer) {
-        int idx = _icon_renderers.find(renderer);
-        if (idx != -1) _icon_renderers.remove_at(idx);
+        int idx = get_icon_renderers().find(renderer);
+        if (idx != -1) get_icon_renderers().remove_at(idx);
     }
 
     static void add_text_provider(GUIDETextProvider *provider) {
         if (provider == nullptr) return;
-        _text_providers.append(provider);
-        for (int i = 0; i < _text_providers.size(); i++) {
-            for (int j = i + 1; j < _text_providers.size(); j++) {
-                Ref<GUIDETextProvider> a = _text_providers[i];
-                Ref<GUIDETextProvider> b = _text_providers[j];
+        get_text_providers().append(provider);
+        for (int i = 0; i < get_text_providers().size(); i++) {
+            for (int j = i + 1; j < get_text_providers().size(); j++) {
+                Ref<GUIDETextProvider> a = get_text_providers()[i];
+                Ref<GUIDETextProvider> b = get_text_providers()[j];
                 if (a->get_priority() > b->get_priority()) {
-                    _text_providers[i] = b;
-                    _text_providers[j] = a;
+                    get_text_providers()[i] = b;
+                    get_text_providers()[j] = a;
                 }
             }
         }
     }
 
     static void remove_text_provider(GUIDETextProvider *provider) {
-        int idx = _text_providers.find(provider);
-        if (idx != -1) _text_providers.remove_at(idx);
+        int idx = get_text_providers().find(provider);
+        if (idx != -1) get_text_providers().remove_at(idx);
     }
 
     static Ref<GUIDEInputFormatter> for_active_contexts(int icon_size = 32) {
@@ -243,6 +248,8 @@ public:
 
 protected:
     static void _bind_methods() {
+        ClassDB::bind_method(D_METHOD("_init", "icon_size", "action_resolver"), &GUIDEInputFormatter::_init);
+
         ClassDB::bind_static_method("GUIDEInputFormatter", D_METHOD("add_icon_renderer", "renderer"), &GUIDEInputFormatter::add_icon_renderer);
         ClassDB::bind_static_method("GUIDEInputFormatter", D_METHOD("remove_icon_renderer", "renderer"), &GUIDEInputFormatter::remove_icon_renderer);
         ClassDB::bind_static_method("GUIDEInputFormatter", D_METHOD("add_text_provider", "provider"), &GUIDEInputFormatter::add_text_provider);
@@ -263,8 +270,16 @@ protected:
 
 private:
     static inline GUIDEIconMaker *_icon_maker = nullptr;
-    static inline TypedArray<GUIDEIconRenderer> _icon_renderers;
-    static inline TypedArray<GUIDETextProvider> _text_providers;
+    static TypedArray<GUIDEIconRenderer>& get_icon_renderers() {
+        // Created only on the first call, ensuring Godot is ready.
+        static TypedArray<GUIDEIconRenderer> _icon_renderers;
+        return _icon_renderers;
+    }
+    static TypedArray<GUIDETextProvider>& get_text_providers() {
+        // Created only on the first call.
+        static TypedArray<GUIDETextProvider> _text_providers;
+        return _text_providers;
+    }
     static inline bool _is_ready = false;
 
     int _icon_size = 32;
@@ -276,8 +291,8 @@ private:
         if (input.is_null()) return "";
 
         if (auto si = Object::cast_to<GUIDEMaterializedSimpleInput>(input.ptr())) {
-            for (int i = 0; i < _text_providers.size(); i++) {
-                Ref<GUIDETextProvider> p = _text_providers[i];
+            for (int i = 0; i < get_text_providers().size(); i++) {
+                Ref<GUIDETextProvider> p = get_text_providers()[i];
                 if (p->supports(si->input, formatting_options)) {
                     return p->get_text(si->input, formatting_options);
                 }
@@ -306,8 +321,8 @@ private:
         if (input.is_null()) return "";
 
         if (auto si = Object::cast_to<GUIDEMaterializedSimpleInput>(input.ptr())) {
-            for (int i = 0; i < _icon_renderers.size(); i++) {
-                GUIDEIconRenderer *r = Object::cast_to<GUIDEIconRenderer>(_icon_renderers[i]);
+            for (int i = 0; i < get_icon_renderers().size(); i++) {
+                GUIDEIconRenderer *r = Object::cast_to<GUIDEIconRenderer>(get_icon_renderers()[i]);
                 if (r && r->supports(si->input, formatting_options)) {
                     Ref<GUIDEIconMaker::Job> job = _icon_maker->make_icon(si->input, r, _icon_size, formatting_options);
                     if (job->result.is_valid()) {
@@ -316,7 +331,7 @@ private:
                     if (!job->is_connected("done", callable_mp(this, &GUIDEInputFormatter::_trigger_refresh))) {
                         job->connect("done", callable_mp(this, &GUIDEInputFormatter::_trigger_refresh));
                     }
-                    break;
+                    return "";
                 }
             }
             UtilityFunctions::push_warning("No renderer found for input ", input);
@@ -431,9 +446,9 @@ private:
         return Ref<GUIDEMaterializedSimpleInput>(memnew(GUIDEMaterializedSimpleInput(context->input)));
     }
 
-    static inline String mixed_input_separator = ", ";
-    static inline String chorded_input_separator = " + ";
-    static inline String combo_input_separator = " > ";
+    static constexpr const char* mixed_input_separator = ", ";
+    static constexpr const char* chorded_input_separator = " + ";
+    static constexpr const char* combo_input_separator = " > ";
 };
 
 #endif // GUIDE_INPUT_FORMATTER_H

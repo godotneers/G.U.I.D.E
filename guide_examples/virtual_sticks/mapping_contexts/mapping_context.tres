@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="GUIDEMappingContext" load_steps=22 format=3 uid="uid://4bf73j4y33fd"]
+[gd_resource type="Resource" script_class="GUIDEMappingContext" format=3 uid="uid://4bf73j4y33fd"]
 
 [ext_resource type="Resource" uid="uid://c36k5e3jjyp0w" path="res://guide_examples/virtual_sticks/mapping_contexts/move_ship.tres" id="1_e4vbv"]
 [ext_resource type="Script" path="res://addons/guide/inputs/guide_input_joy_axis_2d.gd" id="2_jhgj0"]
@@ -29,13 +29,13 @@ is_remappable = false
 display_name = ""
 display_category = ""
 input = SubResource("Resource_o2lml")
-modifiers = Array[Resource("res://addons/guide/modifiers/guide_modifier.gd")]([SubResource("Resource_3im2j")])
-triggers = Array[Resource("res://addons/guide/triggers/guide_trigger.gd")]([])
+modifiers = [SubResource("Resource_3im2j")]
+triggers = []
 
 [sub_resource type="Resource" id="Resource_f6h3o"]
 script = ExtResource("5_wprvf")
 action = ExtResource("1_e4vbv")
-input_mappings = Array[ExtResource("4_lns13")]([SubResource("Resource_qlbpd")])
+input_mappings = [SubResource("Resource_qlbpd")]
 
 [sub_resource type="Resource" id="Resource_puta0"]
 script = ExtResource("7_g4bxd")
@@ -54,13 +54,13 @@ is_remappable = false
 display_name = ""
 display_category = ""
 input = SubResource("Resource_puta0")
-modifiers = Array[Resource("res://addons/guide/modifiers/guide_modifier.gd")]([SubResource("Resource_qt4pq")])
-triggers = Array[Resource("res://addons/guide/triggers/guide_trigger.gd")]([])
+modifiers = [SubResource("Resource_qt4pq")]
+triggers = []
 
 [sub_resource type="Resource" id="Resource_n0wg6"]
 script = ExtResource("5_wprvf")
 action = ExtResource("6_44qy6")
-input_mappings = Array[ExtResource("4_lns13")]([SubResource("Resource_hgim7")])
+input_mappings = [SubResource("Resource_hgim7")]
 
 [sub_resource type="Resource" id="Resource_btn_inp"]
 script = ExtResource("10_btn")
@@ -74,15 +74,15 @@ is_remappable = false
 display_name = ""
 display_category = ""
 input = SubResource("Resource_btn_inp")
-modifiers = Array[Resource("res://addons/guide/modifiers/guide_modifier.gd")]([])
-triggers = Array[Resource("res://addons/guide/triggers/guide_trigger.gd")]([])
+modifiers = []
+triggers = []
 
 [sub_resource type="Resource" id="Resource_fire_map"]
 script = ExtResource("5_wprvf")
 action = ExtResource("8_fire")
-input_mappings = Array[ExtResource("4_lns13")]([SubResource("Resource_btn_map")])
+input_mappings = [SubResource("Resource_btn_map")]
 
 [resource]
 script = ExtResource("9_h4jvs")
 display_name = ""
-mappings = Array[ExtResource("5_wprvf")]([SubResource("Resource_f6h3o"), SubResource("Resource_n0wg6"), SubResource("Resource_fire_map")])
+mappings = [SubResource("Resource_f6h3o"), SubResource("Resource_n0wg6"), SubResource("Resource_fire_map")]

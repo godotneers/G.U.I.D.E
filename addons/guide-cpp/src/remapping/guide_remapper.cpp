@@ -107,25 +107,33 @@ TypedArray<GUIDERemapperConfigItem> GUIDERemapper::get_remappable_items(
 }
 
 String GUIDERemapper::_get_effective_display_category(const Ref<GUIDEAction> &action, const Ref<GUIDEInputMapping> &input_mapping) {
-    if (input_mapping->get_override_action_settings() && !input_mapping->get_display_category().is_empty()) {
+    if (action.is_null()) return "";
+    if (input_mapping.is_valid() && input_mapping->get_override_action_settings() && !input_mapping->get_display_category().is_empty()) {
         return input_mapping->get_display_category();
     }
     return action->get_display_category();
 }
 
 String GUIDERemapper::_get_effective_display_name(const Ref<GUIDEAction> &action, const Ref<GUIDEInputMapping> &input_mapping) {
-    if (input_mapping->get_override_action_settings() && !input_mapping->get_display_name().is_empty()) {
+    if (action.is_null()) return "";
+    if (input_mapping.is_valid() && input_mapping->get_override_action_settings() && !input_mapping->get_display_name().is_empty()) {
         return input_mapping->get_display_name();
     }
     return action->get_display_name();
 }
 
 bool GUIDERemapper::_is_effectively_remappable(const Ref<GUIDEAction> &action, const Ref<GUIDEInputMapping> &input_mapping) {
-    return action->get_is_remappable() && (!input_mapping->get_override_action_settings() || input_mapping->get_is_remappable());
+    if (action.is_null()) return false;
+    if (input_mapping.is_valid()) {
+        return action->get_is_remappable() && (!input_mapping->get_override_action_settings() || input_mapping->get_is_remappable());
+    }
+    return action->get_is_remappable();
 }
 
 GUIDEAction::GUIDEActionValueType GUIDERemapper::_get_effective_value_type(const Ref<GUIDEAction> &action, const Ref<GUIDEInputMapping> &input_mapping) {
-    if (input_mapping->get_override_action_settings() && input_mapping->get_input().is_valid()) {
+    if (action.is_null()) return GUIDEAction::BOOL;
+    
+    if (input_mapping.is_valid() && input_mapping->get_override_action_settings() && input_mapping->get_input().is_valid()) {
         return (GUIDEAction::GUIDEActionValueType)input_mapping->get_input()->_native_value_type();
     }
     return action->get_action_value_type();

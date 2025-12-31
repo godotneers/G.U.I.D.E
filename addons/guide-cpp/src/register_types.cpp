@@ -19,7 +19,7 @@ void initialize_guide_module(ModuleInitializationLevel p_level) {
     if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
         return;
     }
-    
+
     RegisterGuide::register_types();
     RegisterEditor::register_types();
     RegisterInputs::register_types();

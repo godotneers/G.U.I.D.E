@@ -25,6 +25,10 @@
 
 #include "ui/icon_maker/guide_icon_maker.h"
 
+#include "ui/text_providers/guide_text_provider_default.h"
+#include "ui/text_providers/controllers/guide_controller_label_set.h"
+#include "ui/text_providers/controllers/guide_controller_text_provider.h"
+
 class RegisterUI {
 public:
     static void register_types();

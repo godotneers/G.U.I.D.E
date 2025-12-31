@@ -52,8 +52,8 @@ protected:
     bool meta = false;
     bool allow_additional_modifiers = true;
 
-    TypedArray<Key> _must_be_pressed;
-    TypedArray<Key> _must_not_be_pressed;
+    TypedArray<int> _must_be_pressed;
+    TypedArray<int> _must_not_be_pressed;
 };
 
 #endif // GUIDE_INPUT_KEY_H

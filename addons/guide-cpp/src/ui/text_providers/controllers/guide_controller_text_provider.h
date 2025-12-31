@@ -20,6 +20,9 @@ public:
     }
     virtual ~GUIDEControllerTextProvider() {}
 
+    
+
+
     static void set_label_set(GUIDEFormattingUtils::ControllerType type, const Ref<GUIDEControllerLabelSet> &label_set) {
         if (label_set.is_null()) {
             UtilityFunctions::push_error("Label set must not be null.");
@@ -29,7 +32,7 @@ public:
             UtilityFunctions::push_error("Cannot set label set for the unknown controller. Use GUIDEInputFormattingOptions to set up how unknown controllers are rendered.");
             return;
         }
-        _controller_label_sets[type] = label_set;
+        get_controller_label_sets()[type] = label_set;
     }
 
     virtual bool supports(const Ref<GUIDEInput> &input, const Ref<GUIDEInputFormattingOptions> &options) const override {
@@ -40,13 +43,9 @@ public:
         GUIDEFormattingUtils::ControllerType type = GUIDEFormattingUtils::effective_controller_type(input, options);
         
         // Lazy load default label sets if empty
-        if (_controller_label_sets.is_empty()) {
-            _controller_label_sets[GUIDEFormattingUtils::CONTROLLER_MICROSOFT] = ResourceLoader::get_singleton()->load("res://addons/guide/ui/text_providers/controllers/label_sets/microsoft.tres");
-            _controller_label_sets[GUIDEFormattingUtils::CONTROLLER_NINTENDO] = ResourceLoader::get_singleton()->load("res://addons/guide/ui/text_providers/controllers/label_sets/nintendo.tres");
-            _controller_label_sets[GUIDEFormattingUtils::CONTROLLER_SONY] = ResourceLoader::get_singleton()->load("res://addons/guide/ui/text_providers/controllers/label_sets/sony.tres");
-        }
+        
 
-        Ref<GUIDEControllerLabelSet> label_set = _controller_label_sets[type];
+        Ref<GUIDEControllerLabelSet> label_set = get_controller_label_sets()[type];
         if (label_set.is_null()) return _format("??");
 
         if (auto ja1 = Object::cast_to<GUIDEInputJoyAxis1D>(input.ptr())) {
@@ -98,7 +97,17 @@ protected:
     }
 
 private:
-    static inline Dictionary _controller_label_sets;
+    static Dictionary& get_controller_label_sets() {
+        static Dictionary _controller_label_sets;
+
+        if (_controller_label_sets.is_empty()) {
+            _controller_label_sets[GUIDEFormattingUtils::CONTROLLER_MICROSOFT] = ResourceLoader::get_singleton()->load("res://addons/guide-cpp/plugin/ui/text_providers/controllers/label_sets/microsoft.tres");
+            _controller_label_sets[GUIDEFormattingUtils::CONTROLLER_NINTENDO] = ResourceLoader::get_singleton()->load("res://addons/guide-cpp/plugin/ui/text_providers/controllers/label_sets/nintendo.tres");
+            _controller_label_sets[GUIDEFormattingUtils::CONTROLLER_SONY] = ResourceLoader::get_singleton()->load("res://addons/guide-cpp/plugin/ui/text_providers/controllers/label_sets/sony.tres");
+        }
+
+        return _controller_label_sets;
+    }
 
     String _format(const String &p_input) const {
         return "[" + p_input + "]";

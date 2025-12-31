@@ -109,7 +109,7 @@ protected:
     void _notification(int p_what) {
         if (p_what == NOTIFICATION_POSTINITIALIZE) {
             if (_style.is_null()) {
-                _style = ResourceLoader::get_singleton()->load("res://addons/guide/ui/renderers/joy/styles/default.tres");
+                _style = ResourceLoader::get_singleton()->load("res://addons/guide-cpp/plugin/ui/renderers/joy/styles/default.tres");
             }
         }
         if (p_what == NOTIFICATION_READY) {

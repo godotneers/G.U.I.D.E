@@ -31,7 +31,7 @@ public:
             UtilityFunctions::push_error("Cannot set icon set for the unknown controller. Use GUIDEInputFormattingOptions to set up how unknown controllers are rendered.");
             return;
         }
-        _controller_styles[type] = style;
+        get_controller_styles()[type] = style;
     }
 
     virtual bool supports(const Ref<GUIDEInput> &input, const Ref<GUIDEInputFormattingOptions> &options) override {
@@ -101,7 +101,7 @@ public:
 
     virtual String cache_key(const Ref<GUIDEInput> &input, const Ref<GUIDEInputFormattingOptions> &options) override {
         GUIDEFormattingUtils::ControllerType type = GUIDEFormattingUtils::effective_controller_type(input, options);
-        Ref<GUIDEControllerRenderStyle> style = _controller_styles[type];
+        Ref<GUIDEControllerRenderStyle> style = get_controller_styles() [type];
         return "7581f483-bc68-411f-98ad-dc246fd2593a" + input->to_string() + (style.is_valid() ? style->get_path() : "");
     }
 
@@ -112,13 +112,13 @@ protected:
 
     void _notification(int p_what) {
         if (p_what == NOTIFICATION_POSTINITIALIZE) {
-            if (_controller_styles.is_empty()) {
-                _controller_styles[GUIDEFormattingUtils::CONTROLLER_MICROSOFT] = 
-                    ResourceLoader::get_singleton()->load("res://addons/guide/ui/renderers/controllers/styles/microsoft/microsoft.tres");
-                _controller_styles[GUIDEFormattingUtils::CONTROLLER_NINTENDO] = 
-                    ResourceLoader::get_singleton()->load("res://addons/guide/ui/renderers/controllers/styles/nintendo/nintendo.tres");
-                _controller_styles[GUIDEFormattingUtils::CONTROLLER_SONY] = 
-                    ResourceLoader::get_singleton()->load("res://addons/guide/ui/renderers/controllers/styles/sony/sony.tres");
+            if (get_controller_styles().is_empty()) {
+                get_controller_styles()[GUIDEFormattingUtils::CONTROLLER_MICROSOFT] = 
+                    ResourceLoader::get_singleton()->load("res://addons/guide-cpp/plugin/ui/renderers/controllers/styles/microsoft/microsoft.tres");
+                get_controller_styles()[GUIDEFormattingUtils::CONTROLLER_NINTENDO] = 
+                    ResourceLoader::get_singleton()->load("res://addons/guide-cpp/plugin/ui/renderers/controllers/styles/nintendo/nintendo.tres");
+                get_controller_styles()[GUIDEFormattingUtils::CONTROLLER_SONY] = 
+                    ResourceLoader::get_singleton()->load("res://addons/guide-cpp/plugin/ui/renderers/controllers/styles/sony/sony.tres");
             }
         }
 
@@ -151,7 +151,10 @@ protected:
     }
 
 private:
-    static inline Dictionary _controller_styles;
+    static Dictionary& get_controller_styles() {
+        static Dictionary _controller_styles;
+        return _controller_styles;
+    }
 
     TextureRect *_a_button = nullptr;
     TextureRect *_b_button = nullptr;
@@ -180,7 +183,7 @@ private:
 
     void _setup_textures(GUIDEFormattingUtils::ControllerType type) {
         if (type == GUIDEFormattingUtils::CONTROLLER_UNKNOWN) return;
-        Ref<GUIDEControllerRenderStyle> style = _controller_styles[type];
+        Ref<GUIDEControllerRenderStyle> style = get_controller_styles()[type];
         if (style.is_null()) return;
 
         if (_a_button) _a_button->set_texture(style->a_button);

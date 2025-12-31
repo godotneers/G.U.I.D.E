@@ -46,6 +46,10 @@ window/stretch/aspect="expand"
 
 project/assembly_name="guide"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/guide-cpp/plugin.cfg")
+
 [gdunit4]
 
 settings/test/test_lookup_folder="tests"

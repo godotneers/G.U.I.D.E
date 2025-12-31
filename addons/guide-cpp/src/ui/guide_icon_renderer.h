@@ -2,7 +2,7 @@
 #define GUIDE_ICON_RENDERER_H
 
 #include <godot_cpp/core/class_db.hpp>
-#include <godot_cpp/classes/control.hpp>
+#include <godot_cpp/classes/margin_container.hpp>
 #include <godot_cpp/classes/engine.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
 #include "guide_input_formatting_options.h"
@@ -11,8 +11,8 @@
 
 using namespace godot;
 
-class GUIDEIconRenderer : public Control {
-    GDCLASS(GUIDEIconRenderer, Control)
+class GUIDEIconRenderer : public MarginContainer {
+    GDCLASS(GUIDEIconRenderer, MarginContainer)
 
 public:
     GUIDEIconRenderer() {}

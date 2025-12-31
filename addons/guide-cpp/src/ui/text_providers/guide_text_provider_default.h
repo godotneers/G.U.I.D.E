@@ -7,21 +7,21 @@
 #include <godot_cpp/variant/utility_functions.hpp>
 #include <godot_cpp/classes/translation_server.hpp>
 
-#include "../../inputs/guide_input_key.h"
-#include "../../inputs/guide_input_mouse_button.h"
-#include "../../inputs/guide_input_mouse_axis_1d.h"
-#include "../../inputs/guide_input_mouse_axis_2d.h"
-#include "../../inputs/guide_input_mouse_position.h"
-#include "../../inputs/guide_input_joy_button.h"
-#include "../../inputs/guide_input_joy_axis_1d.h"
-#include "../../inputs/guide_input_joy_axis_2d.h"
-#include "../../inputs/guide_input_any.h"
-#include "../../inputs/guide_input_action.h"
-#include "../../inputs/guide_input_touch_position.h"
-#include "../../inputs/guide_input_touch_angle.h"
-#include "../../inputs/guide_input_touch_distance.h"
-#include "../../inputs/guide_input_touch_axis_1d.h"
-#include "../../inputs/guide_input_touch_axis_2d.h"
+#include "inputs/guide_input_key.h"
+#include "inputs/guide_input_mouse_button.h"
+#include "inputs/guide_input_mouse_axis_1d.h"
+#include "inputs/guide_input_mouse_axis_2d.h"
+#include "inputs/guide_input_mouse_position.h"
+#include "inputs/guide_input_joy_button.h"
+#include "inputs/guide_input_joy_axis_1d.h"
+#include "inputs/guide_input_joy_axis_2d.h"
+#include "inputs/guide_input_any.h"
+#include "inputs/guide_input_action.h"
+#include "inputs/guide_input_touch_position.h"
+#include "inputs/guide_input_touch_angle.h"
+#include "inputs/guide_input_touch_distance.h"
+#include "inputs/guide_input_touch_axis_1d.h"
+#include "inputs/guide_input_touch_axis_2d.h"
 
 namespace godot {
 

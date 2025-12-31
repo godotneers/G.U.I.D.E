@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://tk30wnstb0ku"]
+
+[ext_resource type="Script" uid="uid://bctbob5b7ecll" path="res://addons/guide-cpp/plugin/editor/trigger_slot/trigger_slot.gd" id="1_fgmg3"]
+
+[node name="LineEdit" type="LineEdit" unique_id=1871022832]
+unique_name_in_owner = true
+offset_right = 1920.0
+offset_bottom = 31.0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+tooltip_text = "Delete trigger"
+text = "Name"
+editable = false
+context_menu_enabled = false
+shortcut_keys_enabled = false
+middle_mouse_paste_enabled = false
+selecting_enabled = false
+drag_and_drop_selection_enabled = false
+virtual_keyboard_enabled = false
+script = ExtResource("1_fgmg3")

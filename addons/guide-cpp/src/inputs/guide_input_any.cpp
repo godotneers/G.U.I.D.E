@@ -118,6 +118,10 @@ bool GUIDEInputAny::is_same_as(const Ref<GUIDEInput> &other) const {
            Math::abs(o->minimum_joy_axis_actuation_strength - minimum_joy_axis_actuation_strength) < 0.00001;
 }
 
+String GUIDEInputAny::_to_string() const {
+    return "(GUIDEInputAny)";
+}
+
 String GUIDEInputAny::_editor_name() const {
     return "Any Input";
 }
