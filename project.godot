@@ -1,3 +1,11 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
 config_version=5
 
 [Guide]
@@ -37,10 +45,6 @@ window/stretch/aspect="expand"
 [dotnet]
 
 project/assembly_name="guide"
-
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/guide-cpp/plugin.cfg")
 
 [gdunit4]
 
