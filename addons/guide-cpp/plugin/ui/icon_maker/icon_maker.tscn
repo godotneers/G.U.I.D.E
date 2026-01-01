@@ -1,8 +1,10 @@
 [gd_scene format=3 uid="uid://8thurteeibtu"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_kra7t"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_4jw4v"]
+viewport_path = NodePath("SubViewport")
 
 [node name="GUIDEIconMaker" type="GUIDEIconMaker" unique_id=592700923]
+process_mode = 3
 
 [node name="SubViewport" type="SubViewport" parent="." unique_id=1314712283]
 unique_name_in_owner = true
@@ -16,5 +18,4 @@ scale = Vector2(0.1, 0.1)
 
 [node name="SceneHolder" type="Sprite2D" parent="." unique_id=1254469286]
 unique_name_in_owner = true
-visible = false
-texture = SubResource("ViewportTexture_kra7t")
+texture = SubResource("ViewportTexture_4jw4v")

@@ -43,13 +43,19 @@ public:
     virtual ~GUIDEIconMaker() {}
 
     void _ready() override {
-        if (Engine::get_singleton()->is_editor_hint()) return;
+        // if (Engine::get_singleton()->is_editor_hint()) return;
 
         set_process_mode(PROCESS_MODE_ALWAYS);
         
         _sub_viewport = Object::cast_to<SubViewport>(get_node_or_null("%SubViewport"));
         _root = Object::cast_to<Node2D>(get_node_or_null("%Root"));
-        _scene_holder = Object::cast_to<Sprite2D>(get_node_or_null("%Sprite2D"));
+        _scene_holder = Object::cast_to<Sprite2D>(get_node_or_null("%SceneHolder"));
+
+        if (_sub_viewport == nullptr || _root == nullptr || _scene_holder == nullptr) {
+            UtilityFunctions::push_error("GUIDEIconMaker: missing required child nodes (SubViewport/Root/SceneHolder).");
+            set_process(false);
+            return;
+        }
 
         Ref<ViewportTexture> vt;
         vt.instantiate();
@@ -58,6 +64,7 @@ public:
         // but set_viewport_path works if the node is in the tree.
         vt->set_viewport_path_in_scene(get_path_to(_sub_viewport));
         _scene_holder->set_texture(vt);
+        // _scene_holder->show();
 
         if (_pending_requests.is_empty()) {
             set_process(false);
@@ -75,6 +82,11 @@ public:
     }
 
     Ref<Job> make_icon(const Ref<GUIDEInput> &input, GUIDEIconRenderer* renderer, int height_px, const Ref<GUIDEInputFormattingOptions> &options) {
+        UtilityFunctions::print("height ", height_px);
+        if (_sub_viewport == nullptr) {
+            _sub_viewport = Object::cast_to<SubViewport>(get_node_or_null("SubViewport")); // Remove % if not in tree fully yet, or use find_child
+            // If still null, we are in trouble.
+        }
         DirAccess::make_dir_recursive_absolute("user://_guide_cache");
         String key = (String::num(height_px) + renderer->cache_key(input, options)).sha256_text();
         String path = "user://_guide_cache/" + key + ".res";
@@ -111,8 +123,17 @@ public:
             return;
         }
 
+        if (_sub_viewport == nullptr || _root == nullptr || _scene_holder == nullptr) {
+            UtilityFunctions::push_error("GUIDEIconMaker: processing with uninitialized nodes; aborting.");
+            _pending_requests.clear();
+            _current_request.unref();
+            set_process(false);
+            return;
+        }
+
         if (_current_request.is_null()) {
             _current_request = _pending_requests.pop_front();
+            UtilityFunctions::print(_current_request->renderer);
             _root->add_child(_current_request->renderer);
             _current_request->renderer->render(_current_request->input, _current_request->options);
             
@@ -127,36 +148,51 @@ public:
                 Vector2 actual_size = _current_request->renderer->get_rect().size;
                 if (actual_size.y > 0) {
                     float scale = (float)_current_request->height / actual_size.y;
+                    UtilityFunctions::print(actual_size, " | ", scale, " | ", actual_size * scale);
                     _root->set_scale(Vector2(scale, scale));
                     _sub_viewport->set_size(actual_size * scale);
                 }
             }
+            UtilityFunctions::print("Wait frames: ", _wait_frames);
             _wait_frames--;
             return;
         }
 
         // Fetch the image from the viewport texture
-        Ref<Texture2D> vt = _scene_holder->get_texture();
+        Ref<Texture2D> vt = _sub_viewport->get_texture();
         if (vt.is_valid()) {
+            // Get image from GPU
             Ref<Image> image = vt->get_image();
-            _current_request->result = image;
             
-            // Save to cache
-            String key = (String::num(_current_request->height) + _current_request->renderer->cache_key(_current_request->input, _current_request->options)).sha256_text();
-            String path = "user://_guide_cache/" + key + ".res";
-            
-            Ref<ImageTexture> image_texture = ImageTexture::create_from_image(image);
-            ResourceSaver::get_singleton()->save(image_texture, path);
-            image_texture->take_over_path(path);
-
-            _current_request->result = image_texture;
+            if (image.is_valid() && !image->is_empty()) {
+                String key = (String::num(_current_request->height) + _current_request->renderer->cache_key(_current_request->input, _current_request->options)).sha256_text();
+                String path = "user://_guide_cache/" + key + ".res";
+                
+                Ref<ImageTexture> image_texture = ImageTexture::create_from_image(image);
+                if (image_texture.is_valid()) {
+                    ResourceSaver::get_singleton()->save(image_texture, path);
+                    image_texture->take_over_path(path);
+                    _current_request->result = image_texture;
+                    // _fetch_image = true;
+                    // return;
+                }
+            } else {
+                UtilityFunctions::push_error("GUIDEIconMaker: Captured image was empty or invalid.");
+            }
+        } else {
+            UtilityFunctions::push_error("GUIDEIconMaker: SceneHolder has no valid texture.");
         }
 
-        _current_request->emit_signal("done");
-        
-        _root->remove_child(_current_request->renderer);
-        _sub_viewport->set_update_mode(SubViewport::UPDATE_DISABLED);
-        _current_request.unref();
+        // if (_fetch_image) {
+            // _fetch_image = false;
+            _current_request->emit_signal("done");
+            
+            _root->remove_child(_current_request->renderer);
+            // _sub_viewport->set_update_mode(SubViewport::UPDATE_DISABLED);
+            _current_request.unref();
+            // return;
+        // }
+
     }
 
 protected:
@@ -166,6 +202,7 @@ protected:
     }
 
 private:
+    bool _fetch_image = false;
     SubViewport *_sub_viewport = nullptr;
     Node2D *_root = nullptr;
     Sprite2D *_scene_holder = nullptr;

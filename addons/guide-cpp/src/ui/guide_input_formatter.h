@@ -136,10 +136,22 @@ public:
         }
 
         if (_icon_maker == nullptr) {
-            Ref<PackedScene> maker_scene = ResourceLoader::get_singleton()->load("res://addons/guide-cpp/plugin/ui/icon_maker/icon_maker.tscn");
+            String path = "res://addons/guide-cpp/plugin/ui/icon_maker/icon_maker.tscn";
+            Ref<PackedScene> maker_scene = ResourceLoader::get_singleton()->load(path);
+
             if (maker_scene.is_valid()) {
-                _icon_maker = Object::cast_to<GUIDEIconMaker>(maker_scene->instantiate());
-                root->add_child(_icon_maker);
+                Node *inst = maker_scene->instantiate();
+                _icon_maker = Object::cast_to<GUIDEIconMaker>(inst);
+
+                if (_icon_maker) {
+                    // Critical: Add to tree so _ready() runs and finds %SubViewport
+                    root->add_child(_icon_maker); 
+                } else {
+                    UtilityFunctions::push_error("GUIDE: Failed to cast instantiated scene to GUIDEIconMaker.");
+                    memdelete(inst); // Cleanup if cast failed
+                }
+            } else {
+                UtilityFunctions::push_error("GUIDE: Could not load Icon Maker scene at: " + path);
             }
         }
 
@@ -261,8 +273,8 @@ protected:
 
         ClassDB::bind_method(D_METHOD("action_as_text", "action"), &GUIDEInputFormatter::action_as_text);
         ClassDB::bind_method(D_METHOD("input_as_text", "input", "materialize_actions"), &GUIDEInputFormatter::input_as_text, DEFVAL(true));
-        ClassDB::bind_method(D_METHOD("action_as_richtext", "action"), &GUIDEInputFormatter::action_as_richtext_async);
-        ClassDB::bind_method(D_METHOD("input_as_richtext", "input", "materialize_actions"), &GUIDEInputFormatter::input_as_richtext_async, DEFVAL(true));
+        ClassDB::bind_method(D_METHOD("action_as_richtext_async", "action"), &GUIDEInputFormatter::action_as_richtext_async);
+        ClassDB::bind_method(D_METHOD("input_as_richtext_async", "input", "materialize_actions"), &GUIDEInputFormatter::input_as_richtext_async, DEFVAL(true));
         ClassDB::bind_method(D_METHOD("get_formatting_options"), &GUIDEInputFormatter::get_formatting_options);
 
         ADD_SIGNAL(MethodInfo("formatting_changed"));
@@ -318,6 +330,11 @@ private:
 
     String _materialized_as_richtext_async(const Ref<GUIDEMaterializedInput> &input) {
         _ensure_readiness();
+
+        if (_icon_maker == nullptr) {
+            UtilityFunctions::push_warning("GUIDE: Icon Maker is missing. Check .tscn path.");
+            return "";
+        }
         if (input.is_null()) return "";
 
         if (auto si = Object::cast_to<GUIDEMaterializedSimpleInput>(input.ptr())) {
@@ -325,11 +342,13 @@ private:
                 GUIDEIconRenderer *r = Object::cast_to<GUIDEIconRenderer>(get_icon_renderers()[i]);
                 if (r && r->supports(si->input, formatting_options)) {
                     Ref<GUIDEIconMaker::Job> job = _icon_maker->make_icon(si->input, r, _icon_size, formatting_options);
-                    if (job->result.is_valid()) {
+
+                    if (job.is_valid() && job->result.is_valid()) {
                         return "[img]" + job->result->get_path() + "[/img]";
                     }
                     if (!job->is_connected("done", callable_mp(this, &GUIDEInputFormatter::_trigger_refresh))) {
                         job->connect("done", callable_mp(this, &GUIDEInputFormatter::_trigger_refresh));
+                        UtilityFunctions::print("job connection made");
                     }
                     return "";
                 }

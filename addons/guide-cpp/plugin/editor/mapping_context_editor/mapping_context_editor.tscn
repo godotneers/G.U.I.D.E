@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dm3hott3tfvwe"]
 
 [ext_resource type="Script" uid="uid://d0ld3bnrkt0kn" path="res://addons/guide-cpp/plugin/editor/mapping_context_editor/mapping_context_editor.gd" id="1_gad7p"]
+[ext_resource type="PackedScene" uid="uid://361aipcef24h" path="res://addons/guide-cpp/plugin/editor/action_mapping_editor/action_mapping_editor.tscn" id="2_tgm5y"]
 [ext_resource type="PackedScene" uid="uid://cly0ff32fvpb2" path="res://addons/guide-cpp/plugin/editor/array_edit/array_edit.tscn" id="3_x7h5x"]
 
 [node name="MappingContextEditor" type="MarginContainer" unique_id=1823187167]
@@ -16,6 +17,7 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 script = ExtResource("1_gad7p")
+action_mapping_editor_scene = ExtResource("2_tgm5y")
 
 [node name="Toolbar" type="VBoxContainer" parent="." unique_id=1195054151]
 layout_mode = 2

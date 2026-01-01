@@ -93,13 +93,71 @@ func _on_triggers_add_requested():
 func _fill_popup(popup:PopupMenu, base_clazz:StringName):
 	popup.clear(true)
 	
-	var inheritors := ClassScanner.find_inheritors(base_clazz)
-	for type in inheritors.keys():
-		var class_script:Script = inheritors[type]
+	print("Debug: Looking for inheritors of ", base_clazz)
+	
+	# First, get C++ classes from ClassDB
+	var cpp_inheritors := ClassDB.get_inheriters_from_class(base_clazz)
+	print("Debug: Found ", cpp_inheritors.size(), " C++ inheritors: ", cpp_inheritors)
+	
+	for cpp_class in cpp_inheritors:
+		# Skip the base class itself
+		if cpp_class == base_clazz:
+			continue
+			
+		print("Debug: Processing C++ class: ", cpp_class)
+		
+		# Try to create an instance to get editor info
+		var instance = ClassDB.instantiate(cpp_class)
+		if instance:
+			# For C++ classes, use the class name as the display name if _editor_name is missing
+			var editor_name: String
+			if instance.has_method("_editor_name"):
+				editor_name = instance._editor_name()
+			else:
+				# Create a readable name from the class name
+				editor_name = cpp_class.replace("GUIDEModifier", "")
+				editor_name = editor_name.replace("GUIDETrigger", "")
+				# Add spaces for camel case
+				var result = ""
+				for i in range(editor_name.length()):
+					if i > 0 and editor_name[i].to_upper() == editor_name[i]:
+						result += " "
+					result += editor_name[i]
+				editor_name = result
+				print("Debug: Using generated name: ", editor_name)
+			
+			print("Debug: Adding C++ class: ", editor_name)
+			popup.add_item(editor_name)
+			
+			# Add description if available
+			if instance.has_method("_editor_description"):
+				popup.set_item_tooltip(popup.item_count - 1, instance._editor_description())
+			else:
+				# Add a default description
+				popup.set_item_tooltip(popup.item_count - 1, "C++ " + base_clazz.replace("GUIDE", "") + " class")
+			
+			# Store the class name for instantiation later
+			popup.set_item_metadata(popup.item_count - 1, cpp_class)
+			
+			# C++ classes are Resources, not Nodes, so they don't need queue_free()
+		else:
+			print("Debug: Failed to instantiate C++ class: ", cpp_class)
+	
+	# Then, get GDScript classes from ClassScanner
+	var gdscript_inheritors := ClassScanner.find_inheritors(base_clazz)
+	print("Debug: Found ", gdscript_inheritors.size(), " GDScript inheritors: ", gdscript_inheritors.keys())
+	
+	for type in gdscript_inheritors.keys():
+		var class_script:Script = gdscript_inheritors[type]
+		print("Debug: Processing GDScript class: ", type)
 		var dummy:Variant = class_script.new()
-		popup.add_item(dummy._editor_name())
+		var editor_name = dummy._editor_name()
+		print("Debug: Adding GDScript class: ", editor_name)
+		popup.add_item(editor_name)
 		popup.set_item_tooltip(popup.item_count -1, dummy._editor_description())
 		popup.set_item_metadata(popup.item_count - 1, class_script)
+	
+	print("Debug: Popup now has ", popup.item_count, " items")
 
 func _on_input_display_clicked():
 	if is_instance_valid(_mapping.input):
@@ -135,10 +193,27 @@ func _on_clear_input_button_pressed():
 
 
 func _on_add_modifier_popup_index_pressed(index:int) -> void:
-	var script = _add_modifier_popup.get_item_metadata(index)
-	var new_modifier = script.new()
+	var metadata = _add_modifier_popup.get_item_metadata(index)
+	var new_modifier: Variant
 	
-	_undo_redo.create_action("Add " + new_modifier._editor_name() + " modifier")
+	# Check if it's a C++ class name (String) or GDScript (Script)
+	if metadata is String:
+		# C++ class
+		new_modifier = ClassDB.instantiate(metadata)
+	else:
+		# GDScript class
+		new_modifier = metadata.new()
+	
+	# Get the action name for the undo/redo action
+	var action_name: String
+	if new_modifier.has_method("_editor_name"):
+		action_name = new_modifier._editor_name()
+	else:
+		# Use the metadata (class name) if no _editor_name method
+		action_name = str(metadata)
+		action_name = action_name.replace("GUIDEModifier", "")
+	
+	_undo_redo.create_action("Add " + action_name + " modifier")
 	var modifiers := _mapping.modifiers.duplicate()
 	modifiers.append(new_modifier)
 	
@@ -149,10 +224,27 @@ func _on_add_modifier_popup_index_pressed(index:int) -> void:
 
 
 func _on_add_trigger_popup_index_pressed(index):
-	var script = _add_trigger_popup.get_item_metadata(index)
-	var new_trigger = script.new()
+	var metadata = _add_trigger_popup.get_item_metadata(index)
+	var new_trigger: Variant
 	
-	_undo_redo.create_action("Add " + new_trigger._editor_name() + " trigger")
+	# Check if it's a C++ class name (String) or GDScript (Script)
+	if metadata is String:
+		# C++ class
+		new_trigger = ClassDB.instantiate(metadata)
+	else:
+		# GDScript class
+		new_trigger = metadata.new()
+	
+	# Get the action name for the undo/redo action
+	var action_name: String
+	if new_trigger.has_method("_editor_name"):
+		action_name = new_trigger._editor_name()
+	else:
+		# Use the metadata (class name) if no _editor_name method
+		action_name = str(metadata)
+		action_name = action_name.replace("GUIDETrigger", "")
+	
+	_undo_redo.create_action("Add " + action_name + " trigger")
 	var triggers := _mapping.triggers.duplicate()
 	triggers.append(new_trigger)
 	

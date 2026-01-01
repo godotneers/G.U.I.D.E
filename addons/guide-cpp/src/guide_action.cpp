@@ -57,6 +57,8 @@ void GUIDEAction::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_value_axis_1d"), &GUIDEAction::get_value_axis_1d);
     ClassDB::bind_method(D_METHOD("get_value_axis_2d"), &GUIDEAction::get_value_axis_2d);
     ClassDB::bind_method(D_METHOD("get_value_axis_3d"), &GUIDEAction::get_value_axis_3d);
+
+    ClassDB::bind_method(D_METHOD("_editor_name"), &GUIDEAction::_editor_name);
 }
 
 GUIDEAction::GUIDEAction() {

@@ -103,6 +103,7 @@ text = "3D"
 
 [node name="InstructionsLabel" type="Label" parent="MarginContainer/MarginContainer/HBoxContainer/MarginContainer/MarginContainer/VBoxContainer" unique_id=1420143228]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 size_flags_vertical = 6
 text = "3..2..1.."
@@ -198,7 +199,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="InputDetector" type="Node" parent="." unique_id=1101852735]
+[node name="InputDetector" type="GUIDEInputDetector" parent="." unique_id=970611604]
 unique_name_in_owner = true
 
 [connection signal="close_requested" from="." to="." method="_on_close_requested"]
@@ -211,3 +212,5 @@ unique_name_in_owner = true
 [connection signal="pressed" from="MarginContainer/MarginContainer/HBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer/Select1DButton" to="." method="_on_select_1d_button_pressed"]
 [connection signal="pressed" from="MarginContainer/MarginContainer/HBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer/Select2DButton" to="." method="_on_select_2d_button_pressed"]
 [connection signal="pressed" from="MarginContainer/MarginContainer/HBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer/Select3DButton" to="." method="_on_select_3d_button_pressed"]
+[connection signal="detection_started" from="InputDetector" to="." method="_on_input_detector_detection_started"]
+[connection signal="input_detected" from="InputDetector" to="." method="_on_input_detector_input_detected"]

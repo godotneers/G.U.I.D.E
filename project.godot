@@ -24,7 +24,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="G.U.I.D.E-CPP"
-run/main_scene="res://guide_examples/virtual_sticks/virtual_sticks.tscn"
+run/main_scene="uid://dm3hott3tfvwe"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 

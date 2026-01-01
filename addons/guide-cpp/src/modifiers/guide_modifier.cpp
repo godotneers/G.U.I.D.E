@@ -3,6 +3,8 @@
 using namespace godot;
 
 void GUIDEModifier::_bind_methods() {
+    ClassDB::bind_method(D_METHOD("_editor_name"), &GUIDEModifier::_editor_name);
+    ClassDB::bind_method(D_METHOD("_editor_description"), &GUIDEModifier::_editor_description);
 }
 
 GUIDEModifier::GUIDEModifier() {
