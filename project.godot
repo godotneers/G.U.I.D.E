@@ -24,13 +24,14 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="G.U.I.D.E-CPP"
-run/main_scene="uid://dm3hott3tfvwe"
-config/features=PackedStringArray("4.5", "Forward Plus")
+run/main_scene="uid://cpj5ebj6yx3xy"
+config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
 GUIDECPP="*res://addons/guide-cpp/plugin/guide.gd"
+GUIDE="*uid://rmlguc6rmk4f"
 
 [debug]
 

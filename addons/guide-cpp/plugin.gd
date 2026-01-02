@@ -8,7 +8,7 @@ var _main_panel:Control
 
 
 func _enable_plugin() -> void:
-	add_autoload_singleton("GUIDECPP", "plugin/guide.gd")
+	add_autoload_singleton("GUIDE", "plugin/guide.gd")
 	
 func _enter_tree() -> void:
 	_main_panel = MainPanel.instantiate()

@@ -83,7 +83,7 @@ void GUIDEModifierVirtualCursor::_end_usage() {
         Ref<InputEventMouseMotion> mm;
         mm.instantiate();
         mm->set_relative(diff);
-        GUIDECPP::get_singleton()->inject_input(mm);
+        GUIDECpp::get_singleton()->inject_input(mm);
     }
 }
 

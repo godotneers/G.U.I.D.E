@@ -2,7 +2,7 @@
 #include "register_guide.h"
 
 void RegisterGuide::register_types() {
-    GDREGISTER_CLASS(GUIDECPP);
+    GDREGISTER_CLASS(GUIDECpp);
     GDREGISTER_CLASS(GUIDEAction);
     GDREGISTER_CLASS(GUIDEActionMapping);
     GDREGISTER_CLASS(GUIDEInputMapping);

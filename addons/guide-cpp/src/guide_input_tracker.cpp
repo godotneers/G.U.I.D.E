@@ -28,7 +28,7 @@ void GUIDEInputTracker::_instrument(Viewport *viewport) {
 }
 
 void GUIDEInputTracker::_unhandled_input(const Ref<InputEvent> &event) {
-    GUIDECPP::get_singleton()->inject_input(event);
+    GUIDECpp::get_singleton()->inject_input(event);
 }
 
 void GUIDEInputTracker::_control_focused(Control *control) {

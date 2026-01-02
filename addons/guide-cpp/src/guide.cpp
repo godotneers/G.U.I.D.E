@@ -1,5 +1,5 @@
 #include "guide.h"
-#include "guide_set.h"
+#include "guide_set.h"  
 #include "guide_input_tracker.h"
 #include <godot_cpp/classes/engine.hpp>
 #include <godot_cpp/classes/input.hpp>
@@ -14,37 +14,37 @@
 
 using namespace godot;
 
-GUIDECPP *GUIDECPP::singleton = nullptr;
+GUIDECpp *GUIDECpp::singleton = nullptr;
 
-GUIDECPP* GUIDECPP::get_singleton() {
+GUIDECpp* GUIDECpp::get_singleton() {
     return singleton;
 }
 
-void GUIDECPP::_bind_methods() {
-    ClassDB::bind_method(D_METHOD("inject_input", "event"), &GUIDECPP::inject_input);
-    ClassDB::bind_method(D_METHOD("set_remapping_config", "config"), &GUIDECPP::set_remapping_config);
-    ClassDB::bind_method(D_METHOD("enable_mapping_context", "context", "disable_others", "priority"), &GUIDECPP::enable_mapping_context, DEFVAL(false), DEFVAL(0));
-    ClassDB::bind_method(D_METHOD("disable_mapping_context", "context"), &GUIDECPP::disable_mapping_context);
-    ClassDB::bind_method(D_METHOD("is_mapping_context_enabled", "context"), &GUIDECPP::is_mapping_context_enabled);
-    ClassDB::bind_method(D_METHOD("get_enabled_mapping_contexts"), &GUIDECPP::get_enabled_mapping_contexts);
+void GUIDECpp::_bind_methods() {
+    ClassDB::bind_method(D_METHOD("inject_input", "event"), &GUIDECpp::inject_input);
+    ClassDB::bind_method(D_METHOD("set_remapping_config", "config"), &GUIDECpp::set_remapping_config);
+    ClassDB::bind_method(D_METHOD("enable_mapping_context", "context", "disable_others", "priority"), &GUIDECpp::enable_mapping_context, DEFVAL(false), DEFVAL(0));
+    ClassDB::bind_method(D_METHOD("disable_mapping_context", "context"), &GUIDECpp::disable_mapping_context);
+    ClassDB::bind_method(D_METHOD("is_mapping_context_enabled", "context"), &GUIDECpp::is_mapping_context_enabled);
+    ClassDB::bind_method(D_METHOD("get_enabled_mapping_contexts"), &GUIDECpp::get_enabled_mapping_contexts);
     
-    ClassDB::bind_method(D_METHOD("get_active_action_mappings"), &GUIDECPP::get_active_action_mappings);
-    ClassDB::bind_method(D_METHOD("get_active_inputs"), &GUIDECPP::get_active_inputs);
-    ClassDB::bind_method(D_METHOD("get_actions_sharing_input"), &GUIDECPP::get_actions_sharing_input);
+    ClassDB::bind_method(D_METHOD("get_active_action_mappings"), &GUIDECpp::get_active_action_mappings);
+    ClassDB::bind_method(D_METHOD("get_active_inputs"), &GUIDECpp::get_active_inputs);
+    ClassDB::bind_method(D_METHOD("get_actions_sharing_input"), &GUIDECpp::get_actions_sharing_input);
 
-    ClassDB::bind_method(D_METHOD("get_active_contexts"), &GUIDECPP::get_active_contexts);
-    ClassDB::bind_method(D_METHOD("set_active_contexts", "contexts"), &GUIDECPP::set_active_contexts);
-    ClassDB::add_property("GUIDECPP", PropertyInfo(Variant::DICTIONARY, "_active_contexts"), "set_active_contexts", "get_active_contexts");
+    ClassDB::bind_method(D_METHOD("get_active_contexts"), &GUIDECpp::get_active_contexts);
+    ClassDB::bind_method(D_METHOD("set_active_contexts", "contexts"), &GUIDECpp::set_active_contexts);
+    ADD_PROPERTY(PropertyInfo(Variant::DICTIONARY, "_active_contexts"), "set_active_contexts", "get_active_contexts");
 
-    ClassDB::bind_method(D_METHOD("get_input_state"), &GUIDECPP::get_input_state);
-    ClassDB::bind_method(D_METHOD("set_input_state", "state"), &GUIDECPP::set_input_state);
-    ClassDB::add_property("GUIDECPP", PropertyInfo(Variant::OBJECT, "input_state", PROPERTY_HINT_RESOURCE_TYPE, "GUIDEInputState"), "set_input_state", "get_input_state");
+    ClassDB::bind_method(D_METHOD("get_input_state"), &GUIDECpp::get_input_state);
+    ClassDB::bind_method(D_METHOD("set_input_state", "state"), &GUIDECpp::set_input_state);
+    ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "input_state", PROPERTY_HINT_NONE, "GUIDEInputState"), "set_input_state", "get_input_state");
 
 
     ADD_SIGNAL(MethodInfo("input_mappings_changed"));
 }
 
-GUIDECPP::GUIDECPP() {
+GUIDECpp::GUIDECpp() {
     if (singleton == nullptr) {
         singleton = this;
     }
@@ -52,13 +52,13 @@ GUIDECPP::GUIDECPP() {
     _active_modifiers.instantiate();
 }
 
-GUIDECPP::~GUIDECPP() {
+GUIDECpp::~GUIDECpp() {
     if (singleton == this) {
         singleton = nullptr;
     }
 }
 
-void GUIDECPP::_ready() {
+void GUIDECpp::_ready() {
     set_process_mode(PROCESS_MODE_ALWAYS);
     _reset_node = memnew(GUIDEReset);
     _input_state = memnew(GUIDEInputState);
@@ -72,26 +72,27 @@ void GUIDECPP::_ready() {
     Input::get_singleton()->connect("joy_connection_changed", Callable(this, "_update_caches_on_joy"));
 }
 
-void GUIDECPP::_on_node_added(Node *node) {
+void GUIDECpp::_on_node_added(Node *node) {
     Window *window = Object::cast_to<Window>(node);
     if (window) {
         GUIDEInputTracker::_instrument(window);
     }
 }
 
-void GUIDECPP::inject_input(const Ref<InputEvent> &event) {
+void GUIDECpp::inject_input(const Ref<InputEvent> &event) {
+    
     if (event->is_class("InputEventAction")) {
         return;
     }
     _input_state->_input(event);
 }
 
-void GUIDECPP::set_remapping_config(const Ref<GUIDERemappingConfig> &config) {
+void GUIDECpp::set_remapping_config(const Ref<GUIDERemappingConfig> &config) {
     _active_remapping_config = config;
     _update_caches();
 }
 
-void GUIDECPP::enable_mapping_context(const Ref<GUIDEMappingContext> &context, bool disable_others, int priority) {
+void GUIDECpp::enable_mapping_context(const Ref<GUIDEMappingContext> &context, bool disable_others, int priority) {
     if (context.is_null()) {
         UtilityFunctions::push_error("Null context given. Ignoring.");
         return;
@@ -104,7 +105,7 @@ void GUIDECPP::enable_mapping_context(const Ref<GUIDEMappingContext> &context, b
     context->emit_signal("enabled");
 }
 
-void GUIDECPP::disable_mapping_context(const Ref<GUIDEMappingContext> &context) {
+void GUIDECpp::disable_mapping_context(const Ref<GUIDEMappingContext> &context) {
     if (context.is_null()){ 
         UtilityFunctions::push_error("Null context given. Ignoring.");
         return;
@@ -114,11 +115,11 @@ void GUIDECPP::disable_mapping_context(const Ref<GUIDEMappingContext> &context) 
     context->emit_signal("disabled");
 }
 
-bool GUIDECPP::is_mapping_context_enabled(const Ref<GUIDEMappingContext> &context) const {
+bool GUIDECpp::is_mapping_context_enabled(const Ref<GUIDEMappingContext> &context) const {
     return _active_contexts.has(context);
 }
 
-TypedArray<GUIDEMappingContext> GUIDECPP::get_enabled_mapping_contexts() const {
+TypedArray<GUIDEMappingContext> GUIDECpp::get_enabled_mapping_contexts() const {
     TypedArray<GUIDEMappingContext> result;
     Array keys = _active_contexts.keys();
     for (int i = 0; i < keys.size(); i++) {
@@ -127,7 +128,7 @@ TypedArray<GUIDEMappingContext> GUIDECPP::get_enabled_mapping_contexts() const {
     return result;
 }
 
-void GUIDECPP::_physics_process(double delta) {
+void GUIDECpp::_physics_process(double delta) {
     Array modifiers = _active_modifiers->values();
     for (int i = 0; i < modifiers.size(); i++) {
         Ref<GUIDEModifier> modifier = modifiers[i];
@@ -137,7 +138,7 @@ void GUIDECPP::_physics_process(double delta) {
     }
 }
 
-void GUIDECPP::_process(double delta) {
+void GUIDECpp::_process(double delta) {
     Ref<GUIDESet> blocked_actions;
     blocked_actions.instantiate();
 
@@ -195,7 +196,7 @@ struct ContextPriority {
     }
 };
 
-void GUIDECPP::_update_caches() {
+void GUIDECpp::_update_caches() {
     if (_locked) {
         UtilityFunctions::push_error("Mapping context changed again while processing a change. Ignoring to avoid endless loop.");
         return;
@@ -473,7 +474,7 @@ void GUIDECPP::_update_caches() {
     emit_signal("input_mappings_changed");
 }
 
-bool GUIDECPP::_is_same_action_mapping(const Ref<GUIDEActionMapping> &a, const Ref<GUIDEActionMapping> &b) {
+bool GUIDECpp::_is_same_action_mapping(const Ref<GUIDEActionMapping> &a, const Ref<GUIDEActionMapping> &b) {
     if (a == b) return true;
     if (a->get_action() != b->get_action()) return false;
     TypedArray<GUIDEInputMapping> ims_a = a->get_input_mappings();
@@ -512,7 +513,7 @@ bool GUIDECPP::_is_same_action_mapping(const Ref<GUIDEActionMapping> &a, const R
     return true;
 }
 
-void GUIDECPP::_mark_used(Object *p_object, bool p_value) {
+void GUIDECpp::_mark_used(Object *p_object, bool p_value) {
     if (p_value) {
         p_object->set_meta("__guide_in_use", true);
     } else {
@@ -520,11 +521,11 @@ void GUIDECPP::_mark_used(Object *p_object, bool p_value) {
     }
 }
 
-bool GUIDECPP::_is_used(const Object *p_object) {
+bool GUIDECpp::_is_used(const Object *p_object) {
     return p_object->has_meta("__guide_in_use");
 }
 
-void GUIDECPP::_copy_meta(const Object *p_source, Object *p_target) {
+void GUIDECpp::_copy_meta(const Object *p_source, Object *p_target) {
     TypedArray<StringName> keys = p_source->get_meta_list();
     for (int i = 0; i < keys.size(); i++) {
         StringName key = keys[i];
