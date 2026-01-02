@@ -32,6 +32,15 @@ void GUIDE::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_active_inputs"), &GUIDE::get_active_inputs);
     ClassDB::bind_method(D_METHOD("get_actions_sharing_input"), &GUIDE::get_actions_sharing_input);
 
+    ClassDB::bind_method(D_METHOD("get_active_contexts"), &GUIDE::get_active_contexts);
+    ClassDB::bind_method(D_METHOD("set_active_contexts", "contexts"), &GUIDE::set_active_contexts);
+    ClassDB::add_property("GUIDE", PropertyInfo(Variant::DICTIONARY, "_active_contexts"), "set_active_contexts", "get_active_contexts");
+
+    ClassDB::bind_method(D_METHOD("get_input_state"), &GUIDE::get_input_state);
+    ClassDB::bind_method(D_METHOD("set_input_state", "state"), &GUIDE::set_input_state);
+    ClassDB::add_property("GUIDE", PropertyInfo(Variant::OBJECT, "_input_state", PROPERTY_HINT_RESOURCE_TYPE, "GUIDEInputState"), "set_input_state", "get_input_state");
+
+
     ADD_SIGNAL(MethodInfo("input_mappings_changed"));
 }
 
