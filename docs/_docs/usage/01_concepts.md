@@ -131,27 +131,29 @@ Actions can emit signals when they change their state. This allows you to react 
 code. Events are emitted as Godot signals, so they can be connected to your code in the same way as other signals. The
 following table shows the events that actions can emit:
 
-| Current State | New State | Signal      | Remarks                                            |
-|---------------|-----------|-------------|----------------------------------------------------|
-| Completed     | Ongoing   | `started`   | Only emitted for 1 frame.                          |
-| Completed     | Ongoing   | `ongoing`   |                                                    | 
-| Completed     | Triggered | `triggered` |                                                    |
-| Ongoing       | Ongoing   | `ongoing`   | Emitted every frame while action is ongoing.       |
-| Ongoing       | Triggered | `triggered` |                                                    |
-| Ongoing       | Completed | `cancelled` | Only emitted for 1 frame.                          |
-| Ongoing       | Completed | `completed` |                                                    |
-| Triggered     | Ongoing   | `ongoing`   |                                                    |
-| Triggered     | Completed | `completed` |                                                    |
-| Triggered     | Triggered | `triggered` | Emitted every frame while the action is triggered. |
+| Current State | New State | Signal           | Remarks                                            |
+|---------------|-----------|------------------|----------------------------------------------------|
+| Completed     | Ongoing   | `started`        | Only emitted for 1 frame.                          |
+| Completed     | Ongoing   | `ongoing`        |                                                    | 
+| Completed     | Triggered | `triggered`      |                                                    |
+| Completed     | Triggered | `just_triggered` | Only emitted for 1 frame.                          |
+| Ongoing       | Ongoing   | `ongoing`        | Emitted every frame while action is ongoing.       |
+| Ongoing       | Triggered | `triggered`      |                                                    |
+| Ongoing       | Triggered | `just_triggered` | Only emitted for 1 frame.                          |
+| Ongoing       | Completed | `cancelled`      | Only emitted for 1 frame.                          |
+| Ongoing       | Completed | `completed`      |                                                    |
+| Triggered     | Ongoing   | `ongoing`        |                                                    |
+| Triggered     | Completed | `completed`      |                                                    |
+| Triggered     | Triggered | `triggered`      | Emitted every frame while the action is triggered. |
 
 The following diagram shows the possible state transitions and the signals that are emitted:
 
 ```mermaid
 stateDiagram
     Completed --> Ongoing: started + ongoing
-    Completed --> Triggered: triggered
+    Completed --> Triggered: just_triggered + triggered
     Ongoing --> Ongoing: ongoing
-    Ongoing --> Triggered: triggered
+    Ongoing --> Triggered: just_triggered + triggered
     Ongoing --> Completed: cancelled + completed
     Triggered --> Ongoing: ongoing
     Triggered --> Completed: completed
