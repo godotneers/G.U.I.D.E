@@ -1,4 +1,4 @@
-[gd_resource type="GUIDEMouseRenderStyle" format=3 uid="uid://cmbcfs6ubll5t"]
+[gd_resource type="GUIDEMouseRenderStyle" load_steps=14 format=3 uid="uid://cmbcfs6ubll5t"]
 
 [ext_resource type="Texture2D" uid="uid://oq2vvwgbdsh7" path="res://addons/guide-cpp/plugin/ui/renderers/textures/arrow_down.svg" id="1_snv1n"]
 [ext_resource type="Texture2D" uid="uid://bmgxqbypegjxh" path="res://addons/guide-cpp/plugin/ui/renderers/textures/arrow_horizontal.svg" id="2_7emdp"]

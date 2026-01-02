@@ -48,11 +48,15 @@ public:
     static void _copy_meta(const Object *p_source, Object *p_target);
 
     GUIDEInputState* get_input_state() const { return _input_state; }
+    void set_input_state(GUIDEInputState* p_state) { _input_state = p_state;}
 
     // Internal access for debugger etc.
     Array get_active_action_mappings() const { return _active_action_mappings; };
     Ref<GUIDESet> get_active_inputs() const { return _active_inputs; };
     Dictionary get_actions_sharing_input() const { return _actions_sharing_input; };
+
+    Dictionary get_active_contexts() const { return _active_contexts; };
+    void set_active_contexts(const Dictionary &p_contexts) { _active_contexts = p_contexts; };
 
 protected:
     static void _bind_methods();

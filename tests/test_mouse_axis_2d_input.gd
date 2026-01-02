@@ -21,4 +21,3 @@ func test_mouse_axis2d_input() -> void:
 	# THEN
 	# the action should be triggered
 	await assert_triggered(_action)
-

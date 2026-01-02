@@ -1,4 +1,4 @@
-[gd_resource type="GUIDEControllerRenderStyle" format=3 uid="uid://c46mfn2386oyb"]
+[gd_resource type="GUIDEControllerRenderStyle" load_steps=23 format=3 uid="uid://c46mfn2386oyb"]
 
 [ext_resource type="Texture2D" uid="uid://cfy1rx4d4wjdh" path="res://addons/guide-cpp/plugin/ui/renderers/controllers/styles/sony/PS5_Cross.png" id="1_am5kd"]
 [ext_resource type="Texture2D" uid="uid://civpcnwgbu5ky" path="res://addons/guide-cpp/plugin/ui/renderers/controllers/styles/sony/PS5_Circle.png" id="2_8a27q"]

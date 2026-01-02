@@ -44,4 +44,3 @@ func test_chorded_action_blocks_lower_priority() -> void:
 	# THEN: the chorded action (LT + A) triggers and blocks the plain A action
 	await assert_triggered(_action_lt_a)
 	await assert_not_triggered(_action_a)
-

@@ -479,5 +479,3 @@ func print_f(text:Variant = "") -> void:
 
 func get_f() -> int:
 	return Engine.get_process_frames() - start_frame
-
-

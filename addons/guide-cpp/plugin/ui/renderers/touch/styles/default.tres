@@ -1,4 +1,4 @@
-[gd_resource type="GUIDETouchRenderStyle" format=3 uid="uid://c6em225fn0luc"]
+[gd_resource type="GUIDETouchRenderStyle" load_steps=10 format=3 uid="uid://c6em225fn0luc"]
 
 [ext_resource type="Texture2D" uid="uid://dwb1h8sfsccyy" path="res://addons/guide-cpp/plugin/ui/renderers/textures/arrow_all_directions.svg" id="1_quugf"]
 [ext_resource type="Texture2D" uid="uid://cjw5m42gufghr" path="res://addons/guide-cpp/plugin/ui/renderers/touch/styles/touch_4_fingers.png" id="2_mf862"]

@@ -1,5 +1,4 @@
-[gd_resource type="GUIDEControllerRenderStyle" format=3 uid="uid://depqolaaisogn"]
-
+[gd_resource type="GUIDEControllerRenderStyle" load_steps=22 format=3 uid="uid://depqolaaisogn"]
 
 [ext_resource type="Texture2D" uid="uid://cujvw3m7aghgh" path="res://addons/guide-cpp/plugin/ui/renderers/controllers/styles/microsoft/XboxSeriesX_A.png" id="1_j3sh4"]
 [ext_resource type="Texture2D" uid="uid://brgqhp87g40l5" path="res://addons/guide-cpp/plugin/ui/renderers/controllers/styles/microsoft/XboxSeriesX_B.png" id="2_g54nh"]

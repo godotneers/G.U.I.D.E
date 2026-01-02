@@ -1,4 +1,4 @@
-[gd_resource type="GUIDEControllerRenderStyle" format=3 uid="uid://c8ry5qlp6npl2"]
+[gd_resource type="GUIDEControllerRenderStyle" load_steps=22 format=3 uid="uid://c8ry5qlp6npl2"]
 
 [ext_resource type="Texture2D" uid="uid://bptn4jygg3p8q" path="res://addons/guide-cpp/plugin/ui/renderers/controllers/styles/nintendo/Switch_B.png" id="1_bvwg4"]
 [ext_resource type="Texture2D" uid="uid://cl75ptbm7sfi5" path="res://addons/guide-cpp/plugin/ui/renderers/controllers/styles/nintendo/Switch_A.png" id="2_p375e"]

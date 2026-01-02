@@ -202,4 +202,3 @@ func test_any_input_renders_all(
 	input.keyboard = keyboard
 	var result: String = _formatter.input_as_text(input)
 	assert_str(result).is_equal(expected)
-
