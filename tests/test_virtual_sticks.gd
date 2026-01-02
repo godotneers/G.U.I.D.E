@@ -39,7 +39,7 @@ func _make_stick(input_mode:GUIDEVirtualStick.InputMode, stick_position:GUIDEVir
 
 
 func test_virtual_stick_can_be_touched() -> void:
-	var virtual_stick := _make_stick(GUIDEVirtualStick.InputMode.TOUCH, GUIDEVirtualStick.StickPosition.LEFT, Vector2(400,400))
+	var virtual_stick := _make_stick(GUIDEVirtualStick.InputMode.MODE_TOUCH, GUIDEVirtualStick.StickPosition.POSITION_LEFT, Vector2(400,400))
 	
 	# WHEN i touch the virtual stick and move it to the right
 	await finger_down(0, virtual_stick.global_position)
@@ -62,7 +62,7 @@ func test_virtual_stick_can_be_touched() -> void:
 
 
 func test_virtual_stick_can_be_moved_with_the_mouse() -> void:
-	var virtual_stick := _make_stick(GUIDEVirtualStick.InputMode.MOUSE, GUIDEVirtualStick.StickPosition.LEFT, Vector2(400,400))
+	var virtual_stick := _make_stick(GUIDEVirtualStick.InputMode.MODE_MOUSE, GUIDEVirtualStick.StickPosition.POSITION_LEFT, Vector2(400,400))
 	
 	# WHEN i click the virtual stick and move it to the right
 	await mouse_move_to(virtual_stick.global_position)
@@ -87,8 +87,8 @@ func test_virtual_stick_can_be_moved_with_the_mouse() -> void:
 	
 	
 func test_multiple_virtual_sticks_can_be_moved_independently_by_touch() -> void:
-	var stick1 := _make_stick(GUIDEVirtualStick.InputMode.TOUCH, GUIDEVirtualStick.StickPosition.LEFT, Vector2(400,400))
-	var stick2 := _make_stick(GUIDEVirtualStick.InputMode.TOUCH, GUIDEVirtualStick.StickPosition.RIGHT, Vector2(800,400))
+	var stick1 := _make_stick(GUIDEVirtualStick.InputMode.MODE_TOUCH, GUIDEVirtualStick.StickPosition.POSITION_LEFT, Vector2(400,400))
+	var stick2 := _make_stick(GUIDEVirtualStick.InputMode.MODE_TOUCH, GUIDEVirtualStick.StickPosition.POSITION_RIGHT, Vector2(800,400))
 
 	# WHEN i move the first stick to the left
 	await finger_down(0, stick1.global_position)
@@ -118,8 +118,8 @@ func test_multiple_virtual_sticks_can_be_moved_independently_by_touch() -> void:
 
 func test_fixed_mode_rejects_outside_actuation_touch_and_mouse() -> void:
 	# TOUCH: create a fixed-mode touch stick and touch outside the stick radius
-	var stick := _make_stick(GUIDEVirtualStick.InputMode.MOUSE_AND_TOUCH, GUIDEVirtualStick.StickPosition.LEFT, Vector2(400,400))
-	stick.position_mode = GUIDEVirtualStick.PositionMode.FIXED
+	var stick := _make_stick(GUIDEVirtualStick.InputMode.MODE_MOUSE_AND_TOUCH, GUIDEVirtualStick.StickPosition.POSITION_LEFT, Vector2(400,400))
+	stick.position_mode = GUIDEVirtualStick.PositionMode.MODE_FIXED
 
 	# WHEN touch outside of stick_radius (default 100) 
 	await finger_down(0, stick.global_position + Vector2(150, 0))
@@ -139,8 +139,8 @@ func test_fixed_mode_rejects_outside_actuation_touch_and_mouse() -> void:
 
 func test_relative_mode_sets_start_position_and_recenters_on_release() -> void:
 	# RELATIVE mode should set the start position to the touch point
-	var rel_stick := _make_stick(GUIDEVirtualStick.InputMode.TOUCH, GUIDEVirtualStick.StickPosition.LEFT, Vector2(200,200))
-	rel_stick.position_mode = GUIDEVirtualStick.PositionMode.RELATIVE
+	var rel_stick := _make_stick(GUIDEVirtualStick.InputMode.MODE_TOUCH, GUIDEVirtualStick.StickPosition.POSITION_LEFT, Vector2(200,200))
+	rel_stick.position_mode = GUIDEVirtualStick.PositionMode.MODE_RELATIVE
 
 	# WHEN touch at some point
 	await finger_down(0, rel_stick.global_position + Vector2(10, 0))
@@ -159,8 +159,8 @@ func test_relative_mode_sets_start_position_and_recenters_on_release() -> void:
 
 func test_movement_beyond_max_actuation_radius_clamps_reported_axis() -> void:
 	# Use relative mode so start position is the touch point and movement is easy to reason about
-	var clamp_stick := _make_stick(GUIDEVirtualStick.InputMode.TOUCH, GUIDEVirtualStick.StickPosition.LEFT, Vector2(300,300))
-	clamp_stick.position_mode = GUIDEVirtualStick.PositionMode.RELATIVE
+	var clamp_stick := _make_stick(GUIDEVirtualStick.InputMode.MODE_TOUCH, GUIDEVirtualStick.StickPosition.POSITION_LEFT, Vector2(300,300))
+	clamp_stick.position_mode = GUIDEVirtualStick.PositionMode.MODE_RELATIVE
 	# sanity: ensure max_actuation_radius is the default (100)
 	assert_float(clamp_stick.max_actuation_radius).is_greater(0)
 
@@ -176,8 +176,8 @@ func test_movement_beyond_max_actuation_radius_clamps_reported_axis() -> void:
 
 
 func test_only_controlling_finger_can_move_the_stick_and_release_stops_updates() -> void:
-	var stick := _make_stick(GUIDEVirtualStick.InputMode.TOUCH, GUIDEVirtualStick.StickPosition.LEFT, Vector2(400,400))
-	stick.position_mode = GUIDEVirtualStick.PositionMode.FIXED
+	var stick := _make_stick(GUIDEVirtualStick.InputMode.MODE_TOUCH, GUIDEVirtualStick.StickPosition.POSITION_LEFT, Vector2(400,400))
+	stick.position_mode = GUIDEVirtualStick.PositionMode.MODE_FIXED
 
 	# WHEN finger 0 touches and moves the stick to the right
 	await finger_down(0, stick.global_position)

@@ -80,7 +80,6 @@ void GUIDECpp::_on_node_added(Node *node) {
 }
 
 void GUIDECpp::inject_input(const Ref<InputEvent> &event) {
-    
     if (event->is_class("InputEventAction")) {
         return;
     }
@@ -141,17 +140,20 @@ void GUIDECpp::_physics_process(double delta) {
 void GUIDECpp::_process(double delta) {
     Ref<GUIDESet> blocked_actions;
     blocked_actions.instantiate();
-
+    
+    UtilityFunctions::print("action mapping size ", _active_action_mappings.size());
     for (int i = 0; i < _active_action_mappings.size(); i++) {
         Ref<GUIDEActionMapping> action_mapping = _active_action_mappings[i];
         Ref<GUIDEAction> action = action_mapping->get_action();
-
+        
         Vector3 consolidated_value = Vector3(0, 0, 0);
         int consolidated_trigger_state = GUIDETrigger::NONE;
-
+        
         TypedArray<GUIDEInputMapping> input_mappings = action_mapping->get_input_mappings();
+        
         for (int j = 0; j < input_mappings.size(); j++) {
             Ref<GUIDEInputMapping> input_mapping = input_mappings[j];
+
             input_mapping->_update_state(delta, action->get_action_value_type());
             consolidated_value += input_mapping->get_value();
             consolidated_trigger_state = Math::max(consolidated_trigger_state, (int)input_mapping->get_state());

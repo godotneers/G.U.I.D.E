@@ -45,7 +45,7 @@ void GUIDEInputKey::_begin_usage() {
     if (control) _must_be_pressed.append(KEY_CTRL);
     if (alt) _must_be_pressed.append(KEY_ALT);
     if (meta) _must_be_pressed.append(KEY_META);
-
+    
     _must_not_be_pressed.clear();
     if (!allow_additional_modifiers) {
         if (!shift && key != KEY_SHIFT) _must_not_be_pressed.append(KEY_SHIFT);

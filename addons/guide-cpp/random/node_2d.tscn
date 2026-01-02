@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://cpj5ebj6yx3xy"]
 
 [ext_resource type="Texture2D" uid="uid://c07v7ndnkcqr8" path="res://icon.svg" id="1_kowar"]
-[ext_resource type="Script" uid="uid://by3pdym3ylfwe" path="res://random/test.gd" id="2_qunbx"]
-[ext_resource type="GUIDEMappingContext" uid="uid://dli5w7ax5kjsk" path="res://random/pc.tres" id="3_4mxr0"]
-[ext_resource type="GUIDEAction" uid="uid://bppctyu8u5km6" path="res://random/move.tres" id="4_nhf6j"]
+[ext_resource type="Script" uid="uid://by3pdym3ylfwe" path="res://addons/guide-cpp/random/test.gd" id="2_qunbx"]
+[ext_resource type="GUIDEMappingContext" uid="uid://dli5w7ax5kjsk" path="res://addons/guide-cpp/random/pc.tres" id="3_4mxr0"]
+[ext_resource type="GUIDEAction" uid="uid://bppctyu8u5km6" path="res://addons/guide-cpp/random/move.tres" id="4_nhf6j"]
 
 [node name="Node2D" type="Node2D" unique_id=400497267]
 

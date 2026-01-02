@@ -34,7 +34,7 @@ func test_axis_1d_input_is_detected() -> void:
 	await mouse_move_by(Vector2(20, 0))
 	
 	# then the input detector should emit a signal with the detected input
-	await assert_signal(_input_detector).is_emitted("input_detected", [GUIDEInputMatcher.new(input_mouse_axis_1d(GUIDEInputMouseAxis1D.GUIDEInputMouseAxis.X))])
+	await assert_signal(_input_detector).is_emitted("input_detected", [GUIDEInputMatcher.new(input_mouse_axis_1d(GUIDEInputMouseAxis1D.GUIDEInputMouseAxis.AXIS_X))])
 	
 	
 

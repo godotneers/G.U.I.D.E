@@ -9,7 +9,7 @@ func _setup() -> void:
 	_action = action_1d()
 
 func test_touch_axis_1d_input() -> void:
-	var input := input_touch_axis_1d(GUIDEInputTouchAxis1D.GUIDEInputTouchAxis.X)
+	var input := input_touch_axis_1d(GUIDEInputTouchAxis1D.GUIDEInputTouchAxis.AXIS_X)
 	map(_context, _action, input)
 	
 	GUIDE.enable_mapping_context(_context)

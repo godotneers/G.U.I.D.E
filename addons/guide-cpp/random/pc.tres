@@ -1,15 +1,17 @@
 [gd_resource type="GUIDEMappingContext" format=3 uid="uid://dli5w7ax5kjsk"]
 
-[ext_resource type="GUIDEAction" uid="uid://bppctyu8u5km6" path="res://random/move.tres" id="1_cvbh3"]
+[ext_resource type="GUIDEAction" uid="uid://bppctyu8u5km6" path="res://addons/guide-cpp/random/move.tres" id="1_cvbh3"]
 
 [sub_resource type="GUIDEInputKey" id="GUIDEInputKey_k8lam"]
 key = 87
 
-[sub_resource type="GUIDEModifierInputSwizzle" id="GUIDEModifierInputSwizzle_2iqur"]
+[sub_resource type="GUIDEModifierInputSwizzle" id="GUIDEModifierInputSwizzle_vcxm2"]
+
+[sub_resource type="GUIDEModifierNegate" id="GUIDEModifierNegate_vcxm2"]
 
 [sub_resource type="GUIDEInputMapping" id="GUIDEInputMapping_duk5q"]
 input = SubResource("GUIDEInputKey_k8lam")
-modifiers = Array[GUIDEModifier]([SubResource("GUIDEModifierInputSwizzle_2iqur")])
+modifiers = Array[GUIDEModifier]([SubResource("GUIDEModifierInputSwizzle_vcxm2"), SubResource("GUIDEModifierNegate_vcxm2")])
 
 [sub_resource type="GUIDEInputKey" id="GUIDEInputKey_8yqxa"]
 key = 65
@@ -25,11 +27,9 @@ key = 83
 
 [sub_resource type="GUIDEModifierInputSwizzle" id="GUIDEModifierInputSwizzle_6m5sd"]
 
-[sub_resource type="GUIDEModifierNegate" id="GUIDEModifierNegate_g31yc"]
-
 [sub_resource type="GUIDEInputMapping" id="GUIDEInputMapping_e3r5t"]
 input = SubResource("GUIDEInputKey_yk3ob")
-modifiers = Array[GUIDEModifier]([SubResource("GUIDEModifierInputSwizzle_6m5sd"), SubResource("GUIDEModifierNegate_g31yc")])
+modifiers = Array[GUIDEModifier]([SubResource("GUIDEModifierInputSwizzle_6m5sd")])
 
 [sub_resource type="GUIDEInputKey" id="GUIDEInputKey_wt4vf"]
 key = 68

@@ -98,6 +98,7 @@ void GUIDEInputMapping::_initialize(GUIDEAction::GUIDEActionValueType value_type
 }
 
 void GUIDEInputMapping::_update_state(double delta, GUIDEAction::GUIDEActionValueType value_type) {
+
     Vector3 input_value = Vector3(0, 0, 0);
     if (input.is_valid()) {
         input_value = input->get_value();
@@ -107,6 +108,7 @@ void GUIDEInputMapping::_update_state(double delta, GUIDEAction::GUIDEActionValu
         Ref<GUIDEModifier> modifier = modifiers[i];
         if (modifier.is_valid()) {
             input_value = modifier->_modify_input(input_value, delta, value_type);
+            // UtilityFunctions::print("Modifier ", i, " processing input after: ", input_value);
         }
     }
 

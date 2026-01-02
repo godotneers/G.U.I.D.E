@@ -18,12 +18,13 @@ GUIDEInputTracker::GUIDEInputTracker() {}
 GUIDEInputTracker::~GUIDEInputTracker() {}
 
 void GUIDEInputTracker::_instrument(Viewport *viewport) {
-    if (viewport->has_meta("x-guide-instrumented")) return;
-    viewport->set_meta("x-guide-instrumented", true);
-
+    if (viewport->has_meta("x_guide_instrumented")) {
+        return;
+    }
+    viewport->set_meta("x_guide_instrumented", true);
     GUIDEInputTracker *tracker = memnew(GUIDEInputTracker);
     tracker->set_process_mode(PROCESS_MODE_ALWAYS);
-    viewport->add_child(tracker, false, INTERNAL_MODE_BACK);
+    viewport->call_deferred("add_child", tracker, false, INTERNAL_MODE_BACK);
     viewport->connect("gui_focus_changed", Callable(tracker, "_control_focused"));
 }
 
