@@ -30,7 +30,6 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-GUIDECPP="*res://addons/guide-cpp/plugin/guide.gd"
 GUIDE="*uid://rmlguc6rmk4f"
 
 [debug]
