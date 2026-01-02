@@ -17,14 +17,14 @@
 
 using namespace godot;
 
-class GUIDE : public Node {
-    GDCLASS(GUIDE, Node)
+class GUIDECPP : public Node {
+    GDCLASS(GUIDECPP, Node)
 
 public:
-    static GUIDE* get_singleton();
+    static GUIDECPP* get_singleton();
 
-    GUIDE();
-    virtual ~GUIDE();
+    GUIDECPP();
+    virtual ~GUIDECPP();
 
     void _deferred_instrument_setup();
 
@@ -62,7 +62,7 @@ protected:
     static void _bind_methods();
 
 private:
-    static GUIDE *singleton;
+    static GUIDECPP *singleton;
 
     Dictionary _active_contexts; // GUIDEMappingContext -> priority
     TypedArray<GUIDEActionMapping> _active_action_mappings;

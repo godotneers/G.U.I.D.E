@@ -121,14 +121,14 @@ void GUIDEInputDetector::_begin_detection() {
     _status = INPUT_PRE_CLEAR;
     for (int i = 0; i < abort_detection_on.size(); i++) {
         Ref<GUIDEInput> in = abort_detection_on[i];
-        in->set_state(GUIDE::get_singleton()->get_input_state());
+        in->set_state(GUIDECPP::get_singleton()->get_input_state());
         in->_begin_usage();
     }
 
     if (!Engine::get_singleton()->is_editor_hint()) {
-        _saved_mapping_contexts = GUIDE::get_singleton()->get_enabled_mapping_contexts();
+        _saved_mapping_contexts = GUIDECPP::get_singleton()->get_enabled_mapping_contexts();
         for (int i = 0; i < _saved_mapping_contexts.size(); i++) {
-            GUIDE::get_singleton()->disable_mapping_context(_saved_mapping_contexts[i]);
+            GUIDECPP::get_singleton()->disable_mapping_context(_saved_mapping_contexts[i]);
         }
     }
     set_process(true);
@@ -165,7 +165,7 @@ void GUIDEInputDetector::_process(double delta) {
 
     if (!Engine::get_singleton()->is_editor_hint()) {
         for (int i = 0; i < _saved_mapping_contexts.size(); i++) {
-            GUIDE::get_singleton()->enable_mapping_context(_saved_mapping_contexts[i]);
+            GUIDECPP::get_singleton()->enable_mapping_context(_saved_mapping_contexts[i]);
         }
     }
 
@@ -178,7 +178,7 @@ void GUIDEInputDetector::_input(const Ref<InputEvent> &event) {
 
     get_viewport()->set_input_as_handled();
     if (!Engine::get_singleton()->is_editor_hint()) {
-        GUIDE::get_singleton()->inject_input(event);
+        GUIDECPP::get_singleton()->inject_input(event);
     }
 
     if (_status == DETECTING) {

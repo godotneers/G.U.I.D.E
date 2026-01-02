@@ -189,7 +189,7 @@ public:
         event->set_axis((JoyAxis)axis);
         event->set_axis_value(value);
         event->set_device(_virtual_joy_id);
-        GUIDE::get_singleton()->inject_input(event);
+        GUIDECPP::get_singleton()->inject_input(event);
     }
 
     Vector2 get_stick_relative_position() const { return _current_pos - _start_pos; }

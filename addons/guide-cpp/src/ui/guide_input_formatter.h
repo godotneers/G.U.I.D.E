@@ -233,7 +233,7 @@ public:
     }
 
     static Ref<GUIDEInputFormatter> for_active_contexts(int icon_size = 32) {
-        return Ref<GUIDEInputFormatter>(memnew(GUIDEInputFormatter(icon_size, Callable(GUIDE::get_singleton(), "get_active_action_mapping_for_action"))));
+        return Ref<GUIDEInputFormatter>(memnew(GUIDEInputFormatter(icon_size, Callable(GUIDECPP::get_singleton(), "get_active_action_mapping_for_action"))));
     }
 
     static Ref<GUIDEInputFormatter> for_context(const Ref<GUIDEMappingContext> &context, int icon_size = 32) {

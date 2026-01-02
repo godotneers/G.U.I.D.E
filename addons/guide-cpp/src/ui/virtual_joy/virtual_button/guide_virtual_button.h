@@ -148,7 +148,7 @@ public:
         event->set_button_index(button_index);
         event->set_pressed(_is_actuated);
         event->set_device(_virtual_joy_id);
-        GUIDE::get_singleton()->inject_input(event);
+        GUIDECPP::get_singleton()->inject_input(event);
         if (draw_debug) queue_redraw();
         emit_signal("changed");
     }

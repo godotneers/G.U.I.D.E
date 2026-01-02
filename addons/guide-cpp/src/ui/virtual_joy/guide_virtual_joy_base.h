@@ -46,9 +46,9 @@ public:
     void _reconnect() {
         if (!is_node_ready()) return;
         if (_virtual_joy_id != 0) {
-            GUIDE::get_singleton()->get_input_state()->disconnect_virtual_stick(_virtual_joy_id);
+            GUIDECPP::get_singleton()->get_input_state()->disconnect_virtual_stick(_virtual_joy_id);
         }
-        _virtual_joy_id = GUIDE::get_singleton()->get_input_state()->connect_virtual_stick(virtual_device);
+        _virtual_joy_id = GUIDECPP::get_singleton()->get_input_state()->connect_virtual_stick(virtual_device);
     }
 
     int get_virtual_device() const { return virtual_device; }

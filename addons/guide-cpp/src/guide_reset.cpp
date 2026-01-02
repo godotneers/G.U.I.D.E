@@ -28,5 +28,5 @@ void GUIDEReset::_process(double delta) {
     
     // We need a way to access the GUIDE singleton's input state.
     // Assuming GUIDE is a singleton named GUIDE.
-    GUIDE::get_singleton()->get_input_state()->_reset();
+    GUIDECPP::get_singleton()->get_input_state()->_reset();
 }
