@@ -1,0 +1,35 @@
+[configuration]
+
+entry_symbol = "libguide_init"
+compatibility_minimum = "4.2"
+reloadable = true
+
+[libraries]
+
+linux.debug.x86_64 = "bin/linux/libguide.linux.template_debug.x86_64.so"
+linux.release.x86_64 = "bin/linux/libguide.linux.template_release.x86_64.so"
+
+[icons]
+GUIDEActionMapping = "res://addons/guide-cpp/plugin/guide_internal.svg"
+GUIDEAction = "res://addons/guide-cpp/plugin/guide_action.svg"
+GUIDEInputMapping = "res://addons/guide-cpp/plugin/guide_internal.svg"
+GUIDEMappingContext = "res://addons/guide-cpp/plugin/guide_mapping_context.svg"
+
+GUIDEInput = "res://addons/guide-cpp/plugin/guide_input.svg"
+GUIDEModifier = "res://addons/guide-cpp/plugin/modifiers/guide_modifier.svg"
+GUIDETrigger = "res://addons/guide-cpp/plugin/triggers/guide_trigger.svg"
+
+GUIDERemappingConfig = "res://addons/guide-cpp/plugin/guide_internal.svg"
+GUIDETriggerComboCancelAction = "res://addons/guide-cpp/plugin/guide_internal.svg"
+GUIDETriggerComboStep = "res://addons/guide-cpp/plugin/guide_internal.svg"
+
+GUIDEControllerRenderStyle = "res://addons/guide-cpp/plugin/ui/renderers/style.svg"
+GUIDEJoyRenderStyle = "res://addons/guide-cpp/plugin/ui/renderers/style.svg"
+GUIDEKeyRenderStyle = "res://addons/guide-cpp/plugin/ui/renderers/style.svg"
+GUIDEMouseRenderStyle = "res://addons/guide-cpp/plugin/ui/renderers/style.svg"
+GUIDETouchRenderStyle = "res://addons/guide-cpp/plugin/ui/renderers/style.svg"
+
+GUIDEVirtualButtonRenderer = "res://addons/guide-cpp/plugin/ui/virtual_joy/virtual_button/guide_virtual_button_renderer.svg"
+GUIDEVirtualButton = "res://addons/guide-cpp/plugin/ui/virtual_joy/virtual_button/guide_virtual_button.svg"
+GUIDEVirtualStickRenderer = "res://addons/guide-cpp/plugin/ui/virtual_joy/virtual_stick/guide_virtual_stick_renderer.svg"
+GUIDEVirtualStick = "res://addons/guide-cpp/plugin/ui/virtual_joy/virtual_stick/guide_virtual_stick.svg"

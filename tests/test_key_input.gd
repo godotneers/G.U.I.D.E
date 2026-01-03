@@ -45,4 +45,3 @@ func test_disallowed_modifiers_prevent_action() -> void:
 	
 	# THEN - triggered because only ctrl + a were down
 	await assert_triggered(action)
-

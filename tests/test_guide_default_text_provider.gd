@@ -11,11 +11,7 @@ static var meta_key_label:String = OS.get_keycode_string(KEY_META)
 # we make a high priority default provider so it doesn't matter which device
 # is currently connected, we always get the default strings.	
 class DefaultProvider:
-	extends GUIDEInputFormatter.DefaultTextProvider
-	
-	func _init() -> void:
-		super()
-		priority = -100	
+	extends GUIDETextProviderDefault
 	
 	
 func _setup() -> void:
@@ -74,8 +70,8 @@ func test_mouse_button_input_renders_all_buttons(
 func test_mouse_axis_1d_input_renders_all_axes(
 	axis_code: int, expected: String,
 	test_parameters := [
-		[GUIDEInputMouseAxis1D.GUIDEInputMouseAxis.X, "[Mouse Left/Right]"],
-		[GUIDEInputMouseAxis1D.GUIDEInputMouseAxis.Y, "[Mouse Up/Down]"]
+		[GUIDEInputMouseAxis1D.GUIDEInputMouseAxis.AXIS_X, "[Mouse Left/Right]"],
+		[GUIDEInputMouseAxis1D.GUIDEInputMouseAxis.AXIS_Y, "[Mouse Up/Down]"]
 	]
 ) -> void:
 	var input: GUIDEInputMouseAxis1D = input_mouse_axis_1d(axis_code)
@@ -161,10 +157,10 @@ func test_touch_distance_input_renders_all() -> void:
 func test_touch_axis_1d_input_renders_all_axes(
 	axis_code: int, finger_index: int, expected: String,
 	test_parameters := [
-		[GUIDEInputTouchAxis1D.GUIDEInputTouchAxis.X, 0, "[Touch Left/Right 0]"],
-		[GUIDEInputTouchAxis1D.GUIDEInputTouchAxis.X, -1, "[Touch Left/Right Average]"],
-		[GUIDEInputTouchAxis1D.GUIDEInputTouchAxis.Y, 1, "[Touch Up/Down 1]"],
-		[GUIDEInputTouchAxis1D.GUIDEInputTouchAxis.Y, -1, "[Touch Up/Down Average]"]
+		[GUIDEInputTouchAxis1D.GUIDEInputTouchAxis.AXIS_X, 0, "[Touch Left/Right 0]"],
+		[GUIDEInputTouchAxis1D.GUIDEInputTouchAxis.AXIS_X, -1, "[Touch Left/Right Average]"],
+		[GUIDEInputTouchAxis1D.GUIDEInputTouchAxis.AXIS_Y, 1, "[Touch Up/Down 1]"],
+		[GUIDEInputTouchAxis1D.GUIDEInputTouchAxis.AXIS_Y, -1, "[Touch Up/Down Average]"]
 	]
 ) -> void:
 	var input: GUIDEInputTouchAxis1D = input_touch_axis_1d(axis_code, finger_index)
@@ -202,4 +198,3 @@ func test_any_input_renders_all(
 	input.keyboard = keyboard
 	var result: String = _formatter.input_as_text(input)
 	assert_str(result).is_equal(expected)
-

@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://du4x7ng6ntuk4"]
+
+[ext_resource type="Script" uid="uid://c266ip7mbu7jr" path="res://addons/guide-cpp/plugin/editor/action_slot/action_slot.gd" id="1_wuwrq"]
+[ext_resource type="Script" uid="uid://cje8ob5q0tt3h" path="res://addons/guide-cpp/plugin/editor/action_slot/action_slot_line_edit.gd" id="2_5gc1w"]
+
+[node name="ActionSlot" type="HBoxContainer" unique_id=959039183]
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_horizontal = 3
+script = ExtResource("1_wuwrq")
+
+[node name="TypeIcon" type="TextureRect" parent="." unique_id=1130568279]
+unique_name_in_owner = true
+layout_mode = 2
+expand_mode = 3
+stretch_mode = 4
+
+[node name="LineEdit" type="LineEdit" parent="." unique_id=193947098]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+text = "Name"
+editable = false
+selecting_enabled = false
+script = ExtResource("2_5gc1w")
+
+[connection signal="action_dropped" from="LineEdit" to="." method="_on_line_edit_action_dropped"]
+[connection signal="focus_entered" from="LineEdit" to="." method="_on_line_edit_focus_entered"]

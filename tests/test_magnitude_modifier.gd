@@ -58,4 +58,3 @@ func test_modifier_returns_pythagorean_length() -> void:
 	await joy_axis(JOY_AXIS_LEFT_Y, -1.0)
 	# then the action's value is still sqrt(2) because magnitude ignores direction
 	assert_float(_action.value_axis_1d).is_equal_approx(sqrt(2.0), 0.01)
-

@@ -1,0 +1,30 @@
+
+#include "inputs/register_inputs.h"
+
+void RegisterInputs::register_types() {
+	GDREGISTER_ABSTRACT_CLASS(GUIDEInput);
+    GDREGISTER_CLASS(GUIDEInputAction);
+    GDREGISTER_CLASS(GUIDEInputAny);
+
+    GDREGISTER_ABSTRACT_CLASS(GUIDEInputJoyBase);
+    GDREGISTER_CLASS(GUIDEInputJoyAxis1D);
+    GDREGISTER_CLASS(GUIDEInputJoyAxis2D);
+    GDREGISTER_CLASS(GUIDEInputJoyButton);
+	
+    GDREGISTER_CLASS(GUIDEInputKey);
+	
+    GDREGISTER_CLASS(GUIDEInputMouseAxis1D);
+    GDREGISTER_CLASS(GUIDEInputMouseAxis2D);
+    GDREGISTER_CLASS(GUIDEInputMouseButton);
+    GDREGISTER_CLASS(GUIDEInputMousePosition);
+	
+    GDREGISTER_CLASS(GUIDEInputState);
+	
+    GDREGISTER_ABSTRACT_CLASS(GUIDEInputTouchBase);
+    GDREGISTER_CLASS(GUIDEInputTouchPosition);
+    GDREGISTER_ABSTRACT_CLASS(GUIDEInputTouchAxisBase);
+    GDREGISTER_CLASS(GUIDEInputTouchAxis1D);
+    GDREGISTER_CLASS(GUIDEInputTouchAxis2D);
+    GDREGISTER_CLASS(GUIDEInputTouchDistance);
+    GDREGISTER_CLASS(GUIDEInputTouchAngle);
+}

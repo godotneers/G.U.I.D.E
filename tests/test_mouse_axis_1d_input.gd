@@ -14,7 +14,7 @@ func _setup() -> void:
 	
 
 func test_mouse_axis1d_input_x() -> void:
-	var input := input_mouse_axis_1d(GUIDEInputMouseAxis1D.GUIDEInputMouseAxis.X)
+	var input := input_mouse_axis_1d(GUIDEInputMouseAxis1D.GUIDEInputMouseAxis.AXIS_X)
 	map(_context, _action, input)
 	
 	GUIDE.enable_mapping_context(_context)
@@ -29,7 +29,7 @@ func test_mouse_axis1d_input_x() -> void:
 	await assert_triggered(_action)
 
 func test_mouse_axis1d_input_y() -> void:
-	var input := input_mouse_axis_1d(GUIDEInputMouseAxis1D.GUIDEInputMouseAxis.Y)
+	var input := input_mouse_axis_1d(GUIDEInputMouseAxis1D.GUIDEInputMouseAxis.AXIS_Y)
 	map(_context, _action, input)
 	
 	GUIDE.enable_mapping_context(_context)
@@ -45,7 +45,7 @@ func test_mouse_axis1d_input_y() -> void:
 
 
 func test_mouse_axis1d_input_ignores_other_axis_x() -> void:
-	var input := input_mouse_axis_1d(GUIDEInputMouseAxis1D.GUIDEInputMouseAxis.X)
+	var input := input_mouse_axis_1d(GUIDEInputMouseAxis1D.GUIDEInputMouseAxis.AXIS_X)
 	map(_context, _action, input)
 
 	GUIDE.enable_mapping_context(_context)
@@ -62,7 +62,7 @@ func test_mouse_axis1d_input_ignores_other_axis_x() -> void:
 	await assert_not_triggered(_action)
 	
 func test_mouse_axis1d_input_ignores_other_axis_y() -> void:
-	var input := input_mouse_axis_1d(GUIDEInputMouseAxis1D.GUIDEInputMouseAxis.Y)
+	var input := input_mouse_axis_1d(GUIDEInputMouseAxis1D.GUIDEInputMouseAxis.AXIS_Y)
 	map(_context, _action, input)
 	GUIDE.enable_mapping_context(_context)
 	# wait for any initial events to drop

@@ -26,6 +26,3 @@ func test_down_trigger_works_for_key_input() -> void:
 	# THEN: the action is not triggered anymore
 	assert_bool(_action.is_triggered()).is_false()
 	
-
-
-

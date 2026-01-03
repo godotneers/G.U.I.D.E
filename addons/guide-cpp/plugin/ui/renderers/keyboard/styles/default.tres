@@ -1,0 +1,14 @@
+[gd_resource type="GUIDEKeyRenderStyle" load_steps=3 format=3 uid="uid://ctk0epydr07en"]
+
+[ext_resource type="FontFile" uid="uid://cu8bvod6tnnwr" path="res://addons/guide-cpp/plugin/ui/renderers/keyboard/styles/Lato-Black.ttf" id="1_qtcq6"]
+[ext_resource type="Texture2D" uid="uid://b3x586os8uuwb" path="res://addons/guide-cpp/plugin/ui/renderers/keyboard/styles/Blank_White_Normal.png" id="2_3oqp6"]
+
+[resource]
+keycaps = ExtResource("2_3oqp6")
+region_rect = Rect2(10, 10, 80, 80)
+patch_margin_left = 29
+patch_margin_top = 30
+patch_margin_right = 29
+patch_margin_bottom = 29
+font = ExtResource("1_qtcq6")
+font_color = Color(0.25098, 0.25098, 0.25098, 1)

@@ -38,7 +38,7 @@ func test_cursor_speed_is_uniform() -> void:
 	await tap_keys([KEY_S, KEY_D])
 	
 	# THEN
-	var value := _vc_action.value_axis_2d
+	var value := _vc_action.get_value_axis_2d()
 	assert_float(value.length()).is_greater(1.0).append_failure_message("Cursor didn't move")
 	assert_float(value.x).is_equal(value.y).append_failure_message("Cursor moved non-uniformly")
 	

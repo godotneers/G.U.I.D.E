@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://cpj5ebj6yx3xy"]
+
+[ext_resource type="Texture2D" uid="uid://c07v7ndnkcqr8" path="res://icon.svg" id="1_kowar"]
+[ext_resource type="Script" uid="uid://by3pdym3ylfwe" path="res://addons/guide-cpp/random/test.gd" id="2_qunbx"]
+
+[node name="Node2D" type="Node2D" unique_id=400497267]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=405871919]
+texture = ExtResource("1_kowar")
+script = ExtResource("2_qunbx")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1955392796]

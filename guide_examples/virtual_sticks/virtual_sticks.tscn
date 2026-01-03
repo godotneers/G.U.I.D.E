@@ -1,25 +1,21 @@
-[gd_scene load_steps=15 format=3 uid="uid://m2d5cmtuheb"]
+[gd_scene format=3 uid="uid://m2d5cmtuheb"]
 
-[ext_resource type="Script" path="res://addons/guide/ui/virtual_joy/virtual_stick/guide_virtual_stick.gd" id="1_8y7sk"]
-[ext_resource type="Script" path="res://guide_examples/virtual_sticks/virtual_sticks.gd" id="1_naqqt"]
-[ext_resource type="PackedScene" uid="uid://dkr80d2pi0d41" path="res://addons/guide/debugger/guide_debugger.tscn" id="1_yjipb"]
+[ext_resource type="Script" uid="uid://em5cg3v0n1qm" path="res://guide_examples/virtual_sticks/virtual_sticks.gd" id="1_naqqt"]
+[ext_resource type="PackedScene" uid="uid://dkr80d2pi0d41" path="res://addons/guide-cpp/plugin/debugger/guide_debugger.tscn" id="1_yjipb"]
 [ext_resource type="Resource" uid="uid://4bf73j4y33fd" path="res://guide_examples/virtual_sticks/mapping_contexts/mapping_context.tres" id="2_xu2j8"]
 [ext_resource type="PackedScene" uid="uid://dnsukbw60m8xf" path="res://guide_examples/virtual_sticks/ship/ship.tscn" id="3_scjee"]
 [ext_resource type="Resource" uid="uid://c36k5e3jjyp0w" path="res://guide_examples/virtual_sticks/mapping_contexts/move_ship.tres" id="4_1f0iq"]
-[ext_resource type="Script" path="res://addons/guide/ui/virtual_joy/virtual_stick/texture_renderer/guide_virtual_stick_texture_renderer.gd" id="5_ejjjy"]
 [ext_resource type="Resource" uid="uid://bjac08qt2mf2s" path="res://guide_examples/virtual_sticks/mapping_contexts/rotate_ship.tres" id="5_h0yu2"]
 [ext_resource type="Resource" path="res://guide_examples/virtual_sticks/mapping_contexts/fire_projectile.tres" id="6_j3ftr"]
-[ext_resource type="Script" path="res://guide_examples/virtual_sticks/custom_stick_renderer/custom_stick_renderer.gd" id="8_mux4w"]
+[ext_resource type="Script" uid="uid://ce76hf4ebt8ce" path="res://guide_examples/virtual_sticks/custom_stick_renderer/custom_stick_renderer.gd" id="8_mux4w"]
 [ext_resource type="Theme" uid="uid://dot0gi1yoqmrl" path="res://guide_examples/shared/ui_theme.tres" id="9_5tbf1"]
-[ext_resource type="Script" path="res://addons/guide/ui/virtual_joy/virtual_button/guide_virtual_button.gd" id="9_67dlh"]
-[ext_resource type="Script" path="res://addons/guide/ui/virtual_joy/virtual_button/texture_renderer/guide_virtual_button_texture_renderer.gd" id="11_hg28x"]
 [ext_resource type="PackedScene" path="res://guide_examples/virtual_sticks/projectile/projectile.tscn" id="13_proj"]
 
-[node name="VirtualSticks" type="Node"]
+[node name="VirtualSticks" type="Node" unique_id=1658044075]
 script = ExtResource("1_naqqt")
 mapping_context = ExtResource("2_xu2j8")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1673391172]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -28,7 +24,7 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0.0305977, 3.65854e-05, 0.0974683, 1)
 
-[node name="Ship" parent="." instance=ExtResource("3_scjee")]
+[node name="Ship" parent="." unique_id=928316943 instance=ExtResource("3_scjee")]
 position = Vector2(867, 425)
 rotation = -1.5708
 move_ship = ExtResource("4_1f0iq")
@@ -36,14 +32,14 @@ rotate_ship = ExtResource("5_h0yu2")
 fire_projectile = ExtResource("6_j3ftr")
 projectile_scene = ExtResource("13_proj")
 
-[node name="CanvasLayer2" type="CanvasLayer" parent="."]
+[node name="CanvasLayer2" type="CanvasLayer" parent="." unique_id=1871204826]
 
-[node name="GuideDebugger" parent="CanvasLayer2" instance=ExtResource("1_yjipb")]
+[node name="GuideDebugger" parent="CanvasLayer2" unique_id=1295063894 instance=ExtResource("1_yjipb")]
 theme = ExtResource("9_5tbf1")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1236649860]
 
-[node name="LeftStick" type="CenterContainer" parent="CanvasLayer"]
+[node name="LeftStick" type="CenterContainer" parent="CanvasLayer" unique_id=1272463907]
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
@@ -54,16 +50,13 @@ offset_bottom = -236.0
 grow_vertical = 0
 mouse_filter = 2
 use_top_left = true
-script = ExtResource("1_8y7sk")
-position_mode = 1
-input_mode = 2
 
-[node name="CustomStickRenderer" type="Control" parent="CanvasLayer/LeftStick"]
+[node name="CustomStickRenderer" type="Control" parent="CanvasLayer/LeftStick" unique_id=1377033175]
 layout_mode = 2
 script = ExtResource("8_mux4w")
 outline_thickness = 0.021
 
-[node name="RightStick" type="CenterContainer" parent="CanvasLayer"]
+[node name="RightStick" type="CenterContainer" parent="CanvasLayer" unique_id=1515647037]
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -77,15 +70,11 @@ grow_horizontal = 0
 grow_vertical = 0
 mouse_filter = 2
 use_top_left = true
-script = ExtResource("1_8y7sk")
-stick_position = 1
-input_mode = 2
 
-[node name="TextureStickRenderer" type="Control" parent="CanvasLayer/RightStick"]
+[node name="TextureStickRenderer" type="Control" parent="CanvasLayer/RightStick" unique_id=2070715006]
 layout_mode = 2
-script = ExtResource("5_ejjjy")
 
-[node name="GUIDEVirtualButton" type="CenterContainer" parent="CanvasLayer"]
+[node name="GUIDEVirtualButton" type="CenterContainer" parent="CanvasLayer" unique_id=1192844733]
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -99,9 +88,6 @@ grow_horizontal = 0
 grow_vertical = 0
 mouse_filter = 2
 use_top_left = true
-script = ExtResource("9_67dlh")
-input_mode = 2
 
-[node name="TextureButtonRenderer" type="Control" parent="CanvasLayer/GUIDEVirtualButton"]
+[node name="TextureButtonRenderer" type="Control" parent="CanvasLayer/GUIDEVirtualButton" unique_id=749767113]
 layout_mode = 2
-script = ExtResource("11_hg28x")

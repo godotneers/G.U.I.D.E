@@ -2,6 +2,8 @@
 .godot/
 android/
 addons/explore-editor-theme/
+.vscode
+**/*.import
 
 # IntelliJ IDEA
 .idea/

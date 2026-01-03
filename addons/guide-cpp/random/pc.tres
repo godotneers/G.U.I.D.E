@@ -1,0 +1,45 @@
+[gd_resource type="GUIDEMappingContext" format=3 uid="uid://dli5w7ax5kjsk"]
+
+[ext_resource type="GUIDEAction" uid="uid://bppctyu8u5km6" path="res://addons/guide-cpp/random/move.tres" id="1_cvbh3"]
+
+[sub_resource type="GUIDEInputKey" id="GUIDEInputKey_k8lam"]
+key = 87
+
+[sub_resource type="GUIDEModifierInputSwizzle" id="GUIDEModifierInputSwizzle_vcxm2"]
+
+[sub_resource type="GUIDEModifierNegate" id="GUIDEModifierNegate_vcxm2"]
+
+[sub_resource type="GUIDEInputMapping" id="GUIDEInputMapping_duk5q"]
+input = SubResource("GUIDEInputKey_k8lam")
+modifiers = Array[GUIDEModifier]([SubResource("GUIDEModifierInputSwizzle_vcxm2"), SubResource("GUIDEModifierNegate_vcxm2")])
+
+[sub_resource type="GUIDEInputKey" id="GUIDEInputKey_8yqxa"]
+key = 65
+
+[sub_resource type="GUIDEModifierNegate" id="GUIDEModifierNegate_duk5q"]
+
+[sub_resource type="GUIDEInputMapping" id="GUIDEInputMapping_2iqur"]
+input = SubResource("GUIDEInputKey_8yqxa")
+modifiers = Array[GUIDEModifier]([SubResource("GUIDEModifierNegate_duk5q")])
+
+[sub_resource type="GUIDEInputKey" id="GUIDEInputKey_yk3ob"]
+key = 83
+
+[sub_resource type="GUIDEModifierInputSwizzle" id="GUIDEModifierInputSwizzle_6m5sd"]
+
+[sub_resource type="GUIDEInputMapping" id="GUIDEInputMapping_e3r5t"]
+input = SubResource("GUIDEInputKey_yk3ob")
+modifiers = Array[GUIDEModifier]([SubResource("GUIDEModifierInputSwizzle_6m5sd")])
+
+[sub_resource type="GUIDEInputKey" id="GUIDEInputKey_wt4vf"]
+key = 68
+
+[sub_resource type="GUIDEInputMapping" id="GUIDEInputMapping_ihyta"]
+input = SubResource("GUIDEInputKey_wt4vf")
+
+[sub_resource type="GUIDEActionMapping" id="GUIDEActionMapping_8yqxa"]
+action = ExtResource("1_cvbh3")
+input_mappings = Array[GUIDEInputMapping]([SubResource("GUIDEInputMapping_duk5q"), SubResource("GUIDEInputMapping_2iqur"), SubResource("GUIDEInputMapping_e3r5t"), SubResource("GUIDEInputMapping_ihyta")])
+
+[resource]
+mappings = Array[GUIDEActionMapping]([SubResource("GUIDEActionMapping_8yqxa")])
