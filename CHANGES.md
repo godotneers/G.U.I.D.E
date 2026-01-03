@@ -4,7 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.9.0-beta3]
+## [0.9.0] - 2026-01-03
+### Added
+- `GUIDEAction` now has a new signal `just_triggered` that is emitted the first frame that the action is triggered. A huge thanks goes to [Josh Taylor](https://github.com/codeinclined) for submitting a PR for this ([#155](https://github.com/godotneers/G.U.I.D.E/pull/155)).
+
+## [0.9.0-beta3] - 2025-12-13
 ### Fixed
 - `GUIDEInputDetector` now again properly emits the `detection_started` signal ([#142](https://github.com/godotneers/G.U.I.D.E/issues/142)).
 - Inputs are now properly formatted in exported games again ([#149](https://github.com/godotneers/G.U.I.D.E/issues/149))
