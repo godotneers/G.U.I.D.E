@@ -180,6 +180,13 @@ func trigger_down() -> GUIDETriggerDown:
 	return GUIDETriggerDown.new()
 	
 	
+func trigger_hold(hold_treshold:float = 1.0, is_one_shot:bool = false) -> GUIDETriggerHold:
+	var result := GUIDETriggerHold.new()
+	result.hold_treshold = hold_treshold
+	result.is_one_shot = is_one_shot
+	return result
+	
+	
 func trigger_pressed() -> GUIDETriggerPressed:
 	return GUIDETriggerPressed.new()
 	
@@ -380,6 +387,11 @@ func world_to_viewport(global_position:Vector2) -> Vector2:
 
 #------------------ Custom asserts -------------------------------------------
 
+## Watches the given action for emitted signals. Returns a watcher which can
+## be used to assert on the received signals.
+func watch(to_watch: GUIDEAction) -> WatchedAction:
+	return WatchedAction.new(to_watch)
+
 ## Asserts that the given action has been triggered (emitted "triggered" signal).
 @warning_ignore("shadowed_variable")
 func assert_triggered(action:GUIDEAction) -> void:
@@ -481,3 +493,119 @@ func get_f() -> int:
 	return Engine.get_process_frames() - start_frame
 
 
+
+## A class that watches signals of a GUIDEAction and provides assertions for them.
+class WatchedAction:
+	var _action: GUIDEAction
+	var _triggered_count: int = 0
+	var _just_triggered_count: int = 0
+	var _started_count: int = 0
+	var _ongoing_count: int = 0
+	var _completed_count: int = 0
+	var _cancelled_count: int = 0
+
+	func _init(action: GUIDEAction) -> void:
+		_action = action
+		_action.triggered.connect(func() -> void: _triggered_count += 1)
+		_action.just_triggered.connect(func() -> void: _just_triggered_count += 1)
+		_action.started.connect(func() -> void: _started_count += 1)
+		_action.ongoing.connect(func() -> void: _ongoing_count += 1)
+		_action.completed.connect(func() -> void: _completed_count += 1)
+		_action.cancelled.connect(func() -> void: _cancelled_count += 1)
+
+	## Returns whether the 'triggered' signal was emitted.
+	## @param timeout The timeout in seconds.
+	func triggered_was_emitted(timeout: float = 1.0) -> bool:
+		return await _was_emitted("triggered", timeout)
+
+	## Returns whether the 'triggered' signal was not emitted.
+	func triggered_was_not_emitted() -> bool:
+		return _was_not_emitted("triggered")
+
+	## Returns whether the 'just_triggered' signal was emitted.
+	## @param timeout The timeout in seconds.
+	func just_triggered_was_emitted(timeout: float = 1.0) -> bool:
+		return await _was_emitted("just_triggered", timeout)
+
+	## Returns whether the 'just_triggered' signal was not emitted.
+	func just_triggered_was_not_emitted() -> bool:
+		return _was_not_emitted("just_triggered")
+
+	## Returns whether the 'started' signal was emitted.
+	## @param timeout The timeout in seconds.
+	func started_was_emitted(timeout: float = 1.0) -> bool:
+		return await _was_emitted("started", timeout)
+
+	## Returns whether the 'started' signal was not emitted.
+	func started_was_not_emitted() -> bool:
+		return _was_not_emitted("started")
+
+	## Returns whether the 'ongoing' signal was emitted.
+	## @param timeout The timeout in seconds.
+	func ongoing_was_emitted(timeout: float = 1.0) -> bool:
+		return await _was_emitted("ongoing", timeout)
+
+	## Returns whether the 'ongoing' signal was not emitted.
+	func ongoing_was_not_emitted() -> bool:
+		return _was_not_emitted("ongoing")
+
+	## Returns whether the 'completed' signal was emitted.
+	## @param timeout The timeout in seconds.
+	func completed_was_emitted(timeout: float = 1.0) -> bool:
+		return await _was_emitted("completed", timeout)
+
+	## Returns whether the 'completed' signal was not emitted.
+	func completed_was_not_emitted() -> bool:
+		return _was_not_emitted("completed")
+
+	## Returns whether the 'cancelled' signal was emitted.
+	## @param timeout The timeout in seconds.
+	func cancelled_was_emitted(timeout: float = 1.0) -> bool:
+		return await _was_emitted("cancelled", timeout)
+
+	## Returns whether the 'cancelled' signal was not emitted.
+	func cancelled_was_not_emitted() -> bool:
+		return _was_not_emitted("cancelled")
+		
+	## Resets internal counters
+	func reset() -> void:
+		_triggered_count = 0
+		_just_triggered_count  = 0
+		_started_count = 0
+		_ongoing_count = 0
+		_completed_count = 0
+		_cancelled_count = 0
+
+	func _get_counter(signal_name: String) -> int:
+		match signal_name:
+			"triggered": return _triggered_count
+			"just_triggered": return _just_triggered_count
+			"started": return _started_count
+			"ongoing": return _ongoing_count
+			"completed": return _completed_count
+			"cancelled": return _cancelled_count
+		return 0
+
+	func _reset_counter(signal_name: String) -> void:
+		match signal_name:
+			"triggered": _triggered_count = 0
+			"just_triggered": _just_triggered_count = 0
+			"started": _started_count = 0
+			"ongoing": _ongoing_count = 0
+			"completed": _completed_count = 0
+			"cancelled": _cancelled_count = 0
+
+	func _was_emitted(signal_name: String, timeout: float) -> bool:
+		var start_time := Time.get_ticks_msec() / 1000.0
+		var success := true
+		while _get_counter(signal_name) == 0:
+			if (Time.get_ticks_msec() / 1000.0) - start_time > timeout:
+				success = false
+				break
+			await (Engine.get_main_loop() as SceneTree).process_frame
+		
+		_reset_counter(signal_name)
+		return success
+
+	func _was_not_emitted(signal_name: String) -> bool:
+		return _get_counter(signal_name) == 0
