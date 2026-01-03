@@ -141,7 +141,6 @@ void GUIDECpp::_process(double delta) {
     Ref<GUIDESet> blocked_actions;
     blocked_actions.instantiate();
     
-    UtilityFunctions::print("action mapping size ", _active_action_mappings.size());
     for (int i = 0; i < _active_action_mappings.size(); i++) {
         Ref<GUIDEActionMapping> action_mapping = _active_action_mappings[i];
         Ref<GUIDEAction> action = action_mapping->get_action();

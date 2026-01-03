@@ -48,7 +48,7 @@ project/assembly_name="guide"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/guide-cpp/plugin.cfg")
+enabled=PackedStringArray("res://addons/csharp_gdextension_bindgen/plugin.cfg", "res://addons/guide-cpp/plugin.cfg")
 
 [gdunit4]
 

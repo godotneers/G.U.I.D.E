@@ -2,14 +2,11 @@
 
 [ext_resource type="Texture2D" uid="uid://c07v7ndnkcqr8" path="res://icon.svg" id="1_kowar"]
 [ext_resource type="Script" uid="uid://by3pdym3ylfwe" path="res://addons/guide-cpp/random/test.gd" id="2_qunbx"]
-[ext_resource type="GUIDEMappingContext" uid="uid://dli5w7ax5kjsk" path="res://addons/guide-cpp/random/pc.tres" id="3_4mxr0"]
-[ext_resource type="GUIDEAction" uid="uid://bppctyu8u5km6" path="res://addons/guide-cpp/random/move.tres" id="4_nhf6j"]
 
 [node name="Node2D" type="Node2D" unique_id=400497267]
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=405871919]
-position = Vector2(960, 540)
 texture = ExtResource("1_kowar")
 script = ExtResource("2_qunbx")
-player_context = ExtResource("3_4mxr0")
-move = ExtResource("4_nhf6j")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1955392796]
