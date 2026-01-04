@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://361aipcef24h"]
+
+[ext_resource type="PackedScene" uid="uid://du4x7ng6ntuk4" path="res://addons/GuideCS/Editor/ActionSlot/ActionSlot.tscn" id="1_hguf2"]
+[ext_resource type="Script" uid="uid://dhe2cy710dptx" path="res://addons/GuideCS/Editor/ActionMappingEditor/ActionMappingEditor.cs" id="1_rqjgw"]
+[ext_resource type="PackedScene" uid="uid://c323mdijdhktg" path="res://addons/GuideCS/Editor/InputMappingEditor/InputMappingEditor.tscn" id="2_q4kno"]
+[ext_resource type="PackedScene" uid="uid://cly0ff32fvpb2" path="res://addons/GuideCS/Editor/ArrayEdit/ArrayEdit.tscn" id="4_ehr5j"]
+
+[node name="ActionMappingEditor" type="MarginContainer" unique_id=1249570188]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 0
+theme_override_constants/margin_bottom = 5
+script = ExtResource("1_rqjgw")
+InputMappingEditorScene = ExtResource("2_q4kno")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=383115723]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer" unique_id=1197606560]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+
+[node name="ActionSlot" parent="HBoxContainer/HBoxContainer" unique_id=2041510421 instance=ExtResource("1_hguf2")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=1835176315]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+size_flags_stretch_ratio = 4.0
+
+[node name="InputMappings" parent="HBoxContainer/VBoxContainer" unique_id=27005010 instance=ExtResource("4_ehr5j")]
+unique_name_in_owner = true
+layout_mode = 2
+Title = "Input Mappings"
+AddTooltip = "Add input mappings"
+ClearTooltip = "Clear input mappings"

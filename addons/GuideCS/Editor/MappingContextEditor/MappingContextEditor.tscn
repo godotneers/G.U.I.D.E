@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://dm3hott3tfvwe"]
+
+[ext_resource type="Script" uid="uid://45d6abbou4ww" path="res://addons/GuideCS/Editor/MappingContextEditor/MappingContextEditor.cs" id="1_xr4r6"]
+[ext_resource type="PackedScene" uid="uid://361aipcef24h" path="res://addons/GuideCS/Editor/ActionMappingEditor/ActionMappingEditor.tscn" id="2_qb3p8"]
+[ext_resource type="PackedScene" uid="uid://cly0ff32fvpb2" path="res://addons/GuideCS/Editor/ArrayEdit/ArrayEdit.tscn" id="3_x7h5x"]
+
+[node name="MappingContextEditor" type="MarginContainer" unique_id=2016382201]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+script = ExtResource("1_xr4r6")
+ActionMappingEditorScene = ExtResource("2_qb3p8")
+
+[node name="Toolbar" type="VBoxContainer" parent="." unique_id=1299240733]
+layout_mode = 2
+
+[node name="Toolbar" type="HBoxContainer" parent="Toolbar" unique_id=1391425227]
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="Toolbar/Toolbar" unique_id=723104759]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Toolbar/Toolbar" unique_id=1261874886]
+layout_mode = 2
+text = "Mapping context:"
+
+[node name="MappingContextSwitcher" type="OptionButton" parent="Toolbar/Toolbar" unique_id=641078734]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="EditingView" type="VBoxContainer" parent="Toolbar" unique_id=1183601413]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="Toolbar/EditingView" unique_id=1913226372]
+layout_mode = 2
+theme_override_constants/margin_bottom = 5
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Toolbar/EditingView" unique_id=163149382]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ActionMappings" parent="Toolbar/EditingView/ScrollContainer" unique_id=1913484706 instance=ExtResource("3_x7h5x")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="EmptyView" type="CenterContainer" parent="Toolbar" unique_id=1704827329]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Toolbar/EmptyView" unique_id=1144482829]
+layout_mode = 2
+text = "Create and open a GUIDEMappingContext to get started."
