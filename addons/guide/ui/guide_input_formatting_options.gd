@@ -22,7 +22,9 @@ enum JoyType {
 	## Used for Nintendo controllers (e.g. Switch). 
 	NINTENDO_CONTROLLER = 2,
 	## Used for Sony controllers (e.g. PlayStation). 
-	SONY_CONTROLLER = 3
+	SONY_CONTROLLER = 3,
+	## Used for Steam Deck controllers
+	STEAM_DECK_CONTROLLER = 4,
 }
 
 ## An input filter that shows all input. This is the default.

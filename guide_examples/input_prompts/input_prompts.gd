@@ -60,7 +60,9 @@ func _on_controller_type_override_item_selected(index: int) -> void:
 		3:
 			_formatter.formatting_options.joy_rendering = JoyRendering.FORCE_JOY_TYPE
 			_formatter.formatting_options.preferred_joy_type = JoyType.SONY_CONTROLLER
-			
+		4:
+			_formatter.formatting_options.joy_rendering = JoyRendering.FORCE_JOY_TYPE
+			_formatter.formatting_options.preferred_joy_type = JoyType.STEAM_DECK_CONTROLLER		
 	label._update_instructions()
 			
 			

@@ -205,6 +205,10 @@ GUIDEControllerRenderer.set_style(GUIDEControllerRenderer.ControllerType.NINTEND
 # For Sony controllers    
 GUIDEControllerRenderer.set_style(GUIDEControllerRenderer.ControllerType.SONY, \
     load("res://my_sony_controller_render_style.tres"))
+    
+# For Steam Deck controller
+GUIDEControllerRenderer.set_style(GUIDEControllerRenderer.ControllerType.STEAM_DECK, \
+    load("res://my_steam_deck_controller_render_style.tres"))
 ```
 
 ### Creating a custom renderer

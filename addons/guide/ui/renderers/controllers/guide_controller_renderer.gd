@@ -11,6 +11,7 @@ static var _controller_styles:Dictionary = {
 	ControllerType.MICROSOFT: preload("styles/microsoft/microsoft.tres"),
 	ControllerType.NINTENDO: preload("styles/nintendo/nintendo.tres"),
 	ControllerType.SONY: preload("styles/sony/sony.tres"),
+	ControllerType.STEAM_DECK: preload("styles/steam_deck/steam_deck.tres"),
 }
 
 @onready var _a_button:TextureRect = %AButton

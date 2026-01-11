@@ -121,7 +121,7 @@ popup/item_1/id = 1
 unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("7_li4sj")
-item_count = 4
+item_count = 5
 selected = 0
 popup/item_0/text = "Use detected controller type"
 popup/item_0/id = 0
@@ -131,6 +131,8 @@ popup/item_2/text = "Force Nintendo Controller"
 popup/item_2/id = 2
 popup/item_3/text = "Force Sony Controller"
 popup/item_3/id = 3
+popup/item_4/text = "Force Steam Deck Controller"
+popup/item_4/id = 4
 
 [connection signal="item_selected" from="CanvasLayer/CenterContainer/HBoxContainer/VBoxContainer/DeviceSelection" to="." method="_on_device_selection_item_selected"]
 [connection signal="item_selected" from="CanvasLayer/CenterContainer/HBoxContainer/VBoxContainer/ControllerTypeOverride" to="." method="_on_controller_type_override_item_selected"]

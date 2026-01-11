@@ -11,6 +11,7 @@ static var _controller_label_sets:Dictionary = {
 	ControllerType.MICROSOFT: preload("label_sets/microsoft.tres"),
 	ControllerType.NINTENDO: preload("label_sets/nintendo.tres"),
 	ControllerType.SONY: preload("label_sets/sony.tres"),
+	ControllerType.STEAM_DECK: preload("label_sets/steam_deck.tres"),
 }
 
 func _init():

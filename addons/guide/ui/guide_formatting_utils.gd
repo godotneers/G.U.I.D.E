@@ -7,6 +7,7 @@ enum ControllerType {
 	MICROSOFT = 1,
 	NINTENDO = 2,
 	SONY = 3,
+	STEAM_DECK = 4,
 }
 
 ## Detection strings for the controller types. The key is the controller type, the value is an 
@@ -15,6 +16,7 @@ static var _controller_detection_strings:Dictionary = {
 	ControllerType.MICROSOFT: ["XBox", "XInput"],
 	ControllerType.NINTENDO: ["Nintendo Switch"],
 	ControllerType.SONY : ["DualSense", "DualShock", "PlayStation", "PS3", "PS4", "PS5"],
+	ControllerType.STEAM_DECK: ["Steam Deck"]
 } 
 
 
@@ -65,6 +67,9 @@ static func _controller_type_from_joy_type(joy_type:GUIDEInputFormattingOptions.
 			return ControllerType.NINTENDO
 		GUIDEInputFormattingOptions.JoyType.SONY_CONTROLLER:
 			return ControllerType.SONY
+		GUIDEInputFormattingOptions.JoyType.STEAM_DECK_CONTROLLER:
+			return ControllerType.STEAM_DECK
+		
 			
 	return ControllerType.UNKNOWN
 
