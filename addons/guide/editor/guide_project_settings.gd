@@ -23,7 +23,7 @@ static func initialize():
 		"name": SETTING_EDITOR_JOY_TYPE,
 		"type": TYPE_INT,
 		"hint": PROPERTY_HINT_ENUM,
-		"hint_string": "Generic Joy:0,Microsoft Controller:1,Nintendo Controller:2,Sony Controller:3",
+		"hint_string": "Generic Joy:0,Microsoft Controller:1,Nintendo Controller:2,Sony Controller:3,Steam Deck Controller:4",
 		"description": "When a fixed joy type is used for rendering in the editor, this selects the icon set that is used."
 	})
 	ProjectSettings.set_initial_value(SETTING_EDITOR_JOY_TYPE, 0)

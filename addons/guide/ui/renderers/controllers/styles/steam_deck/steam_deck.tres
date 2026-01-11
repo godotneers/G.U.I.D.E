@@ -1,0 +1,42 @@
+[gd_resource type="Resource" script_class="GUIDEControllerRenderStyle" load_steps=20 format=3 uid="uid://cyancglq2pbho"]
+
+[ext_resource type="Texture2D" uid="uid://bhiqnmn8ej4wx" path="res://addons/guide/ui/renderers/controllers/styles/steam_deck/SteamDeck_A.png" id="1_45b2v"]
+[ext_resource type="Texture2D" uid="uid://dvq7lhucujofy" path="res://addons/guide/ui/renderers/controllers/styles/steam_deck/SteamDeck_B.png" id="2_4c8lu"]
+[ext_resource type="Texture2D" uid="uid://d0yow8ihry7bx" path="res://addons/guide/ui/renderers/controllers/styles/steam_deck/SteamDeck_Dpad_Down.png" id="4_457wu"]
+[ext_resource type="Texture2D" uid="uid://dod2pb66on57x" path="res://addons/guide/ui/renderers/controllers/styles/steam_deck/SteamDeck_Dpad_Left.png" id="5_1abhr"]
+[ext_resource type="Texture2D" uid="uid://b1h313dic42js" path="res://addons/guide/ui/renderers/controllers/styles/steam_deck/SteamDeck_Dpad_Right.png" id="6_o1iwf"]
+[ext_resource type="Texture2D" uid="uid://dx5f1nk7pm4yw" path="res://addons/guide/ui/renderers/controllers/styles/steam_deck/SteamDeck_Dpad_Up.png" id="7_ikg7b"]
+[ext_resource type="Texture2D" uid="uid://bmgxqbypegjxh" path="res://addons/guide/ui/renderers/textures/arrow_horizontal.svg" id="8_sdyvn"]
+[ext_resource type="Texture2D" uid="uid://cfjm7iwkn1y24" path="res://addons/guide/ui/renderers/controllers/styles/steam_deck/SteamDeck_L1.png" id="9_h0aci"]
+[ext_resource type="Texture2D" uid="uid://cljg32eotgaxv" path="res://addons/guide/ui/renderers/controllers/styles/steam_deck/SteamDeck_Left_Stick.png" id="10_vwjt2"]
+[ext_resource type="Texture2D" uid="uid://b8v01dtnuq2pw" path="res://addons/guide/ui/renderers/controllers/styles/steam_deck/SteamDeck_Left_Stick_Click.png" id="11_fwaue"]
+[ext_resource type="Texture2D" uid="uid://1t7o6qn6umay" path="res://addons/guide/ui/renderers/controllers/styles/steam_deck/SteamDeck_L2.png" id="12_sh45p"]
+[ext_resource type="Texture2D" uid="uid://ce58fe08vtff7" path="res://addons/guide/ui/renderers/controllers/styles/steam_deck/SteamDeck_R1.png" id="14_4xbd3"]
+[ext_resource type="Texture2D" uid="uid://436m16aaq3ug" path="res://addons/guide/ui/renderers/controllers/styles/steam_deck/SteamDeck_Right_Stick.png" id="15_882tx"]
+[ext_resource type="Texture2D" uid="uid://c3vnh1xbmm5fb" path="res://addons/guide/ui/renderers/controllers/styles/steam_deck/SteamDeck_Right_Stick_Click.png" id="16_3reu6"]
+[ext_resource type="Texture2D" uid="uid://lmm3ihruiet" path="res://addons/guide/ui/renderers/controllers/styles/steam_deck/SteamDeck_R2.png" id="17_13ssj"]
+[ext_resource type="Script" path="res://addons/guide/ui/renderers/controllers/guide_controller_render_style.gd" id="18_rcbnj"]
+[ext_resource type="Texture2D" uid="uid://bu5nlug6uf03w" path="res://addons/guide/ui/renderers/textures/arrow_vertical.svg" id="21_jsw57"]
+[ext_resource type="Texture2D" uid="uid://ddrpf453nwg1w" path="res://addons/guide/ui/renderers/controllers/styles/steam_deck/SteamDeck_X.png" id="22_amuwn"]
+[ext_resource type="Texture2D" uid="uid://dr4ksxygwlm0t" path="res://addons/guide/ui/renderers/controllers/styles/steam_deck/SteamDeck_Y.png" id="23_4l4dn"]
+
+[resource]
+script = ExtResource("18_rcbnj")
+a_button = ExtResource("1_45b2v")
+b_button = ExtResource("2_4c8lu")
+x_button = ExtResource("22_amuwn")
+y_button = ExtResource("23_4l4dn")
+left_stick = ExtResource("10_vwjt2")
+left_stick_click = ExtResource("11_fwaue")
+right_stick = ExtResource("15_882tx")
+right_stick_click = ExtResource("16_3reu6")
+left_bumper = ExtResource("9_h0aci")
+right_bumper = ExtResource("14_4xbd3")
+left_trigger = ExtResource("12_sh45p")
+right_trigger = ExtResource("17_13ssj")
+dpad_up = ExtResource("7_ikg7b")
+dpad_left = ExtResource("5_1abhr")
+dpad_right = ExtResource("6_o1iwf")
+dpad_down = ExtResource("4_457wu")
+horizontal = ExtResource("8_sdyvn")
+vertical = ExtResource("21_jsw57")
