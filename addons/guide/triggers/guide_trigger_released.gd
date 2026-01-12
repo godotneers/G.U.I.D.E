@@ -9,6 +9,12 @@ func is_same_as(other: GUIDETrigger) -> bool:
 
 
 func _update_state(input: Vector3, delta: float, value_type: GUIDEAction.GUIDEActionValueType) -> GUIDETriggerState:
+	# https://github.com/godotneers/G.U.I.D.E/issues/144 - go to ongoing while input is 
+	# actuated, so code can track position while input is held down. This is useful for 
+	# touch input, where we have no more position information when input is released.
+	if _is_actuated(input, value_type):
+		return GUIDETriggerState.ONGOING
+	
 	if not _is_actuated(input, value_type):
 		if _is_actuated(_last_value, value_type):
 			return GUIDETriggerState.TRIGGERED

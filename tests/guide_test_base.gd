@@ -189,6 +189,9 @@ func trigger_hold(hold_treshold:float = 1.0, is_one_shot:bool = false) -> GUIDET
 	
 func trigger_pressed() -> GUIDETriggerPressed:
 	return GUIDETriggerPressed.new()
+
+func trigger_released() -> GUIDETriggerReleased:
+	return GUIDETriggerReleased.new()
 	
 @warning_ignore("shadowed_variable")
 func trigger_chorded_action(action:GUIDEAction) -> GUIDETriggerChordedAction:

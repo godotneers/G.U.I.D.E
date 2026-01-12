@@ -25,7 +25,19 @@ If multiple chorded action triggers exist, all of them must be triggering for th
 | _Actuation Threshold_ | This setting has no effect for the chorded action trigger.             |
 
 ## Combo
-This trigger allows you to define a sequence of inputs that need to be triggered in order for the action to trigger. This is most often used in fighting games but can also be used to simulate other complex input sequences for example to trigger a magic spell. For the combo trigger you specify a list of actions that need to trigger in the given order. Each action can have a time window in which it needs to be triggered. If the time window is exceeded the combo will reset. Same happens if actions are entered out of order. In addition you can specify a list of cancel actions that will reset the combo if triggered. The combo trigger has the following settings:
+This trigger allows you to define a sequence of inputs that need to be triggered in order for the action to trigger. This is most often used in fighting games but can also be used to simulate other complex input sequences for example to trigger a magic spell. For the combo trigger you specify a list of actions that need to trigger in the given order. Each action can have a time window in which it needs to be triggered. If the time window is exceeded the combo will reset. Same happens if actions are entered out of order. In addition you can specify a list of cancel actions that will reset the combo if triggered. 
+
+```mermaid
+stateDiagram
+    [*] --> None
+    None --> Ongoing: actuated
+    Ongoing --> Ongoing: input matches step and not last step
+    Ongoing --> Triggered: input matches step and last step
+    Ongoing --> None: input does not match step or cancelled
+    Triggered --> None
+```
+
+The combo trigger has the following settings:
 
 | Setting               | Description                                                                                                                                                                                  |
 |-----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -36,7 +48,16 @@ This trigger allows you to define a sequence of inputs that need to be triggered
 
 
 ## Down
-This is the most basic trigger. It triggers when the input is pressed down or any axis is non-zero. If you don't specify a trigger for an action then a down trigger with an actuation threshold of 0.0 will be used. The down trigger has the following settings:
+This is the most basic trigger. It triggers when the input is pressed down or any axis is non-zero. If you don't specify a trigger for an action then a down trigger with an actuation threshold of 0.0 will be used. 
+
+```mermaid
+stateDiagram
+    [*] --> None
+    None --> Triggered: actuated
+    Triggered --> None: released
+```
+
+The down trigger has the following settings:
 
 | Setting               | Description                                                                                                             |
 |-----------------------|-------------------------------------------------------------------------------------------------------------------------|
@@ -44,7 +65,18 @@ This is the most basic trigger. It triggers when the input is pressed down or an
 
 
 ## Hold
-This trigger triggers when input is held down for a certain amount of time. An input is considered being held down if the input value is above the actuation threshold. The hold trigger has the following settings:
+This trigger triggers when input is held down for a certain amount of time. An input is considered being held down if the input value is above the actuation threshold. 
+
+```mermaid
+stateDiagram
+    [*] --> None
+    None --> Ongoing: actuated
+    Ongoing --> Triggered: _Hold Threshold_ exceeded
+    Ongoing --> None: released
+    Triggered --> None: released or _Is One Shot_ enabled
+```
+
+The hold trigger has the following settings:
 
 | Setting               | Description                                                                                                                                                                                                                                                                                     |
 |-----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -53,14 +85,38 @@ This trigger triggers when input is held down for a certain amount of time. An i
 | _Actuation Threshold_ | The threshold at which the trigger will activate. If the input value is above this threshold the trigger will activate.                                                                                                                                                                         |
 
 ## Pressed
-This trigger triggers once when the input is pressed down. It will not trigger again until the input is released. This is the equivalent of Godot's `Input.is_action_just_pressed` function. The pressed trigger has the following settings:
+This trigger triggers once when the input is pressed down. It will not trigger again until the input is released. This is the equivalent of Godot's `Input.is_action_just_pressed` function. 
+
+```mermaid
+stateDiagram
+    [*] --> None
+    None --> Triggered: actuated
+    Triggered --> None
+```
+
+The pressed trigger has the following settings:
 
 | Setting               | Description                                                                                                             |
 |-----------------------|-------------------------------------------------------------------------------------------------------------------------|
 | _Actuation Threshold_ | The threshold at which the trigger will activate. If the input value is above this threshold the trigger will activate. |
 
 ## Pulse
-This trigger triggers once when the input is pressed and will continue to trigger in configurable intervals as long as the input is held down. This can be used to simulate the OS key repeat functionality for any input. The pulse trigger has the following settings:
+This trigger triggers once when the input is pressed and will continue to trigger in configurable intervals as long as the input is held down. This can be used to simulate the OS key repeat functionality for any input. 
+
+```mermaid
+stateDiagram
+    
+    [*] --> None
+    None --> Ongoing: actuated and _Trigger On Start_ disabled
+    None --> Triggered: actuated and _Trigger On Start_ enabled
+    Triggered --> Ongoing: _Max Pulses_ not reached
+    Triggered --> None: released or _Max Pulses_ reached
+    Ongoing --> Triggered: _Pulse Interval_ elapsed
+    Ongoing --> None: released
+```
+
+
+The pulse trigger has the following settings:
 
 | Setting               | Description                                                                                                                          |
 |-----------------------|--------------------------------------------------------------------------------------------------------------------------------------|
@@ -71,7 +127,18 @@ This trigger triggers once when the input is pressed and will continue to trigge
 | _Actuation Threshold_ | The threshold at which the trigger will activate. If the input value is above this threshold the trigger will activate.              |
 
 ## Released
-This trigger triggers once when the input is released. This is the opposite of the _Pressed_ trigger and works similar to Godot UI buttons `pressed` event (which - contrary to its name - is fired when the button is released). This trigger has the following settings:
+This trigger triggers once when the input is released. This is the opposite of the _Pressed_ trigger and works similar to Godot UI buttons `pressed` event (which - contrary to its name - is fired when the button is released). 
+
+```mermaid
+stateDiagram
+    [*] --> None
+    None --> Ongoing: actuated
+    Ongoing --> Triggered: released
+    Triggered --> None
+```
+
+
+This trigger has the following settings:
 
 | Setting               | Description                                                             |
 |-----------------------|-------------------------------------------------------------------------|
@@ -79,7 +146,19 @@ This trigger triggers once when the input is released. This is the opposite of t
 
 ## Stability
 
-This trigger triggers depending on whether the input changes after being actuated. This is mostly useful for touch input to distinguish screen taps from screen drags.  The trigger has the following settings:
+This trigger triggers depending on whether the input changes after being actuated. This is mostly useful for touch input to distinguish screen taps from screen drags.  
+
+```mermaid
+stateDiagram
+    [*] --> None
+    None --> Ongoing: actuated
+    Ongoing --> Triggered: stability criteria met
+    Ongoing --> None: released
+    Triggered --> None: released or stability criteria not met
+```
+
+
+The trigger has the following settings:
 
 | Setting         | Description                                                                                                                                                                                                                                                                                                                                                                                                                          |
 |-----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -88,7 +167,18 @@ This trigger triggers depending on whether the input changes after being actuate
 
 
 ## Tap
-This trigger triggers when the input is pressed and released within a certain time frame. Can be used with hold trigger to bind two different actions to the same input (tap for one action, hold for another). The tap trigger has the following settings:
+This trigger triggers when the input is pressed and released within a certain time frame. Can be used with hold trigger to bind two different actions to the same input (tap for one action, hold for another).
+
+```mermaid
+stateDiagram
+    [*] --> None 
+    None --> Ongoing: actuated
+    Ongoing --> Triggered: released
+    Ongoing --> None: _Tap Threshold_ exceeded
+    Triggered --> None
+```
+
+The tap trigger has the following settings:
 
 | Setting               | Description                                                                                                                              |
 |-----------------------|------------------------------------------------------------------------------------------------------------------------------------------|
