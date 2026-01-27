@@ -15,7 +15,8 @@ func is_same_as(other: GUIDETrigger) -> bool:
 # Trigger activation is when _current_value - _last_actuation_min_value > actuation_threshold
 
 func _update_state(input: Vector3, delta: float, value_type: GUIDEAction.GUIDEActionValueType) -> GUIDETriggerState:
-	print("Input: %.2s, Last: %.2s, Diff: %.2s" % [input, _last_actuation_value, input.x - _last_actuation_value.x])
+	if input != Vector3.ZERO:
+		print("Input: %.2s, Last: %.2s, Diff: %.2s" % [input, _last_actuation_value, (input - _last_actuation_value).length()])
 
 	var diff = input - _last_actuation_value
 	if _actuated:
@@ -28,32 +29,39 @@ func _update_state(input: Vector3, delta: float, value_type: GUIDEAction.GUIDEAc
 			_last_actuation_value = input
 
 	if not _actuated:
-		if diff.x >= actuation_threshold:
+		if _is_actuated(diff, value_type):
 			_actuated = true
+			_last_actuation_value = input
+			print("Actuating: %s" % diff)
 			return GUIDETriggerState.TRIGGERED
 		else:
 			return GUIDETriggerState.ONGOING
 	else:
-		if diff.x <= -actuation_threshold:
+		if _is_actuated(-diff, value_type):
 			_actuated = false
+			_last_actuation_value = input
 			return GUIDETriggerState.NONE
+		return GUIDETriggerState.TRIGGERED
 	return GUIDETriggerState.NONE
-
 
 ## Checks if a 1D input is actuated.
 func _is_axis1d_actuated(input:Vector3) -> bool:
-	return is_finite(input.x) and (input.x - _last_actuation_value.x) > actuation_threshold
-	
-## Checks if a 2D input is actuated.
-func _is_axis2d_actuated(input:Vector3) -> bool:
-	var diff = (input - _last_actuation_value)
-	diff.z = 0
-	return is_finite(input.x) and is_finite(input.y) and diff.length_squared() > actuation_threshold * actuation_threshold
+	return is_finite(input.x) and input.x > actuation_threshold
 
-## Checks if a 3D input is actuated.
-func _is_axis3d_actuated(input:Vector3) -> bool:
-	var diff = (input - _last_actuation_value)
-	return input.is_finite() and diff.length_squared() > actuation_threshold * actuation_threshold
+# ## Checks if a 1D input is actuated.
+# func _is_axis1d_actuated(input:Vector3) -> bool:
+# 	return is_finite(input.x) and (input.x - _last_actuation_value.x) > actuation_threshold
+	
+# ## Checks if a 2D input is actuated.
+# func _is_axis2d_actuated(input:Vector3) -> bool:
+# 	var diff = (input - _last_actuation_value)
+# 	diff.z = 0
+# 	return is_finite(input.x) and is_finite(input.y) and diff.length_squared() > actuation_threshold * actuation_threshold
+
+# ## Checks if a 3D input is actuated.
+# func _is_axis3d_actuated(input:Vector3) -> bool:
+# 	var diff = (input - _last_actuation_value)
+# 	return input.is_finite() and diff.length_squared() > actuation_threshold * actuation_threshold
 
 func _editor_name() -> String:
 	return "Hair"
