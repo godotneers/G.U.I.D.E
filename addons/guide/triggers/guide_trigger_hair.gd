@@ -14,7 +14,7 @@ func is_same_as(other: GUIDETrigger) -> bool:
 	
 
 func _update_state(input: Vector3, delta: float, value_type: GUIDEAction.GUIDEActionValueType) -> GUIDETriggerState:
-	var diff = input - _last_actuation_value
+	var diff := input - _last_actuation_value
 	if _actuated:
 		# Push compare value if input increases
 		if input > _last_actuation_value:
