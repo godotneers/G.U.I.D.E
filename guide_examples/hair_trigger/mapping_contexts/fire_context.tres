@@ -1,0 +1,37 @@
+[gd_resource type="Resource" script_class="GUIDEMappingContext" load_steps=11 format=3 uid="uid://c3dw7mq0tqbu"]
+
+[ext_resource type="Script" path="res://addons/guide/guide_mapping_context.gd" id="1"]
+[ext_resource type="Resource" uid="uid://c1d2e3f4g5h6i" path="res://guide_examples/hair_trigger/mapping_contexts/fire.tres" id="2"]
+[ext_resource type="Script" path="res://addons/guide/inputs/guide_input_joy_axis_1d.gd" id="3"]
+[ext_resource type="Script" path="res://addons/guide/guide_input_mapping.gd" id="4"]
+[ext_resource type="Script" path="res://addons/guide/guide_action_mapping.gd" id="5"]
+[ext_resource type="Script" path="res://addons/guide/triggers/guide_trigger_hair.gd" id="6"]
+
+[sub_resource type="Resource" id="Resource_input"]
+script = ExtResource("3")
+axis = 5
+joy_index = 0
+
+[sub_resource type="Resource" id="Resource_hair_trigger"]
+script = ExtResource("6")
+actuation_threshold = 0.3
+
+[sub_resource type="Resource" id="Resource_input_mapping"]
+script = ExtResource("4")
+override_action_settings = false
+is_remappable = false
+display_name = ""
+display_category = ""
+input = SubResource("Resource_input")
+modifiers = Array[Resource("res://addons/guide/modifiers/guide_modifier.gd")]([])
+triggers = Array[Resource("res://addons/guide/triggers/guide_trigger.gd")]([SubResource("Resource_hair_trigger")])
+
+[sub_resource type="Resource" id="Resource_action_mapping"]
+script = ExtResource("5")
+action = ExtResource("2")
+input_mappings = Array[ExtResource("4")]([SubResource("Resource_input_mapping")])
+
+[resource]
+script = ExtResource("1")
+display_name = "Hair Trigger Example"
+mappings = Array[ExtResource("5")]([SubResource("Resource_action_mapping")])
