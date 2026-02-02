@@ -64,6 +64,22 @@ The down trigger has the following settings:
 | _Actuation Threshold_ | The threshold at which the trigger will activate. If the input value is above this threshold the trigger will activate. |
 
 
+## Hair
+This trigger uses relative thresholds instead of absolute values, making it ideal for rapid-fire actions with analog inputs like trigger buttons. It triggers when the input rises by the threshold amount from its lowest point (valley), and releases when it drops by the threshold amount from its highest point (peak). This symmetric behavior prevents jitter and allows for quick re-triggering without having to fully release the input back to zero, similar to hair trigger modes found in competitive gaming controllers.
+
+```mermaid
+stateDiagram
+    [*] --> None
+    None --> Triggered: input rises by threshold from valley
+    Triggered --> None: input drops by threshold from peak
+```
+
+The hair trigger has the following settings:
+
+| Setting               | Description                                                      |
+|-----------------------|------------------------------------------------------------------|
+| _Actuation Threshold_ | The relative amount the input must change to trigger or release. |
+
 ## Hold
 This trigger triggers when input is held down for a certain amount of time. An input is considered being held down if the input value is above the actuation threshold. 
 
