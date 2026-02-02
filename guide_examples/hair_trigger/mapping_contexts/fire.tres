@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="GUIDEAction" load_steps=2 format=3 uid="uid://c1d2e3f4g5h6i"]
+
+[ext_resource type="Script" path="res://addons/guide/guide_action.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+name = &"fire"
+action_value_type = 0
+emit_as_godot_actions = false
+is_remappable = false
+display_name = "Fire"
+display_category = ""
