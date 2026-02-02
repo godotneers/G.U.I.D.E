@@ -192,7 +192,12 @@ func trigger_pressed() -> GUIDETriggerPressed:
 
 func trigger_released() -> GUIDETriggerReleased:
 	return GUIDETriggerReleased.new()
-	
+
+func trigger_hair(threshold: float = 0.5) -> GUIDETriggerHair:
+	var result := GUIDETriggerHair.new()
+	result.actuation_threshold = threshold
+	return result
+
 @warning_ignore("shadowed_variable")
 func trigger_chorded_action(action:GUIDEAction) -> GUIDETriggerChordedAction:
 	var result := GUIDETriggerChordedAction.new()		
@@ -471,6 +476,7 @@ func reset_signal_watcher(emitter:Variant) -> void:
 @warning_ignore("shadowed_variable")
 func log_signals(action:GUIDEAction) -> void:
 	action.triggered.connect(func() -> void: print_f("action triggered: '%s' (%s)" % [action.name, action._value]))
+	action.just_triggered.connect(func() -> void: print_f("action just_triggered: '%s'" % action.name))
 	action.cancelled.connect(func() -> void: print_f("action cancelled: '%s'" % action.name))
 	action.completed.connect(func() -> void: print_f("action completed: '%s'" % action.name))
 	action.started.connect(func() -> void: print_f("action started: '%s'" % action.name))
