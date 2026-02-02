@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.10.1] - 2026-02-02
+### Fixed
+- The input tracker now handles some edge cases better on UI components that are overridden by the game ([#166](https://github.com/godotneers/G.U.I.D.E/issues/166)) 
+
 ## [0.10.0] - 2026-01-16
 ### Breaking Changes
 - The _Released_ trigger now makes the action go into _Ongoing_ state while the input is actuated. Previously it would stay in _Completed_. This is useful for touch input to be able to acquire touch position information while the input is still active ([#144](https://github.com/godotneers/G.U.I.D.E/issues/144)). This change should not affect most users, but since it changes the behavior of this trigger, I still declare this a breaking change.
