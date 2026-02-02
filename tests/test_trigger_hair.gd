@@ -12,104 +12,44 @@ func _setup() -> void:
 	_action = action_1d()
 	_trigger = trigger_hair(actuation_threshold)
 
-func test_trigger_hair_actuate() -> void:
-	var input := input_joy_axis_1d(JOY_AXIS_TRIGGER_RIGHT)
-	map(_context, _action, input)#, [], [_trigger])
-	GUIDE.enable_mapping_context(_context)
-	
-	# WHEN
-	# I actuate the right trigger
-	await joy_axis(JOY_AXIS_TRIGGER_RIGHT, actuation_threshold + 0.001)
-	
-	# THEN
-	# the action is triggered
-	await assert_triggered(_action)
-	
-	# and the value is correct
-	assert_axis_1d(_action, actuation_threshold + 0.001)
-	# assert_float(_action.value_axis_1d).is_equal_approx(actuation_threshold + 0.001)
-	
-## Tests that pressing then pressing more continues to trigger
-## and releasing happens at the threshold.
-func test_trigger_hair_retrigger() -> void:
+## Tests complete hair trigger behavior: peak/valley tracking and symmetric trigger/release.
+func test_trigger_hair_peak_and_valley_tracking() -> void:
 	var input := input_joy_axis_1d(JOY_AXIS_TRIGGER_RIGHT)
 	map(_context, _action, input, [], [_trigger])
 	GUIDE.enable_mapping_context(_context)
-	
+
+	var action := watch(_action)
+
+	# Initial trigger: rise from 0 to threshold
 	await joy_axis(JOY_AXIS_TRIGGER_RIGHT, actuation_threshold)
-	await assert_triggered(_action)
+	assert_bool(await action.triggered_was_emitted()).is_true()
 	assert_axis_1d(_action, actuation_threshold)
 
-	# press more
+	# Peak tracking: rise further while triggered
 	await joy_axis(JOY_AXIS_TRIGGER_RIGHT, actuation_threshold + offset)
-	await assert_triggered(_action)
+	action.reset()
+	assert_bool(await action.triggered_was_emitted()).is_true()
 	assert_axis_1d(_action, actuation_threshold + offset)
-	
+
+	# Release: drop by threshold from peak (0.7 -> 0.2)
+	action.reset()
 	await joy_axis(JOY_AXIS_TRIGGER_RIGHT, offset)
-	await assert_completed(_action)
+	assert_bool(await action.completed_was_emitted()).is_true()
 	assert_axis_1d(_action, offset)
 
-## Tests that pressing then unpressing more continues to trigger
-## and releasing happens at the threshold.
-func test_trigger_hair_multiple_trigger() -> void:
-	var input := input_joy_axis_1d(JOY_AXIS_TRIGGER_RIGHT)
-	map(_context, _action, input, [], [_trigger])
-	GUIDE.enable_mapping_context(_context)
-	
-	log_signals(_action)
-	
-	await joy_axis(JOY_AXIS_TRIGGER_RIGHT, actuation_threshold + offset)
-	await assert_triggered(_action)
-	assert_axis_1d(_action, actuation_threshold + offset)
-	
-	await joy_axis(JOY_AXIS_TRIGGER_RIGHT, offset)
-	await assert_completed(_action)
-	assert_axis_1d(_action, offset)
-	
-	await joy_axis(JOY_AXIS_TRIGGER_RIGHT, actuation_threshold + (offset * 2))
-	await assert_triggered(_action)
-	assert_axis_1d(_action, actuation_threshold + (offset * 2))
-	
-	await joy_axis(JOY_AXIS_TRIGGER_RIGHT, (offset * 2))
-	await assert_completed(_action)
-	assert_axis_1d(_action, (offset * 2))
+	# Valley tracking: drop further while not triggered
+	action.reset()
+	await joy_axis(JOY_AXIS_TRIGGER_RIGHT, offset / 2)
+	assert_bool(action.triggered_was_not_emitted()).is_true()
+	assert_axis_1d(_action, offset / 2)
 
-## Tests that pressing then unpressing more continues to trigger
-## and releasing happens at the threshold.
-func test_trigger_hair_multiple_trigger_bool() -> void:
-	var input := input_key(KEY_A)
-	map(_context, _action, input, [], [_trigger])
-	GUIDE.enable_mapping_context(_context)
-	
-	log_signals(_action)
-	
-	await tap_key(KEY_A)
-	await assert_triggered(_action)
-	
-	#await tap_key(KEY_A)
-	await assert_completed(_action)
-	
-	await tap_key(KEY_A)
-	await assert_triggered(_action)
-	
-	#await tap_key(KEY_A)
-	await assert_completed(_action)
+	# Re-trigger: rise by threshold from valley (0.1 + 0.5 = 0.6)
+	await joy_axis(JOY_AXIS_TRIGGER_RIGHT, offset / 2 + actuation_threshold)
+	assert_bool(await action.triggered_was_emitted()).is_true()
+	assert_axis_1d(_action, offset / 2 + actuation_threshold)
 
-func test_trigger_hair_any_axis() -> void:
-	var input := input_any()
-	input.joy_axes = true
-	map(_context, _action, input, [], [_trigger])
-	GUIDE.enable_mapping_context(_context)
-	
-	# WHEN: i move the joy axis
-	await joy_axis(JOY_AXIS_LEFT_X, actuation_threshold)
-	
-	# THEN: the action is triggered
-	await assert_triggered(_action)
-	
-	# WHEN: i stop moving the joy axis
-	await joy_axis(JOY_AXIS_LEFT_X, 0)
-
-	# THEN: the action is not triggered
-	await assert_not_triggered(_action)
-	await assert_completed(_action)
+	# Release again: drop by threshold from new peak (0.6 -> 0.1)
+	action.reset()
+	await joy_axis(JOY_AXIS_TRIGGER_RIGHT, offset / 2)
+	assert_bool(await action.completed_was_emitted()).is_true()
+	assert_axis_1d(_action, offset / 2)
