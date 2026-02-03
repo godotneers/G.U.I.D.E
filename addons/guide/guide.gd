@@ -195,6 +195,95 @@ func _process(delta:float) -> void:
 					GUIDETrigger.GUIDETriggerState.TRIGGERED:
 						action._triggered(consolidated_value, delta)
 
+
+func parse_input_mappings(action_mapping: GUIDEActionMapping, _active_remapping_config, context, action, new_inputs, new_modifiers, effective_mapping) -> GUIDEActionMapping:
+	# the trigger hold threshold is the minimum time that the input must be held
+	# down before the action triggers. This is used to hint the UI about
+	# how long the input must be held down. We collect this while iterating
+	# over the input mappings.
+	var trigger_hold_threshold:float = -1.0
+
+	# now update the action and input mappings
+	for index in action_mapping.input_mappings.size():
+		var input_mapping:GUIDEInputMapping = action_mapping.input_mappings[index]
+		# get the input that is assigned to this action mapping
+		var bound_input:GUIDEInput = input_mapping.input
+		
+		# if the re-mapping has an override for the input (e.g. the player has changed
+		# the default binding to something else), apply it.
+		if _active_remapping_config != null and \
+				_active_remapping_config._has(context, action, index):
+			bound_input = _active_remapping_config._get_bound_input_or_null(context, action, index)
+
+		# make a new input mapping
+		var new_input_mapping:GUIDEInputMapping = GUIDEInputMapping.new()
+
+		# bound_input can be null for combo mappings, so check that
+		if bound_input != null:
+			# check if we already have this kind of input
+			# first try to find it in the currently active inputs, this way we don't need to recreate
+			# inputs that are already active.
+			var existing:GUIDEInput = _active_inputs.first_match(func(it:GUIDEInput): return it.is_same_as(bound_input))
+			if existing == null:
+				# try to find it in the consolidated inputs
+				existing = new_inputs.first_match(func(it:GUIDEInput): return it.is_same_as(bound_input))
+			
+			if existing != null:
+				# if we already use this input, we can just use the existing one
+				bound_input = existing
+				
+			# ensure that the input is initialized and ready to be used
+			if not _is_used(bound_input):
+				bound_input._state = _input_state
+				bound_input._begin_usage()
+				_mark_used(bound_input, true)
+
+			new_inputs.add(bound_input)
+			
+		# copy metadata as this may be important for formatting	
+		new_input_mapping.input = bound_input
+		new_input_mapping.display_name = input_mapping.display_name
+		new_input_mapping.display_category = input_mapping.display_category
+		new_input_mapping.override_action_settings = input_mapping.override_action_settings
+		new_input_mapping.is_remappable = input_mapping.is_remappable
+		_copy_meta(input_mapping, new_input_mapping)
+		
+		# modifiers cannot be re-bound so we can just use the one
+		# from the original configuration. this is also needed for shared
+		# modifiers to work.
+		new_input_mapping.modifiers = input_mapping.modifiers
+		# track the modifiers, so we can later only disable the ones we don't need anymore.
+		for modifier:GUIDEModifier in new_input_mapping.modifiers:
+			# new_modifiers is a set so we can just add the modifier,
+			# if we already have it, it will not be added again.
+			new_modifiers.add(modifier)
+			
+			# initialize the modifier if it is not already in use
+			if not _is_used(modifier):
+				modifier._begin_usage()
+				_mark_used(modifier, true)
+				
+		# triggers also cannot be re-bound but we still make a copy
+		# to ensure that no shared triggers exist.
+		new_input_mapping.triggers = []
+		
+		for trigger in input_mapping.triggers:
+			new_input_mapping.triggers.append(trigger.duplicate())
+
+		# now initialize the input mapping
+		new_input_mapping._initialize(action.action_value_type)
+		# collect the hold threshold
+		var mapping_hold_threshold:float = new_input_mapping._trigger_hold_threshold
+		# smallest hold threshold that isn't negative wins
+		if trigger_hold_threshold < 0 or mapping_hold_threshold < trigger_hold_threshold:
+			trigger_hold_threshold = mapping_hold_threshold
+		
+		# and add it to the new mapping
+		effective_mapping.input_mappings.append(new_input_mapping)
+
+	# finally we set the hold threshold for the action
+	action._trigger_hold_threshold = min(action._trigger_hold_threshold, trigger_hold_threshold)
+	return effective_mapping
 						
 ## This updates the caches of active inputs, action mappings and modifiers. It's sort of expensive to run
 ## but it is only run when contexts are enabled/disabled or remapping configs are applied and it saves
@@ -259,7 +348,17 @@ func _update_caches() -> void:
 			# If the action was already configured in a higher priority context,
 			# we'll skip it.
 			if processed_actions.has(action):
+				# the trigger hold threshold is the minimum time that the input must be held
+				# down before the action triggers. This is used to hint the UI about
+				# how long the input must be held down. We collect this while iterating
+				# over the input mappings.
+				var trigger_hold_threshold:float = -1.0
 				# skip
+				for mapping in _active_action_mappings:
+					if mapping.action != action_mapping.action:
+						continue
+					
+					parse_input_mappings(action_mapping, _active_remapping_config, context, action, new_inputs, new_modifiers, mapping)
 				continue
 				
 			processed_actions.add(action)
@@ -298,93 +397,8 @@ func _update_caches() -> void:
 			var effective_mapping := GUIDEActionMapping.new()
 			effective_mapping.action = action
 			_copy_meta(action_mapping, effective_mapping)
-		
-			# the trigger hold threshold is the minimum time that the input must be held
-			# down before the action triggers. This is used to hint the UI about
-			# how long the input must be held down. We collect this while iterating
-			# over the input mappings.
-			var trigger_hold_threshold:float = -1.0
 
-			# now update the action and input mappings
-			for index in action_mapping.input_mappings.size():
-				var input_mapping:GUIDEInputMapping = action_mapping.input_mappings[index]
-				# get the input that is assigned to this action mapping
-				var bound_input:GUIDEInput = input_mapping.input
-				
-				# if the re-mapping has an override for the input (e.g. the player has changed
-				# the default binding to something else), apply it.
-				if _active_remapping_config != null and \
-						_active_remapping_config._has(context, action, index):
-					bound_input = _active_remapping_config._get_bound_input_or_null(context, action, index)
-
-				# make a new input mapping
-				var new_input_mapping:GUIDEInputMapping = GUIDEInputMapping.new()
-
-				# bound_input can be null for combo mappings, so check that
-				if bound_input != null:
-					# check if we already have this kind of input
-					# first try to find it in the currently active inputs, this way we don't need to recreate
-					# inputs that are already active.
-					var existing:GUIDEInput = _active_inputs.first_match(func(it:GUIDEInput): return it.is_same_as(bound_input))
-					if existing == null:
-						# try to find it in the consolidated inputs
-						existing = new_inputs.first_match(func(it:GUIDEInput): return it.is_same_as(bound_input))
-					
-					if existing != null:
-						# if we already use this input, we can just use the existing one
-						bound_input = existing
-						
-					# ensure that the input is initialized and ready to be used
-					if not _is_used(bound_input):
-						bound_input._state = _input_state
-						bound_input._begin_usage()
-						_mark_used(bound_input, true)
-
-					new_inputs.add(bound_input)
-					
-				# copy metadata as this may be important for formatting	
-				new_input_mapping.input = bound_input
-				new_input_mapping.display_name = input_mapping.display_name
-				new_input_mapping.display_category = input_mapping.display_category
-				new_input_mapping.override_action_settings = input_mapping.override_action_settings
-				new_input_mapping.is_remappable = input_mapping.is_remappable
-				_copy_meta(input_mapping, new_input_mapping)
-				
-				# modifiers cannot be re-bound so we can just use the one
-				# from the original configuration. this is also needed for shared
-				# modifiers to work.
-				new_input_mapping.modifiers = input_mapping.modifiers
-				# track the modifiers, so we can later only disable the ones we don't need anymore.
-				for modifier:GUIDEModifier in new_input_mapping.modifiers:
-					# new_modifiers is a set so we can just add the modifier,
-					# if we already have it, it will not be added again.
-					new_modifiers.add(modifier)
-					
-					# initialize the modifier if it is not already in use
-					if not _is_used(modifier):
-						modifier._begin_usage()
-						_mark_used(modifier, true)
-						
-				# triggers also cannot be re-bound but we still make a copy
-				# to ensure that no shared triggers exist.
-				new_input_mapping.triggers = []
-				
-				for trigger in input_mapping.triggers:
-					new_input_mapping.triggers.append(trigger.duplicate())
-
-				# now initialize the input mapping
-				new_input_mapping._initialize(action.action_value_type)
-				# collect the hold threshold
-				var mapping_hold_threshold:float = new_input_mapping._trigger_hold_threshold
-				# smallest hold threshold that isn't negative wins
-				if trigger_hold_threshold < 0 or mapping_hold_threshold < trigger_hold_threshold:
-					trigger_hold_threshold = mapping_hold_threshold
-				
-				# and add it to the new mapping
-				effective_mapping.input_mappings.append(new_input_mapping)
-
-			# finally we set the hold threshold for the action
-			action._trigger_hold_threshold = trigger_hold_threshold
+			effective_mapping = parse_input_mappings(action_mapping, _active_remapping_config, context, action, new_inputs, new_modifiers, effective_mapping)
 			
 			# if any binding remains, add the mapping to the list of active
 			# action mappings
