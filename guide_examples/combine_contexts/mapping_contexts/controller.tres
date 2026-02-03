@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="GUIDEMappingContext" format=3 uid="uid://bvg2kv4me6p18"]
+
+[ext_resource type="Script" uid="uid://cpplm41b5bt6m" path="res://addons/guide/guide_action_mapping.gd" id="1_g6dhr"]
+[ext_resource type="Script" uid="uid://dsa1dnifd6w32" path="res://addons/guide/guide_mapping_context.gd" id="2_k0wj4"]
+[ext_resource type="Resource" uid="uid://bxmuoph07ha7w" path="res://guide_examples/combine_contexts/mapping_contexts/move.tres" id="2_vovma"]
+[ext_resource type="Script" uid="uid://mtx1unc2aqn7" path="res://addons/guide/guide_input_mapping.gd" id="3_bs0kx"]
+[ext_resource type="Script" uid="uid://doauobik3xyea" path="res://addons/guide/inputs/guide_input_joy_axis_2d.gd" id="4_rpogy"]
+[ext_resource type="Script" uid="uid://bl8rjl4oaldje" path="res://addons/guide/modifiers/guide_modifier.gd" id="5_soxb2"]
+[ext_resource type="Script" uid="uid://c47lkb48itd6l" path="res://addons/guide/modifiers/guide_modifier_deadzone.gd" id="6_bs0kx"]
+[ext_resource type="Script" uid="uid://x74mnwgr08a7" path="res://addons/guide/triggers/guide_trigger.gd" id="6_f1ep4"]
+
+[sub_resource type="Resource" id="Resource_8x6ir"]
+script = ExtResource("4_rpogy")
+
+[sub_resource type="Resource" id="Resource_rpogy"]
+script = ExtResource("6_bs0kx")
+lower_threshold = 0.001
+
+[sub_resource type="Resource" id="Resource_1mgwg"]
+script = ExtResource("3_bs0kx")
+input = SubResource("Resource_8x6ir")
+modifiers = Array[ExtResource("5_soxb2")]([SubResource("Resource_rpogy")])
+
+[sub_resource type="Resource" id="Resource_6aluo"]
+script = ExtResource("1_g6dhr")
+action = ExtResource("2_vovma")
+input_mappings = Array[ExtResource("3_bs0kx")]([SubResource("Resource_1mgwg")])
+
+[resource]
+script = ExtResource("2_k0wj4")
+mappings = Array[ExtResource("1_g6dhr")]([SubResource("Resource_6aluo")])
+metadata/_custom_type_script = "uid://dsa1dnifd6w32"
