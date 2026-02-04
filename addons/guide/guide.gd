@@ -283,6 +283,7 @@ func parse_input_mappings(action_mapping: GUIDEActionMapping, _active_remapping_
 
 	# finally we set the hold threshold for the action
 	action._trigger_hold_threshold = min(action._trigger_hold_threshold, trigger_hold_threshold)
+
 	return effective_mapping
 						
 ## This updates the caches of active inputs, action mappings and modifiers. It's sort of expensive to run
@@ -348,17 +349,12 @@ func _update_caches() -> void:
 			# If the action was already configured in a higher priority context,
 			# we'll skip it.
 			if processed_actions.has(action):
-				# the trigger hold threshold is the minimum time that the input must be held
-				# down before the action triggers. This is used to hint the UI about
-				# how long the input must be held down. We collect this while iterating
-				# over the input mappings.
-				var trigger_hold_threshold:float = -1.0
-				# skip
 				for mapping in _active_action_mappings:
 					if mapping.action != action_mapping.action:
 						continue
 					
 					parse_input_mappings(action_mapping, _active_remapping_config, context, action, new_inputs, new_modifiers, mapping)
+				# skip
 				continue
 				
 			processed_actions.add(action)
