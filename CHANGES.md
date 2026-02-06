@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.11.0] - 2026-02-06
+### Added
+- Added a new hair trigger. Hair triggers reduce the travel distance needed to register a full trigger press, enabling faster response times. Useful for quick actions like rapid firing or accelerating in racing games. A huge thanks goes out to [ShadowCommander](https://github.com/ShadowCommander) who contributed this feature ([#24](https://github.com/godotneers/G.U.I.D.E/issues/24), [#167](https://github.com/godotneers/G.U.I.D.E/pull/167))!
+
+
 ## [0.10.1] - 2026-02-02
 ### Fixed
 - The input tracker now handles some edge cases better on UI components that are overridden by the game ([#166](https://github.com/godotneers/G.U.I.D.E/issues/166)) 
