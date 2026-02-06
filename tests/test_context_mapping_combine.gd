@@ -55,8 +55,8 @@ func test_merging_same_input() -> void:
 	
 	# when i enable two mapping contexts with the same action
 	# both inputs should trigger the action
-	GUIDE.enable_mapping_context(_context1)
 	GUIDE.enable_mapping_context(_context2)
+	GUIDE.enable_mapping_context(_context1)
 
 	# when i press the key
 	await key_down(KEY_A)
