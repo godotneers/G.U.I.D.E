@@ -99,7 +99,7 @@ func enable_mapping_context(context:GUIDEMappingContext, disable_others:bool = f
 	if disable_others:
 		_active_contexts.clear()	
 	
-	_active_contexts[context] = priority
+	_active_contexts[context] = [priority, Time.get_ticks_usec()]
 	_update_caches()
 	# notify listeners that the context was enabled
 	context.enabled.emit()
@@ -305,7 +305,8 @@ func _update_caches() -> void:
 	# Mappings with higher priority have higher priority.
 	var sorted_contexts:Array[GUIDEMappingContext] = []
 	sorted_contexts.assign(_active_contexts.keys())
-	sorted_contexts.sort_custom( func(a,b): return _active_contexts[a] < _active_contexts[b] )
+	sorted_contexts.sort_custom( func(a,b): return _active_contexts[a][0] < _active_contexts[b][0] or \
+		(_active_contexts[a][0] == _active_contexts[b][0] and _active_contexts[a][1] > _active_contexts[b][1]) )
 	
 	# The actions we already have processed. Same action may appear in different
 	# contexts, so if we find the same action twice, only the first instance wins.
@@ -354,7 +355,7 @@ func _update_caches() -> void:
 			# If the action was already configured in a higher priority context,
 			# we'll skip it.
 			if processed_actions.has(action):
-				for mapping in _active_action_mappings:
+				for mapping in new_action_mappings:
 					if mapping.action != action_mapping.action:
 						continue
 					
