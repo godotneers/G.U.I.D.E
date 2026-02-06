@@ -355,7 +355,7 @@ func _update_caches() -> void:
 				continue
 			
 			# If the action was already configured in a higher priority context,
-			# we'll skip it.
+			# we'll try to merge inputs with other contexts then skip the rest.
 			if processed_actions.has(action):
 				for mapping in new_action_mappings:
 					if mapping.action != action_mapping.action:
