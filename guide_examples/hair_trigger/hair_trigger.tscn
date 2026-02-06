@@ -39,7 +39,7 @@ theme = ExtResource("5_unec5")
 text = "Hair Trigger Example
 
 Use right trigger (RT) on controller. Fires when rising by threshold from valley.
-Releases when dropping by threshold from peak. "
+Releases when dropping by threshold from peak."
 horizontal_alignment = 1
 vertical_alignment = 1
 
