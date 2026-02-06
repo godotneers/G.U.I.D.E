@@ -209,8 +209,8 @@ func parse_input_mappings(action_mapping: GUIDEActionMapping, _active_remapping_
 		# get the input that is assigned to this action mapping
 		var bound_input:GUIDEInput = input_mapping.input
 
-		#if effective_mapping.input_mappings.any(func(existing): return existing.input == bound_input):
-			#continue
+		if effective_mapping.input_mappings.any(func(existing): return existing.input == bound_input):
+			continue
 		
 		# if the re-mapping has an override for the input (e.g. the player has changed
 		# the default binding to something else), apply it.
@@ -305,7 +305,6 @@ func _update_caches() -> void:
 	# Mappings with higher priority have higher priority.
 	var sorted_contexts:Array[GUIDEMappingContext] = []
 	sorted_contexts.assign(_active_contexts.keys())
-	# sorted_contexts.reverse()
 	sorted_contexts.sort_custom( func(a,b): return _active_contexts[a] < _active_contexts[b] )
 	
 	# The actions we already have processed. Same action may appear in different
