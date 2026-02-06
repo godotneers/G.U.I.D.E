@@ -209,6 +209,8 @@ func parse_input_mappings(action_mapping: GUIDEActionMapping, _active_remapping_
 		# get the input that is assigned to this action mapping
 		var bound_input:GUIDEInput = input_mapping.input
 
+		# Skip this action and input pair if it has already been defined by a
+		# higher priority mapping context.
 		if effective_mapping.input_mappings.any(func(existing): return existing.input == bound_input):
 			continue
 		
@@ -301,12 +303,12 @@ func _update_caches() -> void:
 	
 	_locked = true	
 	
-	# Mappings enabled later take priority.
-	# Mappings with higher priority have higher priority.
 	var sorted_contexts:Array[GUIDEMappingContext] = []
 	sorted_contexts.assign(_active_contexts.keys())
-	sorted_contexts.sort_custom( func(a,b): return _active_contexts[a][0] < _active_contexts[b][0] or \
-		(_active_contexts[a][0] == _active_contexts[b][0] and _active_contexts[a][1] > _active_contexts[b][1]) )
+	# Sort higher priority,
+	# then sort later definitions first.
+	sorted_contexts.sort_custom(func(a,b): return _active_contexts[a][0] < _active_contexts[b][0] or \
+		(_active_contexts[a][0] == _active_contexts[b][0] and _active_contexts[a][1] > _active_contexts[b][1]))
 	
 	# The actions we already have processed. Same action may appear in different
 	# contexts, so if we find the same action twice, only the first instance wins.
