@@ -374,7 +374,8 @@ func _input(event: InputEvent) -> void:
 		var axis: int = event.axis
 
 		# update the axis value
-		_joy_axes[device_id][axis] = event.axis_value
+		if _joy_axes.has(device_id):
+			_joy_axes[device_id][axis] = event.axis_value
 
 		# for the ANY_JOY_DEVICE_ID, we apply the maximum actuation of all devices (in any direction)
 		var any_value: float = 0.0
