@@ -1,0 +1,24 @@
+[gd_resource type="Resource" format=3 uid="uid://c6em225fn0luc"]
+
+[ext_resource type="Texture2D" uid="uid://dqryvuuljcyuu" path="res://addons/GuideCS/UI/Renderers/Textures/ArrowAllDirections.svg" id="1_db8it"]
+[ext_resource type="Texture2D" uid="uid://cjw5m42gufghr" path="res://addons/GuideCS/UI/Renderers/Touch/Styles/touch_4_fingers.png" id="2_cnpwr"]
+[ext_resource type="Texture2D" uid="uid://cq8r5uqyithp0" path="res://addons/GuideCS/UI/Renderers/Textures/ArrowHorizontal.svg" id="3_biagq"]
+[ext_resource type="Texture2D" uid="uid://c5nwnp5cjny7m" path="res://addons/GuideCS/UI/Renderers/Touch/Styles/touch_1_finger.png" id="4_ti5dx"]
+[ext_resource type="Texture2D" uid="uid://bxj4t5vjx7o3w" path="res://addons/GuideCS/UI/Renderers/Touch/Styles/touch_rotate.png" id="5_7pbjw"]
+[ext_resource type="Script" uid="uid://chpkrrk22k5ox" path="res://addons/GuideCS/UI/Renderers/Touch/GUIDETouchRenderStyle.cs" id="6_bwro6"]
+[ext_resource type="Texture2D" uid="uid://bwhqf2nmm5q1w" path="res://addons/GuideCS/UI/Renderers/Touch/Styles/touch_3_fingers.png" id="7_ad2t7"]
+[ext_resource type="Texture2D" uid="uid://bllhe78a1yo6" path="res://addons/GuideCS/UI/Renderers/Touch/Styles/touch_2_fingers.png" id="8_c53ft"]
+[ext_resource type="Texture2D" uid="uid://cvv0btxvk4u5a" path="res://addons/GuideCS/UI/Renderers/Textures/ArrowVertical.svg" id="9_c28mq"]
+[ext_resource type="Texture2D" uid="uid://cutplj0nhphk" path="res://addons/GuideCS/UI/Renderers/Touch/Styles/touch_zoom.png" id="10_sc6x4"]
+
+[resource]
+script = ExtResource("6_bwro6")
+one_finger = ExtResource("4_ti5dx")
+two_fingers = ExtResource("8_c53ft")
+three_fingers = ExtResource("7_ad2t7")
+four_fingers = ExtResource("2_cnpwr")
+rotate = ExtResource("5_7pbjw")
+zoom = ExtResource("10_sc6x4")
+horizontal = ExtResource("3_biagq")
+vertical = ExtResource("9_c28mq")
+both = ExtResource("1_db8it")

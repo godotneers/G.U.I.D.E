@@ -1,0 +1,63 @@
+[gd_scene format=3 uid="uid://c6sqf8rur1wss"]
+
+[ext_resource type="Script" uid="uid://s5v0m77b5wii" path="res://addons/GuideCS/UI/Renderers/Joy/GUIDEJoyRenderer.cs" id="1_i78dq"]
+[ext_resource type="Texture2D" uid="uid://dgkerobtmwx4g" path="res://addons/GuideCS/UI/Renderers/Joy/Styles/Stick_Empty.png" id="2_uoqkj"]
+[ext_resource type="Texture2D" uid="uid://bjgitb5dilb74" path="res://addons/GuideCS/UI/Renderers/Joy/Styles/Button_Empty.png" id="3_xu0fv"]
+[ext_resource type="FontFile" uid="uid://cu8bvod6tnnwr" path="res://addons/GuideCS/UI/Renderers/Keyboard/Styles/Lato-Black.ttf" id="4_dofui"]
+[ext_resource type="Texture2D" uid="uid://cq8r5uqyithp0" path="res://addons/GuideCS/UI/Renderers/Textures/ArrowHorizontal.svg" id="5_jp034"]
+[ext_resource type="Texture2D" uid="uid://cvv0btxvk4u5a" path="res://addons/GuideCS/UI/Renderers/Textures/ArrowVertical.svg" id="6_jimqg"]
+
+[node name="JoyRenderer" type="MarginContainer" unique_id=332803475]
+offset_right = 100.0
+offset_bottom = 100.0
+size_flags_horizontal = 0
+script = ExtResource("1_i78dq")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1846571489]
+layout_mode = 2
+
+[node name="Controls" type="MarginContainer" parent="HBoxContainer" unique_id=210949779]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+
+[node name="Stick" type="TextureRect" parent="HBoxContainer/Controls" unique_id=1740994133]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("2_uoqkj")
+stretch_mode = 4
+
+[node name="Button" type="TextureRect" parent="HBoxContainer/Controls" unique_id=674191260]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("3_xu0fv")
+stretch_mode = 4
+
+[node name="Text" type="Label" parent="HBoxContainer/Controls" unique_id=956717848]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.843137, 0.843137, 0.843137, 1)
+theme_override_fonts/font = ExtResource("4_dofui")
+theme_override_font_sizes/font_size = 50
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Directions" type="MarginContainer" parent="HBoxContainer" unique_id=1428030458]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+
+[node name="Horizontal" type="TextureRect" parent="HBoxContainer/Directions" unique_id=2143867059]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("5_jp034")
+stretch_mode = 4
+
+[node name="Vertical" type="TextureRect" parent="HBoxContainer/Directions" unique_id=1475528904]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("6_jimqg")
+stretch_mode = 4

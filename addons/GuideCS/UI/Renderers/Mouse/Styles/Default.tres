@@ -1,0 +1,32 @@
+[gd_resource type="Resource" format=3 uid="uid://cmbcfs6ubll5t"]
+
+[ext_resource type="Texture2D" uid="uid://bq2dsvy6iuuwb" path="res://addons/GuideCS/UI/Renderers/Textures/ArrowDown.svg" id="1_d1ffg"]
+[ext_resource type="Texture2D" uid="uid://cq8r5uqyithp0" path="res://addons/GuideCS/UI/Renderers/Textures/ArrowHorizontal.svg" id="2_1hmd2"]
+[ext_resource type="Texture2D" uid="uid://d0qnemurcerao" path="res://addons/GuideCS/UI/Renderers/Textures/ArrowLeft.svg" id="3_7dg6a"]
+[ext_resource type="Texture2D" uid="uid://b3uxk5agbpmab" path="res://addons/GuideCS/UI/Renderers/Mouse/Styles/Mouse_Simple_Key_Light.png" id="4_p7oak"]
+[ext_resource type="Texture2D" uid="uid://ci7icm3q4l1sg" path="res://addons/GuideCS/UI/Renderers/Mouse/Styles/Mouse_Cursor.png" id="5_sb4cs"]
+[ext_resource type="Texture2D" uid="uid://vvgpheda22ew" path="res://addons/GuideCS/UI/Renderers/Mouse/Styles/Mouse_Left_Key_Light.png" id="6_cn3t2"]
+[ext_resource type="Texture2D" uid="uid://bmj244x0jn7v2" path="res://addons/GuideCS/UI/Renderers/Mouse/Styles/Mouse_Middle_Key_Light.png" id="7_6qifd"]
+[ext_resource type="Texture2D" uid="uid://b8bsyguf4qw6f" path="res://addons/GuideCS/UI/Renderers/Mouse/Styles/Mouse_Right_Key_Light.png" id="8_e5tfi"]
+[ext_resource type="Texture2D" uid="uid://je8rm7jk2nxd" path="res://addons/GuideCS/UI/Renderers/Mouse/Styles/Mouse_Side_Key_1_Light.png" id="9_qryeh"]
+[ext_resource type="Texture2D" uid="uid://bqxly0g8pftxa" path="res://addons/GuideCS/UI/Renderers/Mouse/Styles/Mouse_Side_Key_2_Light.png" id="10_febw1"]
+[ext_resource type="Texture2D" uid="uid://dxig4g0kjqgwy" path="res://addons/GuideCS/UI/Renderers/Textures/ArrowRight.svg" id="11_jtah1"]
+[ext_resource type="Script" uid="uid://cu6vx2r8it7dq" path="res://addons/GuideCS/UI/Renderers/Mouse/GUIDEMouseRenderStyle.cs" id="12_pigc4"]
+[ext_resource type="Texture2D" uid="uid://bf50a00jyp11c" path="res://addons/GuideCS/UI/Renderers/Textures/ArrowUp.svg" id="13_qtv50"]
+[ext_resource type="Texture2D" uid="uid://cvv0btxvk4u5a" path="res://addons/GuideCS/UI/Renderers/Textures/ArrowVertical.svg" id="14_xobqc"]
+
+[resource]
+script = ExtResource("12_pigc4")
+mouse_blank = ExtResource("4_p7oak")
+mouse_left = ExtResource("6_cn3t2")
+mouse_right = ExtResource("8_e5tfi")
+mouse_middle = ExtResource("7_6qifd")
+mouse_side_a = ExtResource("9_qryeh")
+mouse_side_b = ExtResource("10_febw1")
+mouse_cursor = ExtResource("5_sb4cs")
+left = ExtResource("3_7dg6a")
+right = ExtResource("11_jtah1")
+up = ExtResource("13_qtv50")
+down = ExtResource("1_d1ffg")
+horizontal = ExtResource("2_1hmd2")
+vertical = ExtResource("14_xobqc")
