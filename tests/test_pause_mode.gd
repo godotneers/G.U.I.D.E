@@ -13,6 +13,7 @@ func test_pause_mode() -> void:
 	var input := input_key(KEY_Q)
 	map(_context, _action, input, [], [_trigger])
 	GUIDE.enable_mapping_context(_context)
+	var a := watch(_action)
 	
 	
 	# WHEN: the game is paused
@@ -22,7 +23,7 @@ func test_pause_mode() -> void:
 	await key_down(KEY_Q)
 
 	# THEN: the action is still triggered
-	await assert_triggered(_action)
+	assert_bool(await a.triggered_was_emitted(1.0)).is_true()
 	
 	await key_up(KEY_Q)
 	
