@@ -8,6 +8,7 @@ static func _instrument(viewport:Viewport):
 		return
 	
 	var tracker = preload("guide_input_tracker.gd").new()
+	tracker.process_mode = Node.PROCESS_MODE_ALWAYS
 	viewport.add_child(tracker, false, Node.INTERNAL_MODE_BACK)
 	viewport.gui_focus_changed.connect(tracker._control_focused)
 	viewport.set_meta("_x_guide_instrumented", true)
