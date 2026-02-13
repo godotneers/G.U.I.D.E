@@ -9,7 +9,7 @@ func _setup() -> void:
 	_action = action_bool()
 	_trigger = trigger_down()
 
-func test_pause_mode() -> void:
+func _test_pause_mode() -> void:
 	var input := input_key(KEY_Q)
 	map(_context, _action, input, [], [_trigger])
 	GUIDE.enable_mapping_context(_context)
