@@ -264,9 +264,13 @@ We can enable multiple mapping contexts at the same time. But what happens, if t
 GUIDE.enable_mapping_context(my_mapping_context, false, -10)
 ```
 
-Lower values have higher priority. When a mapping context is activated, GUIDE will order the action mappings by context priority and will then only consider the action mapping with the highest priority. If mapping contexts have the same priority, the order will be determined by when they were enabled. This means that the first mapping context that was enabled will have the highest priority. If multiple mappings for the same action are found inside of the highest priority mapping context, then the first mapping that was defined in the mapping context will be used. This means that it makes no sense to define multiple mappings for the same action in the same mapping context because only the first one will be used.
+Lower values have higher priority. When multiple mapping contexts define mappings for the same action, GUIDE will merge the inputs from all active contexts together. This allows different contexts to contribute different inputs to the same action. For example, we could have a keyboard/mouse context that binds WASD to a "move" action, and a controller context that binds the left joystick to the same "move" action. When both contexts are enabled, the player can use either WASD or the joystick to move.
 
-Note that you usually will want to set the `disable_others` parameter to `false` when trying to layer mapping contexts on top of each other.
+If mapping contexts have the same priority, the order is determined by when they were enabled - more recently enabled contexts take precedence. This is particularly useful when merging inputs, as it allows a later-enabled context to override specific inputs from an earlier context while still preserving other inputs.
+
+When merging inputs, GUIDE ensures that only one mapping exists for each input-action pair. If multiple contexts try to bind the same input to the same action, only the binding from the highest priority context is used. For contexts with the same priority, the more recently enabled context's binding takes precedence. For example, if both a keyboard context and a controller context try to bind the "A" button to a "jump" action, only one of those bindings will be active - the one from whichever context has higher priority (or was enabled more recently if they have the same priority).
+
+Note that input merging happens automatically when multiple contexts are enabled. If you want to completely replace all active mappings instead of merging them (for example, when switching from walking controls to flying controls), you can set the `disable_others` parameter to `true` when calling `enable_mapping_context()`. This will disable all previously active contexts before enabling the new one, saving you from having to manually call `disable_mapping_context()` for each active context.
 
 ### Action input priority
 
