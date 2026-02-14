@@ -1,0 +1,115 @@
+[gd_resource type="Resource" script_class="GUIDEMappingContext" load_steps=21 format=3 uid="uid://byntrqf4ro5ul"]
+
+[ext_resource type="Script" path="res://addons/guide/guide_action_mapping.gd" id="1_h3guo"]
+[ext_resource type="Resource" uid="uid://bxmuoph07ha7w" path="res://guide_examples/combine_contexts/mapping_contexts/move.tres" id="2_vhkrg"]
+[ext_resource type="Script" path="res://addons/guide/guide_input_mapping.gd" id="3_8kcx6"]
+[ext_resource type="Script" path="res://addons/guide/inputs/guide_input_key.gd" id="4_grsol"]
+[ext_resource type="Script" path="res://addons/guide/modifiers/guide_modifier_input_swizzle.gd" id="6_hcjcl"]
+[ext_resource type="Script" path="res://addons/guide/modifiers/guide_modifier_negate.gd" id="7_icm7e"]
+[ext_resource type="Script" path="res://addons/guide/guide_mapping_context.gd" id="15_ybiof"]
+
+[sub_resource type="Resource" id="Resource_rqldx"]
+script = ExtResource("4_grsol")
+key = 87
+shift = false
+control = false
+alt = false
+meta = false
+allow_additional_modifiers = true
+
+[sub_resource type="Resource" id="Resource_fedub"]
+script = ExtResource("6_hcjcl")
+order = 0
+
+[sub_resource type="Resource" id="Resource_sithj"]
+script = ExtResource("7_icm7e")
+x = true
+y = true
+z = true
+
+[sub_resource type="Resource" id="Resource_gvylm"]
+script = ExtResource("3_8kcx6")
+override_action_settings = false
+is_remappable = false
+display_name = ""
+display_category = ""
+input = SubResource("Resource_rqldx")
+modifiers = Array[Resource("res://addons/guide/modifiers/guide_modifier.gd")]([SubResource("Resource_fedub"), SubResource("Resource_sithj")])
+triggers = Array[Resource("res://addons/guide/triggers/guide_trigger.gd")]([])
+
+[sub_resource type="Resource" id="Resource_2grck"]
+script = ExtResource("4_grsol")
+key = 83
+shift = false
+control = false
+alt = false
+meta = false
+allow_additional_modifiers = true
+
+[sub_resource type="Resource" id="Resource_e6ufd"]
+script = ExtResource("6_hcjcl")
+order = 0
+
+[sub_resource type="Resource" id="Resource_hclrp"]
+script = ExtResource("3_8kcx6")
+override_action_settings = false
+is_remappable = false
+display_name = ""
+display_category = ""
+input = SubResource("Resource_2grck")
+modifiers = Array[Resource("res://addons/guide/modifiers/guide_modifier.gd")]([SubResource("Resource_e6ufd")])
+triggers = Array[Resource("res://addons/guide/triggers/guide_trigger.gd")]([])
+
+[sub_resource type="Resource" id="Resource_0e6tb"]
+script = ExtResource("4_grsol")
+key = 65
+shift = false
+control = false
+alt = false
+meta = false
+allow_additional_modifiers = true
+
+[sub_resource type="Resource" id="Resource_o7bio"]
+script = ExtResource("7_icm7e")
+x = true
+y = true
+z = true
+
+[sub_resource type="Resource" id="Resource_085kd"]
+script = ExtResource("3_8kcx6")
+override_action_settings = false
+is_remappable = false
+display_name = ""
+display_category = ""
+input = SubResource("Resource_0e6tb")
+modifiers = Array[Resource("res://addons/guide/modifiers/guide_modifier.gd")]([SubResource("Resource_o7bio")])
+triggers = Array[Resource("res://addons/guide/triggers/guide_trigger.gd")]([])
+
+[sub_resource type="Resource" id="Resource_h42bk"]
+script = ExtResource("4_grsol")
+key = 68
+shift = false
+control = false
+alt = false
+meta = false
+allow_additional_modifiers = true
+
+[sub_resource type="Resource" id="Resource_vnoud"]
+script = ExtResource("3_8kcx6")
+override_action_settings = false
+is_remappable = false
+display_name = ""
+display_category = ""
+input = SubResource("Resource_h42bk")
+modifiers = Array[Resource("res://addons/guide/modifiers/guide_modifier.gd")]([])
+triggers = Array[Resource("res://addons/guide/triggers/guide_trigger.gd")]([])
+
+[sub_resource type="Resource" id="Resource_x8yon"]
+script = ExtResource("1_h3guo")
+action = ExtResource("2_vhkrg")
+input_mappings = Array[ExtResource("3_8kcx6")]([SubResource("Resource_gvylm"), SubResource("Resource_hclrp"), SubResource("Resource_085kd"), SubResource("Resource_vnoud")])
+
+[resource]
+script = ExtResource("15_ybiof")
+display_name = ""
+mappings = Array[ExtResource("1_h3guo")]([SubResource("Resource_x8yon")])

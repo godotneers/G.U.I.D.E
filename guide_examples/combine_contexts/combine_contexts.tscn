@@ -1,0 +1,52 @@
+[gd_scene load_steps=10 format=3 uid="uid://b3o54rxt4sg7b"]
+
+[ext_resource type="Script" path="res://guide_examples/combine_contexts/combine_contexts.gd" id="1_nxm54"]
+[ext_resource type="Resource" uid="uid://byntrqf4ro5ul" path="res://guide_examples/combine_contexts/mapping_contexts/keyboard_and_mouse.tres" id="2_7en4c"]
+[ext_resource type="Texture2D" uid="uid://byjxtsekdl8t2" path="res://guide_examples/shared/godot_logo.svg" id="2_ug15u"]
+[ext_resource type="Resource" uid="uid://bvg2kv4me6p18" path="res://guide_examples/combine_contexts/mapping_contexts/controller.tres" id="3_iacs2"]
+[ext_resource type="Script" path="res://guide_examples/2d_axis_mapping/player.gd" id="3_w8aur"]
+[ext_resource type="Resource" uid="uid://bxmuoph07ha7w" path="res://guide_examples/combine_contexts/mapping_contexts/move.tres" id="4_7en4c"]
+[ext_resource type="PackedScene" uid="uid://dkr80d2pi0d41" path="res://addons/guide/debugger/guide_debugger.tscn" id="7_1g1vo"]
+[ext_resource type="Theme" uid="uid://dot0gi1yoqmrl" path="res://guide_examples/shared/ui_theme.tres" id="8_qjb18"]
+[ext_resource type="Script" path="res://guide_examples/shared/instructions_label.gd" id="9_kwp4h"]
+
+[node name="CombineContexts" type="Node2D"]
+script = ExtResource("1_nxm54")
+keyboard_and_mouse = ExtResource("2_7en4c")
+controller = ExtResource("3_iacs2")
+
+[node name="Player" type="Node2D" parent="."]
+position = Vector2(929, 695)
+script = ExtResource("3_w8aur")
+move_action = ExtResource("4_7en4c")
+
+[node name="GodotLogo" type="Sprite2D" parent="Player"]
+texture = ExtResource("2_ug15u")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="InstructionsLabel" type="RichTextLabel" parent="UI"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(500, 0)
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -552.0
+offset_top = 85.0
+offset_right = -52.0
+offset_bottom = 125.0
+grow_horizontal = 0
+theme = ExtResource("8_qjb18")
+bbcode_enabled = true
+text = "Lorem Ipsum Dolor"
+fit_content = true
+script = ExtResource("9_kwp4h")
+instructions_text = "%s to move.
+
+Both keyboard and controller inputs work simultaneously!"
+actions = Array[Resource("res://addons/guide/guide_action.gd")]([ExtResource("4_7en4c")])
+
+[node name="Debugger" type="CanvasLayer" parent="."]
+
+[node name="GuideDebugger" parent="Debugger" instance=ExtResource("7_1g1vo")]
+theme = ExtResource("8_qjb18")
