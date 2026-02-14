@@ -205,7 +205,6 @@ func _process(delta:float) -> void:
 ## priority contexts taking precedence.
 func _parse_input_mappings(
 		action_mapping:GUIDEActionMapping, 
-		active_remapping_config:GUIDERemappingConfig, 
 		context:GUIDEMappingContext, 
 		action:GUIDEAction, 
 		new_inputs:GUIDESet, 
@@ -226,9 +225,9 @@ func _parse_input_mappings(
 
 		# if the re-mapping has an override for the input (e.g. the player has changed
 		# the default binding to something else), apply it.
-		if active_remapping_config != null and \
-				active_remapping_config._has(context, action, index):
-			bound_input = active_remapping_config._get_bound_input_or_null(context, action, index)
+		if _active_remapping_config != null and \
+				_active_remapping_config._has(context, action, index):
+			bound_input = _active_remapping_config._get_bound_input_or_null(context, action, index)
 			# If the remapping explicitly set this to null, it means the input was unbound.
 			# Skip adding this input mapping entirely.
 			if bound_input == null:
@@ -387,7 +386,7 @@ func _update_caches() -> void:
 					if mapping.action != action_mapping.action:
 						continue
 
-					_parse_input_mappings(action_mapping, _active_remapping_config, context, action, new_inputs, new_modifiers, mapping)
+					_parse_input_mappings(action_mapping, context, action, new_inputs, new_modifiers, mapping)
 				# skip
 				continue
 				
@@ -431,7 +430,7 @@ func _update_caches() -> void:
 			effective_mapping.action = action
 			_copy_meta(action_mapping, effective_mapping)
 
-			effective_mapping = _parse_input_mappings(action_mapping, _active_remapping_config, context, action, new_inputs, new_modifiers, effective_mapping)
+			effective_mapping = _parse_input_mappings(action_mapping, context, action, new_inputs, new_modifiers, effective_mapping)
 			
 			# if any binding remains, add the mapping to the list of active
 			# action mappings
