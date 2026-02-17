@@ -8,18 +8,19 @@ func _setup() -> void:
 	_action = action_bool()
 
 func test_any_input_works_for_mouse_clicks() -> void:
-	
+
 	var input := input_any()
 	input.mouse = true
 	map(_context, _action, input)
 	GUIDE.enable_mapping_context(_context)
-	
-	
+	var watched := watch(_action)
+
+
 	# WHEN: i press the mouse button
 	await tap_mouse(MOUSE_BUTTON_LEFT)
 
 	# THEN: the action is triggered
-	await assert_triggered(_action)
+	await watched.assert_triggered()
 	
 	
 func test_any_input_works_for_mouse_movement() -> void:
@@ -28,14 +29,13 @@ func test_any_input_works_for_mouse_movement() -> void:
 	input.minimum_mouse_movement_distance = 2
 	map(_context, _action, input)
 	GUIDE.enable_mapping_context(_context)
-	
-	monitor_signals(_action)
-	
+	var watched := watch(_action)
+
 	# WHEN: i move the mouse
 	await mouse_move_by(Vector2(3,3))
 
 	# THEN: the action is triggered
-	await assert_triggered(_action)
+	await watched.assert_triggered()
 	
 
 func test_any_input_adheres_to_mouse_minimum_distance() -> void:
@@ -44,12 +44,13 @@ func test_any_input_adheres_to_mouse_minimum_distance() -> void:
 	input.minimum_mouse_movement_distance = 30
 	map(_context, _action, input)
 	GUIDE.enable_mapping_context(_context)
-	
+	var watched := watch(_action)
+
 	# WHEN: i move the mouse just a small bit
 	await mouse_move_by(Vector2(3,3))
 
 	# THEN: the action is not triggered
-	await assert_not_triggered(_action)
+	watched.assert_not_triggered()
 	
 
 
@@ -58,12 +59,13 @@ func test_any_input_works_with_joy_buttons() -> void:
 	input.joy_buttons = true
 	map(_context, _action, input)
 	GUIDE.enable_mapping_context(_context)
-	
+	var watched := watch(_action)
+
 	# WHEN: i press the joy button
 	await tap_joy_button(JOY_BUTTON_A)
-	
+
 	# THEN: the action is triggered
-	await assert_triggered(_action)
+	await watched.assert_triggered()
 	
 
 func test_any_input_works_with_joy_axis() -> void:
@@ -71,12 +73,13 @@ func test_any_input_works_with_joy_axis() -> void:
 	input.joy_axes = true
 	map(_context, _action, input)
 	GUIDE.enable_mapping_context(_context)
-	
+	var watched := watch(_action)
+
 	# WHEN: i move the joy axis
 	await joy_axis(JOY_AXIS_LEFT_X, 0.5)
-	
+
 	# THEN: the action is triggered
-	await assert_triggered(_action)
+	await watched.assert_triggered()
 	
 	await joy_axis(JOY_AXIS_LEFT_X, 0)
 	
@@ -86,12 +89,13 @@ func test_any_input_works_with_joy_axis_with_deadzone() -> void:
 	input.minimum_joy_axis_actuation_strength = 0.7
 	map(_context, _action, input)
 	GUIDE.enable_mapping_context(_context)
-	
+	var watched := watch(_action)
+
 	# WHEN: i move the joy axis just a bit
 	await joy_axis(JOY_AXIS_LEFT_X, 0.5)
-	
+
 	# THEN: the action is not triggered
-	await assert_not_triggered(_action)
+	watched.assert_not_triggered()
 
 	
 func test_any_input_works_with_keyboard() -> void:
@@ -99,24 +103,26 @@ func test_any_input_works_with_keyboard() -> void:
 	input.keyboard = true
 	map(_context, _action, input)
 	GUIDE.enable_mapping_context(_context)
-	
+	var watched := watch(_action)
+
 	# WHEN: i press the key
 	await tap_key(KEY_Q)
-	
+
 	# THEN: the action is triggered
-	await assert_triggered(_action)
+	await watched.assert_triggered()
 	
 func test_any_input_works_with_touch() -> void:
 	var input := input_any()
 	input.touch = true
 	map(_context, _action, input)
 	GUIDE.enable_mapping_context(_context)
-	
+	var watched := watch(_action)
+
 	# WHEN: i press the touch
 	await tap_finger(0, Vector2(100, 100))
-	
+
 	# THEN: the action is triggered
-	await assert_triggered(_action)
+	await watched.assert_triggered()
 	
 func test_any_input_handles_queuing_input_correctly() -> void:
 	var input := input_any()
@@ -124,6 +130,7 @@ func test_any_input_handles_queuing_input_correctly() -> void:
 
 	map(_context, _action, input)
 	GUIDE.enable_mapping_context(_context)
+	var watched := watch(_action)
 
 	# when I actuate a button (and not wait)
 	joy_button_down(JOY_BUTTON_A, false)
@@ -132,7 +139,7 @@ func test_any_input_handles_queuing_input_correctly() -> void:
 	await joy_axis(JOY_AXIS_LEFT_X, 0.1, true)
 
 	# then the action is still triggered
-	await assert_triggered(_action)
+	await watched.assert_triggered()
 
 
 func test_any_input_with_down_trigger_fires_every_frame() -> void:
@@ -143,28 +150,28 @@ func test_any_input_with_down_trigger_fires_every_frame() -> void:
 	map(_context, _action, input, [], [trigger_down])
 	GUIDE.enable_mapping_context(_context)
 
-	var action := watch(_action)
+	var watched := watch(_action)
 
 	# WHEN: I press and hold a key
 	key_down(KEY_Q, false)
 
 	# THEN: the action triggers on the first frame
-	await action.assert_triggered()
+	await watched.assert_triggered()
 
 	# AND: it continues to trigger on subsequent frames while held
 	await wait_f(1)
-	await action.assert_triggered()
+	await watched.assert_triggered()
 
 	await wait_f(1)
-	await action.assert_triggered()
+	await watched.assert_triggered()
 
 	# WHEN: I release the key
 	await key_up(KEY_Q)
 
 	# THEN: completed is emitted
-	await action.assert_completed()
-	action.reset()
+	await watched.assert_completed()
 
 	# AND: triggered no longer fires on subsequent frames
+	watched.reset()
 	await wait_f(1)
-	action.assert_not_triggered()
+	watched.assert_not_triggered()

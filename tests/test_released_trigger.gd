@@ -16,25 +16,25 @@ func test_released_trigger_works_for_key_input() -> void:
 	map(_context, _action, input, [], [_trigger])
 	GUIDE.enable_mapping_context(_context)
 
-	var action := watch(_action)
+	var watched := watch(_action)
 
 	# Initial state: nothing
-	action.assert_not_triggered()
-	action.assert_not_ongoing()
+	watched.assert_not_triggered()
+	watched.assert_not_ongoing()
 
 	# WHEN: I press the key
 	await key_down(KEY_R)
 
 	# THEN: it is ongoing, but not yet triggered
-	await action.assert_started()
-	await action.assert_ongoing()
-	action.assert_not_triggered()
+	await watched.assert_started()
+	await watched.assert_ongoing()
+	watched.assert_not_triggered()
 
 	# WHEN: I release the key
 	await key_up(KEY_R)
 
 	# THEN: it is triggered and then completed
-	await action.assert_triggered()
-	await action.assert_just_triggered()
-	await action.assert_completed()
+	await watched.assert_triggered()
+	await watched.assert_just_triggered()
+	await watched.assert_completed()
 

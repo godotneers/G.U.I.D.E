@@ -39,7 +39,6 @@ func action(name:String, value_type:GUIDEAction.GUIDEActionValueType) -> GUIDEAc
 	var result := GUIDEAction.new()
 	result.name = name
 	result.action_value_type = value_type
-	monitor_signals(result)
 	return result
 
 
@@ -66,7 +65,6 @@ func action_3d(name:String = "action") -> GUIDEAction:
 func input_action(action:GUIDEAction) -> GUIDEInputAction:
 	var result := GUIDEInputAction.new()
 	result.action = action
-	monitor_signals(result)
 	return result
 	
 	
@@ -400,14 +398,6 @@ func world_to_viewport(global_position:Vector2) -> Vector2:
 func watch(to_watch: GUIDEAction) -> WatchedAction:
 	return WatchedAction.new(to_watch, self)
 
-## Asserts that the given action has been triggered (emitted "triggered" signal).
-@warning_ignore("shadowed_variable")
-func assert_triggered(action:GUIDEAction) -> void:
-	await assert_signal(action) \
-		.append_failure_message("Action should be triggered but is not.") \
-		.is_emitted("triggered")
-
-	
 ## Asserts that the given action is currently reporting as triggered.
 @warning_ignore("shadowed_variable")
 func assert_is_triggered(action:GUIDEAction) -> void:
@@ -416,36 +406,12 @@ func assert_is_triggered(action:GUIDEAction) -> void:
 		.is_true()
 
 
-## Asserts that the given action has NOT been triggered (did NOT emit "triggered" signal).	
-@warning_ignore("shadowed_variable")
-func assert_not_triggered(action:GUIDEAction) -> void:
-	await assert_signal(action) \
-		.append_failure_message("Action should not be triggered but is.") \
-		.is_not_emitted("triggered")
-		
-
 ## Asserts that the given action is currently not reporting as triggered.
 @warning_ignore("shadowed_variable")
 func assert_is_not_triggered(action:GUIDEAction) -> void:
 	assert_bool(action.is_triggered()) \
 		.append_failure_message("Action should not be triggered but is.") \
 		.is_false()
-
-
-## Asserts that the given action has been completed (emitted "completed" signal).
-@warning_ignore("shadowed_variable")
-func assert_completed(action:GUIDEAction) -> void:
-	await assert_signal(action) \
-		.append_failure_message("Action should be triggered but is not.") \
-		.is_emitted("completed")
-	
-	
-## Asserts that the given action has NOT been completed (did NOT emit "completed" signal).	
-@warning_ignore("shadowed_variable")
-func assert_not_completed(action:GUIDEAction) -> void:
-	await assert_signal(action) \
-		.append_failure_message("Action should not be triggered but is.") \
-		.is_not_emitted("completed")
 
 
 ## Asserts that the given action has the given axis 1D value.
@@ -465,14 +431,6 @@ func assert_axis_2d(action:GUIDEAction, expected_value:Vector2, deviation:Vector
 
 
 #------------------ Other stuff -------------------------------------------
-func reset_signal_watcher(emitter:Variant) -> void:
-	var collector := GdUnitThreadManager.get_current_context().get_signal_collector()
-	var _collected_signals := collector._collected_signals
-	if _collected_signals.has(emitter):
-		var signals_by_emitter :Dictionary = _collected_signals[emitter]
-		for signl:Variant in signals_by_emitter.keys():
-			_collected_signals[emitter][signl] = []
-
 @warning_ignore("shadowed_variable")
 func log_signals(action:GUIDEAction) -> void:
 	action.triggered.connect(func() -> void: print_f("action triggered: '%s' (%s)" % [action.name, action._value]))

@@ -16,8 +16,9 @@ func test_rapid_key_actuations_are_handled_correctly() -> void:
 	map(_context, _action, input)
 
 	GUIDE.enable_mapping_context(_context)
+	var watched := watch(_action)
 
-	await assert_not_completed(_action)
+	watched.assert_not_completed()
 
 	# WHEN
 	# i press the key down
@@ -25,11 +26,11 @@ func test_rapid_key_actuations_are_handled_correctly() -> void:
 	# and immediately release it within the same frame
 	await key_up(KEY_A)
 
-	# THEN 
+	# THEN
 	# the action is triggered
-	await assert_triggered(_action)
+	await watched.assert_triggered()
 	# and is completed afterwards
-	await assert_completed(_action)
+	await watched.assert_completed()
 
 
 func test_rapid_mouse_actuations_are_handled_correctly() -> void:
@@ -37,8 +38,9 @@ func test_rapid_mouse_actuations_are_handled_correctly() -> void:
 	map(_context, _action, input)
 
 	GUIDE.enable_mapping_context(_context)
+	var watched := watch(_action)
 
-	await assert_not_completed(_action)
+	watched.assert_not_completed()
 
 	# WHEN
 	# i press the mouse button down
@@ -46,11 +48,11 @@ func test_rapid_mouse_actuations_are_handled_correctly() -> void:
 	# and immediately release it within the same frame
 	await mouse_up(MOUSE_BUTTON_LEFT)
 
-	# THEN 
+	# THEN
 	# the action is triggered
-	await assert_triggered(_action)
+	await watched.assert_triggered()
 	# and is completed afterwards
-	await assert_completed(_action)
+	await watched.assert_completed()
 
 
 func test_rapid_controller_actuations_are_handled_correctly() -> void:
@@ -58,8 +60,9 @@ func test_rapid_controller_actuations_are_handled_correctly() -> void:
 	map(_context, _action, input)
 
 	GUIDE.enable_mapping_context(_context)
+	var watched := watch(_action)
 
-	await assert_not_completed(_action)
+	watched.assert_not_completed()
 
 	# WHEN
 	# i press the controller A button down
@@ -67,8 +70,8 @@ func test_rapid_controller_actuations_are_handled_correctly() -> void:
 	# and immediately release it within the same frame
 	await joy_button_up(JOY_BUTTON_A)
 
-	# THEN 
+	# THEN
 	# the action is triggered
-	await assert_triggered(_action)
+	await watched.assert_triggered()
 	# and is completed afterwards
-	await assert_completed(_action)
+	await watched.assert_completed()

@@ -13,12 +13,13 @@ func test_touch_axis_2d_input() -> void:
 	map(_context, _action, input)
 	
 	GUIDE.enable_mapping_context(_context)
-	
+	var watched := watch(_action)
+
 	# WHEN
 	# I move my finger on the screen
 	await finger_down(0, Vector2(50, 50))
 	await finger_move(0, Vector2(100, 0))
-	
+
 	# THEN
 	# the action is triggered
-	await assert_triggered(_action)
+	await watched.assert_triggered()

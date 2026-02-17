@@ -26,15 +26,21 @@ func _setup() -> void:
 
 
 func test_a_triggers_without_modifier() -> void:
+	var watched_a := watch(_action_a)
+	var watched_lt_a := watch(_action_lt_a)
+
 	# WHEN: I press A without holding LT
 	await tap_joy_button(JOY_BUTTON_A)
 
 	# THEN: only the simple A action triggers
-	await assert_triggered(_action_a)
-	await assert_not_triggered(_action_lt_a)
+	await watched_a.assert_triggered()
+	watched_lt_a.assert_not_triggered()
 
 
 func test_chorded_action_blocks_lower_priority() -> void:
+	var watched_a := watch(_action_a)
+	var watched_lt_a := watch(_action_lt_a)
+
 	for a:GUIDEAction in GUIDE._actions_sharing_input.keys():
 		print("%s > %s" % [a.name, GUIDE._actions_sharing_input[a][0].name])
 	await joy_axis(JOY_AXIS_TRIGGER_LEFT, 1.0)
@@ -42,6 +48,6 @@ func test_chorded_action_blocks_lower_priority() -> void:
 	await joy_axis(JOY_AXIS_TRIGGER_LEFT, 0.0)
 
 	# THEN: the chorded action (LT + A) triggers and blocks the plain A action
-	await assert_triggered(_action_lt_a)
-	await assert_not_triggered(_action_a)
+	await watched_lt_a.assert_triggered()
+	watched_a.assert_not_triggered()
 

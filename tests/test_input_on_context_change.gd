@@ -18,20 +18,22 @@ func test_input_stays_active_when_mapping_contexts_change() -> void:
 	var input:GUIDEInput = input_key(KEY_A)
 	map(_context1, _action1, input)
 	map(_context2, _action2, input)
-	
+
 	GUIDE.enable_mapping_context(_context1)
-	
+	var watched1 := watch(_action1)
+	var watched2 := watch(_action2)
+
 	# WHEN
 	# i press the key down
 	await key_down(KEY_A)
-	
-	# THEN 
+
+	# THEN
 	# the first action is triggered
-	await assert_triggered(_action1)
-	
+	await watched1.assert_triggered()
+
 	# when I now switch the mapping context, but keep the key pressed
 	GUIDE.enable_mapping_context(_context2, true)
-	
+
 	# THEN
 	# the second action is triggered
-	await assert_triggered(_action2)
+	await watched2.assert_triggered()

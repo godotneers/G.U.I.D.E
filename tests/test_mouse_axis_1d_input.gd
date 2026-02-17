@@ -16,32 +16,32 @@ func _setup() -> void:
 func test_mouse_axis1d_input_x() -> void:
 	var input := input_mouse_axis_1d(GUIDEInputMouseAxis1D.GUIDEInputMouseAxis.X)
 	map(_context, _action, input)
-	
+
 	GUIDE.enable_mapping_context(_context)
-	reset_signal_watcher(_action)
-	
+	var watched := watch(_action)
+
 	# WHEN
 	# i move the mouse
 	await mouse_move_by(Vector2(10, 0))
-	
+
 	# THEN
 	# the action should be triggered
-	await assert_triggered(_action)
+	await watched.assert_triggered()
 
 func test_mouse_axis1d_input_y() -> void:
 	var input := input_mouse_axis_1d(GUIDEInputMouseAxis1D.GUIDEInputMouseAxis.Y)
 	map(_context, _action, input)
-	
+
 	GUIDE.enable_mapping_context(_context)
-	reset_signal_watcher(_action)
-	
+	var watched := watch(_action)
+
 	# WHEN
 	# i move the mouse
 	await mouse_move_by(Vector2(0, 10))
-	
+
 	# THEN
 	# the action should be triggered
-	await assert_triggered(_action)
+	await watched.assert_triggered()
 
 
 func test_mouse_axis1d_input_ignores_other_axis_x() -> void:
@@ -51,7 +51,7 @@ func test_mouse_axis1d_input_ignores_other_axis_x() -> void:
 	GUIDE.enable_mapping_context(_context)
 	# wait for any initial events to drop
 	await wait_f(5)
-	reset_signal_watcher(_action)
+	var watched := watch(_action)
 
 	# WHEN
 	# i move the mouse
@@ -59,7 +59,7 @@ func test_mouse_axis1d_input_ignores_other_axis_x() -> void:
 
 	# THEN
 	# the action should not be triggered
-	await assert_not_triggered(_action)
+	watched.assert_not_triggered()
 	
 func test_mouse_axis1d_input_ignores_other_axis_y() -> void:
 	var input := input_mouse_axis_1d(GUIDEInputMouseAxis1D.GUIDEInputMouseAxis.Y)
@@ -67,13 +67,13 @@ func test_mouse_axis1d_input_ignores_other_axis_y() -> void:
 	GUIDE.enable_mapping_context(_context)
 	# wait for any initial events to drop
 	await wait_f(5)
-	reset_signal_watcher(_action)
+	var watched := watch(_action)
 
 	# WHEN
 	# i move the mouse
 	await mouse_move_by(Vector2(10, 0))
-	
+
 	# THEN
 	# the action should not be triggered
-	await assert_not_triggered(_action)	
+	watched.assert_not_triggered()	
 	

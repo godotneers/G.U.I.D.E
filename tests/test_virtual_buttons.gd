@@ -35,37 +35,38 @@ func _make_button(input_mode:GUIDEVirtualButton.InputMode, position:Vector2 = Ve
 
 func test_virtual_button_can_be_touched() -> void:
 	var virtual_button := _make_button(GUIDEVirtualButton.InputMode.TOUCH)
+	var watched := watch(_action)
 	# WHEN i touch the virtual button
 	await tap_finger(0, virtual_button.global_position)
 	# THEN the action is triggered
-	await assert_triggered(_action)
+	await watched.assert_triggered()
 	
 	
 func test_virtual_button_can_be_clicked() -> void:
 	var virtual_button := _make_button(GUIDEVirtualButton.InputMode.MOUSE)
+	var watched := watch(_action)
 
 	# WHEN i click the virtual button
 	await tap_mouse_at(MOUSE_BUTTON_LEFT, virtual_button.global_position)
 	# THEN the action is triggered
-	await assert_triggered(_action)
+	await watched.assert_triggered()
 
 
 func test_virtual_button_can_be_clicked_and_touched() -> void:
 	var virtual_button := _make_button(GUIDEVirtualButton.InputMode.MOUSE_AND_TOUCH)
+	var watched := watch(_action)
 
 	# WHEN i click the virtual button
 	await tap_mouse_at(MOUSE_BUTTON_LEFT, virtual_button.global_position)
 
 	# THEN the action is triggered
-	await assert_triggered(_action)
-	
-	reset_signal_watcher(_action)
+	await watched.assert_triggered()
 
 	# WHEN i touch the virtual button
 	await tap_finger(0, virtual_button.global_position)
-	
+
 	# THEN the action is triggered
-	await assert_triggered(_action)
+	await watched.assert_triggered()
 		
 func test_virtual_button_stops_actuation_when_last_finger_moves_out() -> void:
 	var virtual_button := _make_button(GUIDEVirtualButton.InputMode.TOUCH)

@@ -32,21 +32,23 @@ func test_mapping_works() -> void:
 ## When layering contexts, the inputs are properly mapped.
 func test_mapping_inputs_works() -> void:
 	GUIDE.enable_mapping_context(_context1)
-	
+	var watched1 := watch(_action1)
+	var watched2 := watch(_action2)
+
 	# when i press the A key
 	tap_key(KEY_A)
-	
+
 	# then action1 is triggered
-	await assert_triggered(_action1)
-	
+	await watched1.assert_triggered()
+
 	# when i add the second context
 	GUIDE.enable_mapping_context(_context2)
-	
+
 	# i should be able to press both keys now and they should trigger their actions
 	tap_key(KEY_A)
-	await assert_triggered(_action1)
+	await watched1.assert_triggered()
 	tap_key(KEY_B)
-	await assert_triggered(_action2)
+	await watched2.assert_triggered()
 
 
 ## When layering contexts, disabling one context should not affect the other.
@@ -54,21 +56,23 @@ func test_disable_one_context() -> void:
 	# enable both contexts
 	GUIDE.enable_mapping_context(_context1)
 	GUIDE.enable_mapping_context(_context2)
-	
+	var watched1 := watch(_action1)
+	var watched2 := watch(_action2)
+
 	# verify both inputs work
 	tap_key(KEY_A)
-	await assert_triggered(_action1)
+	await watched1.assert_triggered()
 	tap_key(KEY_B)
-	await assert_triggered(_action2)
-	
+	await watched2.assert_triggered()
+
 	# disable the second context
 	GUIDE.disable_mapping_context(_context2)
-	
+
 	# the first context should still work
 	tap_key(KEY_A)
-	await assert_triggered(_action1)
-	
+	await watched1.assert_triggered()
+
 	# but the second context should not
 	tap_key(KEY_B)
-	await assert_not_triggered(_action2)
+	watched2.assert_not_triggered()
 	

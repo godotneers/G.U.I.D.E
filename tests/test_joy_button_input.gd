@@ -11,14 +11,15 @@ func _setup() -> void:
 func test_joy_button_input() -> void:
 	var input := input_joy_button(JOY_BUTTON_A)
 	map(_context, _action, input)
-	
+
 	GUIDE.enable_mapping_context(_context)
-	
+	var watched := watch(_action)
+
 	# WHEN
 	# i press the joy button
 	await tap_joy_button(JOY_BUTTON_A)
-	
+
 	# THEN
 	# the action is triggered
-	await assert_triggered(_action)
+	await watched.assert_triggered()
 	
