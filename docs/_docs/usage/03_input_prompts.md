@@ -97,7 +97,9 @@ The label will automatically update the input prompt strings when the input mapp
 
 When the player has connected a controller, you usually want to match the icons that are displayed on screen to the controller type that the player is using. G.U.I.D.E automatically tries to detect the type of controller that is connected and will show icons matching the general type of controller. So if the player uses a PlayStation controller, they will see PlayStation icons, and if they use an Xbox controller, they will see Xbox icons.
 
-Sometimes it is not possible to properly detect the controller type. This is very often the case with off-brand controllers that just register as a generic controller to the operating system and have no useful detection strings that can identify them. In these cases, G.U.I.D.E will by default show generic icons that will not match what is printed on the buttons of the controller. This is not a great user experience. Therefore, the input prompt system allows you to override which controller icons are displayed depending on a set of rules:
+Sometimes it is not possible to properly detect the controller type. This is very often the case with off-brand controllers that just register as a generic controller to the operating system and have no useful detection strings that can identify them. This is also the case for web builds, where the browser hides the controller name from Godot and therefore Godot (and G.U.I.D.E) has no way to auto-detect the controller. 
+
+In these cases, G.U.I.D.E will by default show generic icons that will not match what is printed on the buttons of the controller. This is not a great user experience. Therefore, the input prompt system allows you to override which controller icons are displayed depending on a set of rules:
 
 ```gdscript
 var _formatter: GUIDEInputFormatter = GUIDEInputFormatter.new()
