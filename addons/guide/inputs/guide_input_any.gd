@@ -50,6 +50,10 @@ func _needs_reset() -> bool:
 	# Needs reset because we cannot detect the absence of input.
 	return true
 
+func _reset() -> void:
+	_value = Vector3.ZERO
+	_refresh()
+
 func _begin_usage() -> void:
 	# subscribe to relevant input events
 	if mouse_movement:

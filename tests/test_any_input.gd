@@ -121,15 +121,50 @@ func test_any_input_works_with_touch() -> void:
 func test_any_input_handles_queuing_input_correctly() -> void:
 	var input := input_any()
 	input.joy_buttons = true
-	
+
 	map(_context, _action, input)
 	GUIDE.enable_mapping_context(_context)
-	
+
 	# when I actuate a button (and not wait)
 	joy_button_down(JOY_BUTTON_A, false)
-	
+
 	# and and axis aftwards
-	await joy_axis(JOY_AXIS_LEFT_X, 0.1, true) 
-	
+	await joy_axis(JOY_AXIS_LEFT_X, 0.1, true)
+
 	# then the action is still triggered
 	await assert_triggered(_action)
+
+
+func test_any_input_with_down_trigger_fires_every_frame() -> void:
+	var input := input_any()
+	input.keyboard = true
+
+	var trigger_down := trigger_down()
+	map(_context, _action, input, [], [trigger_down])
+	GUIDE.enable_mapping_context(_context)
+
+	var action := watch(_action)
+
+	# WHEN: I press and hold a key
+	key_down(KEY_Q, false)
+
+	# THEN: the action triggers on the first frame
+	assert_bool(await action.triggered_was_emitted()).is_true()
+
+	# AND: it continues to trigger on subsequent frames while held
+	await wait_f(1)
+	assert_bool(await action.triggered_was_emitted()).is_true()
+
+	await wait_f(1)
+	assert_bool(await action.triggered_was_emitted()).is_true()
+
+	# WHEN: I release the key
+	await key_up(KEY_Q)
+
+	# THEN: completed is emitted
+	assert_bool(await action.completed_was_emitted()).is_true()
+
+	# AND: triggered no longer fires on subsequent frames
+	action.reset()
+	await wait_f(1)
+	assert_bool(action.triggered_was_not_emitted()).is_true()

@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.11.2] - 2026-02-17
+### Fixed
+- The _Any_ input now properly fires continuously when used with a _Down_ trigger. Previously it would only fire once on the initial press rather than every frame while the input was held ([#171](https://github.com/godotneers/G.U.I.D.E/issues/171)).
+
 ## [0.11.1] - 2026-02-10
 ### Fixed
 - Fixed a runtime error that could occur when disconnecting and reconnecting controllers during gameplay ([#164](https://github.com/godotneers/G.U.I.D.E/issues/164), [#169](https://github.com/godotneers/G.U.I.D.E/pull/169)). A big thanks goes out to [Phlegmlee](https://github.com/Phlegmlee) for contributing a PR for this!
