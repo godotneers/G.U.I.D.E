@@ -398,7 +398,7 @@ func world_to_viewport(global_position:Vector2) -> Vector2:
 ## Watches the given action for emitted signals. Returns a watcher which can
 ## be used to assert on the received signals.
 func watch(to_watch: GUIDEAction) -> WatchedAction:
-	return WatchedAction.new(to_watch)
+	return WatchedAction.new(to_watch, self)
 
 ## Asserts that the given action has been triggered (emitted "triggered" signal).
 @warning_ignore("shadowed_variable")
@@ -504,8 +504,26 @@ func get_f() -> int:
 
 
 ## A class that watches signals of a GUIDEAction and provides assertions for them.
+##
+## This class tracks how many times each signal has been emitted. The assertion methods
+## automatically reset their counter after checking, so you don't need to call [method reset]
+## between assertions.
+##
+## Thanks to gdUnit4's stack trace scanning, methods starting with [code]assert_[/code] are
+## automatically skipped when reporting line numbers, ensuring that test failures report the
+## correct line in your test file, not inside this helper class.
+##
+## Example:
+## [codeblock]
+## var action := watch(_action)
+## await key_down(KEY_Q)
+## await action.assert_triggered()  # Resets triggered counter automatically
+## await wait_f(1)
+## await action.assert_triggered()  # No reset() needed, works immediately!
+## [/codeblock]
 class WatchedAction:
 	var _action: GUIDEAction
+	var _test_suite: GdUnitTestSuite
 	var _triggered_count: int = 0
 	var _just_triggered_count: int = 0
 	var _started_count: int = 0
@@ -513,8 +531,9 @@ class WatchedAction:
 	var _completed_count: int = 0
 	var _cancelled_count: int = 0
 
-	func _init(action: GUIDEAction) -> void:
+	func _init(action: GUIDEAction, test_suite: GdUnitTestSuite) -> void:
 		_action = action
+		_test_suite = test_suite
 		_action.triggered.connect(func() -> void: _triggered_count += 1)
 		_action.just_triggered.connect(func() -> void: _just_triggered_count += 1)
 		_action.started.connect(func() -> void: _started_count += 1)
@@ -522,59 +541,89 @@ class WatchedAction:
 		_action.completed.connect(func() -> void: _completed_count += 1)
 		_action.cancelled.connect(func() -> void: _cancelled_count += 1)
 
-	## Returns whether the 'triggered' signal was emitted.
-	## @param timeout The timeout in seconds.
-	func triggered_was_emitted(timeout: float = 1.0) -> bool:
-		return await _was_emitted("triggered", timeout)
+	## Asserts that the 'triggered' signal was emitted.
+	## Waits up to [param timeout] seconds for the signal.
+	## Automatically resets the counter after checking.
+	func assert_triggered(timeout: float = 1.0) -> void:
+		_test_suite.assert_bool(await _was_emitted("triggered", timeout)) \
+			.append_failure_message("Expected 'triggered' signal to be emitted") \
+			.is_true()
 
-	## Returns whether the 'triggered' signal was not emitted.
-	func triggered_was_not_emitted() -> bool:
-		return _was_not_emitted("triggered")
+	## Asserts that the 'triggered' signal was NOT emitted.
+	func assert_not_triggered() -> void:
+		_test_suite.assert_bool(_was_not_emitted("triggered")) \
+			.append_failure_message("Expected 'triggered' signal to NOT be emitted") \
+			.is_true()
 
-	## Returns whether the 'just_triggered' signal was emitted.
-	## @param timeout The timeout in seconds.
-	func just_triggered_was_emitted(timeout: float = 1.0) -> bool:
-		return await _was_emitted("just_triggered", timeout)
+	## Asserts that the 'just_triggered' signal was emitted.
+	## Waits up to [param timeout] seconds for the signal.
+	## Automatically resets the counter after checking.
+	func assert_just_triggered(timeout: float = 1.0) -> void:
+		_test_suite.assert_bool(await _was_emitted("just_triggered", timeout)) \
+			.append_failure_message("Expected 'just_triggered' signal to be emitted") \
+			.is_true()
 
-	## Returns whether the 'just_triggered' signal was not emitted.
-	func just_triggered_was_not_emitted() -> bool:
-		return _was_not_emitted("just_triggered")
+	## Asserts that the 'just_triggered' signal was NOT emitted.
+	func assert_not_just_triggered() -> void:
+		_test_suite.assert_bool(_was_not_emitted("just_triggered")) \
+			.append_failure_message("Expected 'just_triggered' signal to NOT be emitted") \
+			.is_true()
 
-	## Returns whether the 'started' signal was emitted.
-	## @param timeout The timeout in seconds.
-	func started_was_emitted(timeout: float = 1.0) -> bool:
-		return await _was_emitted("started", timeout)
+	## Asserts that the 'started' signal was emitted.
+	## Waits up to [param timeout] seconds for the signal.
+	## Automatically resets the counter after checking.
+	func assert_started(timeout: float = 1.0) -> void:
+		_test_suite.assert_bool(await _was_emitted("started", timeout)) \
+			.append_failure_message("Expected 'started' signal to be emitted") \
+			.is_true()
 
-	## Returns whether the 'started' signal was not emitted.
-	func started_was_not_emitted() -> bool:
-		return _was_not_emitted("started")
+	## Asserts that the 'started' signal was NOT emitted.
+	func assert_not_started() -> void:
+		_test_suite.assert_bool(_was_not_emitted("started")) \
+			.append_failure_message("Expected 'started' signal to NOT be emitted") \
+			.is_true()
 
-	## Returns whether the 'ongoing' signal was emitted.
-	## @param timeout The timeout in seconds.
-	func ongoing_was_emitted(timeout: float = 1.0) -> bool:
-		return await _was_emitted("ongoing", timeout)
+	## Asserts that the 'ongoing' signal was emitted.
+	## Waits up to [param timeout] seconds for the signal.
+	## Automatically resets the counter after checking.
+	func assert_ongoing(timeout: float = 1.0) -> void:
+		_test_suite.assert_bool(await _was_emitted("ongoing", timeout)) \
+			.append_failure_message("Expected 'ongoing' signal to be emitted") \
+			.is_true()
 
-	## Returns whether the 'ongoing' signal was not emitted.
-	func ongoing_was_not_emitted() -> bool:
-		return _was_not_emitted("ongoing")
+	## Asserts that the 'ongoing' signal was NOT emitted.
+	func assert_not_ongoing() -> void:
+		_test_suite.assert_bool(_was_not_emitted("ongoing")) \
+			.append_failure_message("Expected 'ongoing' signal to NOT be emitted") \
+			.is_true()
 
-	## Returns whether the 'completed' signal was emitted.
-	## @param timeout The timeout in seconds.
-	func completed_was_emitted(timeout: float = 1.0) -> bool:
-		return await _was_emitted("completed", timeout)
+	## Asserts that the 'completed' signal was emitted.
+	## Waits up to [param timeout] seconds for the signal.
+	## Automatically resets the counter after checking.
+	func assert_completed(timeout: float = 1.0) -> void:
+		_test_suite.assert_bool(await _was_emitted("completed", timeout)) \
+			.append_failure_message("Expected 'completed' signal to be emitted") \
+			.is_true()
 
-	## Returns whether the 'completed' signal was not emitted.
-	func completed_was_not_emitted() -> bool:
-		return _was_not_emitted("completed")
+	## Asserts that the 'completed' signal was NOT emitted.
+	func assert_not_completed() -> void:
+		_test_suite.assert_bool(_was_not_emitted("completed")) \
+			.append_failure_message("Expected 'completed' signal to NOT be emitted") \
+			.is_true()
 
-	## Returns whether the 'cancelled' signal was emitted.
-	## @param timeout The timeout in seconds.
-	func cancelled_was_emitted(timeout: float = 1.0) -> bool:
-		return await _was_emitted("cancelled", timeout)
+	## Asserts that the 'cancelled' signal was emitted.
+	## Waits up to [param timeout] seconds for the signal.
+	## Automatically resets the counter after checking.
+	func assert_cancelled(timeout: float = 1.0) -> void:
+		_test_suite.assert_bool(await _was_emitted("cancelled", timeout)) \
+			.append_failure_message("Expected 'cancelled' signal to be emitted") \
+			.is_true()
 
-	## Returns whether the 'cancelled' signal was not emitted.
-	func cancelled_was_not_emitted() -> bool:
-		return _was_not_emitted("cancelled")
+	## Asserts that the 'cancelled' signal was NOT emitted.
+	func assert_not_cancelled() -> void:
+		_test_suite.assert_bool(_was_not_emitted("cancelled")) \
+			.append_failure_message("Expected 'cancelled' signal to NOT be emitted") \
+			.is_true()
 		
 	## Resets internal counters
 	func reset() -> void:

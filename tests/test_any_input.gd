@@ -149,22 +149,22 @@ func test_any_input_with_down_trigger_fires_every_frame() -> void:
 	key_down(KEY_Q, false)
 
 	# THEN: the action triggers on the first frame
-	assert_bool(await action.triggered_was_emitted()).is_true()
+	await action.assert_triggered()
 
 	# AND: it continues to trigger on subsequent frames while held
 	await wait_f(1)
-	assert_bool(await action.triggered_was_emitted()).is_true()
+	await action.assert_triggered()
 
 	await wait_f(1)
-	assert_bool(await action.triggered_was_emitted()).is_true()
+	await action.assert_triggered()
 
 	# WHEN: I release the key
 	await key_up(KEY_Q)
 
 	# THEN: completed is emitted
-	assert_bool(await action.completed_was_emitted()).is_true()
+	await action.assert_completed()
+	action.reset()
 
 	# AND: triggered no longer fires on subsequent frames
-	action.reset()
 	await wait_f(1)
-	assert_bool(action.triggered_was_not_emitted()).is_true()
+	action.assert_not_triggered()
