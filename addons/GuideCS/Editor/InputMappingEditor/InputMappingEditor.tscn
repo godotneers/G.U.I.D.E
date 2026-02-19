@@ -1,0 +1,132 @@
+[gd_scene format=3 uid="uid://c323mdijdhktg"]
+
+[ext_resource type="Script" uid="uid://cs1lruw6klyvl" path="res://addons/GuideCS/Editor/InputMappingEditor/InputMappingEditor.cs" id="1_vn7pg"]
+[ext_resource type="PackedScene" uid="uid://ck5a30syo6bpo" path="res://addons/GuideCS/Editor/ModifierSlot/ModifierSlot.tscn" id="2_lleqg"]
+[ext_resource type="PackedScene" uid="uid://tk30wnstb0ku" path="res://addons/GuideCS/Editor/TriggerSlot/TriggerSlot.tscn" id="3_lqk8u"]
+[ext_resource type="PackedScene" uid="uid://dic27bm4pfw3q" path="res://addons/GuideCS/Editor/BindingDialog/BindingDialog.tscn" id="4_vjldw"]
+[ext_resource type="PackedScene" uid="uid://dsv7s6tfmnsrs" path="res://addons/GuideCS/Editor/InputDisplay/InputDisplay.tscn" id="5_lleqg"]
+[ext_resource type="PackedScene" uid="uid://cly0ff32fvpb2" path="res://addons/GuideCS/Editor/ArrayEdit/ArrayEdit.tscn" id="6_jekhk"]
+
+[sub_resource type="DPITexture" id="DPITexture_eriir"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#ff5d5d\" d=\"M2 1v8.586l1.293-1.293a1 1 0 0 1 1.414 0L7 10.587l2.293-2.293a1 1 0 0 1 1.414 0L13 10.586l1-1V6H9V1H2zm8 0v4h4zm-6 9.414-2 2V15h12v-2.586l-.293.293a1 1 0 0 1-1.414 0L10 10.414l-2.293 2.293a1 1 0 0 1-1.414 0L4 10.414z\"/></svg>
+"
+
+[node name="InputMappingEditor" type="MarginContainer" unique_id=1487784849]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 0
+script = ExtResource("1_vn7pg")
+ModifierSlotScene = ExtResource("2_lleqg")
+TriggerSlotScene = ExtResource("3_lqk8u")
+BindingDialogScene = ExtResource("4_vjldw")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=345115554]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 8
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer" unique_id=436944225]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="Panel" type="Panel" parent="HBoxContainer/MarginContainer" unique_id=1589517770]
+visible = false
+layout_mode = 2
+
+[node name="EditInputMappingButton" type="Button" parent="HBoxContainer/MarginContainer" unique_id=776245754]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Open input mapping in inspector"
+icon = SubResource("DPITexture_eriir")
+flat = true
+
+[node name="MarginContainer1" type="MarginContainer" parent="HBoxContainer" unique_id=32630449]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Panel" type="Panel" parent="HBoxContainer/MarginContainer1" unique_id=1801605331]
+visible = false
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/MarginContainer1" unique_id=280191419]
+layout_mode = 2
+
+[node name="InputDisplay" parent="HBoxContainer/MarginContainer1/HBoxContainer" unique_id=250516241 instance=ExtResource("5_lleqg")]
+unique_name_in_owner = true
+layout_mode = 2
+scroll_active = false
+
+[node name="EditInputButton" type="Button" parent="HBoxContainer/MarginContainer1/HBoxContainer" unique_id=2005303852]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+tooltip_text = "Edit bound input..."
+icon = SubResource("DPITexture_eriir")
+flat = true
+
+[node name="ClearInputButton" type="Button" parent="HBoxContainer/MarginContainer1/HBoxContainer" unique_id=45459930]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+tooltip_text = "Delete bound input"
+icon = SubResource("DPITexture_eriir")
+flat = true
+
+[node name="MarginContainer2" type="MarginContainer" parent="HBoxContainer" unique_id=773867946]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="Panel" type="Panel" parent="HBoxContainer/MarginContainer2" unique_id=1154915765]
+visible = false
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/MarginContainer2" unique_id=979163538]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+size_flags_stretch_ratio = 2.0
+
+[node name="Modifiers" parent="HBoxContainer/MarginContainer2/VBoxContainer" unique_id=1175938710 instance=ExtResource("6_jekhk")]
+unique_name_in_owner = true
+layout_mode = 2
+Title = "Modifiers"
+AddTooltip = "Add modifier..."
+ClearTooltip = "Clear modifier"
+
+[node name="AddModifierPopup" type="PopupMenu" parent="HBoxContainer/MarginContainer2/VBoxContainer" unique_id=497604120]
+unique_name_in_owner = true
+
+[node name="MarginContainer3" type="MarginContainer" parent="HBoxContainer" unique_id=496856198]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="Panel" type="Panel" parent="HBoxContainer/MarginContainer3" unique_id=1689557712]
+visible = false
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer/MarginContainer3" unique_id=1790155054]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+size_flags_stretch_ratio = 2.0
+
+[node name="Triggers" parent="HBoxContainer/MarginContainer3/VBoxContainer2" unique_id=2136753266 instance=ExtResource("6_jekhk")]
+unique_name_in_owner = true
+layout_mode = 2
+Title = "Triggers"
+AddTooltip = "Add trigger..."
+ClearTooltip = "Clear trigger"
+
+[node name="AddTriggerPopup" type="PopupMenu" parent="HBoxContainer/MarginContainer3/VBoxContainer2" unique_id=729783290]
+unique_name_in_owner = true
+
+[connection signal="pressed" from="HBoxContainer/MarginContainer/EditInputMappingButton" to="." method="_OnEditInputMappingButtonPressed"]
+[connection signal="pressed" from="HBoxContainer/MarginContainer1/HBoxContainer/EditInputButton" to="." method="_OnEditInputButtonPressed"]
+[connection signal="pressed" from="HBoxContainer/MarginContainer1/HBoxContainer/ClearInputButton" to="." method="_OnClearInputButtonPressed"]
+[connection signal="index_pressed" from="HBoxContainer/MarginContainer2/VBoxContainer/AddModifierPopup" to="." method="_OnAddModifierPopupIndexPressed"]
+[connection signal="index_pressed" from="HBoxContainer/MarginContainer3/VBoxContainer2/AddTriggerPopup" to="." method="_OnAddTriggerPopupIndexPressed"]

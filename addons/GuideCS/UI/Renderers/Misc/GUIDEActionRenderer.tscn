@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://ortn6jb3wljf"]
+
+[ext_resource type="Script" uid="uid://dn412kiu2ms1c" path="res://addons/GuideCS/UI/Renderers/Misc/GUIDEActionRenderer.cs" id="1_4dcgc"]
+[ext_resource type="Texture2D" uid="uid://cdvv04d20ssyu" path="res://addons/GuideCS/UI/Renderers/Textures/Action.svg" id="2_gahr5"]
+
+[node name="ActionRenderer" type="MarginContainer" unique_id=1244418805]
+process_mode = 3
+offset_right = 512.0
+offset_bottom = 512.0
+size_flags_horizontal = 0
+script = ExtResource("1_4dcgc")
+
+[node name="Action" type="TextureRect" parent="." unique_id=1675030210]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("2_gahr5")
+stretch_mode = 4

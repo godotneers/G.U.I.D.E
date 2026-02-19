@@ -1,0 +1,217 @@
+[gd_scene format=3 uid="uid://dic27bm4pfw3q"]
+
+[ext_resource type="Script" uid="uid://u73sukqgg8b4" path="res://addons/GuideCS/Editor/BindingDialog/BindingDialog.cs" id="1_iwduk"]
+[ext_resource type="PackedScene" uid="uid://dsv7s6tfmnsrs" path="res://addons/GuideCS/Editor/InputDisplay/InputDisplay.tscn" id="2_83ieu"]
+[ext_resource type="Script" uid="uid://fj4a5ijx1vrv" path="res://addons/GuideCS/Remapping/GUIDEInputDetector.cs" id="3_dcpqw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3e874"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 0.365, 0.365, 1)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_detail = 1
+
+[node name="BindingDialog" type="Window" unique_id=1266101654]
+oversampling_override = 1.0
+title = "Input Configuration"
+initial_position = 4
+size = Vector2i(1200, 600)
+popup_window = true
+min_size = Vector2i(1200, 600)
+script = ExtResource("1_iwduk")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1181122271]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_bottom = 5
+
+[node name="BGPanel" type="Panel" parent="MarginContainer" unique_id=121275721]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_3e874")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer" unique_id=1547661149]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/MarginContainer" unique_id=251611059]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MarginContainer/HBoxContainer" unique_id=1031790616]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LeftPanel" type="Panel" parent="MarginContainer/MarginContainer/HBoxContainer/MarginContainer" unique_id=1211771248]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MarginContainer/HBoxContainer/MarginContainer" unique_id=1601132109]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/MarginContainer/HBoxContainer/MarginContainer/MarginContainer" unique_id=1309049193]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="MarginContainer/MarginContainer/HBoxContainer/MarginContainer/MarginContainer/VBoxContainer" unique_id=1701602596]
+layout_mode = 2
+text = "Detect Input"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/MarginContainer/HBoxContainer/MarginContainer/MarginContainer/VBoxContainer" unique_id=280245699]
+layout_mode = 2
+
+[node name="DetectBoolButton" type="Button" parent="MarginContainer/MarginContainer/HBoxContainer/MarginContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=2033243717]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Boolean"
+
+[node name="Detect1DButton" type="Button" parent="MarginContainer/MarginContainer/HBoxContainer/MarginContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=538729183]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "1D"
+
+[node name="Detect2DButton" type="Button" parent="MarginContainer/MarginContainer/HBoxContainer/MarginContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1636807230]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "2D"
+
+[node name="Detect3DButton" type="Button" parent="MarginContainer/MarginContainer/HBoxContainer/MarginContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1009570522]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "3D"
+
+[node name="InstructionsLabel" type="Label" parent="MarginContainer/MarginContainer/HBoxContainer/MarginContainer/MarginContainer/VBoxContainer" unique_id=667651867]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+size_flags_vertical = 6
+text = "3..2..1.."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="InputDisplay" parent="MarginContainer/MarginContainer/HBoxContainer/MarginContainer/MarginContainer/VBoxContainer" unique_id=250516241 instance=ExtResource("2_83ieu")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="AcceptDetectionButton" type="Button" parent="MarginContainer/MarginContainer/HBoxContainer/MarginContainer/MarginContainer/VBoxContainer" unique_id=534264860]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Accept"
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/MarginContainer/HBoxContainer" unique_id=1074262570]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RightPanel" type="Panel" parent="MarginContainer/MarginContainer/HBoxContainer/MarginContainer2" unique_id=1499900947]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MarginContainer/HBoxContainer/MarginContainer2" unique_id=983207052]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/MarginContainer/HBoxContainer/MarginContainer2/MarginContainer" unique_id=1452839741]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="MarginContainer/MarginContainer/HBoxContainer/MarginContainer2/MarginContainer/VBoxContainer" unique_id=1231029309]
+layout_mode = 2
+text = "Select Input"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/MarginContainer/HBoxContainer/MarginContainer2/MarginContainer/VBoxContainer" unique_id=991603875]
+layout_mode = 2
+
+[node name="SelectBoolButton" type="Button" parent="MarginContainer/MarginContainer/HBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer" unique_id=886246821]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+text = "Boolean"
+
+[node name="Select1DButton" type="Button" parent="MarginContainer/MarginContainer/HBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1336084328]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+text = "1D"
+
+[node name="Select2DButton" type="Button" parent="MarginContainer/MarginContainer/HBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1661755274]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+text = "2D"
+
+[node name="Select3DButton" type="Button" parent="MarginContainer/MarginContainer/HBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1257832895]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+text = "3D"
+
+[node name="NoneAvailable" type="Label" parent="MarginContainer/MarginContainer/HBoxContainer/MarginContainer2/MarginContainer/VBoxContainer" unique_id=992980603]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+text = "No matching inputs available."
+
+[node name="SomeAvailable" type="ScrollContainer" parent="MarginContainer/MarginContainer/HBoxContainer/MarginContainer2/MarginContainer/VBoxContainer" unique_id=44785174]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="AvailableTypes" type="VBoxContainer" parent="MarginContainer/MarginContainer/HBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/SomeAvailable" unique_id=109200876]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="InputDetector" type="Node" parent="." unique_id=2053141908]
+unique_name_in_owner = true
+script = ExtResource("3_dcpqw")
+
+[connection signal="close_requested" from="." to="." method="_OnCloseRequested"]
+[connection signal="pressed" from="MarginContainer/MarginContainer/HBoxContainer/MarginContainer/MarginContainer/VBoxContainer/HBoxContainer/DetectBoolButton" to="." method="_OnDetectBoolButtonPressed"]
+[connection signal="pressed" from="MarginContainer/MarginContainer/HBoxContainer/MarginContainer/MarginContainer/VBoxContainer/HBoxContainer/Detect1DButton" to="." method="_OnDetect1DButtonPressed"]
+[connection signal="pressed" from="MarginContainer/MarginContainer/HBoxContainer/MarginContainer/MarginContainer/VBoxContainer/HBoxContainer/Detect2DButton" to="." method="_OnDetect2DButtonPressed"]
+[connection signal="pressed" from="MarginContainer/MarginContainer/HBoxContainer/MarginContainer/MarginContainer/VBoxContainer/HBoxContainer/Detect3DButton" to="." method="_OnDetect3DButtonPressed"]
+[connection signal="pressed" from="MarginContainer/MarginContainer/HBoxContainer/MarginContainer/MarginContainer/VBoxContainer/AcceptDetectionButton" to="." method="_OnAcceptDetectionButtonPressed"]
+[connection signal="pressed" from="MarginContainer/MarginContainer/HBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer/SelectBoolButton" to="." method="_OnSelectBoolButtonPressed"]
+[connection signal="pressed" from="MarginContainer/MarginContainer/HBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer/Select1DButton" to="." method="_OnSelect1DButtonPressed"]
+[connection signal="pressed" from="MarginContainer/MarginContainer/HBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer/Select2DButton" to="." method="_OnSelect2DButtonPressed"]
+[connection signal="pressed" from="MarginContainer/MarginContainer/HBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer/Select3DButton" to="." method="_OnSelect3DButtonPressed"]
+[connection signal="DetectionStarted" from="InputDetector" to="." method="_OnInputDetectorDetectionStarted"]
+[connection signal="InputDetected" from="InputDetector" to="." method="_OnInputDetectorInputDetected"]

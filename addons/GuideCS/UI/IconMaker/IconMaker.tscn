@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://8thurteeibtu"]
+
+[ext_resource type="Script" uid="uid://bn3v27ehrjrxd" path="res://addons/GuideCS/UI/IconMaker/IconMaker.cs" id="1_0c2af"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_kra7t"]
+viewport_path = NodePath("SubViewport")
+
+[node name="GUIDEIconMaker" type="Node2D" unique_id=1964266042]
+process_mode = 3
+script = ExtResource("1_0c2af")
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=605986806]
+unique_name_in_owner = true
+transparent_bg = true
+gui_disable_input = true
+gui_snap_controls_to_pixels = false
+
+[node name="Root" type="Node2D" parent="SubViewport" unique_id=533804316]
+unique_name_in_owner = true
+scale = Vector2(0.1, 0.1)
+
+[node name="SceneHolder" type="Sprite2D" parent="." unique_id=716490409]
+unique_name_in_owner = true
+visible = false
+texture = SubResource("ViewportTexture_kra7t")

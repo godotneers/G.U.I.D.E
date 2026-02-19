@@ -1,0 +1,141 @@
+[gd_scene format=3 uid="uid://bsaylcb5ixjxk"]
+
+[ext_resource type="Script" uid="uid://bfd78c72pmmjg" path="res://addons/GuideCS/UI/Renderers/Controllers/GUIDEControllerRenderer.cs" id="1_uut03"]
+[ext_resource type="Texture2D" uid="uid://cq8r5uqyithp0" path="res://addons/GuideCS/UI/Renderers/Textures/ArrowHorizontal.svg" id="2_vkejn"]
+[ext_resource type="Texture2D" uid="uid://cvv0btxvk4u5a" path="res://addons/GuideCS/UI/Renderers/Textures/ArrowVertical.svg" id="3_wqne5"]
+
+[node name="ControllerRenderer" type="MarginContainer" unique_id=1363351149]
+process_mode = 3
+offset_right = 100.0
+offset_bottom = 100.0
+size_flags_horizontal = 0
+script = ExtResource("1_uut03")
+Priority = -10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=2127933884]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Controls" type="MarginContainer" parent="HBoxContainer" unique_id=1750755771]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="AButton" type="TextureRect" parent="HBoxContainer/Controls" unique_id=1978273777]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="BButton" type="TextureRect" parent="HBoxContainer/Controls" unique_id=986428267]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="XButton" type="TextureRect" parent="HBoxContainer/Controls" unique_id=1718988563]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="YButton" type="TextureRect" parent="HBoxContainer/Controls" unique_id=1146960319]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="LeftStick" type="TextureRect" parent="HBoxContainer/Controls" unique_id=1497419401]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="LeftStickClick" type="TextureRect" parent="HBoxContainer/Controls" unique_id=1373094722]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="RightStick" type="TextureRect" parent="HBoxContainer/Controls" unique_id=1487015133]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="RightStickClick" type="TextureRect" parent="HBoxContainer/Controls" unique_id=1390738750]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="LeftBumper" type="TextureRect" parent="HBoxContainer/Controls" unique_id=1231413303]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="RightBumper" type="TextureRect" parent="HBoxContainer/Controls" unique_id=1962136660]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="LeftTrigger" type="TextureRect" parent="HBoxContainer/Controls" unique_id=892188456]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="RightTrigger" type="TextureRect" parent="HBoxContainer/Controls" unique_id=1179509470]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="DpadUp" type="TextureRect" parent="HBoxContainer/Controls" unique_id=981955831]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="DpadLeft" type="TextureRect" parent="HBoxContainer/Controls" unique_id=1842759688]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="DpadRight" type="TextureRect" parent="HBoxContainer/Controls" unique_id=1618572912]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="DpadDown" type="TextureRect" parent="HBoxContainer/Controls" unique_id=1026112817]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="Start" type="TextureRect" parent="HBoxContainer/Controls" unique_id=451143209]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="Misc1" type="TextureRect" parent="HBoxContainer/Controls" unique_id=1629923433]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="Back" type="TextureRect" parent="HBoxContainer/Controls" unique_id=1619615817]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="TouchPad" type="TextureRect" parent="HBoxContainer/Controls" unique_id=793449366]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="Directions" type="MarginContainer" parent="HBoxContainer" unique_id=1870066683]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+
+[node name="LeftRight" type="TextureRect" parent="HBoxContainer/Directions" unique_id=1421077168]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("2_vkejn")
+stretch_mode = 5
+
+[node name="UpDown" type="TextureRect" parent="HBoxContainer/Directions" unique_id=1118267084]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("3_wqne5")
+stretch_mode = 5

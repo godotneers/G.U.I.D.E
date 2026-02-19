@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://bqf4yoind3a82"]
+
+[ext_resource type="Script" uid="uid://cn1e8rimica" path="res://addons/GuideCS/UI/Renderers/Misc/GUIDEFallbackRenderer.cs" id="1_7x6ln"]
+[ext_resource type="FontFile" uid="uid://cu8bvod6tnnwr" path="res://addons/GuideCS/UI/Renderers/Keyboard/Styles/Lato-Black.ttf" id="2_omgk1"]
+
+[node name="FallbackRenderer" type="MarginContainer" unique_id=472351545]
+process_mode = 3
+offset_right = 512.0
+offset_bottom = 512.0
+size_flags_horizontal = 0
+script = ExtResource("1_7x6ln")
+Priority = 100
+
+[node name="Label" type="Label" parent="." unique_id=44734467]
+custom_minimum_size = Vector2(512, 512)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_omgk1")
+theme_override_font_sizes/font_size = 350
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1

@@ -1,0 +1,75 @@
+[gd_scene format=3 uid="uid://cjabwsa4gmlpp"]
+
+[ext_resource type="Script" uid="uid://bajp3nv1uaptf" path="res://addons/GuideCS/Editor/ArrayEdit/ArrayEditItem.cs" id="1_6vp40"]
+[ext_resource type="Script" uid="uid://cmhxgvdrasui0" path="res://addons/GuideCS/Editor/ArrayEdit/Dragger.cs" id="2_rfads"]
+
+[sub_resource type="DPITexture" id="DPITexture_eriir"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#ff5d5d\" d=\"M2 1v8.586l1.293-1.293a1 1 0 0 1 1.414 0L7 10.587l2.293-2.293a1 1 0 0 1 1.414 0L13 10.586l1-1V6H9V1H2zm8 0v4h4zm-6 9.414-2 2V15h12v-2.586l-.293.293a1 1 0 0 1-1.414 0L10 10.414l-2.293 2.293a1 1 0 0 1-1.414 0L4 10.414z\"/></svg>
+"
+
+[node name="ArrayEditItem" type="MarginContainer" unique_id=660831056]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 28.0
+grow_horizontal = 2
+script = ExtResource("1_6vp40")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=9241478]
+layout_mode = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=697647457]
+layout_mode = 2
+
+[node name="Dragger" type="Button" parent="MarginContainer/HBoxContainer" unique_id=1326101853]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+tooltip_text = "Drag to reorder, click for options."
+focus_mode = 0
+mouse_filter = 1
+icon = SubResource("DPITexture_eriir")
+script = ExtResource("2_rfads")
+
+[node name="Content" type="MarginContainer" parent="MarginContainer/HBoxContainer" unique_id=1239165175]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1820826536]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="BeforeIndicator" type="ColorRect" parent="VBoxContainer" unique_id=837159642]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Control" type="Control" parent="VBoxContainer" unique_id=1258125654]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="AfterIndicator" type="ColorRect" parent="VBoxContainer" unique_id=892762179]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="PopupMenu" type="PopupMenu" parent="." unique_id=99346353]
+unique_name_in_owner = true
+item_count = 2
+item_0/text = "Duplicate"
+item_0/icon = SubResource("DPITexture_eriir")
+item_0/id = 3
+item_1/text = "Delete"
+item_1/icon = SubResource("DPITexture_eriir")
+item_1/id = 2
+
+[connection signal="mouse_exited" from="." to="." method="_OnMouseExited"]

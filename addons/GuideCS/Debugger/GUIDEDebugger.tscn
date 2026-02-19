@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://dkr80d2pi0d41"]
+
+[ext_resource type="Script" uid="uid://dwqj60t556gqi" path="res://addons/GuideCS/Debugger/GUIDEDebugger.cs" id="1_u30a2"]
+
+[node name="GuideDebugger" type="MarginContainer" unique_id=2015183899]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_u30a2")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1779669629]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="VBoxContainer" unique_id=1623103898]
+layout_mode = 2
+text = "G.U.I.D.E - Debugger"
+
+[node name="Label2" type="Label" parent="VBoxContainer" unique_id=1142660890]
+layout_mode = 2
+text = "Actions"
+
+[node name="Actions" type="VFlowContainer" parent="VBoxContainer" unique_id=1054031340]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Label3" type="Label" parent="VBoxContainer" unique_id=1853587268]
+layout_mode = 2
+text = "Inputs"
+
+[node name="Inputs" type="VFlowContainer" parent="VBoxContainer" unique_id=1966870852]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Label4" type="Label" parent="VBoxContainer" unique_id=56156400]
+layout_mode = 2
+text = "Action Priority"
+
+[node name="Priorities" type="VFlowContainer" parent="VBoxContainer" unique_id=1506829122]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
