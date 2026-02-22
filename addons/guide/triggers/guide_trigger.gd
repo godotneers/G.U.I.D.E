@@ -31,8 +31,19 @@ var _last_value:Vector3
 func is_same_as(other:GUIDETrigger) -> bool:
 	return self == other
 
+## Creates a clone of this trigger suitable for context merging.
+##
+## Returns a new trigger instance while preserving references to actions and other
+## shared resources. This ensures triggers watch the same actions across contexts.
+##
+## Default implementation uses shallow copy. Subclasses with sub-resources or arrays
+## should override this method to properly duplicate their internal structures while
+## still preserving action references.
+func clone() -> GUIDETrigger:
+	return duplicate()
+
 ## Returns the trigger type of this trigger.
-func _get_trigger_type() -> GUIDETriggerType: 
+func _get_trigger_type() -> GUIDETriggerType:
 	return GUIDETriggerType.EXPLICIT
 
 

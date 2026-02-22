@@ -129,7 +129,7 @@ func set_enabled_mapping_contexts(contexts:Array[GUIDEMappingContext]) -> Array[
 	var previous_contexts := get_enabled_mapping_contexts()
 
 	# Step 2: Validate all contexts first (fail fast before modifying state)
-	for context in contexts:
+	for context:GUIDEMappingContext in contexts:
 		if not is_instance_valid(context):
 			push_error("Null context given. Ignoring.")
 			return previous_contexts
@@ -142,7 +142,7 @@ func set_enabled_mapping_contexts(contexts:Array[GUIDEMappingContext]) -> Array[
 	# Start with current timestamp and increment by 1 for each subsequent context
 	# This ensures contexts later in the array have higher precedence when merging inputs
 	var base_timestamp := Time.get_ticks_usec()
-	for i in contexts.size():
+	for i:int in contexts.size():
 		var context := contexts[i]
 		# If context appears multiple times in array, later occurrence wins (higher timestamp)
 		_active_contexts[context] = [0, base_timestamp + i]
@@ -152,12 +152,12 @@ func set_enabled_mapping_contexts(contexts:Array[GUIDEMappingContext]) -> Array[
 
 	# Step 6: Emit signals for context changes
 	# Emit disabled for contexts that were active but are not in the new set
-	for context in old_contexts.keys():
+	for context:GUIDEMappingContext in old_contexts.keys():
 		if not _active_contexts.has(context):
 			context.disabled.emit()
 
 	# Emit enabled only for contexts that are new (not previously active)
-	for context in contexts:
+	for context:GUIDEMappingContext in contexts:
 		if not old_contexts.has(context):
 			context.enabled.emit()
 
@@ -339,7 +339,8 @@ func _parse_input_mappings(
 		new_input_mapping.triggers = []
 		
 		for trigger in input_mapping.triggers:
-			new_input_mapping.triggers.append(trigger.duplicate())
+			# Clone trigger to get a new instance while preserving action references
+			new_input_mapping.triggers.append(trigger.clone())
 
 		# now initialize the input mapping
 		new_input_mapping._initialize(action.action_value_type)

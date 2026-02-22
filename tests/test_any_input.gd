@@ -146,8 +146,7 @@ func test_any_input_with_down_trigger_fires_every_frame() -> void:
 	var input := input_any()
 	input.keyboard = true
 
-	var trigger_down := trigger_down()
-	map(_context, _action, input, [], [trigger_down])
+	map(_context, _action, input, [], [trigger_down()])
 	GUIDE.enable_mapping_context(_context)
 
 	var watched := watch(_action)
