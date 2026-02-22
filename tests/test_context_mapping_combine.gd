@@ -29,16 +29,14 @@ func test_inputs_are_combined() -> void:
 	var action_watcher := watch(_action)
 
 	await tap_key(KEY_A)
-	assert_bool(await action_watcher.triggered_was_emitted()).is_true()
-	action_watcher.reset()
+	await action_watcher.assert_triggered()
 	await wait_f(10)
-	assert_bool(action_watcher.triggered_was_not_emitted()).is_true()
+	action_watcher.assert_not_triggered()
 
 	await tap_joy_button(JOY_BUTTON_A)
-	assert_bool(await action_watcher.triggered_was_emitted()).is_true()
-	action_watcher.reset()
+	await action_watcher.assert_triggered()
 	await wait_f(10)
-	assert_bool(action_watcher.triggered_was_not_emitted()).is_true()
+	action_watcher.assert_not_triggered()
 
 ## Tests that actions are overridden when a mapping context is enabled that has
 ## the same action and the same input as another enabled mapping context
@@ -54,7 +52,7 @@ func test_merging_same_input() -> void:
 	var action_watcher := watch(_action2d)
 
 	await key_down(KEY_A)
-	assert_bool(await action_watcher.triggered_was_emitted()).is_true()
+	await action_watcher.assert_triggered()
 	assert_axis_2d(_action2d, Vector2(1, 0), Vector2(0.001, 0))
 	await key_up(KEY_A)
 
@@ -62,7 +60,7 @@ func test_merging_same_input() -> void:
 	GUIDE.disable_mapping_context(_context1)
 
 	await key_down(KEY_A)
-	assert_bool(await action_watcher.triggered_was_emitted()).is_true()
+	await action_watcher.assert_triggered()
 	assert_axis_2d(_action2d, Vector2(0, 1), Vector2(0, 0.001))
 	await key_up(KEY_A)
 
@@ -88,21 +86,20 @@ func test_merged_contexts_preserve_trigger_state_on_context_disable() -> void:
 	await key_down(KEY_W)
 
 	# Action should trigger
-	assert_bool(await action_watcher.triggered_was_emitted()).is_true()
+	await action_watcher.assert_triggered()
 
 	# Wait a bit
-	action_watcher.reset()
 	await wait_f(10)
 
 	# Should not trigger again (it's a Pressed trigger)
-	assert_bool(action_watcher.triggered_was_not_emitted()).is_true()
+	action_watcher.assert_not_triggered()
 
 	# Now disable the controller context while W is still held
 	GUIDE.disable_mapping_context(_context2)
 
 	# The action should NOT re-trigger even though a new mapping was created
 	# (because the new trigger's _last_value should be initialized to current W value)
-	assert_bool(action_watcher.triggered_was_not_emitted()).is_true()
+	action_watcher.assert_not_triggered()
 
 	# Release W
 	await key_up(KEY_W)
@@ -152,12 +149,11 @@ func test_remapping_to_same_input_doesnt_create_duplicates() -> void:
 
 	await tap_joy_button(JOY_BUTTON_A)
 
-	assert_bool(await action_watcher.triggered_was_emitted()).is_true()
+	await action_watcher.assert_triggered()
 
 	# Wait a bit - action should complete normally
-	action_watcher.reset()
 	await wait_f(10)
-	assert_bool(action_watcher.triggered_was_not_emitted()).is_true()
+	action_watcher.assert_not_triggered()
 
 
 ## Edge case: Multiple contexts all remap to the same input.
@@ -199,7 +195,7 @@ func test_multiple_contexts_remap_to_same_input() -> void:
 	# Verify it works correctly
 	var action_watcher := watch(_action)
 	await tap_joy_button(JOY_BUTTON_A)
-	assert_bool(await action_watcher.triggered_was_emitted()).is_true()
+	await action_watcher.assert_triggered()
 
 
 ## Edge case: Remapping to null (unbinding).
@@ -236,11 +232,11 @@ func test_remapping_to_null_unbinding() -> void:
 
 	# Space should not trigger
 	await tap_key(KEY_SPACE)
-	assert_bool(action_watcher.triggered_was_not_emitted()).is_true()
+	action_watcher.assert_not_triggered()
 
 	# Joy A should trigger
 	await tap_joy_button(JOY_BUTTON_A)
-	assert_bool(await action_watcher.triggered_was_emitted()).is_true()
+	await action_watcher.assert_triggered()
 
 
 ## Edge case: Priority interaction with remapping.
@@ -277,7 +273,7 @@ func test_priority_interaction_with_remapping() -> void:
 	# Verify it triggers correctly
 	var action_watcher := watch(_action)
 	await tap_joy_button(JOY_BUTTON_A)
-	assert_bool(await action_watcher.triggered_was_emitted()).is_true()
+	await action_watcher.assert_triggered()
 
 
 ## Edge case: Remapping config applied after contexts are already enabled.
@@ -298,13 +294,11 @@ func test_remapping_applied_after_contexts_enabled() -> void:
 
 	# Verify both inputs work initially
 	await tap_key(KEY_SPACE)
-	assert_bool(await action_watcher.triggered_was_emitted()).is_true()
-	action_watcher.reset()
+	await action_watcher.assert_triggered()
 	await wait_f(10)
 
 	await tap_joy_button(JOY_BUTTON_A)
-	assert_bool(await action_watcher.triggered_was_emitted()).is_true()
-	action_watcher.reset()
+	await action_watcher.assert_triggered()
 	await wait_f(10)
 
 	# NOW apply remapping - remap context1 to Joy A (creating duplicate)
@@ -323,15 +317,13 @@ func test_remapping_applied_after_contexts_enabled() -> void:
 	# Should have only one Joy A mapping (no duplicates)
 	assert_int(action_mapping.input_mappings.size()).is_equal(1)
 
-	action_watcher.reset()
-
 	# Space should no longer work
 	await tap_key(KEY_SPACE)
-	assert_bool(action_watcher.triggered_was_not_emitted()).is_true()
+	action_watcher.assert_not_triggered()
 
 	# Joy A should work
 	await tap_joy_button(JOY_BUTTON_A)
-	assert_bool(await action_watcher.triggered_was_emitted()).is_true()
+	await action_watcher.assert_triggered()
 
 
 ## Edge case: Same context enabled multiple times.
@@ -361,7 +353,7 @@ func test_same_context_enabled_multiple_times() -> void:
 	# Verify it works correctly
 	var action_watcher := watch(_action)
 	await tap_key(KEY_SPACE)
-	assert_bool(await action_watcher.triggered_was_emitted()).is_true()
+	await action_watcher.assert_triggered()
 
 
 ## Edge case: Action priority blocking across merged contexts.
@@ -392,9 +384,9 @@ func test_action_priority_blocking_across_merged_contexts() -> void:
 	# Press D-pad up - high priority action should trigger and block the low priority one
 	await tap_joy_button(JOY_BUTTON_DPAD_UP)
 
-	assert_bool(await high_watcher.triggered_was_emitted()).is_true()
+	await high_watcher.assert_triggered()
 	# Low priority action should be blocked
-	assert_bool(low_watcher.triggered_was_not_emitted()).is_true()
+	low_watcher.assert_not_triggered()
 
 
 ## Edge case: Combo mappings with null inputs should not be removed when contexts are merged.
@@ -488,7 +480,7 @@ func test_hold_threshold_hint_with_merged_contexts() -> void:
 	await wait_f(5)  # 5 frames
 
 	# The action should be ongoing
-	assert_bool(await action_watcher.started_was_emitted()).is_true()
+	await action_watcher.assert_started()
 
 	# elapsed_ratio should be between 0 and 1 (not stuck at 0)
 	assert_bool(_action.elapsed_ratio > 0.0).is_true()

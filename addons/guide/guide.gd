@@ -119,6 +119,52 @@ func disable_mapping_context(context:GUIDEMappingContext) -> void:
 	context.disabled.emit()
 
 
+## Replaces the currently enabled mapping contexts with a new set of contexts.
+## This is more efficient than calling enable_mapping_context multiple times as it only
+## updates the internal caches once. All contexts are enabled with priority 0, with contexts
+## later in the array having higher precedence when merging inputs (due to later timestamps).
+## Returns the array of contexts that were active before this call.
+func set_enabled_mapping_contexts(contexts:Array[GUIDEMappingContext]) -> Array[GUIDEMappingContext]:
+	# Step 1: Capture previous contexts to return to caller
+	var previous_contexts := get_enabled_mapping_contexts()
+
+	# Step 2: Validate all contexts first (fail fast before modifying state)
+	for context in contexts:
+		if not is_instance_valid(context):
+			push_error("Null context given. Ignoring.")
+			return previous_contexts
+
+	# Step 3: Save old active contexts for signal emission, then clear
+	var old_contexts := _active_contexts.duplicate()
+	_active_contexts.clear()
+
+	# Step 4: Add all new contexts with priority=0 and incrementing timestamps
+	# Start with current timestamp and increment by 1 for each subsequent context
+	# This ensures contexts later in the array have higher precedence when merging inputs
+	var base_timestamp := Time.get_ticks_usec()
+	for i in contexts.size():
+		var context := contexts[i]
+		# If context appears multiple times in array, later occurrence wins (higher timestamp)
+		_active_contexts[context] = [0, base_timestamp + i]
+
+	# Step 5: Update caches
+	_update_caches()
+
+	# Step 6: Emit signals for context changes
+	# Emit disabled for contexts that were active but are not in the new set
+	for context in old_contexts.keys():
+		if not _active_contexts.has(context):
+			context.disabled.emit()
+
+	# Emit enabled only for contexts that are new (not previously active)
+	for context in contexts:
+		if not old_contexts.has(context):
+			context.enabled.emit()
+
+	# Step 7: Return previously active contexts
+	return previous_contexts
+
+
 ## Checks whether the given mapping context is currently enabled.
 func is_mapping_context_enabled(context:GUIDEMappingContext) -> bool:
 	return _active_contexts.has(context)
