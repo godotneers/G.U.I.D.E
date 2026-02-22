@@ -34,8 +34,24 @@ func is_same_as(other:GUIDETrigger) -> bool:
 	for i in range(cancellation_actions.size()):
 		if not cancellation_actions[i].is_same_as(other.cancellation_actions[i]):
 			return false
-			
+
 	return true
+
+## Creates a clone with properly duplicated step and cancellation action arrays.
+## Each array element is shallow-copied to preserve action references.
+func clone() -> GUIDETrigger:
+	var copy:GUIDETriggerCombo = duplicate()
+
+	# Duplicate array structures while preserving action references
+	copy.steps = []
+	for step:GUIDETriggerComboStep in steps:
+		copy.steps.append(step.duplicate())
+
+	copy.cancellation_actions = []
+	for action:GUIDETriggerComboCancelAction in cancellation_actions:
+		copy.cancellation_actions.append(action.duplicate())
+
+	return copy
 
 func _update_state(input:Vector3, delta:float, value_type:GUIDEAction.GUIDEActionValueType) -> GUIDETriggerState:
 	if steps.is_empty():
