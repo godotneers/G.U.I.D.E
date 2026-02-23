@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.12.0-beta1] - 2026-02-23
+### Added
+- G.U.I.D.E now supports merging of multiple mapping contexts with overlapping actions. This allows you to define multiple mapping contexts that have different inputs bound to the same action. Upon merge, these will be combined into a single action definition. This is useful for supporting multiple different input methods at the same time. Before, only one definition of an action could be active at a time and loading a second one would replace the first one. Because this is quite complex to get right under the hood, this feature is currently only available in beta releases on Github and will only be published to the asset library once there is enough feedback from real-world usage. There are no breaking API changes for this feature, so it should drop right into your project without any changes required. A huge thanks goes out to [ShadowCommander](https://github.com/ShadowCommander) for contributing this feature and helping so much with the debugging ([#168](https://github.com/godotneers/G.U.I.D.E/pull/168))!
+- There is now a new method which allows you to quickly replace all existing mapping contexts with a new set. This is often needed in UI dialogues and until now required keeping track of what mapping contexts were active before replacing them. Now you can call `var old_mapping_contexts := GUIDE.set_enabled_mapping_contexts(new_mapping_contexts)`. This will swap the current set of enabled mapping contexts with the new set and return the old set.
+
 ## [0.11.2] - 2026-02-17
 ### Fixed
 - The _Any_ input now properly fires continuously when used with a _Down_ trigger. Previously it would only fire once on the initial press rather than every frame while the input was held ([#171](https://github.com/godotneers/G.U.I.D.E/issues/171)).
