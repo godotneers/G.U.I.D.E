@@ -131,7 +131,7 @@ func set_enabled_mapping_contexts(contexts:Array[GUIDEMappingContext]) -> Array[
 	# Step 2: Validate all contexts first (fail fast before modifying state)
 	for context:GUIDEMappingContext in contexts:
 		if not is_instance_valid(context):
-			push_error("Null context given. Ignoring.")
+			push_error("Null context given. Ignoring. Aborting mapping context changes.")
 			return previous_contexts
 
 	# Step 3: Save old active contexts for signal emission, then clear
