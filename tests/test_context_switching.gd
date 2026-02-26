@@ -93,6 +93,45 @@ func test_action_with_different_inputs_retains_value_on_context_switch() -> void
 	assert_vector(_action.value_axis_2d).is_equal_approx(Vector2(get_viewport().get_visible_rect().size / 2.0), Vector2(0.01, 0.01))
 
 
+func test_enable_mapping_context_emits_signals() -> void:
+	# Set up an enabled signal watcher
+	var enabled_count := [0]
+	_context1.enabled.connect(func() -> void: enabled_count[0] += 1)
+
+	# Enable context1
+	GUIDE.enable_mapping_context(_context1)
+	
+	# Signal should be triggered
+	assert_int(enabled_count[0]).is_equal(1)
+	enabled_count[0] = 0
+
+	# Set up a disabled signal watcher
+	var disabled_count := [0]
+	_context1.disabled.connect(func() -> void: disabled_count[0] += 1)
+
+	# Enable context2 and disable others
+	GUIDE.enable_mapping_context(_context2, true)
+	
+	# Disabled signal should be emitted for context1
+	assert_int(enabled_count[0]).is_equal(0)
+	assert_int(disabled_count[0]).is_equal(1)
+
+
+func test_disable_mapping_context_emits_signals() -> void:
+	# Enable context1
+	GUIDE.enable_mapping_context(_context1)
+
+	# Set up a disabled signal watcher
+	var disabled_count := [0]
+	_context1.disabled.connect(func() -> void: disabled_count[0] += 1)
+	
+	# Disable context1
+	GUIDE.disable_mapping_context(_context1)
+
+	# Disabled signal should be emitted for context1
+	assert_int(disabled_count[0]).is_equal(1)
+
+
 func test_set_enabled_mapping_contexts_returns_previous_contexts() -> void:
 	# Given some active contexts
 	GUIDE.enable_mapping_context(_context1)
