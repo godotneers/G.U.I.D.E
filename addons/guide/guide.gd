@@ -99,6 +99,10 @@ func enable_mapping_context(context:GUIDEMappingContext, disable_others:bool = f
 		return
 	
 	if disable_others:
+		for enabled_context:GUIDEMappingContext in _active_contexts:
+			if enabled_context == context:
+				continue
+			enabled_context.disabled.emit()
 		_active_contexts.clear()	
 	
 	_active_contexts[context] = [priority, Time.get_ticks_usec()]
