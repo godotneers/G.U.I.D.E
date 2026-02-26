@@ -135,7 +135,6 @@ func set_enabled_mapping_contexts(contexts:Array[GUIDEMappingContext]) -> Array[
 			return previous_contexts
 
 	# Step 3: Save old active contexts for signal emission, then clear
-	var old_contexts := _active_contexts.duplicate()
 	_active_contexts.clear()
 
 	# Step 4: Add all new contexts with priority=0 and incrementing timestamps
@@ -152,13 +151,13 @@ func set_enabled_mapping_contexts(contexts:Array[GUIDEMappingContext]) -> Array[
 
 	# Step 6: Emit signals for context changes
 	# Emit disabled for contexts that were active but are not in the new set
-	for context:GUIDEMappingContext in old_contexts.keys():
+	for context:GUIDEMappingContext in previous_contexts:
 		if not _active_contexts.has(context):
 			context.disabled.emit()
 
 	# Emit enabled only for contexts that are new (not previously active)
 	for context:GUIDEMappingContext in contexts:
-		if not old_contexts.has(context):
+		if not previous_contexts.has(context):
 			context.enabled.emit()
 
 	# Step 7: Return previously active contexts
