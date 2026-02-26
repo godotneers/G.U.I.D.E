@@ -245,6 +245,21 @@ func test_set_enabled_mapping_contexts_does_not_emit_enabled_for_already_active_
 	assert_int(enabled_count[0]).is_equal(0)
 
 
+func test_set_enabled_mapping_contexts_does_not_emit_disabled_for_contexts_that_were_enabled() -> void:
+	# Given context1 and context2 are already enabled
+	GUIDE.set_enabled_mapping_contexts([_context1, _context2])
+
+	# And we set up a signal watcher
+	var disabled_count := [0]
+	_context1.disabled.connect(func() -> void: disabled_count[0] += 1)
+
+	# When we set context to context1 (which is already active)
+	GUIDE.set_enabled_mapping_contexts([_context1])
+
+	# Then the disabled signal should NOT be emitted for context1 (it was already enabled)
+	assert_int(disabled_count[0]).is_equal(0)
+
+
 func test_set_enabled_mapping_contexts_emits_enabled_only_for_new_contexts() -> void:
 	# Given context1 is already enabled
 	GUIDE.enable_mapping_context(_context1)
