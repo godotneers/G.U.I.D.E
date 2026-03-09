@@ -39,12 +39,18 @@ input. It has the following setings:
 
 This modifier converts a 2D pixel coordinate (from the _Mouse Position_, _Touch Position_ or _Touch Axis_ inputs) into
 2D world coordinates (canvas coordinates) for the currently active viewport. This modifier takes into account the
-current scaling mode and any changes (zoom, offset) applied by a Camera2D in the currently active viewport. Use this to
-quickly find out "where in my 2D world did the player just click". This modifier has the following settings:
+current scaling mode and any changes (zoom, offset) applied by a Camera2D in the currently active viewport. Use this :
+- to quickly find out "where in my 2D world did the player just click" 
+- to convert a change of screen coordinates into a
+change of canvas coordinates (e.g., "how far did the player move their finger on the touch screen in canvas coordinates since the last frame").
 
-| Setting          | Description                                |
-|------------------|--------------------------------------------|
-| _Relative Input_ | Whether the input is absolute or relative. |
+Note: This modifier treats the input as a position in pixels, or a position difference in pixels. This means you cannot meaningfully use this with inputs that only produce a change of an input vector (e.g., _Joy Axis 2D_). You can use a _Virtual Cursor_ modifier to convert such input into a virtual screen position and then pipe the output of the _Virtual Cursor_ into this modifier.
+
+This modifier has the following settings:
+
+| Setting          | Description                                                                    |
+|------------------|--------------------------------------------------------------------------------|
+| _Relative Input_ | Whether the input is absolute (a position) or relative (a change of position). |
 
 ## Curve
 
