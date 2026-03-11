@@ -202,6 +202,13 @@ func trigger_chorded_action(action:GUIDEAction) -> GUIDETriggerChordedAction:
 	result.action = action
 	return result
 		
+func trigger_combo(steps:Array[GUIDEAction]) -> GUIDETriggerCombo:
+	var result := GUIDETriggerCombo.new()
+	for step:GUIDEAction in steps:
+		var combo_step := GUIDETriggerComboStep.new()
+		combo_step.action = step
+		result.steps.append(combo_step)
+	return result
 		
 @warning_ignore("shadowed_variable")
 func map(context:GUIDEMappingContext, action:GUIDEAction, input:GUIDEInput, \

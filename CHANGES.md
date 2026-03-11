@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased] 
+### Fixed
+- Fixed a bug where the input formatter would not properly format chorded inputs when input filtering was active ([#175](https://github.com/godotneers/G.U.I.D.E/issues/175)).
+
+
 ## [0.12.0-beta1] - 2026-02-23
 ### Added
 - G.U.I.D.E now supports merging of multiple mapping contexts with overlapping actions. This allows you to define multiple mapping contexts that have different inputs bound to the same action. Upon merge, these will be combined into a single action definition. This is useful for supporting multiple different input methods at the same time. Before, only one definition of an action could be active at a time and loading a second one would replace the first one. Because this is quite complex to get right under the hood, this feature is currently only available in beta releases on Github and will only be published to the asset library once there is enough feedback from real-world usage. There are no breaking API changes for this feature, so it should drop right into your project without any changes required. A huge thanks goes out to [ShadowCommander](https://github.com/ShadowCommander) for contributing this feature and helping so much with the debugging ([#168](https://github.com/godotneers/G.U.I.D.E/pull/168))!
