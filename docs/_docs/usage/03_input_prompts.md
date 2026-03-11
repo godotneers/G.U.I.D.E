@@ -187,7 +187,7 @@ Once you have created and customized your render style, you can register it with
 GUIDEJoyRenderer.set_style(load("res://my_joy_render_style.tres"))
 
 # For keyboard render styles:
-GUIDEKeyboardRenderer.set_style(load("res://my_keyboard_render_style.tres"))
+GUIDEKeyRenderer.set_style(load("res://my_keyboard_render_style.tres"))
 
 # For mouse render styles:
 GUIDEMouseRenderer.set_style(load("res://my_mouse_render_style.tres"))
