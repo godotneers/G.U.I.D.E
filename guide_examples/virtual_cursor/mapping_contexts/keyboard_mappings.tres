@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="GUIDEMappingContext" load_steps=22 format=3 uid="uid://dbo7gukmqll0o"]
+[gd_resource type="Resource" script_class="GUIDEMappingContext" load_steps=21 format=3 uid="uid://dbo7gukmqll0o"]
 
 [ext_resource type="Resource" uid="uid://bjmdf7hpcpg6r" path="res://guide_examples/virtual_cursor/mapping_contexts/actions/cursor_2d.tres" id="1_sjpxj"]
 [ext_resource type="Script" path="res://addons/guide/inputs/guide_input_mouse_position.gd" id="2_gng6o"]
@@ -59,15 +59,11 @@ mouse_movement = false
 minimum_mouse_movement_distance = 1.0
 joy_buttons = true
 joy_axes = true
-minimum_joy_axis_actuation_strength = 0.2
+minimum_joy_axis_actuation_strength = 0.3
 keyboard = false
 touch = false
 mouse = false
 joy = true
-
-[sub_resource type="Resource" id="Resource_ayola"]
-script = ExtResource("9_4ujfx")
-actuation_threshold = 0.5
 
 [sub_resource type="Resource" id="Resource_grun2"]
 script = ExtResource("5_6tvqc")
@@ -77,7 +73,8 @@ display_name = ""
 display_category = ""
 input = SubResource("Resource_rhita")
 modifiers = Array[Resource("res://addons/guide/modifiers/guide_modifier.gd")]([])
-triggers = Array[Resource("res://addons/guide/triggers/guide_trigger.gd")]([SubResource("Resource_ayola")])
+triggers = Array[Resource("res://addons/guide/triggers/guide_trigger.gd")]([])
+metadata/_guide_triggers_collapsed = false
 
 [sub_resource type="Resource" id="Resource_1qr0o"]
 script = ExtResource("6_r1gr7")
