@@ -189,7 +189,6 @@ func _materialized_as_text(input:MaterializedInput) -> String:
 ## Renders materialized input as rich text.
 func _materialized_as_richtext_async(input:MaterializedInput) -> String:
 	_ensure_readiness()	
-	print(input)
 	if input is MaterializedSimpleInput:
 		var icon:Texture2D = null
 		for renderer:GUIDEIconRenderer in _icon_renderers:
@@ -271,6 +270,7 @@ func _materialize_action_input(action:GUIDEAction) -> MaterializedInput:
 			if combos.is_empty():
 				if input_mapping.input != null:
 					var additional_inputs := _materialize_input(FormattingContext.for_action(input_mapping.input, input_mapping, action))
+					# https://github.com/godotneers/G.U.I.D.E/issues/175
 					# additional inputs can be blank if they are filtered out. if they are blank
 					# we can discard the whole input mapping, as it could never trigger (we have a chorded action + no input)
 					if not additional_inputs.is_blank():

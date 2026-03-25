@@ -41,7 +41,6 @@ var stick_start_position:Vector2:
 	get:
 		if _stick != null:
 			return _stick._start_pos
-		print("stick zero")
 		return Vector2.ZERO
 			
 		
