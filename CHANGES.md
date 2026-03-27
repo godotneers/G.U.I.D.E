@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.12.0] - 2026-03-27
 ### Improved
 - The direction icons for all built-in input renderers (controller, mouse, touch, joy) have been redesigned. Instead of showing the device icon and the direction arrow side by side, the direction arrow is now overlaid on top of a slightly inset device icon, making input prompts more visually compact. A big thanks goes to [SilverWolveGames](https://github.com/SilverWolveGames) for contributing the new icons and the initial implementation ([#179](https://github.com/godotneers/G.U.I.D.E/issues/179),[#182](https://github.com/godotneers/G.U.I.D.E/pull/182))!
 
