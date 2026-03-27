@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bsaylcb5ixjxk"]
 
-[ext_resource type="Script" uid="uid://b8x6orscdyv28" path="res://addons/guide/ui/renderers/controllers/guide_controller_renderer.gd" id="1_0s5v7"]
+[ext_resource type="Script" path="res://addons/guide/ui/renderers/controllers/guide_controller_renderer.gd" id="1_0s5v7"]
 [ext_resource type="Texture2D" uid="uid://bmgxqbypegjxh" path="res://addons/guide/ui/renderers/textures/arrow_horizontal.svg" id="2_vkejn"]
 [ext_resource type="Texture2D" uid="uid://bu5nlug6uf03w" path="res://addons/guide/ui/renderers/textures/arrow_vertical.svg" id="3_wqne5"]
 
