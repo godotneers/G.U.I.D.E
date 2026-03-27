@@ -1,140 +1,138 @@
-[gd_scene load_steps=4 format=3 uid="uid://bsaylcb5ixjxk"]
+[gd_scene format=3 uid="uid://bsaylcb5ixjxk"]
 
-[ext_resource type="Script" path="res://addons/guide/ui/renderers/controllers/guide_controller_renderer.gd" id="1_0s5v7"]
+[ext_resource type="Script" uid="uid://b8x6orscdyv28" path="res://addons/guide/ui/renderers/controllers/guide_controller_renderer.gd" id="1_0s5v7"]
 [ext_resource type="Texture2D" uid="uid://bmgxqbypegjxh" path="res://addons/guide/ui/renderers/textures/arrow_horizontal.svg" id="2_vkejn"]
 [ext_resource type="Texture2D" uid="uid://bu5nlug6uf03w" path="res://addons/guide/ui/renderers/textures/arrow_vertical.svg" id="3_wqne5"]
 
-[node name="ControllerRenderer" type="MarginContainer"]
+[node name="ControllerRenderer" type="MarginContainer" unique_id=1943413659]
 process_mode = 3
+custom_minimum_size = Vector2(128, 128)
 offset_right = 100.0
 offset_bottom = 100.0
 size_flags_horizontal = 0
 script = ExtResource("1_0s5v7")
 priority = -1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-layout_mode = 2
-size_flags_horizontal = 0
-
-[node name="Controls" type="MarginContainer" parent="HBoxContainer"]
+[node name="Controls" type="MarginContainer" parent="." unique_id=1093587782]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
-size_flags_horizontal = 3
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 14
 
-[node name="AButton" type="TextureRect" parent="HBoxContainer/Controls"]
+[node name="AButton" type="TextureRect" parent="Controls" unique_id=1878697365]
 unique_name_in_owner = true
 layout_mode = 2
 stretch_mode = 5
 
-[node name="BButton" type="TextureRect" parent="HBoxContainer/Controls"]
+[node name="BButton" type="TextureRect" parent="Controls" unique_id=739327458]
 unique_name_in_owner = true
 layout_mode = 2
 stretch_mode = 5
 
-[node name="XButton" type="TextureRect" parent="HBoxContainer/Controls"]
+[node name="XButton" type="TextureRect" parent="Controls" unique_id=1028999918]
 unique_name_in_owner = true
 layout_mode = 2
 stretch_mode = 5
 
-[node name="YButton" type="TextureRect" parent="HBoxContainer/Controls"]
+[node name="YButton" type="TextureRect" parent="Controls" unique_id=1549929959]
 unique_name_in_owner = true
 layout_mode = 2
 stretch_mode = 5
 
-[node name="LeftStick" type="TextureRect" parent="HBoxContainer/Controls"]
+[node name="LeftStick" type="TextureRect" parent="Controls" unique_id=1618683662]
 unique_name_in_owner = true
 layout_mode = 2
 stretch_mode = 5
 
-[node name="LeftStickClick" type="TextureRect" parent="HBoxContainer/Controls"]
+[node name="LeftStickClick" type="TextureRect" parent="Controls" unique_id=1662326619]
 unique_name_in_owner = true
 layout_mode = 2
 stretch_mode = 5
 
-[node name="RightStick" type="TextureRect" parent="HBoxContainer/Controls"]
+[node name="RightStick" type="TextureRect" parent="Controls" unique_id=505023447]
 unique_name_in_owner = true
 layout_mode = 2
 stretch_mode = 5
 
-[node name="RightStickClick" type="TextureRect" parent="HBoxContainer/Controls"]
+[node name="RightStickClick" type="TextureRect" parent="Controls" unique_id=1112129150]
 unique_name_in_owner = true
 layout_mode = 2
 stretch_mode = 5
 
-[node name="LeftBumper" type="TextureRect" parent="HBoxContainer/Controls"]
+[node name="LeftBumper" type="TextureRect" parent="Controls" unique_id=2074987142]
 unique_name_in_owner = true
 layout_mode = 2
 stretch_mode = 5
 
-[node name="RightBumper" type="TextureRect" parent="HBoxContainer/Controls"]
+[node name="RightBumper" type="TextureRect" parent="Controls" unique_id=100868992]
 unique_name_in_owner = true
 layout_mode = 2
 stretch_mode = 5
 
-[node name="LeftTrigger" type="TextureRect" parent="HBoxContainer/Controls"]
+[node name="LeftTrigger" type="TextureRect" parent="Controls" unique_id=1926649405]
 unique_name_in_owner = true
 layout_mode = 2
 stretch_mode = 5
 
-[node name="RightTrigger" type="TextureRect" parent="HBoxContainer/Controls"]
+[node name="RightTrigger" type="TextureRect" parent="Controls" unique_id=930803906]
 unique_name_in_owner = true
 layout_mode = 2
 stretch_mode = 5
 
-[node name="DpadUp" type="TextureRect" parent="HBoxContainer/Controls"]
+[node name="DpadUp" type="TextureRect" parent="Controls" unique_id=298084786]
 unique_name_in_owner = true
 layout_mode = 2
 stretch_mode = 5
 
-[node name="DpadLeft" type="TextureRect" parent="HBoxContainer/Controls"]
+[node name="DpadLeft" type="TextureRect" parent="Controls" unique_id=628869863]
 unique_name_in_owner = true
 layout_mode = 2
 stretch_mode = 5
 
-[node name="DpadRight" type="TextureRect" parent="HBoxContainer/Controls"]
+[node name="DpadRight" type="TextureRect" parent="Controls" unique_id=573952875]
 unique_name_in_owner = true
 layout_mode = 2
 stretch_mode = 5
 
-[node name="DpadDown" type="TextureRect" parent="HBoxContainer/Controls"]
+[node name="DpadDown" type="TextureRect" parent="Controls" unique_id=1692287168]
 unique_name_in_owner = true
 layout_mode = 2
 stretch_mode = 5
 
-[node name="Start" type="TextureRect" parent="HBoxContainer/Controls"]
+[node name="Start" type="TextureRect" parent="Controls" unique_id=410581068]
 unique_name_in_owner = true
 layout_mode = 2
 stretch_mode = 5
 
-[node name="Misc1" type="TextureRect" parent="HBoxContainer/Controls"]
+[node name="Misc1" type="TextureRect" parent="Controls" unique_id=1553223824]
 unique_name_in_owner = true
 layout_mode = 2
 stretch_mode = 5
 
-[node name="Back" type="TextureRect" parent="HBoxContainer/Controls"]
+[node name="Back" type="TextureRect" parent="Controls" unique_id=367387263]
 unique_name_in_owner = true
 layout_mode = 2
 stretch_mode = 5
 
-[node name="TouchPad" type="TextureRect" parent="HBoxContainer/Controls"]
+[node name="TouchPad" type="TextureRect" parent="Controls" unique_id=1095842922]
 unique_name_in_owner = true
 layout_mode = 2
 stretch_mode = 5
 
-[node name="Directions" type="MarginContainer" parent="HBoxContainer"]
+[node name="Directions" type="MarginContainer" parent="." unique_id=330227417]
 unique_name_in_owner = true
 visible = false
-custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 
-[node name="LeftRight" type="TextureRect" parent="HBoxContainer/Directions"]
+[node name="LeftRight" type="TextureRect" parent="Directions" unique_id=1211717995]
 unique_name_in_owner = true
 layout_mode = 2
 texture = ExtResource("2_vkejn")
 stretch_mode = 5
 
-[node name="UpDown" type="TextureRect" parent="HBoxContainer/Directions"]
+[node name="UpDown" type="TextureRect" parent="Directions" unique_id=513357487]
 unique_name_in_owner = true
 layout_mode = 2
 texture = ExtResource("3_wqne5")

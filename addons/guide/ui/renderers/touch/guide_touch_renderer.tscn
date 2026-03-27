@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://ykuou1deo5ub"]
+[gd_scene format=3 uid="uid://ykuou1deo5ub"]
 
 [ext_resource type="Script" path="res://addons/guide/ui/renderers/touch/guide_touch_renderer.gd" id="1_wulrq"]
 [ext_resource type="Texture2D" uid="uid://c5nwnp5cjny7m" path="res://addons/guide/ui/renderers/touch/styles/touch_1_finger.png" id="2_b6hdr"]
@@ -12,82 +12,82 @@
 [ext_resource type="Texture2D" uid="uid://dwb1h8sfsccyy" path="res://addons/guide/ui/renderers/textures/arrow_all_directions.svg" id="10_w0ld1"]
 
 [node name="TouchRenderer" type="MarginContainer"]
+process_mode = 3
+custom_minimum_size = Vector2(128, 128)
 offset_right = 100.0
 offset_bottom = 100.0
 size_flags_horizontal = 0
 script = ExtResource("1_wulrq")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-layout_mode = 2
-size_flags_horizontal = 0
-
-[node name="Controls" type="MarginContainer" parent="HBoxContainer"]
+[node name="Controls" type="MarginContainer" parent="."]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 14
 
-[node name="T1Finger" type="TextureRect" parent="HBoxContainer/Controls"]
+[node name="T1Finger" type="TextureRect" parent="Controls"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 texture = ExtResource("2_b6hdr")
-stretch_mode = 4
+stretch_mode = 5
 
-[node name="T2Fingers" type="TextureRect" parent="HBoxContainer/Controls"]
+[node name="T2Fingers" type="TextureRect" parent="Controls"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 texture = ExtResource("3_hk3mb")
-stretch_mode = 4
+stretch_mode = 5
 
-[node name="T3Fingers" type="TextureRect" parent="HBoxContainer/Controls"]
+[node name="T3Fingers" type="TextureRect" parent="Controls"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 texture = ExtResource("4_swfqu")
-stretch_mode = 4
+stretch_mode = 5
 
-[node name="T4Fingers" type="TextureRect" parent="HBoxContainer/Controls"]
+[node name="T4Fingers" type="TextureRect" parent="Controls"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 texture = ExtResource("5_b7wc6")
-stretch_mode = 4
+stretch_mode = 5
 
-[node name="Rotate" type="TextureRect" parent="HBoxContainer/Controls"]
+[node name="Rotate" type="TextureRect" parent="Controls"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 texture = ExtResource("6_m5fhs")
-stretch_mode = 4
+stretch_mode = 5
 
-[node name="Zoom" type="TextureRect" parent="HBoxContainer/Controls"]
+[node name="Zoom" type="TextureRect" parent="Controls"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 texture = ExtResource("7_q2tlp")
-stretch_mode = 4
+stretch_mode = 5
 
-[node name="Directions" type="MarginContainer" parent="HBoxContainer"]
+[node name="Directions" type="MarginContainer" parent="."]
 unique_name_in_owner = true
 visible = false
-custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 
-[node name="Horizontal" type="TextureRect" parent="HBoxContainer/Directions"]
+[node name="Horizontal" type="TextureRect" parent="Directions"]
 unique_name_in_owner = true
 layout_mode = 2
 texture = ExtResource("8_v744w")
-stretch_mode = 4
+stretch_mode = 5
 
-[node name="Vertical" type="TextureRect" parent="HBoxContainer/Directions"]
+[node name="Vertical" type="TextureRect" parent="Directions"]
 unique_name_in_owner = true
 layout_mode = 2
 texture = ExtResource("9_yug52")
-stretch_mode = 4
+stretch_mode = 5
 
-[node name="Axis2D" type="TextureRect" parent="HBoxContainer/Directions"]
+[node name="Axis2D" type="TextureRect" parent="Directions"]
 unique_name_in_owner = true
 layout_mode = 2
 texture = ExtResource("10_w0ld1")
-stretch_mode = 4
+stretch_mode = 5

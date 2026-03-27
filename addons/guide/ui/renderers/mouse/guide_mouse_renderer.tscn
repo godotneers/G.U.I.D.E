@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://bfl6dbw21xqs1"]
+[gd_scene format=3 uid="uid://bfl6dbw21xqs1"]
 
 [ext_resource type="Script" path="res://addons/guide/ui/renderers/mouse/guide_mouse_renderer.gd" id="1_4r710"]
 [ext_resource type="Texture2D" uid="uid://b3uxk5agbpmab" path="res://addons/guide/ui/renderers/mouse/styles/Mouse_Simple_Key_Light.png" id="2_t8pey"]
@@ -17,109 +17,108 @@
 
 [node name="MouseRenderer" type="MarginContainer"]
 process_mode = 3
+custom_minimum_size = Vector2(128, 128)
 offset_right = 100.0
 offset_bottom = 100.0
 size_flags_horizontal = 0
 script = ExtResource("1_4r710")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-layout_mode = 2
-size_flags_horizontal = 0
-
-[node name="Controls" type="MarginContainer" parent="HBoxContainer"]
+[node name="Controls" type="MarginContainer" parent="."]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 14
 
-[node name="MouseBlank" type="TextureRect" parent="HBoxContainer/Controls"]
+[node name="MouseBlank" type="TextureRect" parent="Controls"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 texture = ExtResource("2_t8pey")
-stretch_mode = 4
+stretch_mode = 5
 
-[node name="MouseLeft" type="TextureRect" parent="HBoxContainer/Controls"]
+[node name="MouseLeft" type="TextureRect" parent="Controls"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 texture = ExtResource("3_x0waw")
-stretch_mode = 4
+stretch_mode = 5
 
-[node name="MouseRight" type="TextureRect" parent="HBoxContainer/Controls"]
+[node name="MouseRight" type="TextureRect" parent="Controls"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 texture = ExtResource("4_dtdsa")
-stretch_mode = 4
+stretch_mode = 5
 
-[node name="MouseMiddle" type="TextureRect" parent="HBoxContainer/Controls"]
+[node name="MouseMiddle" type="TextureRect" parent="Controls"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 texture = ExtResource("5_kw2v6")
-stretch_mode = 4
+stretch_mode = 5
 
-[node name="MouseSideA" type="TextureRect" parent="HBoxContainer/Controls"]
+[node name="MouseSideA" type="TextureRect" parent="Controls"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 texture = ExtResource("6_mbavq")
-stretch_mode = 4
+stretch_mode = 5
 
-[node name="MouseSideB" type="TextureRect" parent="HBoxContainer/Controls"]
+[node name="MouseSideB" type="TextureRect" parent="Controls"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 texture = ExtResource("7_eseen")
-stretch_mode = 4
+stretch_mode = 5
 
-[node name="MouseCursor" type="TextureRect" parent="HBoxContainer/Controls"]
+[node name="MouseCursor" type="TextureRect" parent="Controls"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 texture = ExtResource("8_gauyw")
-stretch_mode = 4
+stretch_mode = 5
 
-[node name="Directions" type="MarginContainer" parent="HBoxContainer"]
+[node name="Directions" type="MarginContainer" parent="."]
 unique_name_in_owner = true
 visible = false
-custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 
-[node name="Left" type="TextureRect" parent="HBoxContainer/Directions"]
+[node name="Left" type="TextureRect" parent="Directions"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 texture = ExtResource("9_xglas")
-stretch_mode = 4
+stretch_mode = 5
 
-[node name="Right" type="TextureRect" parent="HBoxContainer/Directions"]
+[node name="Right" type="TextureRect" parent="Directions"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 texture = ExtResource("10_8jstk")
-stretch_mode = 4
+stretch_mode = 5
 
-[node name="Up" type="TextureRect" parent="HBoxContainer/Directions"]
+[node name="Up" type="TextureRect" parent="Directions"]
 unique_name_in_owner = true
 layout_mode = 2
 texture = ExtResource("11_edlod")
-stretch_mode = 4
+stretch_mode = 5
 
-[node name="Down" type="TextureRect" parent="HBoxContainer/Directions"]
+[node name="Down" type="TextureRect" parent="Directions"]
 unique_name_in_owner = true
 layout_mode = 2
 texture = ExtResource("12_f7esb")
-stretch_mode = 4
+stretch_mode = 5
 
-[node name="Horizontal" type="TextureRect" parent="HBoxContainer/Directions"]
+[node name="Horizontal" type="TextureRect" parent="Directions"]
 unique_name_in_owner = true
 layout_mode = 2
 texture = ExtResource("13_8atfk")
-stretch_mode = 4
+stretch_mode = 5
 
-[node name="Vertical" type="TextureRect" parent="HBoxContainer/Directions"]
+[node name="Vertical" type="TextureRect" parent="Directions"]
 unique_name_in_owner = true
 layout_mode = 2
 texture = ExtResource("14_5j0sm")
-stretch_mode = 4
+stretch_mode = 5
