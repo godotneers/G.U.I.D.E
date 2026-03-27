@@ -16,8 +16,11 @@ func _ready() -> void:
 	
 	
 func _to_controller() -> void:
-	GUIDE.enable_mapping_context(controller, true)
+	# call_deferred is needed because this is called from an action signal handler,
+	# which runs during GUIDE's internal update. Changing contexts directly from
+	# there is not allowed, similar to modifying physics state in a physics callback.
+	GUIDE.enable_mapping_context.call_deferred(controller, true)
 	
 	
 func _to_keyboard_and_mouse() -> void:
-	GUIDE.enable_mapping_context(keyboard_and_mouse, true)
+	GUIDE.enable_mapping_context.call_deferred(keyboard_and_mouse, true)

@@ -373,7 +373,7 @@ func _parse_input_mappings(
 ## This is called automatically when contexts are enabled/disabled or remapping configs are applied.
 func _update_caches() -> void:
 	if _locked:
-		push_error("Mapping context changed again while processing a change. Ignoring to avoid endless loop.")
+		push_warning("Mapping context changed while processing a context change. Use call_deferred() to change mapping contexts from action signal handlers.")
 		return
 	
 	_locked = true	
