@@ -31,6 +31,13 @@ signal joy_button_state_changed()
 signal joy_axis_state_changed()
 ## Signalled, when the touch state has changed.
 signal touch_state_changed()
+## Signalled when the application loses focus. Unlike the other signals above,
+## this is not triggered by an InputEvent — Godot clears its own input state
+## directly in Input::release_pressed_events() (core/input/input.cpp) without
+## dispatching any events. Inputs that maintain their own internal state should
+## listen to this signal and reset it immediately when focus is lost.
+## See: https://github.com/godotneers/G.U.I.D.E/issues/189
+signal application_focus_lost()
 
 # Keys that are currently pressed. Key is the key index, value is not important. The presence of a key in the dictionary
 # indicates that the key is currently pressed.
@@ -260,6 +267,56 @@ func _refresh_joy_device_ids(_ignore1, _ignore2):
 		_recalculate_any_joy_axes()
 		# notify all inputs that the joy state has changed
 		joy_axis_state_changed.emit()
+
+
+## Called when the application loses focus. Clears input state that Godot
+## itself clears in Input::release_pressed_events() (core/input/input.cpp).
+##
+## Godot does this by directly zeroing its internal arrays — no InputEvents
+## are ever dispatched. Because G.U.I.D.E maintains its own shadow state
+## (_keys, _mouse_buttons, etc.) that is only updated from incoming events,
+## we must mirror this cleanup here or stale state will cause inputs like
+## GUIDEInputAny to keep firing every frame after focus returns.
+##
+## What Godot clears (and so do we):
+##   - keys_pressed / physical_keys_pressed / key_label_pressed  → always
+##
+## What Godot does NOT clear (and neither do we, to stay consistent):
+##   - mouse button state — left as-is by Godot on focus loss
+##
+## See: https://github.com/godotneers/G.U.I.D.E/issues/189
+func focus_lost() -> void:
+	# Discard any key events that arrived this frame but haven't been
+	# committed to _keys yet, then clear the committed state.
+	_pending_keys.clear()
+	if not _keys.is_empty():
+		_keys.clear()
+		keyboard_state_changed.emit()
+
+	# Mirror Godot's conditional joy clearing: Input::release_pressed_events()
+	# only clears joy state when ignore_joypad_on_unfocused_application is set
+	# (input_devices/joypads/ignore_joypad_on_unfocused_application in project settings).
+	if ProjectSettings.get_setting("input_devices/joypads/ignore_joypad_on_unfocused_application", false):
+		for device_id in _pending_joy_buttons:
+			_pending_joy_buttons[device_id].clear()
+
+		var joy_buttons_dirty := false
+		for device_id in _joy_buttons:
+			if not _joy_buttons[device_id].is_empty():
+				_joy_buttons[device_id].clear()
+				joy_buttons_dirty = true
+		if joy_buttons_dirty:
+			joy_button_state_changed.emit()
+
+		var joy_axes_dirty := false
+		for device_id in _joy_axes:
+			if not _joy_axes[device_id].is_empty():
+				_joy_axes[device_id].clear()
+				joy_axes_dirty = true
+		if joy_axes_dirty:
+			joy_axis_state_changed.emit()
+
+	application_focus_lost.emit()
 
 
 ## Called at the end of the frame to reset the state before the next frame.

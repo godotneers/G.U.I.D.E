@@ -60,8 +60,19 @@ func _ready():
 	Input.joy_connection_changed.connect(func(ig, ig2): input_mappings_changed.emit())
 
 
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_APPLICATION_FOCUS_OUT:
+		# When the application loses focus, Godot clears its own input state
+		# directly in Input::release_pressed_events() (core/input/input.cpp)
+		# without dispatching any InputEvents. Since G.U.I.D.E maintains its
+		# own shadow input state in GUIDEInputState, we must replicate this
+		# cleanup ourselves. See: https://github.com/godotneers/G.U.I.D.E/issues/189
+		if _input_state != null:
+			_input_state.focus_lost()
+
+
 ## Called when a node is added to the tree. If the node is a window
-## GUIDE will instrument it to get events when the window is focused.	
+## GUIDE will instrument it to get events when the window is focused.
 func _on_node_added(node:Node) -> void:
 	if not node is Window:
 		return

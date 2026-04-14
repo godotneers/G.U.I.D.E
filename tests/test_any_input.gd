@@ -174,3 +174,33 @@ func test_any_input_with_down_trigger_fires_every_frame() -> void:
 	watched.reset()
 	await wait_f(1)
 	watched.assert_not_triggered()
+
+
+func test_any_input_keyboard_stops_when_application_loses_focus() -> void:
+	# Regression test for https://github.com/godotneers/G.U.I.D.E/issues/189
+	# When the application loses focus (e.g. Alt+Tab, Win key), Godot clears its
+	# own input state directly without dispatching InputEvents. G.U.I.D.E must
+	# mirror this so its shadow state doesn't keep the key "stuck" as pressed.
+	var input := input_any()
+	input.keyboard = true
+
+	map(_context, _action, input, [], [trigger_down()])
+	GUIDE.enable_mapping_context(_context)
+	var watched := watch(_action)
+
+	# WHEN: I press and hold a key
+	key_down(KEY_Q, false)
+
+	# THEN: the action triggers each frame while held
+	await watched.assert_triggered()
+
+	# WHEN: the application loses focus (simulating Alt+Tab / Win key stealing focus)
+	GUIDE.notification(NOTIFICATION_APPLICATION_FOCUS_OUT)
+	watched.reset()
+
+	# THEN: the action no longer fires on subsequent frames
+	await wait_f(2)
+	watched.assert_not_triggered()
+
+	await wait_f(2)
+	watched.assert_not_triggered()

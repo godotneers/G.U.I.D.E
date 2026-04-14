@@ -68,9 +68,9 @@ func _begin_usage() -> void:
 		_state.joy_axis_state_changed.connect(_refresh)
 	if touch:
 		_state.touch_state_changed.connect(_refresh)
-		
+	_state.application_focus_lost.connect(_on_application_focus_lost)
 	_refresh()
-	
+
 func _end_usage() -> void:
 	# unsubscribe from input events
 	if mouse_movement:
@@ -85,6 +85,15 @@ func _end_usage() -> void:
 		_state.joy_axis_state_changed.disconnect(_refresh)
 	if touch:
 		_state.touch_state_changed.disconnect(_refresh)
+	_state.application_focus_lost.disconnect(_on_application_focus_lost)
+
+func _on_application_focus_lost() -> void:
+	# Clear our value directly rather than going through _refresh(), because
+	# _refresh() will not update the value if it is already non-zero (by design,
+	# to keep fast inputs alive for the full frame). Focus loss is not an input
+	# event — the state has already been cleared in GUIDEInputState — so we must
+	# bypass that guard and clear immediately.
+	_value = Vector3.ZERO
 
 func _refresh() -> void:
 	# if the input was already actuated this frame, remain
