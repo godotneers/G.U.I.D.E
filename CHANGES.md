@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
+- Fixed a bug where the _Any_ input would keep firing continuously after the application loses focus (e.g. by pressing Alt+Tab or the Windows key). This happened because Godot clears its own input state directly without dispatching input events when the application loses focus, causing G.U.I.D.E's internal input state to diverge ([#189](https://github.com/godotneers/G.U.I.D.E/issues/189)).
 
 ## [0.12.0] - 2026-03-27
 ### Improved
