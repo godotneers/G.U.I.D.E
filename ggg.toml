@@ -1,0 +1,8 @@
+
+[project]
+godot = "4.2-stable"
+
+[[dependency]]
+name = "gdunit4"
+git = "https://github.com/godot-gdunit-labs/gdUnit4"
+rev = "v4.5.0"
