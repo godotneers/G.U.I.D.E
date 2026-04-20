@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://ykuou1deo5ub"]
+[gd_scene load_steps=11 format=3 uid="uid://ykuou1deo5ub"]
 
 [ext_resource type="Script" path="res://addons/guide/ui/renderers/touch/guide_touch_renderer.gd" id="1_wulrq"]
 [ext_resource type="Texture2D" uid="uid://c5nwnp5cjny7m" path="res://addons/guide/ui/renderers/touch/styles/touch_1_finger.png" id="2_b6hdr"]

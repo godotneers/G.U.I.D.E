@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://bfl6dbw21xqs1"]
+[gd_scene load_steps=15 format=3 uid="uid://bfl6dbw21xqs1"]
 
 [ext_resource type="Script" path="res://addons/guide/ui/renderers/mouse/guide_mouse_renderer.gd" id="1_4r710"]
 [ext_resource type="Texture2D" uid="uid://b3uxk5agbpmab" path="res://addons/guide/ui/renderers/mouse/styles/Mouse_Simple_Key_Light.png" id="2_t8pey"]

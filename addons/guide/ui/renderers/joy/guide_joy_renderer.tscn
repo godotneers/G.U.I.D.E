@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://c6sqf8rur1wss"]
+[gd_scene load_steps=7 format=3 uid="uid://c6sqf8rur1wss"]
 
 [ext_resource type="Script" path="res://addons/guide/ui/renderers/joy/guide_joy_renderer.gd" id="1_wpc4y"]
 [ext_resource type="Texture2D" uid="uid://do001o6aysaxo" path="res://addons/guide/ui/renderers/joy/styles/stick_empty.png" id="2_uoqkj"]
