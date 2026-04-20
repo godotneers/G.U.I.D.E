@@ -5,6 +5,14 @@ permalink: /faq
 description: "This page contains answers to frequently asked questions about G.U.I.D.E."
 ---
 
+## The autoload fails to load after installing G.U.I.D.E from the AssetLib
+
+This is a known issue ([#161]({{site.issue_tracker}}/161)) caused by a bug in certain versions of Godot. After installing G.U.I.D.E from the AssetLib, the `GUIDE` autoload may fail to load with an error like `Failed to create an autoload, can't load from UID or path`.
+
+The workaround is to restart the Godot editor after the AssetLib installation completes, and only then enable the plugin in the project settings. This gives Godot a chance to properly register all files before the plugin is activated. If you have already enabled the plugin and are seeing the error, disable the plugin, restart the editor, and re-enable it.
+
+This bug has been fixed in Godot's master branch and the fix will be included in a future stable release.
+
 ## I'm getting an error message when trying to use G.U.I.D.E in my project
 
 In general if this happens it is caused by one of the following reasons:
