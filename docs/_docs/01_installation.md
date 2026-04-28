@@ -23,13 +23,13 @@ ggg add asset --id 3503 --name "guide"
 ggg sync
 ```
 
-This installs the plugin - including the examples - into your project's `addons` folder. If you don't want the examples, edit the resulting entry in `ggg.toml` to add a `map` that restricts installation to only the plugin folder:
+This installs the plugin - including the examples - into your project's `addons` folder. If you don't want the examples, edit the resulting entry in `ggg.toml` to add an `exclude` section:
 
 ```toml
 [[dependency]]
 name     = "guide"
 asset_id = 3503
-map      = [{ from = "addons/guide" }]
+exclude = ["guide_examples"]
 ```
 
 Run `ggg sync` again after editing `ggg.toml` to apply the change. Be sure to follow the [important steps after installation](#important-steps-after-installation).
