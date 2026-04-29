@@ -24,8 +24,9 @@ func _ready() -> void:
 	
 	_editing_view.visible = false
 	_empty_view.visible = true
-	
+	_action_mappings.show_insert_options = true
 	_action_mappings.add_requested.connect(_on_action_mappings_add_requested)
+	_action_mappings.insert_requested.connect(_on_action_mappings_insert_requested)
 	_action_mappings.move_requested.connect(_on_action_mappings_move_requested)
 	_action_mappings.delete_requested.connect(_on_action_mapping_delete_requested)
 	_action_mappings.clear_requested.connect(_on_action_mappings_clear_requested)
@@ -212,6 +213,19 @@ func _on_action_mappings_add_requested() -> void:
 	
 	_undo_redo.commit_action()
 
+func _on_action_mappings_insert_requested(index:int) -> void:
+	var mappings := _current_context.mappings.duplicate()
+	var new_mapping := GUIDEActionMapping.new()
+	
+	# don't set an action because they should come from the file system
+	mappings.insert(index, new_mapping)
+	
+	_undo_redo.create_action("Insert action mapping")
+	
+	_undo_redo.add_do_property(_current_context, "mappings", mappings)
+	_undo_redo.add_undo_property(_current_context, "mappings", _current_context.mappings)
+	
+	_undo_redo.commit_action()
 
 func _on_action_mappings_move_requested(from:int, to:int) -> void:
 	var mappings := _current_context.mappings.duplicate()

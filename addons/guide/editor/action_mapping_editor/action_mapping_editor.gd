@@ -21,11 +21,13 @@ var _mapping:GUIDEActionMapping
 
 func _ready():
 	_action_slot.action_changed.connect(_on_action_changed)
+	_input_mappings.show_insert_options = true
 	_input_mappings.delete_requested.connect(_on_input_mapping_delete_requested)
 	_input_mappings.add_requested.connect(_on_input_mappings_add_requested)
 	_input_mappings.move_requested.connect(_on_input_mappings_move_requested)
 	_input_mappings.clear_requested.connect(_on_input_mappings_clear_requested)
 	_input_mappings.duplicate_requested.connect(_on_input_mappings_duplicate_requested)
+	_input_mappings.insert_requested.connect(_on_input_mappings_insert_requested)
 	_input_mappings.collapse_state_changed.connect(_on_input_mappings_collapse_state_changed)
 
 func initialize(plugin:EditorPlugin) -> void:
@@ -132,6 +134,19 @@ func _on_input_mappings_duplicate_requested(index:int) -> void:
 
 	_undo_redo.commit_action()
 
+func _on_input_mappings_insert_requested(index:int) -> void:
+	
+	var values := _mapping.input_mappings.duplicate()
+	var mapping:GUIDEInputMapping = GUIDEInputMapping.new()
+
+	# insert copy at the index
+	values.insert(index, mapping)
+
+	_undo_redo.create_action("Insert input mapping")
+	_undo_redo.add_do_property(_mapping, "input_mappings", values)
+	_undo_redo.add_undo_property(_mapping, "input_mappings", _mapping.input_mappings)
+
+	_undo_redo.commit_action()
 
 func _on_input_mappings_collapse_state_changed(new_state:bool):
 	_mapping.set_meta("_guide_input_mappings_collapsed", new_state)
