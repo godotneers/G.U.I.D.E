@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- `GUIDEInputFormatter` now has a `for_contexts` factory method which provides a formatter that works on the given contexts. This is useful if you need information from multiple contexts without these contexts currently being active ([#190](https://github.com/godotneers/G.U.I.D.E/issues/190)).
+
 ### Improved
 - The mapping context editor now has menu options to insert action mappings and input mappings before and after the current item. This makes it easier to work with larger mapping contexts ([#190](https://github.com/godotneers/G.U.I.D.E/issues/190))
 
