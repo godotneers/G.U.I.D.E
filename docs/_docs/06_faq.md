@@ -23,6 +23,10 @@ In general if this happens it is caused by one of the following reasons:
 
 If none of these steps help, please [report the issue in the issue tracker]({{site.issue_tracker}}) and I will try to help you. Be sure to include as much information as possible about your setup and the error message you are getting.
 
+## Does G.U.I.D.E have C# support?
+
+G.U.I.D.E has no native support for C#, if you'd like to use it with C#, there is a community-maintained [C# wrapper](https://phlegmlee.github.io/G.U.I.D.E-CSharp/).
+
 ## The plugin doesn't work with the latest Godot preview version
 
 This can happen because in general the aim of the plugin is to work with the latest stable version of Godot. Preview versions of Godot usually are not that stable and trying to make the plugin work with them can be a moving target. If you find an issue with a preview version of Godot, please [report it]({{site.issue_tracker}}), so I can investigate, but a fix might not materialize until the stable version is released.

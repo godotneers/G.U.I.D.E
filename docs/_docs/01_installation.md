@@ -7,7 +7,7 @@ description: "Here you can find the installation instructions for the plugin."
 
 ## Requirements
 
-This plugin requires Godot 4.2.0 or later. Earlier versions of Godot 4 will not work because the plugin uses features that were introduced only in Godot 4.2.0. Godot 3 is not supported.
+This plugin requires Godot 4.2.0 or later. Earlier versions of Godot 4 will not work because the plugin uses features that were introduced only in Godot 4.2.0. Godot 3 is not supported. G.U.I.D.E has no native support for C#, if you'd like to use it with C#, there is a community-maintained [C# wrapper](https://phlegmlee.github.io/G.U.I.D.E-CSharp/).
 
 ## Installation process
 ### Installation with the Godot Asset Library
