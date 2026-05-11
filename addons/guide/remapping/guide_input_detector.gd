@@ -306,17 +306,24 @@ func _try_detect_bool(event:InputEvent) -> void:
 		result.joy_index = _find_joy_index(event.device)
 		_deliver(result)
 		
-	if allow_triggers_for_boolean_actions:
-		# only allow joypad trigger buttons
-		if not (event is InputEventJoypadMotion):
+	if event is InputEventJoypadMotion:
+		if event.axis == JOY_AXIS_TRIGGER_LEFT or event.axis == JOY_AXIS_TRIGGER_RIGHT:
+			if allow_triggers_for_boolean_actions:
+				var result := GUIDEInputJoyAxis1D.new()
+				result.axis = event.axis
+				result.joy_index = _find_joy_index(event.device)
+				_deliver(result)
 			return
-		if event.axis != JOY_AXIS_TRIGGER_LEFT and \
-				event.axis != JOY_AXIS_TRIGGER_RIGHT:
+
+		if abs(event.axis_value) < minimum_axis_amplitude:
 			return
-			
-		var result := GUIDEInputJoyAxis1D.new()
+
+		var result := GUIDEInputJoyDirection.new()
 		result.axis = event.axis
-		result.joy_index =  _find_joy_index(event.device)
+		result.direction = GUIDEInputJoyDirection.Direction.POSITIVE \
+			if event.axis_value > 0 \
+			else GUIDEInputJoyDirection.Direction.NEGATIVE
+		result.joy_index = _find_joy_index(event.device)
 		_deliver(result)
 					
 		

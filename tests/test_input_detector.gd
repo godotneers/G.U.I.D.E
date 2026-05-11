@@ -65,6 +65,73 @@ func test_aborting_input_detection_works() -> void:
 	await assert_signal(_input_detector).is_emitted("input_detected", [null])
 	
 
+func test_joy_direction_is_detected_for_bool() -> void:
+	monitor_signals(_input_detector)
+
+	# WHEN
+	# I try to detect boolean input
+	_input_detector.detect(GUIDEAction.GUIDEActionValueType.BOOL)
+
+	# and I move a joy axis past the minimum amplitude
+	await joy_axis(JOY_AXIS_LEFT_X, 0.5)
+
+	# THEN
+	# the detector emits a JoyDirection input with the correct axis and direction
+	await assert_signal(_input_detector).is_emitted("input_detected", [
+		GUIDEInputMatcher.new(input_joy_direction(JOY_AXIS_LEFT_X, GUIDEInputJoyDirection.Direction.POSITIVE))
+	])
+
+
+func test_joy_direction_negative_is_detected_for_bool() -> void:
+	monitor_signals(_input_detector)
+
+	# WHEN
+	# I try to detect boolean input
+	_input_detector.detect(GUIDEAction.GUIDEActionValueType.BOOL)
+
+	# and I move a joy axis in the negative direction past the minimum amplitude
+	await joy_axis(JOY_AXIS_LEFT_X, -0.5)
+
+	# THEN
+	# the detector emits a JoyDirection input with negative direction
+	await assert_signal(_input_detector).is_emitted("input_detected", [
+		GUIDEInputMatcher.new(input_joy_direction(JOY_AXIS_LEFT_X, GUIDEInputJoyDirection.Direction.NEGATIVE))
+	])
+
+
+func test_joy_direction_is_not_detected_below_minimum_amplitude() -> void:
+	monitor_signals(_input_detector)
+
+	# WHEN
+	# I try to detect boolean input
+	_input_detector.detect(GUIDEAction.GUIDEActionValueType.BOOL)
+
+	# and I move a joy axis but below the minimum amplitude
+	await joy_axis(JOY_AXIS_LEFT_X, _input_detector.minimum_axis_amplitude * 0.5)
+
+	# THEN
+	# no input is detected
+	assert_signal(_input_detector).is_not_emitted("input_detected")
+
+
+func test_trigger_axis_still_detected_as_axis_1d_for_bool() -> void:
+	monitor_signals(_input_detector)
+	_input_detector.allow_triggers_for_boolean_actions = true
+
+	# WHEN
+	# I try to detect boolean input
+	_input_detector.detect(GUIDEAction.GUIDEActionValueType.BOOL)
+
+	# and I actuate the left trigger
+	await joy_axis(JOY_AXIS_TRIGGER_LEFT, 0.5)
+
+	# THEN
+	# the detector emits a JoyAxis1D input, not a JoyDirection
+	await assert_signal(_input_detector).is_emitted("input_detected", [
+		GUIDEInputMatcher.new(input_joy_axis_1d(JOY_AXIS_TRIGGER_LEFT))
+	])
+
+
 func test_input_detector_ensures_that_abort_input_is_released_before_detection() -> void:
 	monitor_signals(_input_detector)
 	_input_detector.abort_detection_on = [input_key(KEY_ESCAPE)]

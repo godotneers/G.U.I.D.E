@@ -19,6 +19,14 @@ extends Resource
 @export var left_stick_horizontal_movement:String = "Left Stick Horizontal"
 ## Label for moving the left stick verticall.
 @export var left_stick_vertical_movement:String = "Left Stick Horizontal"
+## Label for moving the left stick to the left.
+@export var left_stick_left_movement:String = "Left Stick Left"
+## Label for moving the left stick to the right.
+@export var left_stick_right_movement:String = "Left Stick Right"
+## Label for moving the left stick up.
+@export var left_stick_up_movement:String = "Left Stick Up"
+## Label for moving the left stick down.
+@export var left_stick_down_movement:String = "Left Stick Down"
 ## Label for the right stick of the controller. 
 @export var right_stick:String = "Right Stick"
 ## Label for the right stick click button of the controller. 
@@ -27,6 +35,14 @@ extends Resource
 @export var right_stick_horizontal_movement:String = "Left Stick Horizontal"
 ## Label for moving the right stick verticall.
 @export var right_stick_vertical_movement:String = "Left Stick Horizontal"
+## Label for moving the right stick to the left.
+@export var right_stick_left_movement:String = "Right Stick Left"
+## Label for moving the right stick to the right.
+@export var right_stick_right_movement:String = "Right Stick Right"
+## Label for moving the right stick up.
+@export var right_stick_up_movement:String = "Right Stick Up"
+## Label for moving the right stick down.
+@export var right_stick_down_movement:String = "Right Stick Down"
 ## Label for the  left shoulder button: Sony L1, Xbox LB button.
 @export var left_bumper:String = ""
 ## Label for the right shoulder button: Sony R1, XBOX RB button.

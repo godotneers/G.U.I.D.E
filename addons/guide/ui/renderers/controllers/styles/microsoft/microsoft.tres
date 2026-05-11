@@ -1,27 +1,31 @@
-[gd_resource type="Resource" script_class="GUIDEControllerRenderStyle" load_steps=23 format=3 uid="uid://depqolaaisogn"]
+[gd_resource type="Resource" script_class="GUIDEControllerRenderStyle" load_steps=27 format=3 uid="uid://depqolaaisogn"]
 
 [ext_resource type="Texture2D" uid="uid://cujvw3m7aghgh" path="res://addons/guide/ui/renderers/controllers/styles/microsoft/XboxSeriesX_A.png" id="1_j3sh4"]
 [ext_resource type="Texture2D" uid="uid://brgqhp87g40l5" path="res://addons/guide/ui/renderers/controllers/styles/microsoft/XboxSeriesX_B.png" id="2_g54nh"]
 [ext_resource type="Texture2D" uid="uid://b5wc83dex8igr" path="res://addons/guide/ui/renderers/controllers/styles/microsoft/XboxSeriesX_View.png" id="3_djc6n"]
 [ext_resource type="Texture2D" uid="uid://d1fgf8ia7q4vo" path="res://addons/guide/ui/renderers/controllers/styles/microsoft/XboxSeriesX_Dpad_Down.png" id="4_g3fuy"]
+[ext_resource type="Texture2D" uid="uid://oq2vvwgbdsh7" path="res://addons/guide/ui/renderers/textures/arrow_down.svg" id="4_t0wyk"]
 [ext_resource type="Texture2D" uid="uid://bqtskbk6l8v7w" path="res://addons/guide/ui/renderers/controllers/styles/microsoft/XboxSeriesX_Dpad_Left.png" id="5_aaeb2"]
 [ext_resource type="Texture2D" uid="uid://gsilbr1bntic" path="res://addons/guide/ui/renderers/controllers/styles/microsoft/XboxSeriesX_Dpad_Right.png" id="6_yoojc"]
 [ext_resource type="Texture2D" uid="uid://boc4an5lj12lp" path="res://addons/guide/ui/renderers/controllers/styles/microsoft/XboxSeriesX_Dpad_Up.png" id="7_j7lvn"]
 [ext_resource type="Texture2D" uid="uid://bmgxqbypegjxh" path="res://addons/guide/ui/renderers/textures/arrow_horizontal.svg" id="8_oblur"]
 [ext_resource type="Texture2D" uid="uid://uwqbgrkqv7qc" path="res://addons/guide/ui/renderers/controllers/styles/microsoft/XboxSeriesX_LB.png" id="9_veke3"]
 [ext_resource type="Texture2D" uid="uid://wol4p4f32lfr" path="res://addons/guide/ui/renderers/controllers/styles/microsoft/XboxSeriesX_Left_Stick.png" id="10_dntol"]
+[ext_resource type="Texture2D" uid="uid://1swh072gtbb4" path="res://addons/guide/ui/renderers/textures/arrow_left.svg" id="10_tm45i"]
 [ext_resource type="Texture2D" uid="uid://c1p7p5qpqxqfn" path="res://addons/guide/ui/renderers/controllers/styles/microsoft/XboxSeriesX_Right_Stick.png" id="11_r8ctv"]
 [ext_resource type="Texture2D" uid="uid://c1rw1hnlt3dlt" path="res://addons/guide/ui/renderers/controllers/styles/microsoft/XboxSeriesX_LT.png" id="12_q3pce"]
 [ext_resource type="Texture2D" uid="uid://b8b2oomlnf5tt" path="res://addons/guide/ui/renderers/controllers/styles/microsoft/XboxSeriesX_Share.png" id="13_gst5w"]
 [ext_resource type="Texture2D" uid="uid://5j0mm7ydxc5b" path="res://addons/guide/ui/renderers/controllers/styles/microsoft/XboxSeriesX_RB.png" id="14_4vaex"]
 [ext_resource type="Texture2D" uid="uid://c0xpc73ovry50" path="res://addons/guide/ui/renderers/controllers/styles/microsoft/XboxSeriesX_Left_Stick_Click.png" id="15_2yds1"]
 [ext_resource type="Texture2D" uid="uid://pmymadotp1l0" path="res://addons/guide/ui/renderers/controllers/styles/microsoft/XboxSeriesX_Right_Stick_Click.png" id="16_dly88"]
+[ext_resource type="Texture2D" uid="uid://cjvs04qsrj8ap" path="res://addons/guide/ui/renderers/textures/arrow_right.svg" id="16_xuak7"]
 [ext_resource type="Texture2D" uid="uid://dvsukgwjjn78x" path="res://addons/guide/ui/renderers/controllers/styles/microsoft/XboxSeriesX_RT.png" id="17_w0bus"]
 [ext_resource type="Script" path="res://addons/guide/ui/renderers/controllers/guide_controller_render_style.gd" id="18_lysir"]
 [ext_resource type="Texture2D" uid="uid://y70m84f40jkk" path="res://addons/guide/ui/renderers/controllers/styles/microsoft/XboxSeriesX_Menu.png" id="19_8xww7"]
 [ext_resource type="Texture2D" uid="uid://bu5nlug6uf03w" path="res://addons/guide/ui/renderers/textures/arrow_vertical.svg" id="20_pgbag"]
 [ext_resource type="Texture2D" uid="uid://dqnryo1s6qi45" path="res://addons/guide/ui/renderers/controllers/styles/microsoft/XboxSeriesX_X.png" id="21_ladiq"]
 [ext_resource type="Texture2D" uid="uid://bx76tv1exmv0p" path="res://addons/guide/ui/renderers/controllers/styles/microsoft/XboxSeriesX_Y.png" id="22_5qum3"]
+[ext_resource type="Texture2D" uid="uid://ni6lsbx1d2hf" path="res://addons/guide/ui/renderers/textures/arrow_up.svg" id="23_miiyu"]
 
 [resource]
 script = ExtResource("18_lysir")
@@ -46,3 +50,7 @@ misc1 = ExtResource("13_gst5w")
 back = ExtResource("3_djc6n")
 horizontal = ExtResource("8_oblur")
 vertical = ExtResource("20_pgbag")
+left = ExtResource("10_tm45i")
+right = ExtResource("16_xuak7")
+up = ExtResource("23_miiyu")
+down = ExtResource("4_t0wyk")

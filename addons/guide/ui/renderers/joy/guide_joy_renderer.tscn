@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://c6sqf8rur1wss"]
+[gd_scene load_steps=11 format=3 uid="uid://c6sqf8rur1wss"]
 
 [ext_resource type="Script" path="res://addons/guide/ui/renderers/joy/guide_joy_renderer.gd" id="1_wpc4y"]
 [ext_resource type="Texture2D" uid="uid://do001o6aysaxo" path="res://addons/guide/ui/renderers/joy/styles/stick_empty.png" id="2_uoqkj"]
@@ -6,6 +6,10 @@
 [ext_resource type="FontFile" uid="uid://cu8bvod6tnnwr" path="res://addons/guide/ui/renderers/keyboard/styles/Lato-Black.ttf" id="4_dofui"]
 [ext_resource type="Texture2D" uid="uid://bmgxqbypegjxh" path="res://addons/guide/ui/renderers/textures/arrow_horizontal.svg" id="5_jp034"]
 [ext_resource type="Texture2D" uid="uid://bu5nlug6uf03w" path="res://addons/guide/ui/renderers/textures/arrow_vertical.svg" id="6_jimqg"]
+[ext_resource type="Texture2D" uid="uid://1swh072gtbb4" path="res://addons/guide/ui/renderers/textures/arrow_left.svg" id="7_3850m"]
+[ext_resource type="Texture2D" uid="uid://cjvs04qsrj8ap" path="res://addons/guide/ui/renderers/textures/arrow_right.svg" id="8_166nn"]
+[ext_resource type="Texture2D" uid="uid://ni6lsbx1d2hf" path="res://addons/guide/ui/renderers/textures/arrow_up.svg" id="9_fp0p3"]
+[ext_resource type="Texture2D" uid="uid://oq2vvwgbdsh7" path="res://addons/guide/ui/renderers/textures/arrow_down.svg" id="10_gx2lv"]
 
 [node name="JoyRenderer" type="MarginContainer"]
 process_mode = 3
@@ -48,17 +52,46 @@ vertical_alignment = 1
 
 [node name="Directions" type="MarginContainer" parent="."]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 
 [node name="Horizontal" type="TextureRect" parent="Directions"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 texture = ExtResource("5_jp034")
 stretch_mode = 5
 
 [node name="Vertical" type="TextureRect" parent="Directions"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 texture = ExtResource("6_jimqg")
+stretch_mode = 5
+
+[node name="Left" type="TextureRect" parent="Directions"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+texture = ExtResource("7_3850m")
+stretch_mode = 5
+
+[node name="Right" type="TextureRect" parent="Directions"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+texture = ExtResource("8_166nn")
+stretch_mode = 5
+
+[node name="Up" type="TextureRect" parent="Directions"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+texture = ExtResource("9_fp0p3")
+stretch_mode = 5
+
+[node name="Down" type="TextureRect" parent="Directions"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+texture = ExtResource("10_gx2lv")
 stretch_mode = 5

@@ -8,6 +8,10 @@ extends GUIDEIconRenderer
 @onready var _directions:Control = %Directions
 @onready var _horizontal:TextureRect = %Horizontal
 @onready var _vertical:TextureRect = %Vertical
+@onready var _left:TextureRect = %Left
+@onready var _right:TextureRect = %Right
+@onready var _up:TextureRect = %Up
+@onready var _down:TextureRect = %Down
 
 
 static var _style:GUIDEJoyRenderStyle = preload("styles/default.tres")
@@ -20,45 +24,78 @@ static func set_style(style:GUIDEJoyRenderStyle) -> void:
 
 func supports(input:GUIDEInput, options:GUIDEInputFormattingOptions) -> bool:
 	return input is GUIDEInputJoyBase
-	
+
 func render(input:GUIDEInput, options:GUIDEInputFormattingOptions) -> void:
 	_stick.texture = _style.stick
 	_stick.visible = false
-	
+
 	_button.texture = _style.button
 	_button.visible = false
-	
-	_directions.visible = false
-	
+
 	_horizontal.texture = _style.horizontal
 	_horizontal.visible = false
-	
+
 	_vertical.texture = _style.vertical
-	_vertical.visible = false	
-	
+	_vertical.visible = false
+
+	_left.texture = _style.left
+	_left.visible = false
+
+	_right.texture = _style.right
+	_right.visible = false
+
+	_up.texture = _style.up
+	_up.visible = false
+
+	_down.texture = _style.down
+	_down.visible = false
+
 	_text.text = ""
 	_text.add_theme_color_override("font_color", _style.font_color)
 	_text.add_theme_font_override("font", _style.font)
 	_text.add_theme_font_size_override("font_size", _style.font_size)
 
-		
+	if input is GUIDEInputJoyDirection:
+		_stick.visible = true
+		match input.axis:
+			JOY_AXIS_LEFT_X:
+				_text.text = "1"
+				if input.direction == GUIDEInputJoyDirection.Direction.NEGATIVE:
+					_left.visible = true
+				else:
+					_right.visible = true
+			JOY_AXIS_LEFT_Y:
+				_text.text = "1"
+				if input.direction == GUIDEInputJoyDirection.Direction.NEGATIVE:
+					_up.visible = true
+				else:
+					_down.visible = true
+			JOY_AXIS_RIGHT_X:
+				_text.text = "2"
+				if input.direction == GUIDEInputJoyDirection.Direction.NEGATIVE:
+					_left.visible = true
+				else:
+					_right.visible = true
+			JOY_AXIS_RIGHT_Y:
+				_text.text = "2"
+				if input.direction == GUIDEInputJoyDirection.Direction.NEGATIVE:
+					_up.visible = true
+				else:
+					_down.visible = true
+
 	if input is GUIDEInputJoyAxis1D:
 		_stick.visible = true
 		match input.axis:
 			JOY_AXIS_LEFT_X:
-				_directions.visible = true
 				_text.text = "1"
 				_horizontal.visible = true
 			JOY_AXIS_RIGHT_X:
-				_directions.visible = true
 				_text.text = "2"
 				_horizontal.visible = true
 			JOY_AXIS_LEFT_Y:
-				_directions.visible = true
 				_text.text = "1"
 				_vertical.visible = true
 			JOY_AXIS_RIGHT_Y:
-				_directions.visible = true
 				_text.text = "2"
 				_vertical.visible = true
 			JOY_AXIS_TRIGGER_LEFT:

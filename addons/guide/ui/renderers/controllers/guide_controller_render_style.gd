@@ -51,3 +51,11 @@ extends Resource
 @export var horizontal:Texture2D
 ## An icon indicating vertical movement.
 @export var vertical:Texture2D
+## An icon indicating left movement.
+@export var left:Texture2D
+## An icon indicating right movement.
+@export var right:Texture2D
+## An icon indicating up movement.
+@export var up:Texture2D
+## An icon indicating down movement.
+@export var down:Texture2D

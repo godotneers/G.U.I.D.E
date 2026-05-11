@@ -6,12 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Added a new _Joy Direction_ input which treats a single direction of a joy axis as a boolean input. This is useful when you want to bind "stick pushed left" and "stick pushed right" as two separate actions ([#192](https://github.com/godotneers/G.U.I.D.E/issues/192)).
 - `GUIDEInputFormatter` now has a `for_contexts` factory method which provides a formatter that works on the given contexts. This is useful if you need information from multiple contexts without these contexts currently being active ([#190](https://github.com/godotneers/G.U.I.D.E/issues/190)).
 
 ### Improved
 - The mapping context editor now has menu options to insert action mappings and input mappings before and after the current item. This makes it easier to work with larger mapping contexts ([#190](https://github.com/godotneers/G.U.I.D.E/issues/190))
 
 ### Fixed
+- Fixed several copy-paste errors in the built-in controller label sets where stick axis movement labels were incorrectly set to _Left Stick Horizontal_ and button labels for X and Y were swapped on Microsoft and Steam Deck controllers.
 - Fixed a bug where the _Any_ input would keep firing continuously after the application loses focus (e.g. by pressing Alt+Tab or the Windows key). This happened because Godot clears its own input state directly without dispatching input events when the application loses focus, causing G.U.I.D.E's internal input state to diverge ([#189](https://github.com/godotneers/G.U.I.D.E/issues/189)).
 
 

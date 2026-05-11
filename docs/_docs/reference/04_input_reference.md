@@ -57,6 +57,17 @@ This input returns `(1,0,0)` if the selected joystick button is pressed, and `(0
 | _Button_ | The joy button that should be tracked by the input. |
 
 
+## Joy Direction
+
+This input returns `(1,0,0)` if the selected joy axis is actuated in the configured direction and its absolute value meets or exceeds the actuation threshold, and `(0,0,0)` otherwise. This is useful for mapping a single direction of an axis to a boolean action, for example treating "stick pushed left" and "stick pushed right" as two separate inputs. The input has the following settings:
+
+| Setting               | Description                                                                                                   |
+|-----------------------|---------------------------------------------------------------------------------------------------------------|
+| _Axis_                | The joy axis that should be tracked by the input.                                                             |
+| _Direction_           | The direction the axis must be pushed in order to actuate the input (`Positive` or `Negative`).               |
+| _Actuation Threshold_ | The minimum absolute axis value that must be reached to consider the input actuated. Defaults to `0.5`.       |
+
+
 ## Key
 
 This input returns `(1,0,0)` if the selected key is pressed, and `(0,0,0)` otherwise. If modifiers are given, then both the key and all selected modifiers must be pressed in order for this input to return the actuated value of `(1,0,0)`. The input has the following settings:

@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="GUIDEControllerRenderStyle" load_steps=23 format=3 uid="uid://b1ck0lpo6mcpv"]
+[gd_resource type="Resource" script_class="GUIDEControllerRenderStyle" load_steps=27 format=3 uid="uid://b1ck0lpo6mcpv"]
 
 [ext_resource type="Texture2D" uid="uid://bptn4jygg3p8q" path="res://addons/guide/ui/renderers/controllers/styles/nintendo/Switch_B.png" id="1_bvwg4"]
 [ext_resource type="Texture2D" uid="uid://cl75ptbm7sfi5" path="res://addons/guide/ui/renderers/controllers/styles/nintendo/Switch_A.png" id="2_p375e"]
 [ext_resource type="Texture2D" uid="uid://bdydqv6vi48ix" path="res://addons/guide/ui/renderers/controllers/styles/nintendo/Switch_Minus.png" id="3_rqqbg"]
+[ext_resource type="Texture2D" uid="uid://oq2vvwgbdsh7" path="res://addons/guide/ui/renderers/textures/arrow_down.svg" id="4_pmh1p"]
 [ext_resource type="Texture2D" uid="uid://dq2ypo4cx3ucs" path="res://addons/guide/ui/renderers/controllers/styles/nintendo/Switch_Dpad_Down.png" id="4_u4xyb"]
 [ext_resource type="Texture2D" uid="uid://rcrsxqeu6mns" path="res://addons/guide/ui/renderers/controllers/styles/nintendo/Switch_Dpad_Left.png" id="5_c4qhk"]
 [ext_resource type="Texture2D" uid="uid://dubah62ttpnc0" path="res://addons/guide/ui/renderers/controllers/styles/nintendo/Switch_Dpad_Right.png" id="6_v8nyh"]
@@ -10,18 +11,21 @@
 [ext_resource type="Texture2D" uid="uid://bmgxqbypegjxh" path="res://addons/guide/ui/renderers/textures/arrow_horizontal.svg" id="8_wgyxl"]
 [ext_resource type="Texture2D" uid="uid://cb6gvej03avm3" path="res://addons/guide/ui/renderers/controllers/styles/nintendo/Switch_LB.png" id="9_c4x2m"]
 [ext_resource type="Texture2D" uid="uid://cha2jimmsyrsg" path="res://addons/guide/ui/renderers/controllers/styles/nintendo/Switch_Left_Stick.png" id="10_p4mhj"]
+[ext_resource type="Texture2D" uid="uid://1swh072gtbb4" path="res://addons/guide/ui/renderers/textures/arrow_left.svg" id="10_u73ao"]
 [ext_resource type="Texture2D" uid="uid://by1vmleujtq1i" path="res://addons/guide/ui/renderers/controllers/styles/nintendo/Switch_Left_Stick_Click.png" id="11_bw3qq"]
 [ext_resource type="Texture2D" uid="uid://savy2mhybmun" path="res://addons/guide/ui/renderers/controllers/styles/nintendo/Switch_LT.png" id="12_8bb0l"]
 [ext_resource type="Texture2D" uid="uid://cl0owijnhu5pc" path="res://addons/guide/ui/renderers/controllers/styles/nintendo/Switch_Square.png" id="13_bbdo3"]
 [ext_resource type="Texture2D" uid="uid://s2xm61tj0mfy" path="res://addons/guide/ui/renderers/controllers/styles/nintendo/Switch_RB.png" id="14_5imgv"]
 [ext_resource type="Texture2D" uid="uid://d1jqxuup5llkb" path="res://addons/guide/ui/renderers/controllers/styles/nintendo/Switch_Right_Stick.png" id="15_u8qxc"]
 [ext_resource type="Texture2D" uid="uid://denpxaxemjpg3" path="res://addons/guide/ui/renderers/controllers/styles/nintendo/Switch_Right_Stick_Click.png" id="16_hbspj"]
+[ext_resource type="Texture2D" uid="uid://cjvs04qsrj8ap" path="res://addons/guide/ui/renderers/textures/arrow_right.svg" id="16_ta5xu"]
 [ext_resource type="Texture2D" uid="uid://cccvjq78xw3n4" path="res://addons/guide/ui/renderers/controllers/styles/nintendo/Switch_RT.png" id="17_nqree"]
 [ext_resource type="Script" path="res://addons/guide/ui/renderers/controllers/guide_controller_render_style.gd" id="18_lkwjo"]
 [ext_resource type="Texture2D" uid="uid://j3wpcxyxsy2r" path="res://addons/guide/ui/renderers/controllers/styles/nintendo/Switch_Plus.png" id="19_htb2d"]
 [ext_resource type="Texture2D" uid="uid://bu5nlug6uf03w" path="res://addons/guide/ui/renderers/textures/arrow_vertical.svg" id="20_b7gr6"]
 [ext_resource type="Texture2D" uid="uid://bru7lpc778npo" path="res://addons/guide/ui/renderers/controllers/styles/nintendo/Switch_Y.png" id="21_kooww"]
 [ext_resource type="Texture2D" uid="uid://7c6ie8ef23ox" path="res://addons/guide/ui/renderers/controllers/styles/nintendo/Switch_X.png" id="22_6w4y7"]
+[ext_resource type="Texture2D" uid="uid://ni6lsbx1d2hf" path="res://addons/guide/ui/renderers/textures/arrow_up.svg" id="23_l4nr4"]
 
 [resource]
 script = ExtResource("18_lkwjo")
@@ -46,3 +50,7 @@ misc1 = ExtResource("13_bbdo3")
 back = ExtResource("3_rqqbg")
 horizontal = ExtResource("8_wgyxl")
 vertical = ExtResource("20_b7gr6")
+left = ExtResource("10_u73ao")
+right = ExtResource("16_ta5xu")
+up = ExtResource("23_l4nr4")
+down = ExtResource("4_pmh1p")

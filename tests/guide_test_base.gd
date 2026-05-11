@@ -100,6 +100,13 @@ func input_joy_button(button:JoyButton) -> GUIDEInputJoyButton:
 	result.button = button
 	return result
 
+func input_joy_direction(axis:JoyAxis, direction: GUIDEInputJoyDirection.Direction, actuation_threshold:float = 0.5) -> GUIDEInputJoyDirection:
+	var result := GUIDEInputJoyDirection.new()
+	result.axis = axis
+	result.direction = direction
+	result.actuation_threshold = actuation_threshold
+	return result
+
 func input_joy_axis_1d(axis:JoyAxis) -> GUIDEInputJoyAxis1D:
 	var result := GUIDEInputJoyAxis1D.new()
 	result.axis = axis

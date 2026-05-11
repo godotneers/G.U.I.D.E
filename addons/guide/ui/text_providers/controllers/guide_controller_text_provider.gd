@@ -61,6 +61,33 @@ func get_text(input:GUIDEInput, options:GUIDEInputFormattingOptions) -> String:
 			JOY_AXIS_TRIGGER_RIGHT:
 				return _format(tr(label_set.right_trigger))
 	
+	if input is GUIDEInputJoyDirection:
+		match input.axis:
+			JOY_AXIS_LEFT_X:
+				match input.direction:
+					GUIDEInputJoyDirection.Direction.POSITIVE:
+						return _format(tr(label_set.left_stick_right_movement))
+					GUIDEInputJoyDirection.Direction.NEGATIVE:
+						return _format(tr(label_set.left_stick_left_movement))
+			JOY_AXIS_LEFT_Y:
+				match input.direction:
+					GUIDEInputJoyDirection.Direction.POSITIVE:
+						return _format(tr(label_set.left_stick_down_movement))
+					GUIDEInputJoyDirection.Direction.NEGATIVE:
+						return _format(tr(label_set.left_stick_up_movement))
+			JOY_AXIS_RIGHT_X:
+				match input.direction:
+					GUIDEInputJoyDirection.Direction.POSITIVE:
+						return _format(tr(label_set.right_stick_right_movement))
+					GUIDEInputJoyDirection.Direction.NEGATIVE:
+						return _format(tr(label_set.right_stick_left_movement))
+			JOY_AXIS_RIGHT_Y:
+				match input.direction:
+					GUIDEInputJoyDirection.Direction.POSITIVE:
+						return _format(tr(label_set.right_stick_down_movement))
+					GUIDEInputJoyDirection.Direction.NEGATIVE:
+						return _format(tr(label_set.right_stick_up_movement))
+	
 	if input is GUIDEInputJoyAxis2D:
 		match input.x:
 			JOY_AXIS_LEFT_X, JOY_AXIS_LEFT_Y:

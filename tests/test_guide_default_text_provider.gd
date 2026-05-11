@@ -185,6 +185,26 @@ func test_touch_axis_2d_input_renders_all(
 	assert_str(result).is_equal(expected)
 
 
+## Joy direction input tests
+@warning_ignore("unused_parameter")
+func test_joy_direction_input_renders_all_directions(
+	axis_code: int, direction: int, expected: String,
+	test_parameters := [
+		[JOY_AXIS_LEFT_X, GUIDEInputJoyDirection.Direction.POSITIVE, "[Stick 1 Right]"],
+		[JOY_AXIS_LEFT_X, GUIDEInputJoyDirection.Direction.NEGATIVE, "[Stick 1 Left]"],
+		[JOY_AXIS_LEFT_Y, GUIDEInputJoyDirection.Direction.POSITIVE, "[Stick 1 Down]"],
+		[JOY_AXIS_LEFT_Y, GUIDEInputJoyDirection.Direction.NEGATIVE, "[Stick 1 Up]"],
+		[JOY_AXIS_RIGHT_X, GUIDEInputJoyDirection.Direction.POSITIVE, "[Stick 2 Right]"],
+		[JOY_AXIS_RIGHT_X, GUIDEInputJoyDirection.Direction.NEGATIVE, "[Stick 2 Left]"],
+		[JOY_AXIS_RIGHT_Y, GUIDEInputJoyDirection.Direction.POSITIVE, "[Stick 2 Down]"],
+		[JOY_AXIS_RIGHT_Y, GUIDEInputJoyDirection.Direction.NEGATIVE, "[Stick 2 Up]"]
+	]
+) -> void:
+	var input: GUIDEInputJoyDirection = input_joy_direction(axis_code, direction)
+	var result: String = _formatter.input_as_text(input)
+	assert_str(result).is_equal(expected)
+
+
 ## Any input tests
 @warning_ignore("unused_parameter")
 func test_any_input_renders_all(

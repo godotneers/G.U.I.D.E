@@ -35,6 +35,10 @@ static var _controller_styles:Dictionary = {
 @onready var _back:TextureRect = %Back
 @onready var _left_right:TextureRect = %LeftRight
 @onready var _up_down:TextureRect = %UpDown
+@onready var _left:TextureRect = %Left
+@onready var _right:TextureRect = %Right
+@onready var _up:TextureRect = %Up
+@onready var _down:TextureRect = %Down
 @onready var _controls:Control = %Controls
 @onready var _directions:Control = %Directions
 @onready var _touch_pad:TextureRect = %TouchPad
@@ -89,6 +93,10 @@ func _setup_textures(type:ControllerType) -> void:
 	_touch_pad.texture = style.touch_pad
 	_left_right.texture = style.horizontal
 	_up_down.texture = style.vertical
+	_left.texture = style.left
+	_right.texture = style.right
+	_up.texture = style.up
+	_down.texture = style.down
 
 
 func supports(input:GUIDEInput, options:GUIDEInputFormattingOptions) -> bool:
@@ -107,27 +115,53 @@ func render(input:GUIDEInput, options:GUIDEInputFormattingOptions) -> void:
 		control.visible = false
 	for direction in _directions.get_children():
 		direction.visible = false
-	_directions.visible = false
 		
 	
 	if input is GUIDEInputJoyAxis1D:
 		match input.axis:
 			JOY_AXIS_LEFT_X:
 				_left_stick.visible = true
-				_show_left_right()
+				_left_right.visible = true
 			JOY_AXIS_LEFT_Y:
 				_left_stick.visible = true
-				_show_up_down()
+				_up_down.visible = true
 			JOY_AXIS_RIGHT_X:
 				_right_stick.visible = true
-				_show_left_right()
+				_left_right.visible = true
 			JOY_AXIS_RIGHT_Y:
 				_right_stick.visible = true
-				_show_up_down()
+				_up_down.visible = true
 			JOY_AXIS_TRIGGER_LEFT:
 				_left_trigger.visible = true
 			JOY_AXIS_TRIGGER_RIGHT:
 				_right_trigger.visible = true
+	
+	if input is GUIDEInputJoyDirection:
+		match input.axis:
+			JOY_AXIS_LEFT_X:
+				_left_stick.visible = true
+				if input.direction == GUIDEInputJoyDirection.Direction.NEGATIVE:
+					_left.visible = true
+				else:
+					_right.visible = true
+			JOY_AXIS_LEFT_Y:
+				_left_stick.visible = true
+				if input.direction == GUIDEInputJoyDirection.Direction.NEGATIVE:
+					_up.visible = true
+				else:
+					_down.visible = true
+			JOY_AXIS_RIGHT_X:
+				_right_stick.visible = true
+				if input.direction == GUIDEInputJoyDirection.Direction.NEGATIVE:
+					_left.visible = true
+				else:
+					_right.visible = true
+			JOY_AXIS_RIGHT_Y:
+				_right_stick.visible = true
+				if input.direction == GUIDEInputJoyDirection.Direction.NEGATIVE:
+					_up.visible = true	
+				else:
+					_down.visible = true
 	
 	if input is GUIDEInputJoyAxis2D:
 		# We assume that there is no input mixing horizontal and vertical
@@ -178,14 +212,6 @@ func render(input:GUIDEInput, options:GUIDEInputFormattingOptions) -> void:
 					
 	call("queue_sort")		
 
-func _show_left_right():
-	_directions.visible = true
-	_left_right.visible = true
-
-func _show_up_down():
-	_directions.visible = true
-	_up_down.visible = true
-	
 
 func cache_key(input:GUIDEInput, options:GUIDEInputFormattingOptions) -> String:
 	var controller_type := GUIDEFormattingUtils.effective_controller_type(input, options)

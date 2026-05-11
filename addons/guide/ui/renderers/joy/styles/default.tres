@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="GUIDEJoyRenderStyle" load_steps=7 format=3 uid="uid://x36d7y75jfnr"]
+[gd_resource type="Resource" script_class="GUIDEJoyRenderStyle" load_steps=11 format=3 uid="uid://x36d7y75jfnr"]
 
 [ext_resource type="Texture2D" uid="uid://veqjcwokdukw" path="res://addons/guide/ui/renderers/joy/styles/button_empty.png" id="1_ctnxf"]
 [ext_resource type="FontFile" uid="uid://cu8bvod6tnnwr" path="res://addons/guide/ui/renderers/keyboard/styles/Lato-Black.ttf" id="2_uodat"]
@@ -6,6 +6,10 @@
 [ext_resource type="Texture2D" uid="uid://bmgxqbypegjxh" path="res://addons/guide/ui/renderers/textures/arrow_horizontal.svg" id="3_5228y"]
 [ext_resource type="Script" path="res://addons/guide/ui/renderers/joy/guide_joy_render_style.gd" id="4_ms3wg"]
 [ext_resource type="Texture2D" uid="uid://bu5nlug6uf03w" path="res://addons/guide/ui/renderers/textures/arrow_vertical.svg" id="6_p8c8i"]
+[ext_resource type="Texture2D" uid="uid://1swh072gtbb4" path="res://addons/guide/ui/renderers/textures/arrow_left.svg" id="7_left"]
+[ext_resource type="Texture2D" uid="uid://cjvs04qsrj8ap" path="res://addons/guide/ui/renderers/textures/arrow_right.svg" id="8_right"]
+[ext_resource type="Texture2D" uid="uid://ni6lsbx1d2hf" path="res://addons/guide/ui/renderers/textures/arrow_up.svg" id="9_up"]
+[ext_resource type="Texture2D" uid="uid://oq2vvwgbdsh7" path="res://addons/guide/ui/renderers/textures/arrow_down.svg" id="10_down"]
 
 [resource]
 script = ExtResource("4_ms3wg")
@@ -16,3 +20,7 @@ font_color = Color(0.843, 0.843, 0.843, 1)
 font_size = 50
 horizontal = ExtResource("3_5228y")
 vertical = ExtResource("6_p8c8i")
+left = ExtResource("7_left")
+right = ExtResource("8_right")
+up = ExtResource("9_up")
+down = ExtResource("10_down")

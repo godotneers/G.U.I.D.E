@@ -81,6 +81,33 @@ func get_text(input:GUIDEInput, options:GUIDEInputFormattingOptions) -> String:
 			JOY_AXIS_RIGHT_X, JOY_AXIS_RIGHT_Y:
 				return _format(tr("Stick 2"))
 				
+	if input is GUIDEInputJoyDirection:
+		match input.axis:
+			JOY_AXIS_LEFT_X:
+				match input.direction:
+					GUIDEInputJoyDirection.Direction.POSITIVE:
+						return _format(tr("Stick 1 Right"))
+					GUIDEInputJoyDirection.Direction.NEGATIVE:
+						return _format(tr("Stick 1 Left"))
+			JOY_AXIS_LEFT_Y:
+				match input.direction:
+					GUIDEInputJoyDirection.Direction.POSITIVE:
+						return _format(tr("Stick 1 Down"))
+					GUIDEInputJoyDirection.Direction.NEGATIVE:
+						return _format(tr("Stick 1 Up"))
+			JOY_AXIS_RIGHT_X:
+				match input.direction:
+					GUIDEInputJoyDirection.Direction.POSITIVE:
+						return _format(tr("Stick 2 Right"))
+					GUIDEInputJoyDirection.Direction.NEGATIVE:
+						return _format(tr("Stick 2 Left"))
+			JOY_AXIS_RIGHT_Y:
+				match input.direction:
+					GUIDEInputJoyDirection.Direction.POSITIVE:
+						return _format(tr("Stick 2 Down"))
+					GUIDEInputJoyDirection.Direction.NEGATIVE:
+						return _format(tr("Stick 2 Up"))
+
 	if input is GUIDEInputJoyButton:
 		return _format(tr("Joy %s") % [input.button])
 		
