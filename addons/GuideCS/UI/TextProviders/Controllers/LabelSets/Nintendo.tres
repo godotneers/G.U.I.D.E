@@ -1,0 +1,30 @@
+[gd_resource type="Resource" format=3 uid="uid://b01nntj4s1cyy"]
+
+[ext_resource type="Script" uid="uid://5nphny8t52as" path="res://addons/GuideCS/UI/TextProviders/Controllers/GUIDEControllerLabelSet.cs" id="1_5cwdo"]
+
+[resource]
+script = ExtResource("1_5cwdo")
+a_button = "B"
+b_button = "A"
+x_button = "Y"
+y_button = "X"
+left_stick = "Left Stick"
+left_stick_click = "Left Stick Click"
+left_stick_horizontal_movement = "Left Stick Horizontal"
+left_stick_vertical_movement = "Left Stick Horizontal"
+right_stick = "Right Stick"
+right_stick_click = "Left Stick Click"
+right_stick_horizontal_movement = "Left Stick Horizontal"
+right_stick_vertical_movement = "Left Stick Horizontal"
+left_bumper = "L"
+right_bumper = "R"
+left_trigger = "ZL"
+right_trigger = "ZR"
+dpad_up = "DPAD Up"
+dpad_left = "DPAD Left"
+dpad_right = "DPAD Right"
+dpad_down = "DPAD Down"
+start = "+"
+misc1 = "Capture"
+back = "-"
+touch_pad = "??"

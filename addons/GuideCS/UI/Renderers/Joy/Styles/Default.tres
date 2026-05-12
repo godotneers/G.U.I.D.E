@@ -1,0 +1,16 @@
+[gd_resource type="Resource" format=3 uid="uid://x36d7y75jfnr"]
+
+[ext_resource type="Texture2D" uid="uid://bjgitb5dilb74" path="res://addons/GuideCS/UI/Renderers/Joy/Styles/Button_Empty.png" id="1_vntk6"]
+[ext_resource type="FontFile" uid="uid://cu8bvod6tnnwr" path="res://addons/GuideCS/UI/Renderers/Keyboard/Styles/Lato-Black.ttf" id="2_rf65w"]
+[ext_resource type="Texture2D" uid="uid://cq8r5uqyithp0" path="res://addons/GuideCS/UI/Renderers/Textures/ArrowHorizontal.svg" id="3_5228y"]
+[ext_resource type="Script" uid="uid://cjixeerm24h23" path="res://addons/GuideCS/UI/Renderers/Joy/GUIDEJoyRenderStyle.cs" id="4_gbnnf"]
+[ext_resource type="Texture2D" uid="uid://dgkerobtmwx4g" path="res://addons/GuideCS/UI/Renderers/Joy/Styles/Stick_Empty.png" id="5_0sgvt"]
+[ext_resource type="Texture2D" uid="uid://cvv0btxvk4u5a" path="res://addons/GuideCS/UI/Renderers/Textures/ArrowVertical.svg" id="6_p8c8i"]
+
+[resource]
+script = ExtResource("4_gbnnf")
+button = ExtResource("1_vntk6")
+stick = ExtResource("5_0sgvt")
+font = ExtResource("2_rf65w")
+horizontal = ExtResource("3_5228y")
+vertical = ExtResource("6_p8c8i")
