@@ -142,6 +142,26 @@ func test_mouse_position_input_renders_all() -> void:
 	var result: String = _formatter.input_as_text(input)
 	assert_str(result).is_equal("[Mouse Position]")
 
+## Pan gesture input tests
+@warning_ignore("unused_parameter")
+func test_pan_gesture_1d_input_renders_all_axes(
+	axis: GUIDEInputPanGesture1D.GUIDEInputPanGestureAxis, expected: String,
+	test_parameters := [
+		[GUIDEInputPanGesture1D.GUIDEInputPanGestureAxis.X, "[Pan Left/Right]"],
+		[GUIDEInputPanGesture1D.GUIDEInputPanGestureAxis.Y, "[Pan Up/Down]"]
+	]
+) -> void:
+	var input: GUIDEInputPanGesture1D = input_pan_gesture_1d(axis)
+	var result: String = _formatter.input_as_text(input)
+	assert_str(result).is_equal(expected)
+
+## Pan gesture 2D input tests
+@warning_ignore("unused_parameter")
+func test_pan_gesture_2d_input_renders_all() -> void:
+	var input: GUIDEInputPanGesture2D = input_pan_gesture_2d()
+	var result: String = _formatter.input_as_text(input)
+	assert_str(result).is_equal("[Pan Gesture]")
+
 ## Touch angle input tests
 @warning_ignore("unused_parameter")
 func test_touch_angle_input_renders_all() -> void:
