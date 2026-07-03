@@ -31,6 +31,8 @@ signal joy_button_state_changed()
 signal joy_axis_state_changed()
 ## Signalled, when the touch state has changed.
 signal touch_state_changed()
+## Signalled, when a pan gesture has occurred.
+signal pan_gesture_changed()
 ## Signalled when the application loses focus. Unlike the other signals above,
 ## this is not triggered by an InputEvent — Godot clears its own input state
 ## directly in Input::release_pressed_events() (core/input/input.cpp) without
@@ -46,6 +48,8 @@ var _keys: Dictionary = {}
 var _finger_positions: Dictionary = {}
 # The mouse movement since the last frame. 
 var _mouse_movement: Vector2 = Vector2.ZERO
+# The pan gesture delta since the last frame.
+var _pan_delta: Vector2 = Vector2.ZERO
 # Mouse buttons that are currently pressed. Key is the button index, value is not important. The presence of a key
 # in the dictionary indicates that the button is currently pressed.
 var _mouse_buttons: Dictionary = {}
@@ -190,6 +194,7 @@ func _clear():
 	_keys.clear()
 	_finger_positions.clear()
 	_mouse_movement = Vector2.ZERO
+	_pan_delta = Vector2.ZERO
 	_mouse_buttons.clear()
 	_joy_buttons.clear()
 	_joy_axes.clear()
@@ -322,6 +327,7 @@ func focus_lost() -> void:
 ## Called at the end of the frame to reset the state before the next frame.
 func _reset() -> void:
 	_mouse_movement = Vector2.ZERO
+	_pan_delta = Vector2.ZERO
 
 	# apply pending key state at end of the frame.
 	for key in _pending_keys.keys():
@@ -494,6 +500,14 @@ func _input(event: InputEvent) -> void:
 		touch_state_changed.emit()
 		return
 
+	# ----------------------- PAN GESTURE -----------------------
+
+	if event is InputEventPanGesture:
+		_pan_delta += event.delta
+
+		pan_gesture_changed.emit()
+		return
+
 
 ## Returns true if the key with the given index is currently pressed.
 func is_key_pressed(key: Key) -> bool:
@@ -519,6 +533,11 @@ func is_any_key_pressed() -> bool:
 func get_mouse_delta_since_last_frame() -> Vector2:
 	# print("%s DELTA %s" % [Engine.get_process_frames(), _mouse_movement])
 	return _mouse_movement
+
+## Gets the pan gesture delta since the last frame.
+## If no pan gesture has been detected, returns Vector2.ZERO.
+func get_pan_delta_since_last_frame() -> Vector2:
+	return _pan_delta
 
 ## Returns the current mouse position in the root viewport.
 func get_mouse_position() -> Vector2:

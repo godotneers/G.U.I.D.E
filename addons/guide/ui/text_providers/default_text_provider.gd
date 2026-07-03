@@ -37,7 +37,17 @@ func get_text(input:GUIDEInput, options:GUIDEInputFormattingOptions) -> String:
 
 	if input is GUIDEInputMouseAxis2D:
 		return _format(tr("Mouse"))
-		
+
+	if input is GUIDEInputPanGesture1D:
+		match input.axis:
+			GUIDEInputPanGesture1D.GUIDEInputPanGestureAxis.X:
+				return _format(tr("Pan Left/Right"))
+			GUIDEInputPanGesture1D.GUIDEInputPanGestureAxis.Y:
+				return _format(tr("Pan Up/Down"))
+
+	if input is GUIDEInputPanGesture2D:
+		return _format(tr("Pan Gesture"))
+
 	if input is GUIDEInputMouseButton:
 		match input.button:
 			MOUSE_BUTTON_LEFT:

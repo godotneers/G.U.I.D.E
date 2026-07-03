@@ -1,0 +1,40 @@
+name: unit-tests
+run-name: ${{ github.head_ref || github.ref_name }}-unit-tests
+
+on:
+  push:
+    paths-ignore:
+      - '**.md'
+  pull_request:
+    paths-ignore:
+      - '**.md'
+  workflow_dispatch:
+
+concurrency:
+  group: unit-tests-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    permissions:
+      actions: write
+      checks: write
+      contents: write
+      pull-requests: write
+      statuses: write
+
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      # Godot pinned below 4.6: the bundled gdUnit4 4.5.0 does not parse on
+      # Godot 4.6+ (removed FileAccess.get_as_text(skip_cr), stricter native
+      # method override checks). Bump Godot here after upgrading gdUnit4.
+      - uses: godot-gdunit-labs/gdUnit4-action@17eeffa988f9732fdc3dba3067405d16b55809de # v1.3.2
+        with:
+          godot-version: '4.5'
+          paths: |
+            res://tests
+          timeout: 10
+          report-name: test_report.xml

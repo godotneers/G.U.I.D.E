@@ -92,6 +92,14 @@ func input_mouse_axis_1d(axis:GUIDEInputMouseAxis1D.GUIDEInputMouseAxis) -> GUID
 func input_mouse_axis_2d() -> GUIDEInputMouseAxis2D:
 	return GUIDEInputMouseAxis2D.new()
 
+func input_pan_gesture_1d(axis:GUIDEInputPanGesture1D.GUIDEInputPanGestureAxis) -> GUIDEInputPanGesture1D:
+	var result := GUIDEInputPanGesture1D.new()
+	result.axis = axis
+	return result
+
+func input_pan_gesture_2d() -> GUIDEInputPanGesture2D:
+	return GUIDEInputPanGesture2D.new()
+
 func input_mouse_position() -> GUIDEInputMousePosition:
 	return GUIDEInputMousePosition.new()
 	
@@ -396,6 +404,16 @@ func finger_move(index:int, to:Vector2, wait:bool = true) -> void:
 	input.index = index
 	input.position = to
 	print_f("Finger move %s (%s)" % [index, to])
+	Input.parse_input_event(input)
+	if wait:
+		await wait_f(2)
+
+
+func pan_gesture(delta:Vector2, wait:bool = true) -> void:
+	var input := InputEventPanGesture.new()
+	input.delta = delta
+	input.position = get_viewport().get_mouse_position()
+	print_f("Pan gesture %s" % delta)
 	Input.parse_input_event(input)
 	if wait:
 		await wait_f(2)
