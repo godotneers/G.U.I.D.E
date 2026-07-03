@@ -76,11 +76,12 @@ func test_cursor_follows_mouse_position_when_flag_is_set() -> void:
 	# WHEN: initializing the cursor from mouse position is enabled
 	_virtual_cursor.initialize_from_mouse_position = true
 	
-	# i move the mouse to a random position of the screen
-	var position:Vector2 = Vector2(get_window().size) * Vector2(randf(), randf()).round()
+	# i move the mouse somewhere within the window. The position is fixed and
+	# small so it stays inside the window regardless of the actual window size
+	# (in CI the real window is smaller than the project's configured size and
+	# the mouse position gets clamped to it).
+	var position := Vector2(100, 50)
 	await mouse_move_to(position)
-	
-	print(get_window().get_mouse_position())
 
 	# and i enable the mapping context
 	GUIDE.enable_mapping_context(_mc)
