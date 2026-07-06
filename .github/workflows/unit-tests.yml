@@ -3,11 +3,11 @@ run-name: ${{ github.head_ref || github.ref_name }}-unit-tests
 
 on:
   push:
-    paths-ignore:
-      - '**.md'
+    paths:
+      - 'addons/guide/**'
   pull_request:
-    paths-ignore:
-      - '**.md'
+    paths:
+      - 'addons/guide/**'
   workflow_dispatch:
 
 concurrency:
@@ -19,22 +19,13 @@ jobs:
     name: Unit Tests
     runs-on: ubuntu-22.04
     timeout-minutes: 15
-    permissions:
-      actions: write
-      checks: write
-      contents: write
-      pull-requests: write
-      statuses: write
-
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
-      # Godot pinned below 4.6: the bundled gdUnit4 4.5.0 does not parse on
-      # Godot 4.6+ (removed FileAccess.get_as_text(skip_cr), stricter native
-      # method override checks). Bump Godot here after upgrading gdUnit4.
-      - uses: godot-gdunit-labs/gdUnit4-action@17eeffa988f9732fdc3dba3067405d16b55809de # v1.3.2
+      - uses: derkork/kannich-action@4d9359ec7acdedefb1a1742492673f1b7997dd5c #v1
         with:
-          godot-version: '4.5'
-          paths: |
-            res://tests
-          timeout: 10
-          report-name: test_report.xml
+          image: derkork/kannich@sha256:a23067a63c1943b4f24a96bf9841279c2895ce97cc7565133773f6814ae8281e # 0.11.0-0.10.0
+          executions: test
+      - uses: actions/upload-artifact@v4
+        with:
+          name: reports
+          path: reports/    
