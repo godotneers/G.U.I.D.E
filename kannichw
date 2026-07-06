@@ -1,0 +1,139 @@
+#!/bin/sh
+# Kannich Wrapper Script
+# Commit this file with your project to enable portable CI builds.
+
+set -e
+
+# Configuration
+KANNICH_IMAGE="${KANNICH_IMAGE:-derkork/kannich:latest}"
+
+# Docker proxy support - prefix image if configured
+if [ -n "$KANNICH_DOCKER_PROXY_PREFIX" ]; then
+    # Only prefix if the image doesn't already start with the prefix
+    if [ "${KANNICH_IMAGE#"$KANNICH_DOCKER_PROXY_PREFIX"}" = "$KANNICH_IMAGE" ]; then
+        KANNICH_IMAGE="${KANNICH_DOCKER_PROXY_PREFIX}${KANNICH_IMAGE}"
+    fi
+fi
+
+# Determine project directory
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_DIR="${KANNICH_PROJECT_DIR:-$SCRIPT_DIR}"
+
+# KANNICH_PROJECT_DIR is used inside the container to find the workspace. When using the wrapper,
+# it is always /workspace.
+export KANNICH_PROJECT_DIR=/workspace
+
+# Check for Docker
+if ! command -v docker >/dev/null 2>&1; then
+    echo "Error: Docker not found. Please install Docker." >&2
+    exit 1
+fi
+
+if ! docker info >/dev/null 2>&1; then
+    echo "Error: Docker daemon not running. Please start Docker." >&2
+    exit 1
+fi
+
+# Docker proxy login if configured
+if [ -n "$KANNICH_DOCKER_PROXY_URL" ]; then
+    if [ -n "$KANNICH_DOCKER_PROXY_USERNAME" ] && [ -n "$KANNICH_DOCKER_PROXY_PASSWORD" ]; then
+        echo "Logging in to Docker proxy: $KANNICH_DOCKER_PROXY_URL"
+        echo "$KANNICH_DOCKER_PROXY_PASSWORD" | docker login "$KANNICH_DOCKER_PROXY_URL" -u "$KANNICH_DOCKER_PROXY_USERNAME" --password-stdin
+    fi
+fi
+
+if [ -n "$KANNICH_CACHE_DIR" ]; then
+    # user may want to supply their own cache dir, they can do so with
+    # a KANNICH_CACHE_DIR variable
+    if [ ! -d "$KANNICH_CACHE_DIR" ]; then
+        echo "Creating cache directory: $KANNICH_CACHE_DIR"
+        mkdir -p "$KANNICH_CACHE_DIR" || {
+            echo "Error: Failed to create cache directory: $KANNICH_CACHE_DIR" >&2
+            exit 1
+        }
+    fi
+    CACHE_MOUNT="$KANNICH_CACHE_DIR:/kannich/cache"
+else
+    # the default cache is a docker volume
+    if ! docker volume inspect kannich-cache >/dev/null 2>&1; then
+        echo "Creating docker volume: kannich-cache"
+        docker volume create kannich-cache >/dev/null
+    fi
+    CACHE_MOUNT="kannich-cache:/kannich/cache"
+fi
+
+# in either case, when run through the wrapper KANNICH_CACHE_DIR inside of the container
+# is always /kannich/cache. We set this here because the environment variable later goes
+# into the container and is picked up there.
+export KANNICH_CACHE_DIR=/kannich/cache
+
+# Detect --dev-mode / -d flag
+DEV_MODE=0
+for arg in "$@"; do
+    case "$arg" in
+        --dev-mode|-d) DEV_MODE=1; break ;;
+    esac
+done
+
+# Dev mode: mount host .m2/repository
+DEV_MODE_MOUNT=""
+if [ "$DEV_MODE" -eq 1 ]; then
+    HOST_M2_REPO="$HOME/.m2/repository"
+    if [ ! -d "$HOST_M2_REPO" ]; then
+        echo "No local maven repository exists. Creating an empty one."
+        mkdir -p "$HOST_M2_REPO" || {
+          echo "Error: Failed to create local maven repository: $HOST_M2_REPO" >&2
+          exit 1
+        }
+    fi
+    DEV_MODE_MOUNT="-v $HOST_M2_REPO:/kannich/dev-repo"
+fi
+
+# Pull image if not present
+if [ -z "$(docker images -q "$KANNICH_IMAGE")" ]; then
+    echo "Pulling Kannich builder image..."
+    docker pull "$KANNICH_IMAGE"
+fi
+
+# Container name for cleanup
+CONTAINER_NAME="kannich-$$"
+
+# Check if running in a terminal for colored output
+TTY_FLAG=""
+if [ -t 1 ]; then
+    TTY_FLAG="-t"
+fi
+
+# If KANNICH_BOOTSTRAP_SETTINGS_XML is not set, try to read $HOME/.m2/settings.xml into this variable
+# if it exists.
+if [ -z "$KANNICH_BOOTSTRAP_SETTINGS_XML" ] && [ -f "$HOME/.m2/settings.xml" ]; then
+    KANNICH_BOOTSTRAP_SETTINGS_XML=$(cat "$HOME/.m2/settings.xml")
+    export KANNICH_BOOTSTRAP_SETTINGS_XML
+fi
+
+# Put all environment variables into a file named ".kannich_current_env"
+# Use null bytes as delimiters to handle multiline values unambiguously
+awk 'BEGIN { for (name in ENVIRON) printf "%s=%s%c", name, ENVIRON[name], 0 }' > "$PROJECT_DIR/.kannich_current_env"
+
+# Cleanup function
+cleanup() {
+    docker stop "$CONTAINER_NAME" >/dev/null 2>&1 || true
+}
+
+# someone presses CTRL+C, we stop the container to make sure we have no leftovers
+trap cleanup EXIT INT TERM
+
+# Run Kannich inside Docker
+# shellcheck disable=SC2086
+docker run --rm \
+    --init \
+    --name "$CONTAINER_NAME" \
+    --privileged \
+    $TTY_FLAG \
+    -v "$PROJECT_DIR:/workspace" \
+    -v "$CACHE_MOUNT" \
+    $DEV_MODE_MOUNT \
+    $KANNICH_DOCKER_OPTS \
+    -w /workspace \
+    "$KANNICH_IMAGE" \
+    "$@"
