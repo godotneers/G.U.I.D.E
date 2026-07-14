@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.14.0] - 2026-07-14
+### Added
+- The steam controller is now supported as a controller type. It uses the same icons and mappings as the Steam Deck controller ([#152](https://github.com/godotneers/G.U.I.D.E/issues/152)).
+
 ## [0.13.0] - 2026-05-11
 ### Added
 - Added a new _Joy Direction_ input which treats a single direction of a joy axis as a boolean input. This is useful when you want to bind "stick pushed left" and "stick pushed right" as two separate actions ([#192](https://github.com/godotneers/G.U.I.D.E/issues/192)).

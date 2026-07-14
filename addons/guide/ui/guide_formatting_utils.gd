@@ -16,7 +16,7 @@ static var _controller_detection_strings:Dictionary = {
 	ControllerType.MICROSOFT: ["XBox", "XInput"],
 	ControllerType.NINTENDO: ["Nintendo Switch"],
 	ControllerType.SONY : ["DualSense", "DualShock", "PlayStation", "PS3", "PS4", "PS5"],
-	ControllerType.STEAM_DECK: ["Steam Deck"]
+	ControllerType.STEAM_DECK: ["Steam Deck", "Steam Controller"]
 } 
 
 
