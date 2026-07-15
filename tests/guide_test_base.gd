@@ -5,6 +5,13 @@ extends GdUnitTestSuite
 var start_frame:int = 0
 var runner:GdUnitSceneRunner
 
+# Stick index for the harness' joy device. Deliberately high so it never collides
+# with virtual sticks created by tests (which use low indices).
+const TEST_JOY_STICK_INDEX := 42
+
+# Device id all simulated joypad events are stamped with (see before_test).
+var _test_joy_device:int
+
 func after_test() -> void:
 	print_f("Cleanup phase")
 	# Clear all mapping contexts after each test
@@ -12,7 +19,8 @@ func after_test() -> void:
 	var contexts:Array = GUIDE._active_contexts.keys()
 	for context:GUIDEMappingContext in contexts:
 		GUIDE.disable_mapping_context(context)
-		
+
+	GUIDE._input_state.disconnect_virtual_stick(_test_joy_device)
 	GUIDEInputFormatter.cleanup()
 
 
@@ -22,6 +30,11 @@ func before_test() -> void:
 	print_f("Setup phase")
 	runner = scene_runner(auto_free(Node.new()))
 	GUIDE._input_state._clear()
+	# Headless CI has no connected joypads and GUIDE ignores joypad events from
+	# unknown devices. Register a virtual joy device and stamp all simulated
+	# joypad events with it (see joy_button_down/joy_axis), so joy tests don't
+	# need physical hardware.
+	_test_joy_device = GUIDE._input_state.connect_virtual_stick(TEST_JOY_STICK_INDEX)
 	_setup()
 	print_f("Test phase")
 	
@@ -336,6 +349,7 @@ func mouse_move_to(position:Vector2, wait:bool = true) -> void:
 
 func joy_button_down(button:JoyButton, wait:bool = true) -> void:
 	var input := InputEventJoypadButton.new()
+	input.device = _test_joy_device
 	input.button_index = button
 	input.pressed = true
 	Input.parse_input_event(input)
@@ -345,6 +359,7 @@ func joy_button_down(button:JoyButton, wait:bool = true) -> void:
 	
 func joy_button_up(button:JoyButton, wait:bool = true) -> void:
 	var input := InputEventJoypadButton.new()
+	input.device = _test_joy_device
 	input.button_index = button
 	input.pressed = false
 	Input.parse_input_event(input)
@@ -359,6 +374,7 @@ func tap_joy_button(button:JoyButton) -> void:
 	
 func joy_axis(axis:JoyAxis, value:float, wait:bool = true) -> void:
 	var input := InputEventJoypadMotion.new()
+	input.device = _test_joy_device
 	input.axis = axis
 	input.axis_value = value
 	Input.parse_input_event(input)
