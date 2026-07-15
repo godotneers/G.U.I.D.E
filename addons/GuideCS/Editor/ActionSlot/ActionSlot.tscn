@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://du4x7ng6ntuk4"]
+
+[ext_resource type="Script" uid="uid://oysjdovrkafp" path="res://addons/GuideCS/Editor/ActionSlot/ActionSlot.cs" id="1_ouydt"]
+[ext_resource type="Script" uid="uid://bxkqi06q80w61" path="res://addons/GuideCS/Editor/ActionSlot/ActionSlotLineEdit.cs" id="2_3jy1r"]
+[ext_resource type="Texture2D" uid="uid://cscw3rp186gre" path="res://addons/GuideCS/Editor/ActionSlot/MissingAction.svg" id="2_7bi1j"]
+
+[node name="ActionSlot" type="HBoxContainer" unique_id=2041510421]
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_horizontal = 3
+script = ExtResource("1_ouydt")
+
+[node name="TypeIcon" type="TextureRect" parent="." unique_id=947333126]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Missing action"
+texture = ExtResource("2_7bi1j")
+expand_mode = 3
+stretch_mode = 4
+
+[node name="LineEdit" type="LineEdit" parent="." unique_id=930417898]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+text = "<none>"
+editable = false
+selecting_enabled = false
+script = ExtResource("2_3jy1r")
+
+[connection signal="ActionDropped" from="LineEdit" to="." method="_OnLineEditActionDropped"]
+[connection signal="focus_entered" from="LineEdit" to="." method="_OnLineEditFocusEntered"]

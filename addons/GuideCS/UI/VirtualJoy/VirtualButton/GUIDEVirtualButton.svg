@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <!-- GUIDEVirtualButton icon (16x16) in #FD9600 -->
+  <defs>
+    <style>
+      .o { fill: none; stroke: #FD9600; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+      .f { fill: #FD9600; }
+      .h { fill: none; stroke: #FD9600; stroke-width: 1; stroke-linecap: round; }
+    </style>
+  </defs>
+  <!-- outer ring to match stick style -->
+  <circle class="o" cx="8" cy="8" r="6"/>
+  <!-- main button fill -->
+  <circle class="f" cx="8" cy="8" r="3.2"/>
+ </svg>
