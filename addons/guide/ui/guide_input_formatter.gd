@@ -278,15 +278,17 @@ func _materialize_action_input(action:GUIDEAction) -> MaterializedInput:
 				chord.parts.append(chorded_action)
 			for combo in combos:
 				chord.parts.append(combo)
-			if combos.is_empty():
-				if input_mapping.input != null:
-					var additional_inputs := _materialize_input(FormattingContext.for_action(input_mapping.input, input_mapping, action))
-					# https://github.com/godotneers/G.U.I.D.E/issues/175
-					# additional inputs can be blank if they are filtered out. if they are blank
-					# we can discard the whole input mapping, as it could never trigger (we have a chorded action + no input)
-					if not additional_inputs.is_blank():
-						chord.parts.append(additional_inputs)					
-						result.parts.append(chord)
+			if combos.is_empty() and input_mapping.input != null:
+				var additional_inputs := _materialize_input(FormattingContext.for_action(input_mapping.input, input_mapping, action))
+				# https://github.com/godotneers/G.U.I.D.E/issues/175
+				# additional inputs can be blank if they are filtered out. if they are blank
+				# we can discard the whole input mapping, as it could never trigger (we have a chorded action + no input)
+				if additional_inputs.is_blank():
+					continue
+				chord.parts.append(additional_inputs)
+			# a mapping can be chorded without having an own input (e.g. "stop" = LT + RT),
+			# in which case the chord is all there is to render.
+			result.parts.append(chord)
 		else:
 			for combo in combos:
 				result.parts.append(combo)

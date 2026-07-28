@@ -70,8 +70,38 @@ func test_chorded() -> void:
 	
 	var result:String = _formatter.action_as_text(_action)
 	assert_str(result).is_equal("[A] + [B]")
-	
-	
+
+
+# a mapping can consist of chorded actions only, without an own input
+# (e.g. "stop" = "left" + "right"). the chord is then all there is to render.
+func test_chorded_without_own_input() -> void:
+	var left := action_bool()
+	var right := action_bool()
+	map(_context, left, input_key(KEY_A))
+	map(_context, right, input_key(KEY_B))
+	map(_context, _action, null, [], [trigger_chorded_action(left), trigger_chorded_action(right)])
+
+	GUIDE.enable_mapping_context(_context)
+
+	var result:String = _formatter.action_as_text(_action)
+	assert_str(result).is_equal("[A] + [B]")
+
+
+# https://github.com/godotneers/G.U.I.D.E/issues/175 - if the mapping has an own
+# input and that input is filtered out, the whole mapping is discarded because it
+# could never trigger.
+func test_chorded_with_filtered_out_own_input_is_discarded() -> void:
+	var chord := action_bool()
+	map(_context, chord, input_key(KEY_SHIFT))
+	map(_context, _action, input_joy_button(JOY_BUTTON_B), [], [trigger_chorded_action(chord)])
+
+	GUIDE.enable_mapping_context(_context)
+	_filter_keyboard()
+
+	var result:String = _formatter.action_as_text(_action)
+	assert_str(result).is_equal("")
+
+
 func test_type_filter_simple() -> void:
 	map(_context, _action, input_key(KEY_A))
 	map(_context, _action, input_joy_button(JOY_BUTTON_B))

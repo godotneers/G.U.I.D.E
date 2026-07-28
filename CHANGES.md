@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Added new _Pan Gesture 1D_ and _Pan Gesture 2D_ inputs which report two-finger pan gestures (`InputEventPanGesture`, e.g. from macOS trackpads) as axis values. This allows binding trackpad panning to 1D or 2D actions.
 
+### Fixed
+- Fixed a bug where the input formatter would render nothing for a mapping that is chorded but has no own input (e.g. an action bound to "left trigger + right trigger" through two chorded action triggers).
+
 
 ## [0.14.0] - 2026-07-14
 ### Added
