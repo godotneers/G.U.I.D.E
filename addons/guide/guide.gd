@@ -361,7 +361,7 @@ func _parse_input_mappings(
 		# collect the hold threshold
 		var mapping_hold_threshold:float = new_input_mapping._trigger_hold_threshold
 		# smallest hold threshold that isn't negative wins
-		if trigger_hold_threshold < 0 or mapping_hold_threshold < trigger_hold_threshold:
+		if mapping_hold_threshold >= 0 and (trigger_hold_threshold < 0 or mapping_hold_threshold < trigger_hold_threshold):
 			trigger_hold_threshold = mapping_hold_threshold
 		
 		# and add it to the mapping
@@ -376,7 +376,26 @@ func _parse_input_mappings(
 			action._trigger_hold_threshold = min(action._trigger_hold_threshold, trigger_hold_threshold)
 
 	return effective_mapping
-						
+
+
+## Re-applies the hold threshold of an already parsed action mapping to its action.
+## Mirrors the threshold collection at the end of _parse_input_mappings, for the
+## cache update path which reuses an existing mapping instead of re-parsing it.
+func _restore_trigger_hold_threshold(action:GUIDEAction, mapping:GUIDEActionMapping) -> void:
+	var trigger_hold_threshold:float = -1.0
+	for input_mapping:GUIDEInputMapping in mapping.input_mappings:
+		var mapping_hold_threshold:float = input_mapping._trigger_hold_threshold
+		# smallest hold threshold that isn't negative wins
+		if mapping_hold_threshold >= 0 and (trigger_hold_threshold < 0 or mapping_hold_threshold < trigger_hold_threshold):
+			trigger_hold_threshold = mapping_hold_threshold
+
+	if trigger_hold_threshold >= 0:
+		if action._trigger_hold_threshold < 0:
+			action._trigger_hold_threshold = trigger_hold_threshold
+		else:
+			action._trigger_hold_threshold = min(action._trigger_hold_threshold, trigger_hold_threshold)
+
+
 ## This updates the caches of active inputs, action mappings and modifiers. It's sort of expensive to run
 ## but it is only run when contexts are enabled/disabled or remapping configs are applied and it saves
 ## a lot of processing time during the actual input processing. It also simplifies the input processing
@@ -469,6 +488,11 @@ func _update_caches() -> void:
 					# we found an existing mapping, so we can just use it
 					# and we can skip the rest of the processing for this mapping.
 					new_action_mappings.append(existing_mapping)
+					# the reset above cleared the action's hold threshold and reusing
+					# the mapping skips _parse_input_mappings, which is the only place
+					# that would restore it. So we collect it from the existing mapping,
+					# otherwise elapsed_ratio stays 0 for the rest of the session.
+					_restore_trigger_hold_threshold(action, existing_mapping)
 					found_existing = true
 					break
 					

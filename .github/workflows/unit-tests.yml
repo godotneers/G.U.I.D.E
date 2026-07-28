@@ -1,0 +1,31 @@
+name: unit-tests
+run-name: ${{ github.head_ref || github.ref_name }}-unit-tests
+
+on:
+  push:
+    paths:
+      - 'addons/guide/**'
+  pull_request:
+    paths:
+      - 'addons/guide/**'
+  workflow_dispatch:
+
+concurrency:
+  group: unit-tests-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: derkork/kannich-action@4d9359ec7acdedefb1a1742492673f1b7997dd5c #v1
+        with:
+          image: derkork/kannich@sha256:a23067a63c1943b4f24a96bf9841279c2895ce97cc7565133773f6814ae8281e # 0.11.0-0.10.0
+          executions: test
+      - uses: actions/upload-artifact@v4
+        with:
+          name: reports
+          path: reports/    

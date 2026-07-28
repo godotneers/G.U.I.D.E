@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Added
+- Added new _Pan Gesture 1D_ and _Pan Gesture 2D_ inputs which report two-finger pan gestures (`InputEventPanGesture`, e.g. from macOS trackpads) as axis values. This allows binding trackpad panning to 1D or 2D actions.
+
+### Fixed
+- Fixed a bug where the input formatter would render nothing for a mapping that is chorded but has no own input (e.g. an action bound to "left trigger + right trigger" through two chorded action triggers).
+- Fixed a bug where an action would lose its hold threshold hint when a context switch reused its action mapping. Because of this `GUIDEAction.elapsed_ratio` stopped reporting the progress of a hold after the first context switch.
+
+
 ## [0.14.0] - 2026-07-14
 ### Added
 - The steam controller is now supported as a controller type. It uses the same icons and mappings as the Steam Deck controller ([#152](https://github.com/godotneers/G.U.I.D.E/issues/152)).

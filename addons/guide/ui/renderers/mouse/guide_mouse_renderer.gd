@@ -34,7 +34,9 @@ func supports(input:GUIDEInput, options:GUIDEInputFormattingOptions) -> bool:
 	return input is GUIDEInputMouseButton or \
 		input is GUIDEInputMouseAxis1D or \
 		input is GUIDEInputMouseAxis2D or \
-		input is GUIDEInputMousePosition
+		input is GUIDEInputMousePosition or \
+		input is GUIDEInputPanGesture1D or \
+		input is GUIDEInputPanGesture2D
 	
 	
 func render(input:GUIDEInput, options:GUIDEInputFormattingOptions) -> void:
@@ -101,7 +103,20 @@ func render(input:GUIDEInput, options:GUIDEInputFormattingOptions) -> void:
 		
 	if input is GUIDEInputMouseAxis2D:
 		_mouse_blank.visible = true
-		
+
+	if input is GUIDEInputPanGesture1D:
+		if input.axis == GUIDEInputPanGesture1D.GUIDEInputPanGestureAxis.X:
+			_mouse_blank.visible = true
+			_directions.visible = true
+			_horizontal.visible = true
+		else:
+			_mouse_blank.visible = true
+			_directions.visible = true
+			_vertical.visible = true
+
+	if input is GUIDEInputPanGesture2D:
+		_mouse_blank.visible = true
+
 	if input is GUIDEInputMousePosition:
 		_mouse_cursor.visible = true
 	

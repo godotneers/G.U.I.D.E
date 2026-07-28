@@ -316,3 +316,25 @@ func test_set_enabled_mapping_contexts_emits_enabled_only_for_new_contexts() -> 
 	assert_int(enabled1_count[0]).is_equal(0)
 	assert_int(enabled2_count[0]).is_equal(1)
 
+
+
+func test_hold_threshold_survives_a_context_switch_that_reuses_the_mapping() -> void:
+	# Given an action with a hold trigger in context1
+	map(_context1, _action, input_key(KEY_A), [], [trigger_hold(10.0)])
+	GUIDE.enable_mapping_context(_context1)
+
+	# When another context is enabled, the caches are rebuilt. The mapping above is
+	# unchanged, so it is reused rather than parsed again.
+	GUIDE.enable_mapping_context(_context2)
+
+	# And we hold the key down
+	await key_down(KEY_A)
+	await wait_f(5)
+
+	# Then the action still reports the progress of the hold (the hold threshold hint
+	# must not have been lost by the mapping reuse).
+	assert_float(_action.elapsed_ratio) \
+		.append_failure_message("Action should report hold progress but elapsed_ratio is 0.") \
+		.is_greater(0.0)
+
+	await key_up(KEY_A)

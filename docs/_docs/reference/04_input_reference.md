@@ -110,6 +110,19 @@ map _Wheel Up_ + a _Negate Modifier_ and _Wheel Down_ to a 1-dimensional action.
 This input returns the current mouse position in pixels relative to the top left corner of the window in the `x` and `y` components of the input value (e.g. `(x, y, 0)`). You an use a _Canvas Coordinates_ modifier to convert this into a value into 2D world coordinates for the currently active viewport or a _3D Coordinates_ modifier to convert this into 3D world coordinates (e.g. for object picking). This input has no settings.
 
 
+## Pan Gesture 1D
+
+This input returns the delta of a two-finger pan gesture along a single axis in the `x` component of the input value (e.g. `(x, 0, 0)`). The delta is given in pixels per frame. You can use a _Screen Relative_ modifier to convert this into a value from -1 to 1 that is independent of the screen resolution. Note that pan gesture events are only emitted on platforms which support them (e.g. macOS trackpads or two-finger pans on Android); on other platforms this input will not actuate. The input has the following settings:
+
+| Setting | Description                                                    |
+|---------|----------------------------------------------------------------|
+| _Axis_  | The pan axis that should be tracked by the input (_X_ or _Y_). |
+
+## Pan Gesture 2D
+
+This input returns the delta of a two-finger pan gesture along two axes in the `x` and `y` components of the input value (e.g. `(x, y, 0)`). The delta is given in pixels per frame. This is useful for map or camera panning with a trackpad. Note that pan gesture events are only emitted on platforms which support them (e.g. macOS trackpads or two-finger pans on Android); on other platforms this input will not actuate. This input has no settings.
+
+
 ## Touch Angle
 
 This input tracks changes in the angle between two touching fingers. This is mostly useful to detect rotation gestures. When the user touches the screen with two fingers the input will return `(0,0,0)`. If the user subsequently performs a rotation gesture, the input will return the angle changes since the beginning of the touch (e.g. `(<angle>,0,0)`). Once the user releases the touch, the input will return to `(0,0,0)`.  Note that when you use this input to rotate elements, that the input will retain the angle for as long as the fingers are touched. You should therefore save the starting rotation angle when the rotation begins and then apply the angle from the input on the starting value to show the user a preview of the rotation. Once the rotation ends, you can commit the value. This input has the following settings:
