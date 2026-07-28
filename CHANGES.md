@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Fixed a bug where the input formatter would render nothing for a mapping that is chorded but has no own input (e.g. an action bound to "left trigger + right trigger" through two chorded action triggers).
+- Fixed a bug where an action would lose its hold threshold hint when a context switch reused its action mapping. Because of this `GUIDEAction.elapsed_ratio` stopped reporting the progress of a hold after the first context switch.
 
 
 ## [0.14.0] - 2026-07-14
