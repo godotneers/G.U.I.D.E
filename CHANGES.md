@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Improved
+- It's now possible to run all the tests locally with only a running docker daemon using `kannichw test` (Linux/Mac) or `kannichw.ps1 test` (Windows). This requires no additional setup, so it will automatically use the correct version of Godot. The script will run fully in Docker, so the host system is not modified. Test reports will be written to the `reports` folder. Running tests this way is identical to running them on GitHub Actions but has a much quicker turnaround.
+
+### Fixed
+- Tests now also run correctly in a headless environment. For pull requests, these tests will now also automatically run on GitHub Actions. A huge thanks goes to [elsen0xcc](https://github.com/elsen0xcc) for providing a PR with lots of small fixes.
+
 ## [0.14.0] - 2026-07-14
 ### Added
 - The steam controller is now supported as a controller type. It uses the same icons and mappings as the Steam Deck controller ([#152](https://github.com/godotneers/G.U.I.D.E/issues/152)).
