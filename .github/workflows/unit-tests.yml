@@ -2,9 +2,6 @@ name: unit-tests
 run-name: ${{ github.head_ref || github.ref_name }}-unit-tests
 
 on:
-  push:
-    paths:
-      - 'addons/guide/**'
   pull_request:
     paths:
       - 'addons/guide/**'
