@@ -58,3 +58,22 @@ func test_touch_distance_input_doesnt_trigger_on_fingers_standing_still() -> voi
 	# THEN
 	# the action is not triggered
 	watched.assert_not_triggered()
+
+
+func test_touch_distance_input_with_fingers_not_having_raw_indices_0_and_1() -> void:
+	var input := input_touch_distance()
+	map(_context, _action, input)
+
+	GUIDE.enable_mapping_context(_context)
+	var watched := watch(_action)
+
+	# WHEN
+	# finger 0 never reaches GUIDE (e.g. consumed by a virtual stick)
+	# and I move fingers 1 and 2 toward each other
+	await finger_down(1, Vector2(0, 0))
+	await finger_down(2, Vector2(200, 200))
+	await finger_move(2, Vector2(100, 100))
+
+	# THEN
+	# the action is triggered
+	await watched.assert_triggered()

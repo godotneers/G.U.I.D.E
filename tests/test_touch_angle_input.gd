@@ -31,3 +31,28 @@ func test_touch_angle_input() -> void:
 	
 	# and the value is 90 degrees
 	assert_float(holder[0]).is_equal_approx(90, 0.5)
+
+func test_touch_angle_input_with_fingers_not_having_raw_indices_0_and_1() -> void:
+	var input := input_touch_angle()
+	input.unit = GUIDEInputTouchAngle.AngleUnit.DEGREES
+	map(_context, _action, input)
+
+	GUIDE.enable_mapping_context(_context)
+	var watched := watch(_action)
+
+	var holder:Array[float] = [0.0]
+	_action.triggered.connect(func() -> void: holder[0] = _action.value_axis_1d)
+
+	# WHEN
+	# finger 0 never reaches GUIDE (e.g. consumed by a virtual stick)
+	# and I rotate fingers 1 and 2 by 90 degrees
+	await finger_down(1, Vector2(50, 50))
+	await finger_down(2, Vector2(100, 50))
+	await finger_move(2, Vector2(50, 0))
+
+	# THEN
+	# the action is triggered
+	await watched.assert_triggered()
+
+	# and the value is 90 degrees
+	assert_float(holder[0]).is_equal_approx(90, 0.5)

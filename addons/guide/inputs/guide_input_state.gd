@@ -571,6 +571,9 @@ func is_any_joy_axis_actuated(minimum_strength: float) -> bool:
 	return false
 
 ## Gets the finger position of the finger at the given index.
+## The index is the rank among the fingers that GUIDE currently sees, in the
+## order they touched down, not Godot's raw finger index. Fingers consumed by
+## something else (e.g. a virtual stick) are not seen, so they don't occupy a rank.
 ## If finger_index is < 0, returns the average of all finger positions.
 ## Will only return a position if the amount of fingers
 ## currently touching matches finger_count. 
@@ -587,13 +590,15 @@ func get_finger_position(finger_index: int, finger_count: int) -> Vector2:
 
 	# if a finger index is set, use this fingers position, if available
 	if finger_index > -1:
-		return _finger_positions.get(finger_index, Vector2.INF)
+		if finger_index >= _finger_positions.size():
+			return Vector2.INF
+		return _finger_positions.values()[finger_index]
 
 	var result: Vector2 = Vector2.ZERO
 	for value in _finger_positions.values():
 		result += value
 
-	result /= float(finger_count)
+	result /= float(_finger_positions.size())
 	return result
 	
 ## Returns the positions of all fingers currently touching.
