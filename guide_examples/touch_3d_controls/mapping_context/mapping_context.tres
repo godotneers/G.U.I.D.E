@@ -1,0 +1,97 @@
+[gd_resource type="Resource" script_class="GUIDEMappingContext" load_steps=24 format=3 uid="uid://d07kq2lwkxi0k"]
+
+[ext_resource type="Script" path="res://addons/guide/guide_mapping_context.gd" id="1_q8178"]
+[ext_resource type="Resource" uid="uid://b24fklbkqntqr" path="res://guide_examples/touch_3d_controls/mapping_context/move.tres" id="1_u1dev"]
+[ext_resource type="Script" path="res://addons/guide/inputs/guide_input_joy_axis_2d.gd" id="2_8c5nk"]
+[ext_resource type="Script" path="res://addons/guide/guide_input_mapping.gd" id="3_t5g0f"]
+[ext_resource type="Script" path="res://addons/guide/guide_action_mapping.gd" id="4_ibeup"]
+[ext_resource type="Resource" uid="uid://bi5m8xle8kcgo" path="res://guide_examples/touch_3d_controls/mapping_context/look.tres" id="5_pvmrj"]
+[ext_resource type="Script" path="res://addons/guide/inputs/guide_input_touch_axis_2d.gd" id="6_85c2w"]
+[ext_resource type="Resource" uid="uid://6nv3ep4q1q4h" path="res://guide_examples/touch_3d_controls/mapping_context/fire.tres" id="7_dovfx"]
+[ext_resource type="Script" path="res://addons/guide/modifiers/guide_modifier_scale.gd" id="7_wdhk0"]
+[ext_resource type="Script" path="res://addons/guide/inputs/guide_input_joy_button.gd" id="8_8mv2g"]
+[ext_resource type="Script" path="res://addons/guide/triggers/guide_trigger_pulse.gd" id="10_oylu1"]
+
+[sub_resource type="Resource" id="Resource_4cx5q"]
+script = ExtResource("2_8c5nk")
+x = 0
+y = 1
+joy_index = -2
+
+[sub_resource type="Resource" id="Resource_bws65"]
+script = ExtResource("7_wdhk0")
+scale = Vector3(1, -1, 1)
+apply_delta_time = false
+
+[sub_resource type="Resource" id="Resource_ov3te"]
+script = ExtResource("3_t5g0f")
+override_action_settings = false
+is_remappable = false
+display_name = ""
+display_category = ""
+input = SubResource("Resource_4cx5q")
+modifiers = Array[Resource("res://addons/guide/modifiers/guide_modifier.gd")]([SubResource("Resource_bws65")])
+triggers = Array[Resource("res://addons/guide/triggers/guide_trigger.gd")]([])
+
+[sub_resource type="Resource" id="Resource_lu6ey"]
+script = ExtResource("4_ibeup")
+action = ExtResource("1_u1dev")
+input_mappings = Array[ExtResource("3_t5g0f")]([SubResource("Resource_ov3te")])
+
+[sub_resource type="Resource" id="Resource_kvttr"]
+script = ExtResource("6_85c2w")
+finger_count = 0
+finger_index = 0
+
+[sub_resource type="Resource" id="Resource_ek0sa"]
+script = ExtResource("7_wdhk0")
+scale = Vector3(0.017, 0.017, 0.017)
+apply_delta_time = false
+
+[sub_resource type="Resource" id="Resource_pwy1g"]
+script = ExtResource("3_t5g0f")
+override_action_settings = false
+is_remappable = false
+display_name = ""
+display_category = ""
+input = SubResource("Resource_kvttr")
+modifiers = Array[Resource("res://addons/guide/modifiers/guide_modifier.gd")]([SubResource("Resource_ek0sa")])
+triggers = Array[Resource("res://addons/guide/triggers/guide_trigger.gd")]([])
+
+[sub_resource type="Resource" id="Resource_6fq7v"]
+script = ExtResource("4_ibeup")
+action = ExtResource("5_pvmrj")
+input_mappings = Array[ExtResource("3_t5g0f")]([SubResource("Resource_pwy1g")])
+
+[sub_resource type="Resource" id="Resource_gre7x"]
+script = ExtResource("8_8mv2g")
+button = 0
+joy_index = -2
+
+[sub_resource type="Resource" id="Resource_bsrf4"]
+script = ExtResource("10_oylu1")
+trigger_on_start = true
+initial_delay = 0.5
+pulse_interval = 0.5
+max_pulses = 0
+actuation_threshold = 0.5
+
+[sub_resource type="Resource" id="Resource_cq6jv"]
+script = ExtResource("3_t5g0f")
+override_action_settings = false
+is_remappable = false
+display_name = ""
+display_category = ""
+input = SubResource("Resource_gre7x")
+modifiers = Array[Resource("res://addons/guide/modifiers/guide_modifier.gd")]([])
+triggers = Array[Resource("res://addons/guide/triggers/guide_trigger.gd")]([SubResource("Resource_bsrf4")])
+
+[sub_resource type="Resource" id="Resource_xyatg"]
+script = ExtResource("4_ibeup")
+action = ExtResource("7_dovfx")
+input_mappings = Array[ExtResource("3_t5g0f")]([SubResource("Resource_cq6jv")])
+
+[resource]
+script = ExtResource("1_q8178")
+display_name = ""
+mappings = Array[ExtResource("4_ibeup")]([SubResource("Resource_lu6ey"), SubResource("Resource_6fq7v"), SubResource("Resource_xyatg")])

@@ -1,0 +1,38 @@
+[gd_scene load_steps=3 format=3 uid="uid://conoirvjdhcuy"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tpv2d"]
+albedo_color = Color(0.12549, 0.129412, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_egyx7"]
+albedo_color = Color(0, 0.564706, 0.0431373, 1)
+
+[node name="Tree" type="Node3D"]
+
+[node name="Trunk" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+use_collision = true
+material = SubResource("StandardMaterial3D_tpv2d")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.13567, 0)
+use_collision = true
+radius = 2.0
+height = 3.0
+cone = true
+material = SubResource("StandardMaterial3D_egyx7")
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.55223, 0)
+use_collision = true
+radius = 1.8
+height = 3.0
+cone = true
+material = SubResource("StandardMaterial3D_egyx7")
+
+[node name="CSGCylinder3D3" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.63383, 0)
+use_collision = true
+radius = 1.4
+height = 3.0
+cone = true
+material = SubResource("StandardMaterial3D_egyx7")

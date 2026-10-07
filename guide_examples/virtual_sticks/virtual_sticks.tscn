@@ -8,12 +8,12 @@
 [ext_resource type="Resource" uid="uid://c36k5e3jjyp0w" path="res://guide_examples/virtual_sticks/mapping_contexts/move_ship.tres" id="4_1f0iq"]
 [ext_resource type="Script" path="res://addons/guide/ui/virtual_joy/virtual_stick/texture_renderer/guide_virtual_stick_texture_renderer.gd" id="5_ejjjy"]
 [ext_resource type="Resource" uid="uid://bjac08qt2mf2s" path="res://guide_examples/virtual_sticks/mapping_contexts/rotate_ship.tres" id="5_h0yu2"]
-[ext_resource type="Resource" path="res://guide_examples/virtual_sticks/mapping_contexts/fire_projectile.tres" id="6_j3ftr"]
+[ext_resource type="Resource" uid="uid://2yehf6a0f1s" path="res://guide_examples/virtual_sticks/mapping_contexts/fire_projectile.tres" id="6_j3ftr"]
 [ext_resource type="Script" path="res://guide_examples/virtual_sticks/custom_stick_renderer/custom_stick_renderer.gd" id="8_mux4w"]
 [ext_resource type="Theme" uid="uid://dot0gi1yoqmrl" path="res://guide_examples/shared/ui_theme.tres" id="9_5tbf1"]
 [ext_resource type="Script" path="res://addons/guide/ui/virtual_joy/virtual_button/guide_virtual_button.gd" id="9_67dlh"]
 [ext_resource type="Script" path="res://addons/guide/ui/virtual_joy/virtual_button/texture_renderer/guide_virtual_button_texture_renderer.gd" id="11_hg28x"]
-[ext_resource type="PackedScene" path="res://guide_examples/virtual_sticks/projectile/projectile.tscn" id="13_proj"]
+[ext_resource type="PackedScene" uid="uid://dd5ociyaxqae3" path="res://guide_examples/virtual_sticks/projectile/projectile.tscn" id="13_proj"]
 
 [node name="VirtualSticks" type="Node"]
 script = ExtResource("1_naqqt")
@@ -48,9 +48,9 @@ anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_left = 285.0
-offset_top = -236.0
+offset_top = 844.0
 offset_right = 285.0
-offset_bottom = -236.0
+offset_bottom = 844.0
 grow_vertical = 0
 mouse_filter = 2
 use_top_left = true
@@ -69,10 +69,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -385.0
-offset_top = -205.0
-offset_right = -385.0
-offset_bottom = -205.0
+offset_left = 1535.0
+offset_top = 875.0
+offset_right = 1535.0
+offset_bottom = 875.0
 grow_horizontal = 0
 grow_vertical = 0
 mouse_filter = 2
@@ -91,10 +91,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -157.0
-offset_top = -382.0
-offset_right = -157.0
-offset_bottom = -382.0
+offset_left = 1763.0
+offset_top = 698.0
+offset_right = 1763.0
+offset_bottom = 698.0
 grow_horizontal = 0
 grow_vertical = 0
 mouse_filter = 2

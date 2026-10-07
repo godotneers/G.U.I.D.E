@@ -6,11 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+- There is a new `touch_3d_controls` example which shows a common touch setup for 3D games: a virtual stick moves the character and dragging a finger on the screen changes the camera angle.
+
 ### Improved
 - It's now possible to run all the tests locally with only a running docker daemon using `kannichw test` (Linux/Mac) or `kannichw.ps1 test` (Windows). This requires no additional setup, so it will automatically use the correct version of Godot. The script will run fully in Docker, so the host system is not modified. Test reports will be written to the `reports` folder. Running tests this way is identical to running them on GitHub Actions but has a much quicker turnaround.
 
 ### Fixed
 - Tests now also run correctly in a headless environment. For pull requests, these tests will now also automatically run on GitHub Actions. A huge thanks goes to [elsen0xcc](https://github.com/elsen0xcc) for providing a PR with lots of small fixes ([#202](https://github.com/godotneers/G.U.I.D.E/pull/202)).
+- The finger index of touch inputs now refers to the order in which G.U.I.D.E sees the fingers touch down, instead of Godot's raw finger index. Previously, touch inputs stopped working while another finger was held on a UI element that consumes touch events (e.g. a virtual joystick), because that finger took index 0 and the touch input kept waiting for it. Now the first finger that G.U.I.D.E can see counts as the first finger, no matter which index Godot assigned to it ([#211](https://github.com/godotneers/G.U.I.D.E/issues/211)). If you worked around this problem by setting the finger index of a touch input to skip the finger used by the other UI element (e.g. index 1 because a virtual stick always used finger 0), you need to change that input back to the finger index you actually want (e.g. 0 for the first finger that G.U.I.D.E can see), otherwise it will no longer find a finger.
 
 ## [0.14.0] - 2026-07-14
 ### Added

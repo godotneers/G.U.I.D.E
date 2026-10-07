@@ -7,7 +7,7 @@
 [ext_resource type="Script" path="res://addons/guide/guide_action_mapping.gd" id="5_wprvf"]
 [ext_resource type="Resource" uid="uid://bjac08qt2mf2s" path="res://guide_examples/virtual_sticks/mapping_contexts/rotate_ship.tres" id="6_44qy6"]
 [ext_resource type="Script" path="res://addons/guide/inputs/guide_input_joy_axis_1d.gd" id="7_g4bxd"]
-[ext_resource type="Resource" path="res://guide_examples/virtual_sticks/mapping_contexts/fire_projectile.tres" id="8_fire"]
+[ext_resource type="Resource" uid="uid://2yehf6a0f1s" path="res://guide_examples/virtual_sticks/mapping_contexts/fire_projectile.tres" id="8_fire"]
 [ext_resource type="Script" path="res://addons/guide/guide_mapping_context.gd" id="9_h4jvs"]
 [ext_resource type="Script" path="res://addons/guide/inputs/guide_input_joy_button.gd" id="10_btn"]
 

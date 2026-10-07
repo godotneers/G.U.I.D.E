@@ -1,0 +1,264 @@
+[gd_scene load_steps=19 format=3 uid="uid://b1mt0xkw8x8bx"]
+
+[ext_resource type="PackedScene" uid="uid://conoirvjdhcuy" path="res://guide_examples/touch_3d_controls/tree.tscn" id="1_uocd3"]
+[ext_resource type="Script" path="res://guide_examples/touch_3d_controls/touch_3d_controls.gd" id="2_pa6aa"]
+[ext_resource type="PackedScene" uid="uid://vdvsb80m0kj6" path="res://guide_examples/touch_3d_controls/bolt/bolt.tscn" id="3_owe01"]
+[ext_resource type="PackedScene" uid="uid://d2gjbtvtxlbwm" path="res://guide_examples/touch_3d_controls/mr.g.glb" id="4_6jto7"]
+[ext_resource type="Resource" uid="uid://6nv3ep4q1q4h" path="res://guide_examples/touch_3d_controls/mapping_context/fire.tres" id="4_67mgv"]
+[ext_resource type="Resource" uid="uid://d07kq2lwkxi0k" path="res://guide_examples/touch_3d_controls/mapping_context/mapping_context.tres" id="4_ouguq"]
+[ext_resource type="PackedScene" uid="uid://dkr80d2pi0d41" path="res://addons/guide/debugger/guide_debugger.tscn" id="5_kvgwt"]
+[ext_resource type="Resource" uid="uid://bi5m8xle8kcgo" path="res://guide_examples/touch_3d_controls/mapping_context/look.tres" id="5_r0fnd"]
+[ext_resource type="Resource" uid="uid://b24fklbkqntqr" path="res://guide_examples/touch_3d_controls/mapping_context/move.tres" id="6_koqh8"]
+[ext_resource type="Script" path="res://addons/guide/ui/virtual_joy/virtual_stick/guide_virtual_stick.gd" id="6_pi7w4"]
+[ext_resource type="Script" path="res://addons/guide/ui/virtual_joy/virtual_button/guide_virtual_button.gd" id="8_ht44o"]
+[ext_resource type="Script" path="res://addons/guide/ui/virtual_joy/virtual_button/texture_renderer/guide_virtual_button_texture_renderer.gd" id="9_7j33s"]
+[ext_resource type="Script" path="res://addons/guide/ui/virtual_joy/virtual_stick/texture_renderer/guide_virtual_stick_texture_renderer.gd" id="11_bdj7h"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_giegt"]
+albedo_color = Color(0, 0.258824, 0, 1)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_n87bl"]
+
+[sub_resource type="Sky" id="Sky_1lmt8"]
+sky_material = SubResource("ProceduralSkyMaterial_n87bl")
+
+[sub_resource type="Environment" id="Environment_ovkar"]
+background_mode = 2
+sky = SubResource("Sky_1lmt8")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ua7xj"]
+radius = 1.38627
+
+[node name="FpTpCamera" type="Node3D"]
+
+[node name="World" type="Node3D" parent="."]
+metadata/_edit_lock_ = true
+
+[node name="Ground" type="CSGBox3D" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+use_collision = true
+size = Vector3(100, 1, 100)
+material = SubResource("StandardMaterial3D_giegt")
+metadata/_edit_lock_ = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="World"]
+environment = SubResource("Environment_ovkar")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 0.478385, 0.87815, 0, -0.87815, 0.478385, 0, 6.85045, 0)
+shadow_enabled = true
+metadata/_edit_lock_ = true
+
+[node name="Tree" parent="World" instance=ExtResource("1_uocd3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.7625, 0, 0)
+metadata/_edit_lock_ = true
+
+[node name="Tree2" parent="World" instance=ExtResource("1_uocd3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.07627, 0, -17.8865)
+metadata/_edit_lock_ = true
+
+[node name="Tree3" parent="World" instance=ExtResource("1_uocd3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.1508, 0, -9.25488)
+metadata/_edit_lock_ = true
+
+[node name="Tree4" parent="World" instance=ExtResource("1_uocd3")]
+transform = Transform3D(1.315, 0, 0, 0, 1.315, 0, 0, 0, 1.315, -22.4745, 0, -9.25488)
+metadata/_edit_lock_ = true
+
+[node name="Tree5" parent="World" instance=ExtResource("1_uocd3")]
+transform = Transform3D(1.315, 0, 0, 0, 1.315, 0, 0, 0, 1.315, -22.4745, 0, 16.1376)
+metadata/_edit_lock_ = true
+
+[node name="Tree6" parent="World" instance=ExtResource("1_uocd3")]
+transform = Transform3D(-0.999991, 0, -0.00415387, 0, 1, 0, 0.00415387, 0, -0.999991, 6.71193, 0, 12.3759)
+metadata/_edit_lock_ = true
+
+[node name="Tree7" parent="World" instance=ExtResource("1_uocd3")]
+transform = Transform3D(-0.999991, 0, -0.00415387, 0, 1, 0, 0.00415387, 0, -0.999991, -2.28997, 0, 30.2999)
+metadata/_edit_lock_ = true
+
+[node name="Tree8" parent="World" instance=ExtResource("1_uocd3")]
+transform = Transform3D(-0.999991, 0, -0.00415387, 0, 1, 0, 0.00415387, 0, -0.999991, -13.4002, 0, 21.7144)
+metadata/_edit_lock_ = true
+
+[node name="Tree9" parent="World" instance=ExtResource("1_uocd3")]
+transform = Transform3D(-1.31499, 0, -0.00546234, 0, 1.315, 0, 0.00546234, 0, -1.31499, 29.2246, 0, 21.5373)
+metadata/_edit_lock_ = true
+
+[node name="Tree10" parent="World" instance=ExtResource("1_uocd3")]
+transform = Transform3D(-1.31499, 0, -0.00546234, 0, 1.315, 0, 0.00546234, 0, -1.31499, 29.1192, 0, -3.85491)
+metadata/_edit_lock_ = true
+
+[node name="Tree11" parent="World" instance=ExtResource("1_uocd3")]
+transform = Transform3D(0.305346, 0, 0.952241, 0, 1, 0, -0.952241, 0, 0.305346, -18.9923, -3.8147e-06, -13.3213)
+metadata/_edit_lock_ = true
+
+[node name="Tree12" parent="World" instance=ExtResource("1_uocd3")]
+transform = Transform3D(0.305346, 0, 0.952241, 0, 1, 0, -0.952241, 0, 0.305346, -33.2531, -3.8147e-06, -27.4257)
+metadata/_edit_lock_ = true
+
+[node name="Tree13" parent="World" instance=ExtResource("1_uocd3")]
+transform = Transform3D(0.305346, 0, 0.952241, 0, 1, 0, -0.952241, 0, 0.305346, -21.6522, -3.8147e-06, -35.3356)
+metadata/_edit_lock_ = true
+
+[node name="Tree14" parent="World" instance=ExtResource("1_uocd3")]
+transform = Transform3D(0.40153, 0, 1.2522, 0, 1.315, 0, -1.2522, 0, 0.40153, -34.6676, -3.8147e-06, 5.2539)
+metadata/_edit_lock_ = true
+
+[node name="Tree15" parent="World" instance=ExtResource("1_uocd3")]
+transform = Transform3D(0.40153, 0, 1.2522, 0, 1.315, 0, -1.2522, 0, 0.40153, -10.4879, -3.8147e-06, 13.0074)
+metadata/_edit_lock_ = true
+
+[node name="Tree16" parent="World" instance=ExtResource("1_uocd3")]
+transform = Transform3D(-0.301388, 0, -0.953502, 0, 1, 0, 0.953502, 0, -0.301388, -5.15797, -3.8147e-06, -15.9337)
+metadata/_edit_lock_ = true
+
+[node name="Tree17" parent="World" instance=ExtResource("1_uocd3")]
+transform = Transform3D(-0.301388, 0, -0.953502, 0, 1, 0, 0.953502, 0, -0.301388, 9.16132, -3.8147e-06, -1.88872)
+metadata/_edit_lock_ = true
+
+[node name="Tree18" parent="World" instance=ExtResource("1_uocd3")]
+transform = Transform3D(-0.301388, 0, -0.953502, -0.00106507, 0.999999, 0.000336654, 0.953502, 0.00111701, -0.301388, -4.44136, -3.8147e-06, 8.51485)
+metadata/_edit_lock_ = true
+
+[node name="Tree19" parent="World" instance=ExtResource("1_uocd3")]
+transform = Transform3D(-0.396325, 0, -1.25385, 0, 1.315, 0, 1.25385, 0, -0.396325, 10.4401, -3.8147e-06, -34.5739)
+metadata/_edit_lock_ = true
+
+[node name="Tree20" parent="World" instance=ExtResource("1_uocd3")]
+transform = Transform3D(-0.396325, 0, -1.25385, 0, 1.315, 0, 1.25385, 0, -0.396325, -13.7716, -3.8147e-06, -42.2268)
+metadata/_edit_lock_ = true
+
+[node name="Tree21" parent="World" instance=ExtResource("1_uocd3")]
+transform = Transform3D(-0.271844, 0, -0.962341, 0, 1, 0, 0.962341, 0, -0.271844, 20.6589, -3.8147e-06, 2.57779)
+metadata/_edit_lock_ = true
+
+[node name="Tree22" parent="World" instance=ExtResource("1_uocd3")]
+transform = Transform3D(-0.271844, 0, -0.962341, 0, 1, 0, 0.962341, 0, -0.271844, 35.4045, -3.8147e-06, 16.1746)
+metadata/_edit_lock_ = true
+
+[node name="Tree23" parent="World" instance=ExtResource("1_uocd3")]
+transform = Transform3D(-0.271844, 0, -0.962341, 0, 1, 0, 0.962341, 0, -0.271844, 24.0874, -3.8147e-06, 24.4856)
+metadata/_edit_lock_ = true
+
+[node name="Tree24" parent="World" instance=ExtResource("1_uocd3")]
+transform = Transform3D(-0.357474, 0, -1.26548, 0, 1.315, 0, 1.26548, 0, -0.357474, 35.6748, -3.8147e-06, -16.5344)
+metadata/_edit_lock_ = true
+
+[node name="Tree25" parent="World" instance=ExtResource("1_uocd3")]
+transform = Transform3D(-0.357474, 0, -1.26548, 0, 1.315, 0, 1.26548, 0, -0.357474, 11.2386, -3.8147e-06, -23.4372)
+metadata/_edit_lock_ = true
+
+[node name="Tree26" parent="World" instance=ExtResource("1_uocd3")]
+transform = Transform3D(0.267844, 0, 0.963462, 0, 1, 0, -0.963462, 0, 0.267844, 6.92452, -3.8147e-06, 5.67266)
+metadata/_edit_lock_ = true
+
+[node name="Tree27" parent="World" instance=ExtResource("1_uocd3")]
+transform = Transform3D(0.267844, 0, 0.963462, 0, 1, 0, -0.963462, 0, 0.267844, -7.8774, -3.8147e-06, -7.86277)
+metadata/_edit_lock_ = true
+
+[node name="Tree28" parent="World" instance=ExtResource("1_uocd3")]
+transform = Transform3D(0.267844, 0, 0.963462, 0, 1, 0, -0.963462, 0, 0.267844, 3.40505, -3.8147e-06, -16.2207)
+metadata/_edit_lock_ = true
+
+[node name="Tree29" parent="World" instance=ExtResource("1_uocd3")]
+transform = Transform3D(0.352215, 0, 1.26695, 0, 1.315, 0, -1.26695, 0, 0.352215, -8.01185, -3.8147e-06, 24.8471)
+metadata/_edit_lock_ = true
+
+[node name="Tree30" parent="World" instance=ExtResource("1_uocd3")]
+transform = Transform3D(0.352215, 0, 1.26695, 0, 1.315, 0, -1.26695, 0, 0.352215, 16.4528, -3.8147e-06, 31.6483)
+metadata/_edit_lock_ = true
+
+[node name="Yaw" type="CharacterBody3D" parent="."]
+script = ExtResource("2_pa6aa")
+movement_speed = 10.0
+bolt_scene = ExtResource("3_owe01")
+mapping_context = ExtResource("4_ouguq")
+fire = ExtResource("4_67mgv")
+look = ExtResource("5_r0fnd")
+move = ExtResource("6_koqh8")
+
+[node name="Pitch" type="Node3D" parent="Yaw"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Yaw/Pitch"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.99436)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Yaw"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.27164, 0)
+shape = SubResource("SphereShape3D_ua7xj")
+
+[node name="RightHand" type="Marker3D" parent="Yaw"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.98118, 1.17324, -1.1487)
+
+[node name="LeftHand" type="Marker3D" parent="Yaw"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.00132, 1.17324, -1.1487)
+
+[node name="mr_g" parent="Yaw" instance=ExtResource("4_6jto7")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 1.23063, 0)
+
+[node name="Debugger" type="CanvasLayer" parent="."]
+
+[node name="GuideDebugger" parent="Debugger" instance=ExtResource("5_kvgwt")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Blocker" type="Control" parent="CanvasLayer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Spacer" type="Control" parent="CanvasLayer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="LeftStick" type="CenterContainer" parent="CanvasLayer"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 252.0
+offset_top = -318.0
+offset_right = 252.0
+offset_bottom = -318.0
+grow_vertical = 0
+mouse_filter = 2
+use_top_left = true
+script = ExtResource("6_pi7w4")
+position_mode = 1
+input_mode = 2
+
+[node name="TextureStickRenderer" type="Control" parent="CanvasLayer/LeftStick"]
+layout_mode = 2
+script = ExtResource("11_bdj7h")
+
+[node name="GUIDEVirtualButton" type="CenterContainer" parent="CanvasLayer"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -252.0
+offset_top = -402.0
+offset_right = -252.0
+offset_bottom = -402.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+use_top_left = true
+script = ExtResource("8_ht44o")
+input_mode = 2
+
+[node name="TextureButtonRenderer" type="Control" parent="CanvasLayer/GUIDEVirtualButton"]
+layout_mode = 2
+script = ExtResource("9_7j33s")
