@@ -40,7 +40,7 @@ input_mappings = Array[ExtResource("3_t5g0f")]([SubResource("Resource_ov3te")])
 
 [sub_resource type="Resource" id="Resource_kvttr"]
 script = ExtResource("6_85c2w")
-finger_count = 0
+finger_count = 1
 finger_index = 0
 
 [sub_resource type="Resource" id="Resource_ek0sa"]
