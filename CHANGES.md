@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## [0.15.0] - 2026-10-16
 
 ### Added
 - There is a new `touch_3d_controls` example which shows a common touch setup for 3D games: a virtual stick moves the character and dragging a finger on the screen changes the camera angle.
