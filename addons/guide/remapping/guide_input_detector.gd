@@ -308,7 +308,7 @@ func _try_detect_bool(event:InputEvent) -> void:
 		
 	if event is InputEventJoypadMotion:
 		if event.axis == JOY_AXIS_TRIGGER_LEFT or event.axis == JOY_AXIS_TRIGGER_RIGHT:
-			if allow_triggers_for_boolean_actions:
+			if allow_triggers_for_boolean_actions and abs(event.axis_value) >= minimum_axis_amplitude:
 				var result := GUIDEInputJoyAxis1D.new()
 				result.axis = event.axis
 				result.joy_index = _find_joy_index(event.device)
@@ -352,13 +352,15 @@ func _try_detect_axis_1d(event:InputEvent) -> void:
 		
 			
 func _try_detect_axis_2d(event:InputEvent) -> void:
-	if event is InputEventMouseMotion:
+	# we sometimes get motion events where no relative movement happened, we are only
+	# interested in the ones where it does
+	if event is InputEventMouseMotion and event.relative.length_squared() > 0:
 		var result := GUIDEInputMouseAxis2D.new()
 		_deliver(result)
 		return
 		
 	if event is InputEventJoypadMotion:
-		if event.axis_value < minimum_axis_amplitude:
+		if abs(event.axis_value) < minimum_axis_amplitude:
 			return
 
 		var result := GUIDEInputJoyAxis2D.new()

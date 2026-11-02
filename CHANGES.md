@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.15.1] - 2026-11-02
+
+### Fixed
+- The input detector now detects 2D joy axis input when the stick is pushed left or up. Previously only right and down were detected, because the minimum amplitude check did not account for negative axis values ([#214](https://github.com/godotneers/G.U.I.D.E/issues/214)).
+- When detecting boolean input, the input detector now ignores trigger movement below the minimum axis amplitude, so slight trigger noise no longer gets detected as input.
+- When detecting 2D axis input, the input detector now ignores mouse motion events without actual movement.
+
 ## [0.15.0] - 2026-10-16
 
 ### Added

@@ -111,7 +111,76 @@ func test_joy_direction_is_not_detected_below_minimum_amplitude() -> void:
 
 	# THEN
 	# no input is detected
-	assert_signal(_input_detector).is_not_emitted("input_detected")
+	await assert_signal(_input_detector).wait_until(500).is_not_emitted("input_detected", [any()])
+
+
+func test_joy_axis_2d_is_detected_for_positive_direction() -> void:
+	monitor_signals(_input_detector)
+
+	# WHEN
+	# I try to detect axis 2D input
+	_input_detector.detect(GUIDEAction.GUIDEActionValueType.AXIS_2D)
+
+	# and I move the left stick to the right
+	await joy_axis(JOY_AXIS_LEFT_X, 0.5)
+
+	# THEN
+	# the detector emits a JoyAxis2D input for the left stick
+	await assert_signal(_input_detector).is_emitted("input_detected", [
+		GUIDEInputMatcher.new(input_joy_axis_2d(JOY_AXIS_LEFT_X, JOY_AXIS_LEFT_Y))
+	])
+
+
+func test_joy_axis_2d_is_detected_for_negative_direction() -> void:
+	monitor_signals(_input_detector)
+
+	# WHEN
+	# I try to detect axis 2D input
+	_input_detector.detect(GUIDEAction.GUIDEActionValueType.AXIS_2D)
+
+	# and I move the left stick up (negative Y)
+	await joy_axis(JOY_AXIS_LEFT_Y, -0.5)
+
+	# THEN
+	# the detector emits a JoyAxis2D input for the left stick
+	await assert_signal(_input_detector).is_emitted("input_detected", [
+		GUIDEInputMatcher.new(input_joy_axis_2d(JOY_AXIS_LEFT_X, JOY_AXIS_LEFT_Y))
+	])
+
+
+func test_mouse_motion_without_movement_is_not_detected_for_axis_2d() -> void:
+	monitor_signals(_input_detector)
+
+	# WHEN
+	# I try to detect axis 2D input
+	_input_detector.detect(GUIDEAction.GUIDEActionValueType.AXIS_2D)
+
+	# and a mouse motion event arrives that has no relative movement
+	var motion := InputEventMouseMotion.new()
+	motion.position = get_viewport().get_mouse_position()
+	motion.relative = Vector2.ZERO
+	Input.parse_input_event(motion)
+	await wait_f(2)
+
+	# THEN
+	# no input is detected
+	await assert_signal(_input_detector).wait_until(500).is_not_emitted("input_detected", [any()])
+
+
+func test_trigger_axis_below_minimum_amplitude_is_not_detected_for_bool() -> void:
+	monitor_signals(_input_detector)
+	_input_detector.allow_triggers_for_boolean_actions = true
+
+	# WHEN
+	# I try to detect boolean input
+	_input_detector.detect(GUIDEAction.GUIDEActionValueType.BOOL)
+
+	# and I barely touch the left trigger
+	await joy_axis(JOY_AXIS_TRIGGER_LEFT, _input_detector.minimum_axis_amplitude * 0.5)
+
+	# THEN
+	# no input is detected
+	await assert_signal(_input_detector).wait_until(500).is_not_emitted("input_detected", [any()])
 
 
 func test_trigger_axis_still_detected_as_axis_1d_for_bool() -> void:
