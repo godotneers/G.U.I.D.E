@@ -1,5 +1,8 @@
 extends MarginContainer
 
+@export var triggered_color := Color.RED
+@export var triggered_color_fadout_speed := 1
+
 @onready var _actions:Container = %Actions
 @onready var _inputs:Container = %Inputs
 @onready var _priorities:Container = %Priorities
@@ -42,12 +45,22 @@ func _process(delta) -> void:
 				action_value = str(action.value_axis_2d)
 			GUIDEAction.GUIDEActionValueType.AXIS_3D:
 				action_value = str(action.value_axis_3d)
-				
-				
-				
+
 		
 		var label := _get_label(_actions, index)
 		label.text = "[%s] %s - %s" % [action_name, action_state, action_value]
+		
+		var text_color:Color = label.get_theme_color(&"font_color")
+		if action._last_state == GUIDEAction.GUIDEActionState.TRIGGERED:
+			text_color = triggered_color
+		elif text_color != Color.BLACK :
+			var weight := 1 - exp(-triggered_color_fadout_speed * delta)
+			text_color = text_color.lerp(Color.BLACK, weight)
+			if text_color.is_equal_approx(Color.BLACK):
+				text_color = Color.BLACK
+		
+		label.add_theme_color_override(&"font_color", text_color)
+		
 		
 		index += 1
 		
